@@ -26,7 +26,7 @@ const copy = async () => {
 <template>
   <template v-if="workout">
     <button
-      v-if="workout.status === 'planned' && !next?.set.completed && !workout.exercises.some(exercise => exercise.sets.some(set => set.completed))"
+      v-if="workout.status === 'planned' && !workout.exercises.some(exercise => exercise.sets.some(set => set.completed))"
       type="button"
       class="primary shrink-0"
       :disabled="!canWrite"
