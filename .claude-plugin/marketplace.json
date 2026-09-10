@@ -1,0 +1,14 @@
+{
+  "name": "efitware",
+  "owner": {
+    "name": "eFitware",
+    "url": "https://www.efitware.com"
+  },
+  "plugins": [
+    {
+      "name": "efitware",
+      "source": "./plugins/efitware",
+      "description": "Plan workouts, log training and understand your progress with your own AI."
+    }
+  ]
+}

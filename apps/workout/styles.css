@@ -1,0 +1,30 @@
+@import 'tailwindcss' source(none);
+@source './*.vue';
+/* PRODUCT_THEME */
+
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('./theme/fonts/inter-latin-400-700-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Newsreader'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('./theme/fonts/newsreader-latin-400-700-normal.woff2') format('woff2'); }
+
+@font-face { font-family: 'IBM Plex Sans'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('./theme/fonts/ibm-plex-sans-latin-400-700-normal.woff2') format('woff2'); }
+@font-face { font-family: 'DM Sans'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('./theme/fonts/dm-sans-latin-400-700-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Lora'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('./theme/fonts/lora-latin-400-700-normal.woff2') format('woff2'); }
+
+body { margin: 0; background: var(--color-bg); color: var(--color-ink); font-family: var(--font-sans); overflow-wrap: anywhere; }
+button, input, summary { border-radius: var(--radius); }
+button, input { min-height: 44px; font: inherit; }
+button { cursor: pointer; padding: .5rem .875rem; font-size: .875rem; }
+button.primary { background: var(--color-terracotta); color: var(--color-bg); font-weight: 600; }
+button.primary:hover { background: var(--color-terracotta-hover); }
+button.secondary { border: 1px solid var(--color-surface-dark); background: var(--color-bg); color: var(--color-ink); }
+button.secondary:hover { background: var(--color-surface); }
+button:disabled, fieldset:disabled { opacity: .65; }
+button:disabled { cursor: default; }
+input { border: 1px solid var(--color-muted); background: var(--color-bg); color: var(--color-ink); padding: .5rem; }
+input::placeholder { color: var(--color-muted); }
+:focus-visible { outline: 2px solid var(--color-terracotta); outline-offset: 3px; }
+.set-row { border-top: 1px solid var(--color-surface-dark); padding: 1rem 0; }
+.set-complete legend { color: var(--color-olive); }
+progress { accent-color: var(--color-olive); }
+progress::-webkit-progress-bar { background: var(--color-surface-dark); }
+progress::-webkit-progress-value { background: var(--color-olive); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }

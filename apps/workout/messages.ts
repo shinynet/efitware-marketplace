@@ -1,0 +1,40 @@
+export const messages = {
+  en: {
+    unsaved: 'Unsaved results', repTarget: '{value} reps', range: '{min}–{max}',
+    loading: 'Opening your workout…', workout: 'Your workout', refresh: 'Reload saved workout', open: 'Open in eFitware',
+    sets: '{done} of {total} sets complete', warmup: 'Warm-up', main: 'Main work', cooldown: 'Cool-down',
+    planned: 'Planned', in_progress: 'In progress', completed: 'Completed', skipped: 'Skipped', abandoned: 'Abandoned',
+    actuals: 'Your results', prescription: 'Target', weight: 'Weight', reps: 'Reps', duration: 'Duration', distance: 'Distance',
+    set: 'Set {number}', done: 'Done', save: 'Save changes', reopen: 'Mark not done', saving: 'Saving…', saved: 'Saved to eFitware',
+    retry: 'Retry same save', blank: 'Not logged', invalid: 'Enter a valid non-negative number. Reps must be a whole number.',
+    guidance: 'Log what you actually did. Targets are shown separately and are never recorded automatically.',
+    rest: 'Rest {value}', rir: '{value} reps in reserve', empty: 'This workout has no exercises or activities yet.',
+    missing: 'Exercise details are unavailable. Existing results remain visible.', noTarget: 'No target specified',
+    stale: 'This workout changed. Reload the saved workout before making another change.',
+    failed: 'The change could not be saved. Reload the workout and check your connection permissions.',
+    lost: 'The save could not be confirmed. Retry sends the exact same request, without duplicating it.',
+    readFailed: 'Could not reload the workout. Your last save may already be recorded. Reload before continuing.',
+    unavailable: 'This client has not provided the connection needed for this workout view.',
+    unitsWeight: 'Weight ({unit})', unitsDuration: 'Duration ({unit})', unitsDistance: 'Distance ({unit})',
+    activity: 'Activity', restKind: 'Rest', water_break: 'Water break', stretching: 'Stretching', custom: 'Activity'
+  },
+  de: {
+    unsaved: 'Ungespeicherte Ergebnisse', repTarget: '{value} Wiederholungen', range: '{min}–{max}',
+    loading: 'Dein Training wird geöffnet…', workout: 'Dein Training', refresh: 'Gespeichertes Training neu laden', open: 'In eFitware öffnen',
+    sets: '{done} von {total} Sätzen abgeschlossen', warmup: 'Aufwärmen', main: 'Hauptteil', cooldown: 'Abwärmen',
+    planned: 'Geplant', in_progress: 'In Bearbeitung', completed: 'Abgeschlossen', skipped: 'Übersprungen', abandoned: 'Abgebrochen',
+    actuals: 'Deine Ergebnisse', prescription: 'Ziel', weight: 'Gewicht', reps: 'Wiederholungen', duration: 'Dauer', distance: 'Distanz',
+    set: 'Satz {number}', done: 'Erledigt', save: 'Änderungen speichern', reopen: 'Als nicht erledigt markieren', saving: 'Wird gespeichert…', saved: 'In eFitware gespeichert',
+    retry: 'Speichern erneut versuchen', blank: 'Nicht erfasst', invalid: 'Gib eine gültige, nicht negative Zahl ein. Wiederholungen müssen ganzzahlig sein.',
+    guidance: 'Erfasse deine tatsächlichen Ergebnisse. Ziele werden separat angezeigt und niemals automatisch übernommen.',
+    rest: 'Pause: {value}', rir: '{value} Wiederholungen in Reserve', empty: 'Dieses Training enthält noch keine Übungen oder Aktivitäten.',
+    missing: 'Übungsdetails sind nicht verfügbar. Vorhandene Ergebnisse bleiben sichtbar.', noTarget: 'Kein Ziel angegeben',
+    stale: 'Dieses Training wurde geändert. Lade den gespeicherten Stand vor weiteren Änderungen neu.',
+    failed: 'Die Änderung konnte nicht gespeichert werden. Lade das Training neu und prüfe die Berechtigungen der Verbindung.',
+    lost: 'Das Speichern konnte nicht bestätigt werden. Ein erneuter Versuch sendet dieselbe Anfrage, ohne sie zu duplizieren.',
+    readFailed: 'Das Training konnte nicht neu geladen werden. Die letzte Änderung ist möglicherweise bereits gespeichert. Lade es vor dem Fortfahren neu.',
+    unavailable: 'Dieser Client stellt die erforderliche Verbindung für diese Trainingsansicht nicht bereit.',
+    unitsWeight: 'Gewicht ({unit})', unitsDuration: 'Dauer ({unit})', unitsDistance: 'Distanz ({unit})',
+    activity: 'Aktivität', restKind: 'Pause', water_break: 'Trinkpause', stretching: 'Dehnen', custom: 'Aktivität'
+  }
+}

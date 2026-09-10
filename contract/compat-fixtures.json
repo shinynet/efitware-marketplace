@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "nestedSequences": [
+    { "sets": ["s1", "s2", "s3"], "activities": [{ "id": "a2", "order": 2 }, { "id": "a0", "order": 0 }, { "id": "a2b", "order": 2 }, { "id": "a9", "order": 9 }], "expected": ["s1", "a0", "s2", "a2", "a2b", "s3", "a9"] },
+    { "sets": [], "activities": [{ "id": "a9", "order": 9 }, { "id": "a1", "order": 1 }], "expected": ["a9", "a1"] },
+    { "sets": ["s1"], "activities": [], "expected": ["s1"] }
+  ],
+  "sections": {
+    "exercises": [{ "id": "main2", "order": 2 }, { "id": "cool", "section": "cooldown", "order": 0 }, { "id": "warm", "section": "warmup", "order": 9 }, { "id": "main1", "section": "main", "order": 1 }],
+    "activities": [{ "id": "warmA", "section": "warmup", "order": 9 }, { "id": "mainA", "order": 1 }],
+    "expected": [["warm", "warmA"], ["main1", "mainA", "main2"], ["cool"]]
+  },
+  "conversions": [
+    { "field": "weight", "value": 20, "system": "imperial", "expected": { "value": 44.092452436, "unit": "pound" } },
+    { "field": "weight", "value": 20.5, "system": "metric", "expected": { "value": 20.5, "unit": "kilogram" } },
+    { "field": "distance", "value": 999, "system": "metric", "expected": { "value": 999, "unit": "meter" } },
+    { "field": "distance", "value": 1000, "system": "metric", "expected": { "value": 1, "unit": "kilometer" } },
+    { "field": "distance", "value": 1609.344, "system": "imperial", "expected": { "value": 1, "unit": "mile" } }
+  ],
+  "formats": [
+    { "field": "duration", "value": 59, "system": "metric", "locale": "en", "expected": "59 sec" },
+    { "field": "duration", "value": 60, "system": "metric", "locale": "en", "expected": "1 min" },
+    { "field": "duration", "value": 3599, "system": "metric", "locale": "en", "expected": "59.98 min" },
+    { "field": "duration", "value": 3600, "system": "metric", "locale": "en", "expected": "1 hr" },
+    { "field": "weight", "value": 20, "system": "imperial", "locale": "en", "expected": "44.09 lb" },
+    { "field": "weight", "value": 20.5, "system": "metric", "locale": "de", "expected": "20,5 kg" }
+  ],
+  "roundTrips": [
+    { "field": "weight", "input": "20,5", "locale": "de", "unit": "kilogram", "storage": 20.5 },
+    { "field": "weight", "input": "20.5", "locale": "en", "unit": "kilogram", "storage": 20.5 },
+    { "field": "distance", "input": "1,5", "locale": "de", "unit": "kilometer", "storage": 1500 },
+    { "field": "distance", "input": "1.5", "locale": "en", "unit": "mile", "storage": 2414.016 },
+    { "field": "weight", "input": "44.092452436", "locale": "en", "unit": "pound", "storage": 20 }
+  ],
+  "invalidNumbers": [{ "input": "1,2.3", "locale": "de" }, { "input": "Infinity", "locale": "en" }, { "input": "-1", "locale": "en" }]
+}
