@@ -5,6 +5,9 @@ import { parseTrainingView, type TrainingView } from './templateModel'
 interface PendingAction { name: string, arguments: Record<string, unknown> }
 const intentKey = () => `mcp-app-${Array.from(crypto.getRandomValues(new Uint8Array(16)), byte => byte.toString(16).padStart(2, '0')).join('')}`
 const targetForView = (view: TrainingView): PendingAction => {
+  if (view.view === 'body-metric') return { name: 'open_body_metric', arguments: { ...view.record } }
+  if (view.view === 'exercise-progress') return { name: 'open_exercise_progress', arguments: { exerciseId: view.record.id, range: view.related.progression.metadata.range, today: view.related.progression.metadata.today, collection: view.related.collection, page: view.related.page, limit: view.related.limit } }
+  if (view.view === 'progress') return { name: 'open_progress', arguments: { range: view.record.range, today: view.record.asOf, section: view.related.section, page: view.related.section === 'goals' ? view.related.goals.meta.page : view.related.progression.meta.page, limit: view.related.progression.meta.limit } }
   if (view.view === 'workout') return { name: 'open_workout', arguments: { workoutId: view.record.workout.id } }
   if (view.view === 'template') return { name: 'open_template', arguments: { templateId: view.record.id } }
   if (view.view === 'goal') return { name: 'open_goal', arguments: { goalId: view.record.id, today: view.related.today, page: view.related.checkIns.meta.page, limit: view.related.checkIns.meta.limit } }
@@ -15,6 +18,9 @@ const targetForView = (view: TrainingView): PendingAction => {
 }
 const modelContext = (view: TrainingView): Record<string, unknown> => {
   if (view.view === 'workout') return { view: 'workout', workoutId: view.record.workout.id, revision: view.record.workout.revision, status: view.record.workout.status, completedSets: view.record.workout.exercises.reduce((sum, ex) => sum + ex.sets.filter(set => set.completed).length, 0) }
+  if (view.view === 'body-metric') return { view: view.view, ...view.record, observations: view.related.observations.data }
+  if (view.view === 'exercise-progress') return { view: view.view, exerciseId: view.record.id, range: view.related.progression.metadata, allTimeStats: view.related.stats, collection: view.related.collection, page: view.related.page }
+  if (view.view === 'progress') return { view: view.view, from: view.record.rangeStart, to: view.record.asOf, range: view.record.range, section: view.related.section, metrics: view.record.metrics }
   if (view.view === 'calendar') return { view: view.view, from: view.record.from, to: view.record.to, date: view.record.date }
   const base = { view: view.view, recordId: view.record.id, revision: view.record.revision }
   if (view.view === 'goal') return { ...base, status: view.record.status, checkInCount: view.related.checkInCount }

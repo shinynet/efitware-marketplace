@@ -2,6 +2,8 @@ import { convertDistance, convertWeight, metresFromDisplayDistance, poundsToKilo
 import type { UnitSystem } from './lib/units'
 
 export type ActualField = 'weight' | 'reps' | 'duration' | 'distance'
+/** Match the product's locale default while respecting an explicit account choice. */
+export const resolveDisplayUnitSystem = (preference: UnitSystem | null | undefined, locale: string): UnitSystem => preference ?? (locale.toLowerCase().startsWith('de') ? 'metric' : 'imperial')
 export const displayMeasure = (field: ActualField, value: number, system: UnitSystem) => {
   if (field === 'weight') return convertWeight(value, system)
   if (field === 'distance') return convertDistance(value, system)

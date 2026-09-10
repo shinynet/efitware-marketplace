@@ -1,0 +1,853 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "view": {
+      "type": "string",
+      "const": "progress"
+    },
+    "record": {
+      "type": "object",
+      "properties": {
+        "asOf": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "rangeStart": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "range": {
+          "type": "string",
+          "enum": [
+            "4w",
+            "8w",
+            "12w",
+            "1y"
+          ]
+        },
+        "unlockSessions": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "progressionCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "metrics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "count",
+                  "decimal"
+                ]
+              },
+              "value": {
+                "type": "number"
+              },
+              "unitKey": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "tone": {
+                "type": "string",
+                "enum": [
+                  "positive",
+                  "steady"
+                ]
+              },
+              "delta": {
+                "type": "number"
+              },
+              "deltaKind": {
+                "type": "string",
+                "enum": [
+                  "percent",
+                  "count",
+                  "decimal"
+                ]
+              }
+            },
+            "required": [
+              "key",
+              "kind",
+              "value",
+              "unitKey",
+              "tone",
+              "deltaKind"
+            ]
+          }
+        },
+        "weeklyVolume": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "weekStart": {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              },
+              "volumeKg": {
+                "type": "number"
+              },
+              "inProgress": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "weekStart",
+              "volumeKg"
+            ]
+          }
+        },
+        "consistency": {
+          "type": "object",
+          "properties": {
+            "heatmap": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "weekStart": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                  },
+                  "sets": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "weekStart",
+                  "sets"
+                ]
+              }
+            },
+            "sessionsDone": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "sessionsPlanned": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "streakWeeks": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": [
+            "heatmap",
+            "sessionsDone",
+            "sessionsPlanned",
+            "streakWeeks"
+          ]
+        },
+        "balance": {
+          "type": "object",
+          "properties": {
+            "muscles": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "muscle": {
+                    "type": "string"
+                  },
+                  "sets": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "muscle",
+                  "sets"
+                ]
+              }
+            },
+            "movements": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "movement": {
+                    "type": "string"
+                  },
+                  "share": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "movement",
+                  "share"
+                ]
+              }
+            }
+          },
+          "required": [
+            "muscles",
+            "movements"
+          ]
+        },
+        "body": {
+          "type": "object",
+          "properties": {
+            "weightKg": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "goalWeightKg": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "bodyFatPercent": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "weightSeries": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                  },
+                  "value": {
+                    "type": "number"
+                  },
+                  "isPr": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "date",
+                  "value"
+                ]
+              }
+            },
+            "bodyFatSeries": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                  },
+                  "value": {
+                    "type": "number"
+                  },
+                  "isPr": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "date",
+                  "value"
+                ]
+              }
+            },
+            "measurements": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string"
+                  },
+                  "valueCm": {
+                    "type": "number"
+                  },
+                  "series": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "date": {
+                          "type": "string",
+                          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                        },
+                        "value": {
+                          "type": "number"
+                        },
+                        "isPr": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "date",
+                        "value"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "key",
+                  "valueCm",
+                  "series"
+                ]
+              }
+            }
+          },
+          "required": [
+            "weightKg",
+            "goalWeightKg",
+            "bodyFatPercent",
+            "weightSeries",
+            "bodyFatSeries",
+            "measurements"
+          ]
+        },
+        "cardio": {
+          "type": "object",
+          "properties": {
+            "restingHr": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "restingHrSeries": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                  },
+                  "value": {
+                    "type": "number"
+                  },
+                  "isPr": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "date",
+                  "value"
+                ]
+              }
+            },
+            "zone2Minutes": {
+              "type": "number"
+            },
+            "zone2DeltaMinutes": {
+              "type": "number"
+            },
+            "bestEfforts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string"
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "time",
+                      "distance",
+                      "power"
+                    ]
+                  },
+                  "date": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                  },
+                  "seconds": {
+                    "type": "number"
+                  },
+                  "distanceMeters": {
+                    "type": "number"
+                  },
+                  "watts": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "key",
+                  "kind",
+                  "date"
+                ]
+              }
+            }
+          },
+          "required": [
+            "restingHr",
+            "restingHrSeries",
+            "zone2Minutes",
+            "bestEfforts"
+          ]
+        },
+        "modalitySplit": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "modality": {
+                "type": "string"
+              },
+              "share": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "modality",
+              "share"
+            ]
+          }
+        },
+        "recentPrs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "workoutId": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{24}$"
+              },
+              "exerciseId": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{24}$"
+              },
+              "setId": {
+                "type": "string"
+              },
+              "modality": {
+                "type": "string"
+              },
+              "exerciseName": {
+                "type": "string"
+              },
+              "i18n": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "date": {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              },
+              "reps": {
+                "type": "number"
+              },
+              "weightKg": {
+                "type": "number"
+              },
+              "durationSeconds": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "id",
+              "workoutId",
+              "exerciseId",
+              "setId",
+              "modality",
+              "exerciseName",
+              "date"
+            ]
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "today": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "timezone": {
+              "type": "string"
+            },
+            "readAt": {
+              "type": "string"
+            },
+            "readConsistency": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "today",
+            "timezone",
+            "readAt",
+            "readConsistency"
+          ]
+        }
+      },
+      "required": [
+        "asOf",
+        "rangeStart",
+        "range",
+        "unlockSessions",
+        "progressionCount",
+        "metrics",
+        "weeklyVolume",
+        "consistency",
+        "balance",
+        "body",
+        "cardio",
+        "modalitySplit",
+        "recentPrs",
+        "metadata"
+      ]
+    },
+    "related": {
+      "type": "object",
+      "properties": {
+        "section": {
+          "type": "string",
+          "enum": [
+            "overview",
+            "strength",
+            "body",
+            "cardio",
+            "goals"
+          ]
+        },
+        "progression": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{24}$"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "i18n": {
+                    "type": "object",
+                    "propertyNames": {
+                      "type": "string"
+                    },
+                    "additionalProperties": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "modality": {
+                    "type": "string"
+                  },
+                  "bestSetReps": {
+                    "type": "number"
+                  },
+                  "bestSetWeightKg": {
+                    "type": "number"
+                  },
+                  "sessionDates": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    }
+                  },
+                  "series": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "date": {
+                          "type": "string",
+                          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                        },
+                        "value": {
+                          "type": "number"
+                        },
+                        "isPr": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "date",
+                        "value"
+                      ]
+                    }
+                  },
+                  "unlocked": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "modality",
+                  "bestSetReps",
+                  "bestSetWeightKg",
+                  "sessionDates",
+                  "series",
+                  "unlocked"
+                ]
+              }
+            },
+            "meta": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "page": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "limit": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "total",
+                "page",
+                "limit"
+              ]
+            }
+          },
+          "required": [
+            "data",
+            "meta"
+          ]
+        },
+        "goals": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{24}$"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "active",
+                      "achieved",
+                      "abandoned"
+                    ]
+                  },
+                  "targetMeasure": {
+                    "type": "string"
+                  },
+                  "targetDate": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                  },
+                  "checkInCount": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "latestCheckIn": {
+                    "type": "object",
+                    "properties": {
+                      "date": {
+                        "type": "string",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                      },
+                      "value": {
+                        "type": "string"
+                      },
+                      "note": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "date"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "status",
+                  "checkInCount"
+                ]
+              }
+            },
+            "meta": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "page": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "limit": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "total",
+                "page",
+                "limit"
+              ]
+            }
+          },
+          "required": [
+            "data",
+            "meta"
+          ]
+        }
+      },
+      "required": [
+        "section",
+        "progression",
+        "goals"
+      ]
+    },
+    "presentation": {
+      "type": "object",
+      "properties": {
+        "locale": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unitSystem": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "metric",
+                "imperial"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "theme": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "system",
+                "light",
+                "dark"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "skin": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "calm",
+                "cyanotype",
+                "camellia"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "timeZone": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "locale",
+        "unitSystem",
+        "theme",
+        "skin",
+        "timeZone"
+      ]
+    }
+  },
+  "required": [
+    "view",
+    "record",
+    "related",
+    "presentation"
+  ]
+}

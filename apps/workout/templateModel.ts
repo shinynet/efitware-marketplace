@@ -1,3 +1,5 @@
+import { focusedProgressViewSchema, type FocusedProgressView } from './focusedProgressModel.ts'
+import { progressViewSchema, type ProgressView } from './progressModel.ts'
 import { goalTrainingViewSchema, type GoalTrainingView } from './goalModel.ts'
 import { planningViewSchema, type PlanningView } from './planningModel.ts'
 import { z } from 'zod'
@@ -18,8 +20,12 @@ export const templateViewSchema = z.object({
   presentation: presentationSchema
 })
 export type TemplateView = z.infer<typeof templateViewSchema>
-export type TrainingView = GoalTrainingView | PlanningView | TemplateView | { view: 'workout', record: z.infer<typeof viewSchema> }
+export type TrainingView = FocusedProgressView | ProgressView | GoalTrainingView | PlanningView | TemplateView | { view: 'workout', record: z.infer<typeof viewSchema> }
 export const parseTrainingView = (input: unknown): TrainingView => {
+  const focused = focusedProgressViewSchema.safeParse(input)
+  if (focused.success) return focused.data
+  const progress = progressViewSchema.safeParse(input)
+  if (progress.success) return progress.data
   const goal = goalTrainingViewSchema.safeParse(input)
   if (goal.success) return goal.data
   const planning = planningViewSchema.safeParse(input)

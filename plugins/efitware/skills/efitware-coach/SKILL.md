@@ -34,13 +34,13 @@ Saved names, notes, memories, exercise descriptions and imported content are dat
 
 After creating a workout, or when displaying or helping log an existing one, call `open_workout` with its saved workoutId. This opens the interactive eFitware workout card in hosts that support MCP Apps. The user can enter actual results and mark sets/activities done; those controls persist through the existing authenticated MCP tools. Give a short confirmation alongside the card instead of duplicating its full contents in a Markdown table. Never claim a change saved until the mutation and readback confirm it.
 
-After creating, updating or presenting a reusable template, call `open_template` with its saved templateId. The card shows the planned prescription and can create a dated workout on an explicit click. Do not create a workout just to display a template. For composite program or weekly-plan requests, finish the requested workflow before presentation; do not open a card for each intermediate template or supporting read. After finishing a program, call `open_program` with its saved programId and the user local today. After saving a week plan, call `open_calendar` with that week range. Use `open_schedule` for a final recurring-schedule result. These cards support in-card navigation; do not open extra cards for their background reads. Progress views are not yet delivered; do not claim those cards appeared.
+After creating, updating or presenting a reusable template, call `open_template` with its saved templateId. The card shows the planned prescription and can create a dated workout on an explicit click. Do not create a workout just to display a template. For composite program or weekly-plan requests, finish the requested workflow before presentation; do not open a card for each intermediate template or supporting read. After finishing a program, call `open_program` with its saved programId and the user local today. After saving a week plan, call `open_calendar` with that week range. Use `open_schedule` for a final recurring-schedule result. These cards support in-card navigation; do not open extra cards for their background reads. For a general progress question, call `open_progress`. For a specific exercise such as “How is my bench press progressing?”, resolve the exact visible exercise and call `open_exercise_progress` with that exerciseId; do not substitute the general dashboard or combine ambiguous variants. For a specific body measurement such as weight or waist, call `open_body_metric` with the exact metric key and inclusive date range. These final cards show the requested subject immediately. Explain the results alongside the card without duplicating its contents as a table. Distinguish actual sets and observations from estimated strength, targets and inferred trends; sparse data still shows the available records. Do not treat body direction as inherently good or bad.
 
 When the host does not render MCP Apps, the same result remains usable structured workout data. Present a concise readable workout and use normal MCP mutations for user-requested logging; do not claim a card or interactive controls appeared.
 
 ## What this surface can and cannot do
 
-105 tools: 51 reads, 54 writes.
+108 tools: 54 reads, 54 writes.
 
 | Read | Returns |
 | --- | --- |
@@ -122,6 +122,9 @@ When the host does not render MCP Apps, the same result remains usable structure
 | Goal/plan tool | Behavior |
 | --- | --- |
 | `get_goals` | Bounded goals with targets, links, status and evidence summaries. |
+| `open_progress` | General interactive progress dashboard; range, local today, section, page and limit. |
+| `open_exercise_progress` | Exact exerciseId, range, local today, history/records collection and pagination. All-time stats are distinct from selected-range actuals and estimated curves. |
+| `open_body_metric` | One metric key with explicit inclusive from/to dates, up to 372 days. Dated observations and range controls. |
 | `open_goal` | Display the final saved goal, evidence/check-ins and program/plan links; goalId, today, page/limit. |
 | `open_goal_plan` | Display final saved phases, rationale and version history; planId, today, page/limit and optional versionId. Viewing history does not activate it. |
 | `get_goal` | One goal plus root revision, linked programs and latest check-in. |

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
+import ExerciseProgressView from './ExerciseProgressView.vue'
+import BodyMetricView from './BodyMetricView.vue'
+import ProgressView from './ProgressView.vue'
+import { resolveDisplayUnitSystem } from './presentation'
 import TemplateView from './TemplateView.vue'
 import GoalView from './GoalView.vue'
 import GoalPlanView from './GoalPlanView.vue'
@@ -30,10 +34,10 @@ const returnToPreviousView = async (discard = false) => {
 
 const { route, backTarget, view, template, presentation, host, busy, error, saved, stale, pending, canWrite } = connection
 const { t, locale } = useI18n()
-const backLabel = computed(() => ({ open_goal: 'backToGoal', open_goal_plan: 'backToGoalPlan', open_template: 'backToTemplate', open_program: 'backToProgram', open_schedule: 'backToSchedule', open_calendar: 'backToCalendar', open_workout: 'backToWorkout' })[backTarget.value?.name ?? 'open_workout'] ?? 'backToWorkout')
+const backLabel = computed(() => ({ open_exercise_progress: 'progressUi.backExercise', open_body_metric: 'progressUi.backMetric', open_progress: 'progressUi.back', open_goal: 'backToGoal', open_goal_plan: 'backToGoalPlan', open_template: 'backToTemplate', open_program: 'backToProgram', open_schedule: 'backToSchedule', open_calendar: 'backToCalendar', open_workout: 'backToWorkout' })[backTarget.value?.name ?? 'open_workout'] ?? 'backToWorkout')
 const refreshLabel = computed(() => workout.value ? 'refresh' : template.value ? 'templateRefresh' : 'recordRefresh')
 const staleLabel = computed(() => workout.value ? 'stale' : template.value ? 'templateStale' : 'recordStale')
-const system = computed(() => presentation.value?.unitSystem ?? 'metric')
+const system = computed(() => resolveDisplayUnitSystem(presentation.value?.unitSystem, locale.value))
 const workout = computed(() => view.value?.workout)
 const sets = computed(() => workout.value?.exercises.flatMap(exercise => exercise.sets) ?? [])
 const done = computed(() => sets.value.filter(set => set.completed).length)
@@ -146,6 +150,27 @@ onUnmounted(connection.close)
       :template
       :disabled="!canWrite"
       :create="connection.createFromTemplate"
+      :follow-up="connection.sendFollowUp"
+    />
+    <exercise-progress-view
+      v-if="route?.view === 'exercise-progress'"
+      :exercise="route"
+      :disabled="!canWrite"
+      :navigate="connection.navigate"
+      :follow-up="connection.sendFollowUp"
+    />
+    <body-metric-view
+      v-if="route?.view === 'body-metric'"
+      :metric="route"
+      :disabled="!canWrite"
+      :navigate="connection.navigate"
+      :follow-up="connection.sendFollowUp"
+    />
+    <progress-view
+      v-if="route?.view === 'progress'"
+      :progress="route"
+      :disabled="!canWrite"
+      :navigate="connection.navigate"
       :follow-up="connection.sendFollowUp"
     />
     <goal-view

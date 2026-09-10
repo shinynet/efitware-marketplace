@@ -1,0 +1,193 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "view": {
+      "type": "string",
+      "const": "body-metric"
+    },
+    "record": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "enum": [
+            "weight_kg",
+            "body_fat_percent",
+            "resting_heart_rate_bpm",
+            "neck_cm",
+            "shoulders_cm",
+            "chest_cm",
+            "waist_cm",
+            "hips_cm",
+            "biceps_cm",
+            "forearms_cm",
+            "thighs_cm",
+            "calves_cm"
+          ]
+        },
+        "from": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "to": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        }
+      },
+      "required": [
+        "key",
+        "from",
+        "to"
+      ]
+    },
+    "related": {
+      "type": "object",
+      "properties": {
+        "observations": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "enum": [
+                      "weight_kg",
+                      "body_fat_percent",
+                      "resting_heart_rate_bpm",
+                      "neck_cm",
+                      "shoulders_cm",
+                      "chest_cm",
+                      "waist_cm",
+                      "hips_cm",
+                      "biceps_cm",
+                      "forearms_cm",
+                      "thighs_cm",
+                      "calves_cm"
+                    ]
+                  },
+                  "date": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "key",
+                  "date",
+                  "value"
+                ]
+              }
+            },
+            "meta": {
+              "type": "object",
+              "properties": {
+                "page": {
+                  "type": "number"
+                },
+                "limit": {
+                  "type": "number"
+                },
+                "total": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "page",
+                "limit",
+                "total"
+              ]
+            }
+          },
+          "required": [
+            "data",
+            "meta"
+          ]
+        }
+      },
+      "required": [
+        "observations"
+      ]
+    },
+    "presentation": {
+      "type": "object",
+      "properties": {
+        "locale": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unitSystem": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "metric",
+                "imperial"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "theme": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "system",
+                "light",
+                "dark"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "skin": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "calm",
+                "cyanotype",
+                "camellia"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "timeZone": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "locale",
+        "unitSystem",
+        "theme",
+        "skin",
+        "timeZone"
+      ]
+    }
+  },
+  "required": [
+    "view",
+    "record",
+    "related",
+    "presentation"
+  ]
+}
