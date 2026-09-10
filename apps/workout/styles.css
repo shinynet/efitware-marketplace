@@ -9,6 +9,8 @@
 @font-face { font-family: 'DM Sans'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('./theme/fonts/dm-sans-latin-400-700-normal.woff2') format('woff2'); }
 @font-face { font-family: 'Lora'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('./theme/fonts/lora-latin-400-700-normal.woff2') format('woff2'); }
 
+:root { color-scheme: light; }
+:root.dark { color-scheme: dark; }
 body { margin: 0; background: var(--color-bg); color: var(--color-ink); font-family: var(--font-sans); overflow-wrap: anywhere; }
 button, input, summary { border-radius: var(--radius); }
 button, input { min-height: 44px; font: inherit; }

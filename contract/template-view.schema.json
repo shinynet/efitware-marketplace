@@ -2,36 +2,32 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
-    "workout": {
+    "view": {
+      "type": "string",
+      "const": "template"
+    },
+    "record": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string",
           "pattern": "^[a-f0-9]{24}$"
         },
-        "title": {
+        "name": {
           "type": "string"
-        },
-        "date": {
-          "type": "string",
-          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
-        },
-        "status": {
-          "type": "string",
-          "enum": [
-            "planned",
-            "in_progress",
-            "completed",
-            "skipped",
-            "abandoned"
-          ]
         },
         "description": {
           "type": "string"
         },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
         "revision": {
           "type": "string",
-          "pattern": "^workout:1:[a-f0-9]{64}$"
+          "pattern": "^template:1:[a-f0-9]{64}$"
         },
         "exercises": {
           "type": "array",
@@ -91,27 +87,8 @@
                         "cooldown"
                       ]
                     },
-                    "completed": {
-                      "type": "boolean"
-                    },
                     "comments": {
                       "type": "string"
-                    },
-                    "weight": {
-                      "type": "number",
-                      "minimum": 0
-                    },
-                    "reps": {
-                      "type": "number",
-                      "minimum": 0
-                    },
-                    "duration": {
-                      "type": "number",
-                      "minimum": 0
-                    },
-                    "distance": {
-                      "type": "number",
-                      "minimum": 0
                     },
                     "plannedWeight": {
                       "type": "number",
@@ -169,8 +146,7 @@
                   },
                   "required": [
                     "id",
-                    "category",
-                    "completed"
+                    "category"
                   ]
                 }
               },
@@ -206,13 +182,6 @@
                       "type": "number",
                       "minimum": 0
                     },
-                    "durationActual": {
-                      "type": "number",
-                      "minimum": 0
-                    },
-                    "completed": {
-                      "type": "boolean"
-                    },
                     "order": {
                       "type": "number"
                     },
@@ -229,7 +198,6 @@
                     "id",
                     "kind",
                     "title",
-                    "completed",
                     "order"
                   ]
                 }
@@ -277,13 +245,6 @@
                 "type": "number",
                 "minimum": 0
               },
-              "durationActual": {
-                "type": "number",
-                "minimum": 0
-              },
-              "completed": {
-                "type": "boolean"
-              },
               "order": {
                 "type": "number"
               },
@@ -300,7 +261,6 @@
               "id",
               "kind",
               "title",
-              "completed",
               "order"
             ]
           }
@@ -308,44 +268,65 @@
       },
       "required": [
         "id",
-        "title",
-        "date",
-        "status",
+        "name",
         "revision",
         "exercises"
       ]
     },
-    "exercises": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "unavailable": {
-            "type": "boolean"
-          },
-          "nameDe": {
-            "type": "string"
-          },
-          "tracksWeight": {
-            "type": "boolean"
-          },
-          "tracksReps": {
-            "type": "boolean"
-          },
-          "tracksTime": {
-            "type": "boolean"
-          },
-          "tracksDistance": {
-            "type": "boolean"
+    "related": {
+      "type": "object",
+      "properties": {
+        "exercises": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "unavailable": {
+                "type": "boolean"
+              },
+              "nameDe": {
+                "type": "string"
+              },
+              "tracksWeight": {
+                "type": "boolean"
+              },
+              "tracksReps": {
+                "type": "boolean"
+              },
+              "tracksTime": {
+                "type": "boolean"
+              },
+              "tracksDistance": {
+                "type": "boolean"
+              },
+              "description": {
+                "type": "string"
+              },
+              "instructions": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "instructionsDe": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "id"
+            ]
           }
-        },
-        "required": [
-          "id"
-        ]
-      }
+        }
+      },
+      "required": [
+        "exercises"
+      ]
     },
     "presentation": {
       "type": "object",
@@ -414,8 +395,9 @@
     }
   },
   "required": [
-    "workout",
-    "exercises",
+    "view",
+    "record",
+    "related",
     "presentation"
   ]
 }

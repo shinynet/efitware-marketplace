@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, watchEffect } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
+import TemplateView from './TemplateView.vue'
 import WorkoutSetRow from './WorkoutSetRow.vue'
 import { workoutSections } from './lib/sections'
 import { interleavedExerciseSequence } from './lib/sequenceUtils'
@@ -10,33 +11,46 @@ import wordmark from './theme/efitware-wordmark.svg?url'
 import wordmarkDark from './theme/efitware-wordmark-reversed.svg?url'
 
 const connection = createWorkoutConnection()
-const { view, host, busy, error, saved, stale, pending, canWrite } = connection
+const dirtyRows = ref(new Set<string>())
+const leaving = ref(false)
+const setDirty = (id: string, dirty: boolean) => {
+  if (dirty) dirtyRows.value.add(id)
+  else dirtyRows.value.delete(id)
+}
+const returnToTemplate = async (discard = false) => {
+  if (dirtyRows.value.size && !discard) { leaving.value = true; return }
+  if (!connection.sourceTemplateId.value) return
+  await connection.navigate({ name: 'open_template', arguments: { templateId: connection.sourceTemplateId.value } })
+  leaving.value = false
+}
+
+const { view, template, presentation, sourceTemplateId, host, busy, error, saved, stale, pending, canWrite } = connection
 const { t, locale } = useI18n()
-const system = computed(() => view.value?.presentation.unitSystem ?? 'metric')
+const system = computed(() => presentation.value?.unitSystem ?? 'metric')
 const workout = computed(() => view.value?.workout)
 const sets = computed(() => workout.value?.exercises.flatMap(exercise => exercise.sets) ?? [])
 const done = computed(() => sets.value.filter(set => set.completed).length)
 const dark = computed(() => {
-  const preference = view.value?.presentation.theme
+  const preference = presentation.value?.theme
   return preference && preference !== 'system' ? preference === 'dark' : host.value?.theme === 'dark'
 })
 watchEffect(() => {
-  const language = view.value?.presentation.locale ?? host.value?.locale ?? navigator.language
+  const language = presentation.value?.locale ?? host.value?.locale ?? navigator.language
   locale.value = language.toLowerCase().startsWith('de') ? 'de' : 'en'
   document.documentElement.lang = locale.value
   document.documentElement.classList.toggle('dark', dark.value)
-  document.documentElement.classList.toggle('theme-cyanotype', view.value?.presentation.skin === 'cyanotype')
-  document.documentElement.classList.toggle('theme-camellia', view.value?.presentation.skin === 'camellia')
+  document.documentElement.classList.toggle('theme-cyanotype', presentation.value?.skin === 'cyanotype')
+  document.documentElement.classList.toggle('theme-camellia', presentation.value?.skin === 'camellia')
 })
 const dateLabel = computed(() => workout.value ? new Intl.DateTimeFormat(locale.value, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${workout.value.date}T12:00:00Z`)) : '')
 const sections = computed(() => workoutSections(workout.value?.exercises ?? [], workout.value?.activities ?? []))
 const errorText = computed(() => {
-  if (error.value === 'MCP_REVISION_CONFLICT') return t('stale')
+  if (error.value === 'MCP_REVISION_CONFLICT') return t(template.value ? 'templateStale' : 'stale')
   if (error.value === 'CONNECTION_LOST') return t(pending.value ? 'lost' : 'unavailable')
   if (pending.value) return t('lost')
-  if (error.value.startsWith('READ_FAILED')) return t('readFailed')
+  if (error.value.startsWith('READ_FAILED')) return t(template.value ? 'templateReadFailed' : 'readFailed')
   if (error.value === 'TOOLS_UNAVAILABLE') return t('unavailable')
-  return t('failed')
+  return t(template.value ? 'templateFailed' : 'failed')
 })
 onMounted(connection.start)
 onUnmounted(connection.close)
@@ -59,7 +73,7 @@ onUnmounted(connection.close)
       </button>
     </header>
     <p
-      v-if="!workout && !error"
+      v-if="!workout && !template && !error"
       role="status"
     >
       {{ t('loading') }}
@@ -69,7 +83,7 @@ onUnmounted(connection.close)
       role="alert"
       class="mb-5 rounded border border-terracotta p-4"
     >
-      <p>{{ error ? errorText : t('stale') }}</p>
+      <p>{{ error ? errorText : t(template ? 'templateStale' : 'stale') }}</p>
       <button
         v-if="pending"
         :disabled="busy"
@@ -79,14 +93,54 @@ onUnmounted(connection.close)
         {{ t('retry') }}
       </button>
       <button
-        v-else-if="workout"
+        v-else-if="workout || template"
         :disabled="busy"
         class="secondary mt-3"
         @click="connection.refresh()"
       >
-        {{ t('refresh') }}
+        {{ t(template ? 'templateRefresh' : 'refresh') }}
       </button>
     </aside>
+    <nav
+      v-if="sourceTemplateId && workout"
+      :aria-label="t('navigation')"
+      class="mb-4"
+    >
+      <button
+        class="secondary"
+        :disabled="busy || !!pending || connection.needsReadback.value"
+        @click="returnToTemplate()"
+      >
+        ← {{ t('backToTemplate') }}
+      </button>
+    </nav>
+    <aside
+      v-if="leaving"
+      class="mb-4 rounded border border-terracotta p-4"
+      role="alert"
+    >
+      <p>{{ t('leaveUnsaved') }}</p>
+      <button
+        class="secondary mt-3"
+        @click="leaving = false"
+      >
+        {{ t('keepEditing') }}
+      </button>
+      <button
+        class="secondary mt-3"
+        :disabled="busy || !!pending"
+        @click="returnToTemplate(true)"
+      >
+        {{ t('discardAndBack') }}
+      </button>
+    </aside>
+    <template-view
+      v-if="template"
+      :template
+      :disabled="!canWrite"
+      :create="connection.createFromTemplate"
+      :follow-up="connection.sendFollowUp"
+    />
     <template v-if="workout">
       <header class="mb-6">
         <p class="mb-2 text-xs font-semibold uppercase tracking-widest text-gold-ink">
@@ -190,6 +244,7 @@ onUnmounted(connection.close)
                   :tracking="view?.exercises.find(ex => ex.id === item.data.exerciseId)"
                   :disabled="!canWrite"
                   :save="patch => connection.mutate('log_sets', { entries: [{ weId: item.data.id, setId: entry.set.id, set: patch }] })"
+                  @dirty="setDirty(entry.set.id, $event)"
                 />
                 <workout-activity-card
                   v-else
@@ -202,21 +257,24 @@ onUnmounted(connection.close)
           </details>
         </template>
       </section>
-      <footer class="flex flex-wrap items-center justify-between gap-3 border-t border-surface-dark pt-4">
-        <p
-          role="status"
-          class="text-sm text-olive"
-        >
-          {{ busy ? t(pending ? 'saving' : 'loading') : saved ? t('saved') : '' }}
-        </p>
-        <button
-          :disabled="busy || !!pending"
-          class="secondary text-xs"
-          @click="connection.refresh()"
-        >
-          {{ t('refresh') }}
-        </button>
-      </footer>
     </template>
+    <footer
+      v-if="workout || template"
+      class="flex flex-wrap items-center justify-between gap-3 border-t border-surface-dark pt-4"
+    >
+      <p
+        role="status"
+        class="text-sm text-olive"
+      >
+        {{ busy ? t(pending ? 'saving' : 'loading') : saved ? t('saved') : '' }}
+      </p>
+      <button
+        :disabled="busy || !!pending"
+        class="secondary text-xs"
+        @click="connection.refresh()"
+      >
+        {{ t(template ? 'templateRefresh' : 'refresh') }}
+      </button>
+    </footer>
   </main>
 </template>

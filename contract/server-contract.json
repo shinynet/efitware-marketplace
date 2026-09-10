@@ -74,6 +74,7 @@
     "get_workout_reflections",
     "log_set",
     "log_sets",
+    "open_template",
     "open_workout",
     "publish_goal_plan",
     "record_body_metric",
@@ -100,6 +101,5 @@
     "update_workout_activity",
     "update_workout_exercise"
   ],
-  "minimumAppCommit": "c46b6ede6c59dc82f1d5300c7b0dc2fe25652b42",
-  "minimumAppDeployment": "dpl_5jsunNX1rthXYiru8uFPh83VPjWe"
+  "minimumAppCommit": "eed338b591d50dd486f177abdfb4f7202085ed43"
 }
