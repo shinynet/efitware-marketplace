@@ -2,7 +2,7 @@ import type { TrainingView } from './templateModel'
 import type { ReceiptsView } from './outcomeModel'
 import type { ViewExercise, ViewSet } from './model'
 import type { UnitSystem } from './lib/units'
-import { formatMeasure } from './presentation'
+import { displayMeasure, formatMeasure } from './presentation'
 import { summarizeRecurrence } from './recurrencePresentation'
 import { workoutSections } from './lib/sections'
 
@@ -35,6 +35,11 @@ const number = (value: number, locale: string, digits = 1) => new Intl.NumberFor
 const daysBetween = (from: string, to: string) => Math.round((Date.parse(`${to}T12:00:00Z`) - Date.parse(`${from}T12:00:00Z`)) / 86_400_000)
 const clip = (text: string, max = 90) => text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text
 const dot = (...parts: Array<string | undefined>) => parts.filter(Boolean).join(' · ')
+/** Volume totals read as whole units; per-set loads keep their precision. */
+const wholeWeight = (kg: number, system: UnitSystem, locale: string) => {
+  const display = displayMeasure('weight', kg, system)
+  return new Intl.NumberFormat(locale, { maximumFractionDigits: 0, ...(display.unit ? { style: 'unit', unit: display.unit, unitDisplay: 'short' } as const : {}) }).format(display.value)
+}
 
 /** First incomplete set in the presented order (warm-up → main → cool-down, then order within each section), with its parent exercise. */
 export const nextSet = (exercises: ViewExercise[]): { exercise: ViewExercise, set: ViewSet } | undefined => {
@@ -80,7 +85,7 @@ export const compactSummary = (view: TrainingView, options: Options): CompactSum
       const name = (exercise: ViewExercise) => locale === 'de' ? exercises.find(tracked => tracked.id === exercise.exerciseId)?.nameDe ?? exercise.exerciseName : exercise.exerciseName
       return {
         eyebrow: dot(t('compact.workout'), shortDay(workout.date, locale)), title: workout.title,
-        facts: [fact(t('compact.setsDone'), t('compact.ofTotal', { done: count(done), total: count(sets.length) })), volume > 0 ? fact(t('compact.volume'), formatMeasure('weight', volume, system, locale)) : fact(t('compact.exercises'), count(workout.exercises.length)), fact(t('compact.status'), t(workout.status))],
+        facts: [fact(t('compact.setsDone'), t('compact.ofTotal', { done: count(done), total: count(sets.length) })), volume > 0 ? fact(t('compact.volume'), wholeWeight(volume, system, locale)) : fact(t('compact.exercises'), count(workout.exercises.length)), fact(t('compact.status'), t(workout.status))],
         ...(next ? { detail: fact(t('compact.nextSet'), dot(name(next.exercise), setTarget(next.set, options))) } : {}),
         path: `/workouts/${workout.date}/${workout.id}`
       }
@@ -148,7 +153,7 @@ export const compactSummary = (view: TrainingView, options: Options): CompactSum
       const bars = record.weeklyVolume.map(week => week.volumeKg)
       return {
         eyebrow: dot(t('compact.progress'), t(`progressUi.ranges.${record.range}`)), title,
-        facts: [fact(t('compact.sessions'), count(metric('sessions')?.value ?? record.consistency.sessionsDone)), fact(t('compact.volume'), formatMeasure('weight', volume?.value ?? 0, system, locale)), fact(t('compact.records'), count(metric('prs')?.value ?? record.recentPrs.length))],
+        facts: [fact(t('compact.sessions'), count(metric('sessions')?.value ?? record.consistency.sessionsDone)), fact(t('compact.volume'), wholeWeight(volume?.value ?? 0, system, locale)), fact(t('compact.records'), count(metric('prs')?.value ?? record.recentPrs.length))],
         ...(bars.length >= MIN_BARS ? { bars: { label: t('compact.weeklyVolume'), values: bars, start: monthDay(record.weeklyVolume[0]!.weekStart, locale), end: monthDay(record.weeklyVolume.at(-1)!.weekStart, locale) } } : {}),
         path: '/progress'
       }

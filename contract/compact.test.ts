@@ -37,7 +37,7 @@ it('summarises a workout with sets done, completed volume and the next set in wo
   expect(appUrl('https://www.efitware.com/share/x')).toBe('https://www.efitware.com/share/x')
   const de = compactSummary(view, { locale: 'de', system: 'imperial', ...translator('de') })
   expect(de.detail?.value).toContain('Rudern vorgebeugt')
-  expect(de.facts[1]!.value).toMatch(/lb/)
+  expect(de.facts[1]!.value).toMatch(/^794 lb$/)
   expect(nextSet(workout.workout.exercises as never)?.set.id).toBe('s3')
   expect(completedVolumeKg(workout.workout.exercises as never)).toBe(360)
 })

@@ -70,6 +70,10 @@ Format 5 adds the three progress input schemas while retaining earlier inventori
 
 0.1.12 adds library, exercise, training-context and memory views in format 6. Template exercise names navigate to their supporting definitions; no extra cards are opened for incidental creation. Simple controls use existing MCP mutations with readback and original retry intent; memory corrections carry the current revision. Complex changes use the host follow-up explicitly. The copied context vocabulary records its source commit and projection in PROVENANCE.json. Previous manifest inventories remain supported for rollback.
 
+## Compact card polish (0.1.16)
+
+Seen in claude.ai with 0.1.14 (EF-1304): the compact chart's SVG kept its aspect ratio at the fixed height and rendered as a narrow strip in wide chat panes; it now stretches to the card width (`preserveAspectRatio="none"`). Volume totals on the workout and progress cards are whole units (99,445 lb, not 99,445.01 lb); per-set loads keep their precision. Card-only change; no tool inventory or schema change and `minimumAppCommit` is unchanged.
+
 ## Add the marketplace on claude.ai (0.1.15)
 
 Owner acceptance on 2026-09-10 showed that Claude Desktop's Add marketplace → Sync never registers a marketplace, that marketplace management (Check for updates, Sync automatically, Remove) exists only on claude.ai under Plugins → Add → Manage marketplaces, and that a plugin stays on the last synced catalog until one of those runs. INSTALL.md, the website and the skill's Connecting note now direct users to add and manage the marketplace on claude.ai; the Desktop app then shows the same marketplace and plugin. The bundled MCP server key is renamed from `efitware` to `eFitware`: hosts that ignore the server's own title and icons (claude.ai's Connectors list does, for plugin-provided connectors) fall back to this key, so the brand now reads correctly there; the tool-name prefix hosts derive from it changes accordingly. No tool inventory, schema or card change and `minimumAppCommit` is unchanged.
