@@ -72,7 +72,7 @@ Format 5 adds the three progress input schemas while retaining earlier inventori
 
 ## Add the marketplace on claude.ai (0.1.15)
 
-Owner acceptance on 2026-09-10 showed that Claude Desktop's Add marketplace → Sync never registers a marketplace, that marketplace management (Check for updates, Sync automatically, Remove) exists only on claude.ai under Plugins → Add → Manage marketplaces, and that a plugin stays on the last synced catalog until one of those runs. INSTALL.md, the website and the skill's Connecting note now direct users to add and manage the marketplace on claude.ai; the Desktop app then shows the same marketplace and plugin. The bundled MCP server key is renamed from `efitware` to `eFitware`: hosts that ignore the server's own title and icons (claude.ai's Connectors list does, for plugin-provided connectors) fall back to this key, so the brand now reads correctly there; the tool-name prefix hosts derive from it changes accordingly. No tool inventory, schema or card change and `minimumAppCommit` is unchanged.
+Owner acceptance on 2026-09-10 showed that Claude Desktop's Add marketplace → Sync never registers a marketplace, that marketplace management (Check for updates, Sync automatically, Remove) exists only on claude.ai under Plugins → Add → Manage marketplaces, and that a plugin stays on the last synced catalog until one of those runs. INSTALL.md, the website and the skill's Connecting note now direct users to add and manage the marketplace on claude.ai; the Desktop app then shows the same marketplace and plugin. Documentation-only release; no tool inventory, schema or card change and `minimumAppCommit` is unchanged.
 
 ## Setup guidance and naming (0.1.14)
 

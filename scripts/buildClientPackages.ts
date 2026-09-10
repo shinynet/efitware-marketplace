@@ -15,7 +15,7 @@ export const buildClientPackages = async (output: string) => {
   const claude = JSON.parse(await readFile(resolve(root, plugin, '.claude-plugin/plugin.json'), 'utf8')) as typeof codex
   if (codex.name !== 'efitware' || claude.name !== codex.name || claude.version !== codex.version) throw new Error('Plugin identity/version mismatch')
   const mcp = JSON.parse(await readFile(resolve(root, plugin, '.mcp.json'), 'utf8'))
-  if (JSON.stringify(mcp) !== JSON.stringify({ mcpServers: { eFitware: { type: 'http', url: 'https://app.efitware.com/mcp/v1' } } })) throw new Error('Unexpected MCP endpoint or credential field')
+  if (JSON.stringify(mcp) !== JSON.stringify({ mcpServers: { efitware: { type: 'http', url: 'https://app.efitware.com/mcp/v1' } } })) throw new Error('Unexpected MCP endpoint or credential field')
   await mkdir(destination)
   const packages = [
     { name: 'codex', files: [
