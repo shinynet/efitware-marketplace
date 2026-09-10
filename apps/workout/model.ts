@@ -7,7 +7,7 @@ export const setSchema = z.object({
   weight: measure, reps: measure, duration: measure, distance: measure,
   plannedWeight: measure, plannedDuration: measure, plannedDistance: measure,
   plannedReps: z.object({ min: z.number(), max: z.number() }).optional(),
-  restTarget: measure, rirTarget: measure
+  restTarget: measure, rirTarget: measure, plannedAmrap: z.boolean().optional(), plannedRpe: measure, tempo: z.string().optional(), side: z.enum(['left', 'right', 'both']).optional()
 })
 export const activitySchema = z.object({
   id: z.string(), kind: z.enum(['rest', 'water_break', 'stretching', 'warmup', 'cooldown', 'custom']), title: z.string(), detail: z.string().optional(), notes: z.string().optional(),

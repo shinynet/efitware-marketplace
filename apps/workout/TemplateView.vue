@@ -277,6 +277,33 @@ const ask = async () => {
                 >
                   {{ t('rir', { value: number(entry.set.rirTarget) }) }}
                 </p>
+                <p class="mt-1 text-sm text-muted">
+                  {{ t(`setCategory.${entry.set.category}`) }}
+                </p>
+                <p
+                  v-if="entry.set.plannedAmrap"
+                  class="mt-1 text-sm"
+                >
+                  {{ t('amrapTarget') }}
+                </p>
+                <p
+                  v-if="entry.set.plannedRpe !== undefined"
+                  class="mt-1 text-sm"
+                >
+                  {{ t('rpeTarget', { value: number(entry.set.plannedRpe) }) }}
+                </p>
+                <p
+                  v-if="entry.set.tempo"
+                  class="mt-1 text-sm"
+                >
+                  {{ t('tempoTarget', { value: entry.set.tempo }) }}
+                </p>
+                <p
+                  v-if="entry.set.side"
+                  class="mt-1 text-sm"
+                >
+                  {{ t(`sideTarget.${entry.set.side}`) }}
+                </p>
                 <p
                   v-if="entry.set.comments"
                   class="mt-1 whitespace-pre-wrap text-sm text-muted"

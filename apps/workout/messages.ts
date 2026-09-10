@@ -1,5 +1,7 @@
 export const messages = {
   en: {
+    amrapTarget: 'As many repetitions as possible', rpeTarget: 'Target effort: RPE {value}', tempoTarget: 'Tempo: {value}', sideTarget: { left: 'Left side', right: 'Right side', both: 'Both sides' },
+    setCategory: { warmup: 'Warm-up set', working: 'Working set', dropset: 'Drop set', backoff: 'Back-off set', topset: 'Top set', amrap: 'AMRAP set', interval: 'Interval', recovery: 'Recovery', cooldown: 'Cool-down set' },
     templateRefresh: 'Reload saved template', templateReadFailed: 'Could not reload the saved record. Check its current state before continuing.',
     templateFailed: 'The action could not be completed. Reload the template and check your connection permissions.',
     templateStale: 'This template changed. Reload it before making another change.',
@@ -33,6 +35,8 @@ export const messages = {
     activity: 'Activity', restKind: 'Rest', water_break: 'Water break', stretching: 'Stretching', custom: 'Activity'
   },
   de: {
+    amrapTarget: 'So viele Wiederholungen wie möglich', rpeTarget: 'Zielanstrengung: RPE {value}', tempoTarget: 'Tempo: {value}', sideTarget: { left: 'Linke Seite', right: 'Rechte Seite', both: 'Beide Seiten' },
+    setCategory: { warmup: 'Aufwärmsatz', working: 'Arbeitssatz', dropset: 'Reduktionssatz', backoff: 'Back-off-Satz', topset: 'Topsatz', amrap: 'AMRAP-Satz', interval: 'Intervall', recovery: 'Erholung', cooldown: 'Abwärmsatz' },
     templateRefresh: 'Gespeicherte Vorlage neu laden', templateReadFailed: 'Der gespeicherte Eintrag konnte nicht neu geladen werden. Prüfe seinen aktuellen Stand vor dem Fortfahren.',
     templateFailed: 'Die Aktion konnte nicht abgeschlossen werden. Lade die Vorlage neu und prüfe die Berechtigungen der Verbindung.',
     templateStale: 'Diese Vorlage wurde geändert. Lade sie vor weiteren Änderungen neu.',
