@@ -76,4 +76,8 @@ The skill is now `efitware` (directory `plugins/efitware/skills/efitware`, displ
 
 INSTALL.md and the skill's Connecting section describe the observed Claude flow (the Codex listing keeps its own client's sign-in path separate): after Sync the Discover tab is filtered to the marketplace and the card needs an explicit Add, and the server is connected from the plugin's Connectors tab (Connect → Add → Connect → sign in), without which a chat has the skill but no tools. The skill tells the model to say exactly that instead of claiming the plugin is missing.
 
-No tool inventory, schema or card change; `minimumAppCommit` is unchanged.
+### Compact cards (EF-1303)
+
+Every view now opens as an at-a-glance card: wordmark and an "Open in eFitware" link to the matching application page, an eyebrow, a title, at most three facts, an optional bounded bar chart (weekly volume, best-set weight or a body measurement; omitted below four points) and a single primary action. "Show more" reveals the unchanged detailed view inside the same iframe; expansion is sticky across in-card navigation and "Show less" is disabled while edits are unsaved. Compact actions reuse the existing bridge calls: mark the next set done or complete the session (`log_sets`, `update_workout`), create today's workout from a template or the next scheduled occurrence (`create_workout`), save a goal check-in (`create_goal_check_in`), toggle an exercise favourite, undo the latest receipt, copy a share caption. `apps/workout/compactSummary.ts` is the pure projection and `contract/compact.test.ts` runs it over the compatibility fixtures in both locales. Height at 390 px wide stays under 420 px for every view; the application's bridge tests assert that budget with screenshots.
+
+No tool inventory or schema change; `minimumAppCommit` is unchanged.

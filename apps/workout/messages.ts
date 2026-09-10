@@ -5,8 +5,10 @@ import contextVocabularyDe from './contextVocabulary.de.json'
 import { progressMessages } from './progressMessages'
 import { goalMessages } from './goalMessages'
 import recurrenceMessages from './recurrenceMessages.json'
+import { compactMessages } from './compactMessages'
 export const messages = {
   en: {
+    compact: compactMessages.en,
     outcomeUi: outcomeMessages.en,
     contextUi: contextMessages.en, contextVocabulary: contextVocabularyEn,
     ...goalMessages.en,
@@ -58,6 +60,7 @@ export const messages = {
     activity: 'Activity', restKind: 'Rest', water_break: 'Water break', stretching: 'Stretching', custom: 'Activity'
   },
   de: {
+    compact: compactMessages.de,
     outcomeUi: outcomeMessages.de,
     contextUi: contextMessages.de, contextVocabulary: contextVocabularyDe,
     ...goalMessages.de,

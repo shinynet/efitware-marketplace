@@ -301,5 +301,5 @@ export const createWorkoutConnection = () => {
     void app.close()
   }
   return { route, lastReceipt, undoReceipt, saveCommentary, removeCommentary, setWorkoutStatus, openSettings, updateExercisePreference, updatePreference, makeDefaultSpace, saveMemory, updateGoal, addCheckIn, updateGoalPlan, back, backTarget, createOccurrence, updatePlanning, view, template, presentation, sourceTemplateId, createFromTemplate, sendFollowUp, navigate, host, connected, busy, error, saved, stale, pending, needsReadback, canWrite, start, close, mutate,
-    retry: execute, refresh, open: () => view.value && app.openLink({ url: `https://app.efitware.com/workouts/${view.value.workout.date}/${view.value.workout.id}` }) }
+    retry: execute, refresh, open: (url = view.value && `https://app.efitware.com/workouts/${view.value.workout.date}/${view.value.workout.id}`) => url ? app.openLink({ url }) : undefined }
 }

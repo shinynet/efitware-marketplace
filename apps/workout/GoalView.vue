@@ -13,7 +13,7 @@ const { goal, disabled, saved, navigate, update, addCheckIn, followUp } = define
 const emit = defineEmits<{ dirty: [id: string, dirty: boolean] }>()
 const { t, locale } = useI18n()
 const date = ref(goal.related.today)
-const value = ref('')
+const value = defineModel<string>('draft', { default: '' })
 const note = ref('')
 const clear = () => { value.value = ''; note.value = ''; date.value = goal.related.today }
 watch(() => saved, value => { if (value) clear() })
