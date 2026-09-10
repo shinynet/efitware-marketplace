@@ -42,6 +42,21 @@ it('summarises a workout with sets done, completed volume and the next set in wo
   expect(completedVolumeKg(workout.workout.exercises as never)).toBe(360)
 })
 
+it('picks the next set in section order, not global order, matching the expanded view', () => {
+  const exercises = [
+    { id: 'we-main', exerciseId: 'e'.repeat(24), exerciseName: 'Main bench press', modality: 'resistance', order: 0, section: 'main', sets: [set('m1', false, { plannedWeight: 60 })] },
+    { id: 'we-warm', exerciseId: 'f'.repeat(24), exerciseName: 'Band pull-apart', modality: 'mobility', order: 1, section: 'warmup', sets: [set('w1', false), set('w2', false)] },
+    { id: 'we-cool', exerciseId: 'a'.repeat(24), exerciseName: 'Stretch', modality: 'mobility', order: -1, section: 'cooldown', sets: [set('c1', false)] }
+  ]
+  const next = nextSet(exercises as never)
+  expect(next?.exercise.id).toBe('we-warm')
+  expect(next?.set.id).toBe('w1')
+  const view = parseTrainingView({ ...workout, workout: { ...workout.workout, exercises } })
+  expect(compactSummary(view, { locale: 'en', system: 'metric', ...translator('en') }).detail?.value).toBe('Band pull-apart · No target specified')
+  exercises[1]!.sets.forEach(entry => { entry.completed = true })
+  expect(nextSet(exercises as never)?.set.id).toBe('m1')
+})
+
 it('projects every fixture view into at most three facts with an app link, in both locales', () => {
   const views = [
     ...fixtures.goalViews.filter(fixture => fixture.valid).map(fixture => fixture.input),

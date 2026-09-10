@@ -4,6 +4,7 @@ import type { ViewExercise, ViewSet } from './model'
 import type { UnitSystem } from './lib/units'
 import { formatMeasure } from './presentation'
 import { summarizeRecurrence } from './recurrencePresentation'
+import { workoutSections } from './lib/sections'
 
 /** Translate with optional interpolation values; mirrors vue-i18n's `t`. */
 export type Translate = (key: string, values?: Record<string, string | number>) => string
@@ -35,11 +36,14 @@ const daysBetween = (from: string, to: string) => Math.round((Date.parse(`${to}T
 const clip = (text: string, max = 90) => text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text
 const dot = (...parts: Array<string | undefined>) => parts.filter(Boolean).join(' · ')
 
-/** First incomplete set in workout order, with its parent exercise. */
+/** First incomplete set in the presented order (warm-up → main → cool-down, then order within each section), with its parent exercise. */
 export const nextSet = (exercises: ViewExercise[]): { exercise: ViewExercise, set: ViewSet } | undefined => {
-  for (const exercise of [...exercises].sort((a, b) => a.order - b.order)) {
-    const set = exercise.sets.find(candidate => !candidate.completed)
-    if (set) return { exercise, set }
+  for (const section of workoutSections(exercises, [])) {
+    for (const item of section.items) {
+      if (item.type !== 'exercise') continue
+      const set = item.data.sets.find(candidate => !candidate.completed)
+      if (set) return { exercise: item.data, set }
+    }
   }
   return undefined
 }
