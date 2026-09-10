@@ -1,0 +1,165 @@
+{
+  "version": 1,
+  "files": [
+    {
+      "path": "apps/workout/theme/fonts/inter-OFL.txt",
+      "source": "public/fonts/inter-OFL.txt",
+      "repository": "shinynet/efitware-app",
+      "commit": "c46b6ede6c59dc82f1d5300c7b0dc2fe25652b42",
+      "sourceSha256": "5b9321a4298cfeb6b34354164a1c3afc3db114569984c502b9b35d988fd58c57",
+      "sha256": "5b9321a4298cfeb6b34354164a1c3afc3db114569984c502b9b35d988fd58c57"
+    },
+    {
+      "path": "apps/workout/theme/fonts/inter-latin-400-700-normal.woff2",
+      "source": "public/fonts/inter-latin-400-700-normal.woff2",
+      "repository": "shinynet/efitware-app",
+      "commit": "c46b6ede6c59dc82f1d5300c7b0dc2fe25652b42",
+      "sourceSha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
+      "sha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62"
+    },
+    {
+      "path": "apps/workout/theme/fonts/newsreader-OFL.txt",
+      "source": "public/fonts/newsreader-OFL.txt",
+      "repository": "shinynet/efitware-app",
+      "commit": "c46b6ede6c59dc82f1d5300c7b0dc2fe25652b42",
+      "sourceSha256": "fdfad38143ec470553cae82a1e45320bdd1b9ec70415d37bd0171051d8a4ded8",
+      "sha256": "fdfad38143ec470553cae82a1e45320bdd1b9ec70415d37bd0171051d8a4ded8"
+    },
+    {
+      "path": "apps/workout/theme/fonts/newsreader-latin-400-700-normal.woff2",
+      "source": "public/fonts/newsreader-latin-400-700-normal.woff2",
+      "repository": "shinynet/efitware-app",
+      "commit": "c46b6ede6c59dc82f1d5300c7b0dc2fe25652b42",
+      "sourceSha256": "62981321d9a3cc7a61a73792729043703fd6112da86e8ec848bb57f088578757",
+      "sha256": "62981321d9a3cc7a61a73792729043703fd6112da86e8ec848bb57f088578757"
+    },
+    {
+      "path": "apps/workout/theme/fonts/ibm-plex-sans-OFL.txt",
+      "source": "public/fonts/ibm-plex-sans-OFL.txt",
+      "repository": "shinynet/efitware-app",
+      "commit": "c46b6ede6c59dc82f1d5300c7b0dc2fe25652b42",
+      "sourceSha256": "7e6b2818edbd8f6a01ae80641cc8f16a51080d08fb4e532be3a0b6f74adb07da",
+      "sha256": "7e6b2818edbd8f6a01ae80641cc8f16a51080d08fb4e532be3a0b6f74adb07da"
+    },
+    {
+      "path": "apps/workout/theme/fonts/ibm-plex-sans-latin-400-700-normal.woff2",
+      "source": "public/fonts/ibm-plex-sans-latin-400-700-normal.woff2",
+      "repository": "shinynet/efitware-app",
+      "commit": "c46b6ede6c59dc82f1d5300c7b0dc2fe25652b42",
+      "sourceSha256": "e2291e842cf5af167122a22881a740c7f2dda7716f1e8cd76680264f4a859470",
+      "sha256": "e2291e842cf5af167122a22881a740c7f2dda7716f1e8cd76680264f4a859470"
+    },
+    {
+      "path": "apps/workout/theme/fonts/dm-sans-OFL.txt",
+      "source": "public/fonts/dm-sans-OFL.txt",
+      "repository": "shinynet/efitware-app",
+      "commit": "c46b6ede6c59dc82f1d5300c7b0dc2fe25652b42",
+      "sourceSha256": "9af36190332437f5ecd09974de43c1f7c77a310a996cdd8ceb25628b458840e1",
+      "sha256": "9af36190332437f5ecd09974de43c1f7c77a310a996cdd8ceb25628b458840e1"
+    },
+    {
+      "path": "apps/workout/theme/fonts/dm-sans-latin-400-700-normal.woff2",
+      "source": "public/fonts/dm-sans-latin-400-700-normal.woff2",
+      "repository": "shinynet/efitware-app",
+      "commit": "c46b6ede6c59dc82f1d5300c7b0dc2fe25652b42",
+      "sourceSha256": "9fea608a947e67020c33cad9a6fe3d60c54119dfb8cff87768a8117a15ed7543",
+      "sha256": "9fea608a947e67020c33cad9a6fe3d60c54119dfb8cff87768a8117a15ed7543"
+    },
+    {
+      "path": "apps/workout/theme/fonts/lora-OFL.txt",
+      "source": "public/fonts/lora-OFL.txt",
+      "repository": "shinynet/efitware-app",
+      "commit": "c46b6ede6c59dc82f1d5300c7b0dc2fe25652b42",
+      "sourceSha256": "1d9a970809ac804b582a6ce7f0ebc4e7fefcbfd7ff6299cad35ee656a21be716",
+      "sha256": "1d9a970809ac804b582a6ce7f0ebc4e7fefcbfd7ff6299cad35ee656a21be716"
+    },
+    {
+      "path": "apps/workout/theme/fonts/lora-latin-400-700-normal.woff2",
+      "source": "public/fonts/lora-latin-400-700-normal.woff2",
+      "repository": "shinynet/efitware-app",
+      "commit": "c46b6ede6c59dc82f1d5300c7b0dc2fe25652b42",
+      "sourceSha256": "ddb8c66035104e233fc024669183aad3738b6daa16deee2ebb1241bd0f98ace1",
+      "sha256": "ddb8c66035104e233fc024669183aad3738b6daa16deee2ebb1241bd0f98ace1"
+    },
+    {
+      "path": "apps/workout/theme/efitware-wordmark.svg",
+      "source": "public/brand/efitware-wordmark.svg",
+      "repository": "shinynet/efitware-app",
+      "commit": "c46b6ede6c59dc82f1d5300c7b0dc2fe25652b42",
+      "sourceSha256": "2a7903ff16efefcea3d2db7b56c0b6c2b35d1f4171e6ffc33667a1aeb1d81341",
+      "sha256": "2a7903ff16efefcea3d2db7b56c0b6c2b35d1f4171e6ffc33667a1aeb1d81341"
+    },
+    {
+      "path": "apps/workout/theme/efitware-wordmark-reversed.svg",
+      "source": "public/brand/efitware-wordmark-reversed.svg",
+      "repository": "shinynet/efitware-app",
+      "commit": "c46b6ede6c59dc82f1d5300c7b0dc2fe25652b42",
+      "sourceSha256": "08869cbcc7b0eb1fa4bef988a85f610e585768f0ccfaa6f7a063cf3de711651e",
+      "sha256": "08869cbcc7b0eb1fa4bef988a85f610e585768f0ccfaa6f7a063cf3de711651e"
+    },
+    {
+      "path": "apps/workout/theme/product.css",
+      "source": "app/assets/css/main.css",
+      "repository": "shinynet/efitware-app",
+      "commit": "c46b6ede6c59dc82f1d5300c7b0dc2fe25652b42",
+      "sourceSha256": "513b539e701e278f037ea057d80f484967f2f8b2cb7e6ed0e8823b05d74e5b6a",
+      "sha256": "513b539e701e278f037ea057d80f484967f2f8b2cb7e6ed0e8823b05d74e5b6a"
+    },
+    {
+      "path": "apps/workout/lib/units.ts",
+      "source": "shared/types/measurements/units.ts",
+      "repository": "shinynet/efitware-app",
+      "commit": "c46b6ede6c59dc82f1d5300c7b0dc2fe25652b42",
+      "sourceSha256": "d780774bc279e7862c073078c59f52005ac7307796cef60a19ec11262104e57a",
+      "sha256": "d780774bc279e7862c073078c59f52005ac7307796cef60a19ec11262104e57a"
+    },
+    {
+      "path": "apps/workout/lib/unitUtils.ts",
+      "source": "shared/utils/unitUtils.ts",
+      "repository": "shinynet/efitware-app",
+      "commit": "c46b6ede6c59dc82f1d5300c7b0dc2fe25652b42",
+      "sourceSha256": "c6bca70c368c923ab1b62897711de4e3626774dbc8036e315d56eaffe6e032c1",
+      "sha256": "561cb537f451ad073278860a0feecfd8f556fd321f04dc92c9ecb258d3008d00"
+    },
+    {
+      "path": "apps/workout/lib/sequenceUtils.ts",
+      "source": "app/utils/workouts/sequenceUtils.ts",
+      "repository": "shinynet/efitware-app",
+      "commit": "c46b6ede6c59dc82f1d5300c7b0dc2fe25652b42",
+      "sourceSha256": "7a0d764be4e3f795beda3bb7c37256ff2890929bcf30dac2d98c62f9bb02ba78",
+      "sha256": "31715dfd0741418aa411377ccb07c3e1f413a5991eea3952767236c3200a317f"
+    },
+    {
+      "path": "plugins/efitware/assets/efitware-icon.png",
+      "source": "assets/brand/platform/android/play-store-icon-512.png",
+      "repository": "shinynet/efitware-app",
+      "commit": "c46b6ede6c59dc82f1d5300c7b0dc2fe25652b42",
+      "sourceSha256": "9e4227cf39d29e86205ec9815d65c354da2526d60dc3c2e4263eb0e37d10ff12",
+      "sha256": "9e4227cf39d29e86205ec9815d65c354da2526d60dc3c2e4263eb0e37d10ff12"
+    },
+    {
+      "path": "plugins/efitware/assets/efitware-icon-dark.png",
+      "source": "assets/brand/platform/ios/AppIcon.appiconset/AppIcon-1024-dark.png",
+      "repository": "shinynet/efitware-app",
+      "commit": "c46b6ede6c59dc82f1d5300c7b0dc2fe25652b42",
+      "sourceSha256": "45f2fbd4d1b69df53c8f93f9af5406055eea1388fac17a8d78cc115ca6d7a775",
+      "sha256": "45f2fbd4d1b69df53c8f93f9af5406055eea1388fac17a8d78cc115ca6d7a775"
+    },
+    {
+      "path": "plugins/efitware/skills/efitware-coach/assets/efitware-icon.png",
+      "source": "assets/brand/platform/android/play-store-icon-512.png",
+      "repository": "shinynet/efitware-app",
+      "commit": "c46b6ede6c59dc82f1d5300c7b0dc2fe25652b42",
+      "sourceSha256": "9e4227cf39d29e86205ec9815d65c354da2526d60dc3c2e4263eb0e37d10ff12",
+      "sha256": "9e4227cf39d29e86205ec9815d65c354da2526d60dc3c2e4263eb0e37d10ff12"
+    },
+    {
+      "path": "apps/workout/lib/sections.ts",
+      "source": "mcp-app/WorkoutApp.vue",
+      "repository": "shinynet/efitware-app",
+      "commit": "c46b6ede6c59dc82f1d5300c7b0dc2fe25652b42",
+      "sourceSha256": "13c2517926ab274b12472eb335efb0c6d4a3f065266eaf670ce86c867d00c2fd",
+      "sha256": "d454235938c8a555fc35c11713cd9eb697cc5b21c6248fe7d43a8594b1a33b33"
+    }
+  ]
+}

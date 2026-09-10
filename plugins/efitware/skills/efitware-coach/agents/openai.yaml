@@ -1,0 +1,7 @@
+interface:
+  display_name: "eFitware Coach"
+  short_description: "Plan workouts, log results and review your progress"
+  icon_small: "./assets/efitware-icon.png"
+  icon_large: "./assets/efitware-icon.png"
+  brand_color: "#B8865A"
+  default_prompt: "Use $efitware-coach to plan next week around my training history, goals and equipment."

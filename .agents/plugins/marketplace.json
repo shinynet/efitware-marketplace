@@ -1,0 +1,20 @@
+{
+  "name": "efitware",
+  "interface": {
+    "displayName": "eFitware"
+  },
+  "plugins": [
+    {
+      "name": "efitware",
+      "source": {
+        "source": "local",
+        "path": "./plugins/efitware"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+name: Stage immutable release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+concurrency:
+  group: stage-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm test
+      - name: Verify version and create artifact set
+        run: |
+          node --input-type=module -e 'import fs from "node:fs"; const p=JSON.parse(fs.readFileSync("plugins/efitware/.codex-plugin/plugin.json")); if(process.env.GITHUB_REF_NAME !== `v${p.version}`) throw Error("Tag/version mismatch")'
+          pnpm release:build --output dist/release --strict
+      - name: Publish staged immutable assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/release/workout.html dist/release/*.zip dist/release/contract/*.json dist/release/manifest.json --verify-tag --prerelease --latest=false --title "eFitware $GITHUB_REF_NAME (staged)" --notes-file docs/staged-release.md

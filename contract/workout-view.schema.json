@@ -1,0 +1,403 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "workout": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{24}$"
+        },
+        "title": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "planned",
+            "in_progress",
+            "completed",
+            "skipped",
+            "abandoned"
+          ]
+        },
+        "description": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^workout:1:[a-f0-9]{64}$"
+        },
+        "exercises": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "exerciseId": {
+                "type": "string"
+              },
+              "exerciseName": {
+                "type": "string"
+              },
+              "modality": {
+                "type": "string",
+                "enum": [
+                  "resistance",
+                  "cardio",
+                  "mobility"
+                ]
+              },
+              "order": {
+                "type": "number"
+              },
+              "section": {
+                "type": "string",
+                "enum": [
+                  "warmup",
+                  "main",
+                  "cooldown"
+                ]
+              },
+              "comments": {
+                "type": "string"
+              },
+              "sets": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "category": {
+                      "type": "string",
+                      "enum": [
+                        "warmup",
+                        "working",
+                        "dropset",
+                        "backoff",
+                        "topset",
+                        "amrap",
+                        "interval",
+                        "recovery",
+                        "cooldown"
+                      ]
+                    },
+                    "completed": {
+                      "type": "boolean"
+                    },
+                    "comments": {
+                      "type": "string"
+                    },
+                    "weight": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "reps": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "duration": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "distance": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "plannedWeight": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "plannedDuration": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "plannedDistance": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "plannedReps": {
+                      "type": "object",
+                      "properties": {
+                        "min": {
+                          "type": "number"
+                        },
+                        "max": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "min",
+                        "max"
+                      ]
+                    },
+                    "restTarget": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "rirTarget": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "category",
+                    "completed"
+                  ]
+                }
+              },
+              "activities": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "rest",
+                        "water_break",
+                        "stretching",
+                        "warmup",
+                        "cooldown",
+                        "custom"
+                      ]
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "notes": {
+                      "type": "string"
+                    },
+                    "durationTarget": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "durationActual": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "completed": {
+                      "type": "boolean"
+                    },
+                    "order": {
+                      "type": "number"
+                    },
+                    "section": {
+                      "type": "string",
+                      "enum": [
+                        "warmup",
+                        "main",
+                        "cooldown"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "kind",
+                    "title",
+                    "completed",
+                    "order"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "id",
+              "exerciseId",
+              "exerciseName",
+              "modality",
+              "order",
+              "sets"
+            ]
+          }
+        },
+        "activities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "rest",
+                  "water_break",
+                  "stretching",
+                  "warmup",
+                  "cooldown",
+                  "custom"
+                ]
+              },
+              "title": {
+                "type": "string"
+              },
+              "detail": {
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              },
+              "durationTarget": {
+                "type": "number",
+                "minimum": 0
+              },
+              "durationActual": {
+                "type": "number",
+                "minimum": 0
+              },
+              "completed": {
+                "type": "boolean"
+              },
+              "order": {
+                "type": "number"
+              },
+              "section": {
+                "type": "string",
+                "enum": [
+                  "warmup",
+                  "main",
+                  "cooldown"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "title",
+              "completed",
+              "order"
+            ]
+          }
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "date",
+        "status",
+        "revision",
+        "exercises"
+      ]
+    },
+    "exercises": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "unavailable": {
+            "type": "boolean"
+          },
+          "nameDe": {
+            "type": "string"
+          },
+          "tracksWeight": {
+            "type": "boolean"
+          },
+          "tracksReps": {
+            "type": "boolean"
+          },
+          "tracksTime": {
+            "type": "boolean"
+          },
+          "tracksDistance": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    "presentation": {
+      "type": "object",
+      "properties": {
+        "locale": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unitSystem": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "metric",
+                "imperial"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "theme": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "system",
+                "light",
+                "dark"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "skin": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "calm",
+                "cyanotype",
+                "camellia"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "locale",
+        "unitSystem",
+        "theme",
+        "skin"
+      ]
+    }
+  },
+  "required": [
+    "workout",
+    "exercises",
+    "presentation"
+  ]
+}

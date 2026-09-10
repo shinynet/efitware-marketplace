@@ -1,0 +1,388 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+/*
+ * eFitware — Editorial Calm design system
+ * Source of truth: DESIGN.md §2-4, designs/_base.html
+ *
+ * 12 semantic color tokens (light/dark), two type families,
+ * 4px radius convention, hairline borders.
+ *
+ * ── Token model (EF-89) ────────────────────────────────────────────────
+ * One source of truth per token, in three tiers:
+ *   1. Static primitives (type, breakpoints, color scales, radius, container
+ *      widths) and utility-producing semantic bridges live in `@theme static`.
+ *   2. Runtime semantic values (`--runtime-color-*`) live in :root for light
+ *      mode and are overridden by `html.dark`. The static `--color-*` bridge
+ *      points at those runtime values, so utilities are always generated while
+ *      the palette can still change at runtime without duplicated public names.
+ *   3. Nuxt UI's own semantic variables (--ui-bg, --ui-text-*, --ui-border-*)
+ *      are bridged to tier 2 once, in :root (EF-70). Because the bridges
+ *      reference the --color-* tokens — which already flip per mode — a single
+ *      light declaration covers dark mode too.
+ */
+
+@theme static {
+  /* ── Typography ────────────────────────────────────── */
+  --font-serif: "Newsreader", Georgia, serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* ── Breakpoints (DESIGN.md §4) ────────────────────── */
+  --breakpoint-md: 56.25rem; /* 900px */
+  --breakpoint-lg: 73.75rem; /* 1180px */
+
+  /* ── Terracotta scale (primary) ────────────────────── */
+  --color-terracotta-50: oklch(97.579079% 0.009024 34.3032);
+  --color-terracotta-100: oklch(94.481298% 0.021901 35.1211);
+  --color-terracotta-200: oklch(88.745390% 0.044764 33.5266);
+  --color-terracotta-300: oklch(81.607962% 0.074821 34.2442);
+  --color-terracotta-400: oklch(72.026312% 0.108993 34.6494);
+  --color-terracotta-500: oklch(60.878152% 0.129765 32.8722);
+  --color-terracotta-600: oklch(51.875451% 0.135635 34.0359);
+  --color-terracotta-700: oklch(45.565852% 0.114128 32.3085);
+  --color-terracotta-800: oklch(38.973723% 0.095352 32.2243);
+  --color-terracotta-900: oklch(34.047312% 0.078915 31.5198);
+  --color-terracotta-950: oklch(25.540041% 0.060480 32.3644);
+
+  /* ── Warm neutral scale (neutral) ──────────────────── */
+  --color-warm-50: oklch(97.706044% 0.007366 80.7212);
+  --color-warm-100: oklch(95.354094% 0.013128 82.4019);
+  --color-warm-200: oklch(90.033195% 0.019562 80.1135);
+  --color-warm-300: oklch(84.021963% 0.026226 78.8948);
+  --color-warm-400: oklch(74.138512% 0.036416 78.5829);
+  --color-warm-500: oklch(65.211500% 0.035115 80.8874);
+  --color-warm-600: oklch(54.800721% 0.023980 71.9177);
+  --color-warm-700: oklch(44.733402% 0.022364 75.0521);
+  --color-warm-800: oklch(33.759658% 0.016826 70.9265);
+  --color-warm-900: oklch(22.527631% 0.009824 67.2938);
+  --color-warm-950: oklch(17.652738% 0.010409 67.0655);
+
+  /* ── Runtime semantic utility bridges ───────────────── */
+  --color-bg: var(--runtime-color-bg);
+  --color-surface: var(--runtime-color-surface);
+  --color-surface-dark: var(--runtime-color-surface-dark);
+  --color-ink: var(--runtime-color-ink);
+  --color-muted: var(--runtime-color-muted);
+  --color-terracotta: var(--runtime-color-terracotta);
+  --color-terracotta-hover: var(--runtime-color-terracotta-hover);
+  --color-gold: var(--runtime-color-gold);
+  --color-gold-ink: var(--runtime-color-gold-ink);
+  --color-olive: var(--runtime-color-olive);
+  --color-cardio-rust: var(--runtime-color-cardio-rust);
+  --color-sage: var(--runtime-color-sage);
+
+  /* Photo/video controls need fixed contrast because media does not change
+     with the app theme. These intentionally never receive a dark override. */
+  --color-media-scrim: oklch(17.652738% 0.010409 67.0655);
+  --color-media-on-scrim: oklch(97.706044% 0.007366 80.7212);
+
+  /* ── Radius (DESIGN.md §4) ───────────────────────────
+   * The bare `rounded` utility reads theme key `--radius` (Tailwind's own
+   * default is 0.25rem — the previously-declared `--radius-DEFAULT` fed no
+   * utility and only matched by numeric coincidence). Bridged through a
+   * runtime value like the colors, because Tailwind inlines literal theme
+   * values into utilities — only a var() value keeps the radius
+   * skin-themable at runtime (EF-747, Camellia's 9px). The rounded-xs/sm/…
+   * scale is Nuxt UI's, derived from --ui-radius. */
+  --radius: var(--runtime-radius);
+
+  /* ── Containers (`max-w-*` widths) ─────────────────── */
+  --container-page: 60rem; /* 960px — the list screens' content shell */
+  --container-canvas: 45rem; /* 720px — the narrow reading/form canvas */
+}
+
+/* ── Runtime semantic colors — LIGHT source of truth ──────────────────
+ * These values change by mode; the public `--color-*` utility contract above
+ * stays static and resolves through them. */
+:root {
+  --runtime-radius: 4px;
+  --runtime-color-bg: oklch(97.706044% 0.007366 80.7212);
+  --runtime-color-surface: oklch(95.354094% 0.013128 82.4019);
+  --runtime-color-surface-dark: oklch(90.033195% 0.019562 80.1135);
+  --runtime-color-ink: oklch(22.527631% 0.009824 67.2938);
+  --runtime-color-muted: oklch(54.800721% 0.023980 71.9177);
+  --runtime-color-terracotta: oklch(45.565852% 0.114128 32.3085);
+  /*
+   * The terracotta hover token (EF-71) is the solid-CTA hover fill. In light it is a
+   * deeper terracotta (terracotta-800). In DARK the resting CTA is gold and the
+   * label is `text-bg` (near-black), so the dark override below is a deep gold,
+   * not a dark brown — the old static `terracotta-800` hover dropped dark-mode
+   * CTA text contrast to about 1.9:1. The current light and dark token pairs are
+   * about 9.4:1 and 7.9:1 respectively. Both clear WCAG AA.
+   */
+  --runtime-color-terracotta-hover: oklch(38.973723% 0.095352 32.2243);
+  /*
+   * The gold token is the vivid decorative mark/dot for AI content.
+   * CONTRAST WARNING: in the LIGHT theme this is too light for readable text —
+   * about 2.98:1 on bg and 2.78:1 on surface, both below WCAG AA (4.5:1).
+   * Use --color-gold only for the decorative dot/fill/border.
+   * For any READABLE gold TEXT, use --color-gold-ink instead.
+   */
+  --runtime-color-gold: oklch(65.924174% 0.085593 61.8440);
+  /*
+   * The gold-ink token is a darker readable bronze. Light clears 5.49:1 on bg
+   * and 5.12:1 on surface. Dark clears 8.15:1 and 7.43:1 respectively.
+   */
+  --runtime-color-gold-ink: oklch(51.071627% 0.088796 62.8218);
+  --runtime-color-olive: oklch(38.948174% 0.048008 128.6780);
+  --runtime-color-cardio-rust: oklch(54.122977% 0.123158 44.8245);
+  --runtime-color-sage: oklch(57.085163% 0.055733 132.7488);
+}
+
+/* ── Dark theme overrides (html.dark) ────────────────────
+ * Overrides the runtime values of the semantic tokens above. Higher
+ * specificity than :root and unlayered, so it wins for every token. */
+html.dark {
+  --runtime-color-bg: oklch(17.652738% 0.010409 67.0655);
+  --runtime-color-surface: oklch(22.154298% 0.013725 72.0914);
+  --runtime-color-surface-dark: oklch(27.350063% 0.019025 73.8388);
+  --runtime-color-ink: oklch(93.381786% 0.027448 83.5364);
+  --runtime-color-muted: oklch(65.211500% 0.035115 80.8874);
+  --runtime-color-terracotta: oklch(81.519896% 0.090431 70.9010);
+  --runtime-color-terracotta-hover: oklch(73.472633% 0.112018 67.5073); /* EF-71: deep gold, 7.9:1 on text-bg */
+  --runtime-color-gold: oklch(74.270274% 0.093758 66.5916);
+  --runtime-color-gold-ink: oklch(74.270274% 0.093758 66.5916); /* readable AI text: 8.15:1 bg, 7.43:1 surface */
+  --runtime-color-olive: oklch(67.775503% 0.083574 121.7398);
+  --runtime-color-cardio-rust: oklch(67.452459% 0.131205 47.4857);
+  --runtime-color-sage: oklch(75.852924% 0.067163 183.6474);
+}
+
+/* ── Nuxt UI integration ─────────────────────────────────
+ * Non-color knobs plus the EF-70 bridge of Nuxt UI's semantic surface/text/
+ * border variables onto the Editorial Calm tokens. The bridges reference the
+ * --color-* tokens (which flip in html.dark), so one :root declaration serves
+ * both modes — no dark duplication needed. This makes Nuxt UI defaults
+ * (bg-default, text-default, border-default, bg-muted, …) render on-theme
+ * without per-instance color classes. */
+:root {
+  --coach-chat-shadow: -1px 0 3px rgba(31, 27, 23, 0.06);
+
+  /* The phone bottom stack's height is NOT a static token: DefaultLayout
+     measures the stack (resume bar · Coach drawer row or action bar) and
+     publishes `--phone-stack-h` on the shell root, which <u-main> subtracts
+     so the stack sits in its own strip (EF-135, EF-1220). */
+
+  --ui-radius: 0.25rem;
+  --ui-primary: var(--color-terracotta-700);
+  /* Inline validation is normal-size text: Nuxt UI's default red-500 only
+     reaches 3.56:1 on the light canvas (EF-1206). Use readable error tones. */
+  --ui-error: var(--ui-color-error-700);
+
+  --ui-bg: var(--color-bg);
+  --ui-bg-muted: var(--color-surface);
+  --ui-bg-elevated: var(--color-surface);
+  --ui-bg-accented: var(--color-surface-dark);
+  --ui-bg-inverted: var(--color-ink);
+
+  --ui-text-dimmed: var(--color-muted);
+  --ui-text-muted: var(--color-muted);
+  --ui-text-toned: var(--color-ink);
+  --ui-text: var(--color-ink);
+  --ui-text-highlighted: var(--color-ink);
+  --ui-text-inverted: var(--color-bg);
+
+  --ui-border: var(--color-surface-dark);
+  --ui-border-muted: var(--color-surface-dark);
+  --ui-border-accented: var(--color-surface-dark);
+  --ui-border-inverted: var(--color-ink);
+}
+
+html.dark {
+  --coach-chat-shadow: -1px 0 8px rgba(0, 0, 0, 0.35);
+  --ui-primary: var(--color-terracotta-300);
+  --ui-error: var(--ui-color-error-300);
+}
+
+/* ── Named theme skins (EF-747) ──────────────────────────
+ * Two optional skins over Editorial Calm: Cyanotype (cold, technical) and
+ * Camellia (soft, warm). A skin is a class on <html> (`theme-cyanotype` /
+ * `theme-camellia`; absent = Editorial Calm, deliberately, so the default
+ * costs nothing) that composes with the light/dark axis:
+ * `html.theme-camellia.dark` is Camellia's dark mode.
+ *
+ * A skin re-points ONLY the tier-2 runtime tokens, the font families, and
+ * (Camellia) the radius. It never touches spacing, type scale, hairlines,
+ * structure, motion, or copy — a "theme" needing those is a redesign.
+ *
+ * INVARIANT: --runtime-color-gold and --runtime-color-gold-ink are never
+ * overridden by any skin. Gold is the AI signature — the one constant cue for
+ * coach-authored content — and leaving it fixed also guarantees it can never
+ * collide with a skin's primary.
+ *
+ * Specificity does the compositing (no source-order dependence):
+ * `html.theme-*` (0,1,1) outranks `:root` (0,1,0); `html.theme-*.dark`
+ * (0,2,1) outranks `html.dark` (0,1,1). --ui-primary is therefore
+ * re-declared in each skin's dark block even though the value is the same
+ * var() — without it, `html.dark`'s terracotta-300 would tie on specificity.
+ * The OKLCH values are normalized from the design handoff (designs/
+ * eFitware.zip → themes-handoff/snippets/theme-tokens.md); independent sRGB
+ * baselines in main.test.ts prevent the conversion from drifting.
+ */
+
+/* ---- Cyanotype — light: "Blueprint". Cold-pressed paper, prussian ink. ---- */
+html.theme-cyanotype {
+  --font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --runtime-color-bg: oklch(96.872542% 0.005139 247.8770);
+  --runtime-color-surface: oklch(94.403391% 0.009710 252.8128);
+  --runtime-color-surface-dark: oklch(89.028783% 0.015747 248.0046);
+  --runtime-color-ink: oklch(23.776467% 0.027192 246.8608);
+  /* Muted darkened from the handoff's sRGB 93 113 131 (4.29:1 on surface) to clear
+   * WCAG AA for the 11–13px text-muted-on-surface consumers (EF-747 review) */
+  --runtime-color-muted: oklch(52.249797% 0.036528 247.1058);
+  --runtime-color-terracotta: oklch(43.191742% 0.091192 242.7627); /* prussian */
+  --runtime-color-terracotta-hover: oklch(37.648310% 0.082926 244.3672);
+  --runtime-color-olive: oklch(47.837382% 0.075822 179.1270); /* resistance: teal */
+  --runtime-color-cardio-rust: oklch(52.033644% 0.118795 31.4442);
+  --runtime-color-sage: oklch(60.292289% 0.063777 237.7824); /* mobility: slate blue */
+
+  --ui-primary: var(--color-terracotta);
+}
+
+/* ---- Cyanotype — dark: "Nightprint". Ink-wash blue-black, pale cyan. ---- */
+html.theme-cyanotype.dark {
+  --runtime-color-bg: oklch(17.720791% 0.017415 241.3561);
+  --runtime-color-surface: oklch(22.046502% 0.023731 243.8270);
+  --runtime-color-surface-dark: oklch(28.603022% 0.029166 244.9337);
+  --runtime-color-ink: oklch(93.789218% 0.015236 241.7766);
+  --runtime-color-muted: oklch(67.014275% 0.032159 243.6372);
+  --runtime-color-terracotta: oklch(78.543393% 0.086664 233.2266); /* pale cyan */
+  --runtime-color-terracotta-hover: oklch(83.269057% 0.069804 231.6442);
+  --runtime-color-olive: oklch(71.581295% 0.075025 174.3855);
+  --runtime-color-cardio-rust: oklch(71.525710% 0.117703 44.2878);
+  --runtime-color-sage: oklch(74.527889% 0.049581 235.9205);
+
+  --ui-primary: var(--color-terracotta);
+}
+
+/* Cyanotype moves numerals to the technical mono. Family + tracking only —
+ * weights stay whatever the markup asked for, so data emphasis survives. */
+html.theme-cyanotype .num {
+  font-family: var(--font-mono);
+  letter-spacing: -0.02em;
+}
+
+/* ---- Camellia — light: blush paper, aubergine ink, camellia-rose primary,
+ * slightly softer corners (9px — radius is a token, so it is within a skin's
+ * budget; it is also the boundary). ---- */
+html.theme-camellia {
+  --font-serif: "Lora", Georgia, serif;
+  --font-sans: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --runtime-radius: 9px;
+  --ui-radius: 0.5625rem; /* 9px — Nuxt UI's knob follows the token */
+
+  --runtime-color-bg: oklch(97.804694% 0.006542 5.6224);
+  --runtime-color-surface: oklch(94.785361% 0.014325 6.7120);
+  --runtime-color-surface-dark: oklch(89.242720% 0.025237 2.1359);
+  --runtime-color-ink: oklch(24.353275% 0.025798 353.4510);
+  /* Muted/olive/cardio-rust darkened from handoff sRGB tuples 133 106 115,
+   * 106 132 102, and 192 86 63 (3.85–4.23:1 on their real text backgrounds)
+   * to clear WCAG AA
+   * for the small-text consumers: text-muted on surface, analytics
+   * trend/state text on bg and surface (EF-747 review) */
+  --runtime-color-muted: oklch(53.181583% 0.035808 355.6688);
+  --runtime-color-terracotta: oklch(51.158456% 0.145434 2.6047); /* camellia rose */
+  --runtime-color-terracotta-hover: oklch(45.289922% 0.132549 2.9016);
+  --runtime-color-olive: oklch(51.993008% 0.046624 141.7110); /* resistance: green */
+  --runtime-color-cardio-rust: oklch(53.958969% 0.130545 33.3153); /* cardio: coral */
+  --runtime-color-sage: oklch(58.962935% 0.090069 305.5218); /* mobility: lilac */
+
+  --ui-primary: var(--color-terracotta);
+}
+
+/* ---- Camellia — dark: plum. ---- */
+html.theme-camellia.dark {
+  --runtime-color-bg: oklch(17.743960% 0.011630 346.7786);
+  --runtime-color-surface: oklch(21.611952% 0.014766 346.8453);
+  --runtime-color-surface-dark: oklch(26.849947% 0.021003 347.0817);
+  --runtime-color-ink: oklch(94.017703% 0.016063 358.0489);
+  --runtime-color-muted: oklch(66.703720% 0.026415 351.7142);
+  --runtime-color-terracotta: oklch(79.552929% 0.097529 357.9412); /* soft rose */
+  --runtime-color-terracotta-hover: oklch(84.404940% 0.078437 357.4625);
+  --runtime-color-olive: oklch(73.680003% 0.068726 140.2802);
+  --runtime-color-cardio-rust: oklch(72.158524% 0.108851 36.7166);
+  --runtime-color-sage: oklch(73.506111% 0.088761 305.9739);
+
+  --ui-primary: var(--color-terracotta);
+}
+
+/* ── Focus accent (EF-758) ───────────────────────────────
+ * @nuxt/ui v4.9 (issue 6576) unified focus styling: every component base dropped
+ * `focus:outline-none` and each color/variant now ships its own halo pair —
+ * `outline-<color>/25` plus `focus-visible:outline-3`. That tints the halo with
+ * the COMPONENT's color, so a `color="primary"` CTA got a terracotta halo while
+ * every `color="neutral"` control (the app's default — account menu, Settings,
+ * theme toggle, day nav, Woche planen) got `outline-inverted/25`: a near-black
+ * halo in light, near-white in dark. The app has ONE focus accent — terracotta,
+ * gold in dark — so the neutral halo is off-language, and it appeared silently
+ * in the 4.8 → 4.10 bump.
+ *
+ * The two rules below are the upstream-documented way to pin one focus color
+ * app-wide (nuxt/ui v4.9.0 release notes → "Uniform focus styles"): they set the
+ * halo (`outline-color`) and the ring color that ring-carrying variants
+ * (outline/subtle) recolor on focus. Both read --color-terracotta rather than
+ * --ui-primary, because --color-terracotta IS the app's focus accent — the token
+ * every existing `outline-terracotta` / `ring-terracotta` override already uses,
+ * terracotta in light and GOLD in dark, re-pointed by each named skin. Pointing
+ * these at --ui-primary instead would silently shift dark mode's focus ring from
+ * gold to terracotta-300 on the elements that spell the accent out.
+ *
+ * These rules are deliberately UNLAYERED. The halo they replace arrives as a
+ * real utility class on the element (`outline-inverted/25`), and Tailwind
+ * utilities live in `@layer utilities` — unlayered rules beat layered ones
+ * regardless of specificity, which is the only reason this wins. An element that
+ * wants a different focus treatment still opts out the usual way, with a
+ * higher-specificity variant utility (`focus-visible:outline-*`, the switch's
+ * `focus-visible:outline-olive`).
+ *
+ * `*:has(> a:focus-visible)` mirrors the upstream rule for wrappers whose only
+ * focusable child is a link (overlay/card links), where the ring is drawn on the
+ * parent rather than the anchor. */
+*,
+::before,
+::after {
+  @apply outline-terracotta/25;
+}
+
+*:focus-visible,
+*:has(> a:focus-visible) {
+  --tw-ring-color: var(--color-terracotta);
+}
+
+/* ── Base styles ─────────────────────────────────────── */
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Tabular lining figures ──────────────────────────── */
+.num {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* ── Thin scrollbar utility (EF-82) ──────────────────────
+ * The ONLY place the app customizes scrollbars — opt-in per scroll region
+ * (e.g. the modal body, via app.config). `scrollbar-color` is inherited;
+ * `scrollbar-width` is not (MDN: Inherited = no). Both are kept OFF
+ * <body>/<html> so custom scrollbar behavior stays limited to named opt-in
+ * regions — in particular the inherited `scrollbar-color` would otherwise leak
+ * into every descendant scroll container, including teleported Nuxt UI overlay
+ * internals (the global reach EF-82 called out). Standard properties only
+ * (Chrome 121+, Firefox); unstyled scroll regions keep native bars. */
+@utility scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-surface-dark) transparent;
+}
+
+/* EF-82: hand scrollbars back to the OS in forced-colors / high-contrast mode —
+ * reset BOTH width and color so high-contrast users get the full native
+ * scrollbar target, not just the default colors. */
+@media (forced-colors: active) {
+  .scrollbar-thin {
+    scrollbar-width: auto;
+    scrollbar-color: auto;
+  }
+}
