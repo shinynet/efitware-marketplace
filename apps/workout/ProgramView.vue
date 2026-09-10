@@ -47,7 +47,14 @@ const openWorkout = (id: string) => navigate({ name: 'open_workout', arguments: 
         v-if="program.related.supportsGoal"
         class="mt-3 text-sm text-gold-ink"
       >
-        {{ t('supportsGoal', { name: program.related.supportsGoal.name }) }}
+        <button
+          type="button"
+          class="secondary"
+          :disabled
+          @click="navigate({ name: 'open_goal', arguments: { goalId: program.related.supportsGoal.id, today: program.related.today } })"
+        >
+          {{ t('supportsGoal', { name: program.related.supportsGoal.name }) }}
+        </button>
       </p>
     </header>
     <nav

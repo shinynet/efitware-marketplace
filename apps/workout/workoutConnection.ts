@@ -7,9 +7,21 @@ const intentKey = () => `mcp-app-${Array.from(crypto.getRandomValues(new Uint8Ar
 const targetForView = (view: TrainingView): PendingAction => {
   if (view.view === 'workout') return { name: 'open_workout', arguments: { workoutId: view.record.workout.id } }
   if (view.view === 'template') return { name: 'open_template', arguments: { templateId: view.record.id } }
+  if (view.view === 'goal') return { name: 'open_goal', arguments: { goalId: view.record.id, today: view.related.today, page: view.related.checkIns.meta.page, limit: view.related.checkIns.meta.limit } }
+  if (view.view === 'goal-plan') return { name: 'open_goal_plan', arguments: { planId: view.record.id, today: view.related.today, page: view.related.historyMeta.page, limit: view.related.historyMeta.limit, ...(view.related.displayedVersion.id !== view.related.activeVersion.id ? { versionId: view.related.displayedVersion.id } : {}) } }
   if (view.view === 'program') return { name: 'open_program', arguments: { programId: view.record.id, today: view.related.today, page: view.related.page, limit: view.related.limit, collection: view.related.collection } }
   if (view.view === 'schedule') return { name: 'open_schedule', arguments: { scheduleId: view.record.id, today: view.related.today } }
   return { name: 'open_calendar', arguments: { from: view.record.from, to: view.record.to, date: view.record.date } }
+}
+const modelContext = (view: TrainingView): Record<string, unknown> => {
+  if (view.view === 'workout') return { view: 'workout', workoutId: view.record.workout.id, revision: view.record.workout.revision, status: view.record.workout.status, completedSets: view.record.workout.exercises.reduce((sum, ex) => sum + ex.sets.filter(set => set.completed).length, 0) }
+  if (view.view === 'calendar') return { view: view.view, from: view.record.from, to: view.record.to, date: view.record.date }
+  const base = { view: view.view, recordId: view.record.id, revision: view.record.revision }
+  if (view.view === 'goal') return { ...base, status: view.record.status, checkInCount: view.related.checkInCount }
+  if (view.view === 'goal-plan') return { ...base, status: view.record.status, activeVersionId: view.related.activeVersion.id, displayedVersionId: view.related.displayedVersion.id }
+  if (view.view === 'schedule') return { ...base, enabled: view.record.enabled }
+  if (view.view === 'program') return { ...base, status: view.record.status }
+  return base
 }
 const validDay = (date: string) => /^\d{4}-\d{2}-\d{2}$/.test(date) && !Number.isNaN(Date.parse(`${date}T12:00:00Z`)) && new Date(`${date}T12:00:00Z`).toISOString().slice(0, 10) === date
 interface ToolResult { isError?: boolean, structuredContent?: unknown }
@@ -55,6 +67,8 @@ export const createWorkoutConnection = () => {
     const parsed = parseTrainingView(result.structuredContent)
     if (disposed || generation !== navigationGeneration) return
     route.value = parsed
+    // Context is a canonical read summary; a host refusal never undoes a save.
+    void app.updateModelContext({ structuredContent: modelContext(parsed) }).catch(() => {})
     readTarget = undefined
     stale.value = false
   }
@@ -75,7 +89,9 @@ export const createWorkoutConnection = () => {
     if (busy.value || pending.value) return
     busy.value = true
     try {
+      const confirmingSave = needsReadback.value
       await read()
+      if (confirmingSave) saved.value = true
       error.value = ''
       needsReadback.value = false
     } catch {
@@ -114,9 +130,6 @@ export const createWorkoutConnection = () => {
       await read()
       needsReadback.value = false
       saved.value = true
-      // Context is informational; a host that declines it must not undo a successful save.
-      void app.updateModelContext({ structuredContent: { workoutId: view.value?.workout.id, revision: view.value?.workout.revision,
-        completedSets: view.value?.workout.exercises.reduce((sum, ex) => sum + ex.sets.filter(set => set.completed).length, 0) } }).catch(() => {})
       return true
     } catch {
       error.value = needsReadback.value ? 'READ_FAILED_AFTER_SAVE' : 'CONNECTION_LOST'
@@ -184,6 +197,24 @@ export const createWorkoutConnection = () => {
       expectedRevision: current.record.revision, idempotencyKey: intentKey() } }
     return execute()
   }
+  const updateGoal = (status: 'active' | 'achieved' | 'abandoned') => {
+    const current = route.value
+    if (!canWrite.value || pending.value || current?.view !== 'goal') return
+    pending.value = { name: 'update_goal', arguments: { goalId: current.record.id, patch: { status }, expectedRevision: current.record.revision, idempotencyKey: intentKey() } }
+    return execute()
+  }
+  const addCheckIn = (input: { date: string, value?: string, note?: string }) => {
+    const current = route.value
+    if (!canWrite.value || pending.value || current?.view !== 'goal' || !validDay(input.date)) return
+    pending.value = { name: 'create_goal_check_in', arguments: { goalId: current.record.id, ...input, idempotencyKey: intentKey() } }
+    return execute()
+  }
+  const updateGoalPlan = (change: { status: 'active' | 'paused' | 'completed' | 'archived' } | { versionId: string }) => {
+    const current = route.value
+    if (!canWrite.value || pending.value || current?.view !== 'goal-plan' || current.record.managementMode !== 'manual') return
+    pending.value = { name: 'versionId' in change ? 'activate_goal_plan_version' : 'set_goal_plan_status', arguments: { planId: current.record.id, ...change, expectedRevision: current.record.revision, idempotencyKey: intentKey() } }
+    return execute()
+  }
   const sendFollowUp = async (prompt: string): Promise<'accepted' | 'unavailable' | 'rejected' | 'uncertain'> => {
     if (!app.getHostCapabilities()?.message?.text) return 'unavailable'
     try {
@@ -196,6 +227,6 @@ export const createWorkoutConnection = () => {
     clearTimeout(connectTimer)
     void app.close()
   }
-  return { route, back, backTarget, createOccurrence, updatePlanning, view, template, presentation, sourceTemplateId, createFromTemplate, sendFollowUp, navigate, host, connected, busy, error, saved, stale, pending, needsReadback, canWrite, start, close, mutate,
+  return { route, updateGoal, addCheckIn, updateGoalPlan, back, backTarget, createOccurrence, updatePlanning, view, template, presentation, sourceTemplateId, createFromTemplate, sendFollowUp, navigate, host, connected, busy, error, saved, stale, pending, needsReadback, canWrite, start, close, mutate,
     retry: execute, refresh, open: () => view.value && app.openLink({ url: `https://app.efitware.com/workouts/${view.value.workout.date}/${view.value.workout.id}` }) }
 }

@@ -98,3 +98,27 @@ it('pauses a schedule with its revision and returns through program and template
     expect(connection.saved.value).toBe(false)
   } finally { connection.close() }
 })
+
+it('keeps a check-in intent through an uncertain write and clears readback uncertainty only after canonical data returns', async () => {
+  const connection = await open()
+  const goal = { view: 'goal', record: { id: 'd'.repeat(24), name: 'Consistency', status: 'active', programIds: [], revision: `goal:1:${'d'.repeat(64)}` }, related: { programs: [], checkInCount: 0, checkIns: { data: [], meta: { total: 0, page: 1, limit: 10 } }, today: '2026-09-09' }, presentation: { ...presentation, timeZone: 'UTC' } }
+  try {
+    bridge.callServerTool.mockResolvedValueOnce({ structuredContent: goal })
+    await connection.navigate({ name: 'open_goal', arguments: { goalId: goal.record.id, today: goal.related.today } })
+    bridge.callServerTool.mockRejectedValueOnce(new Error('lost response'))
+    await connection.addCheckIn({ date: '2026-09-09', note: 'Two sessions' })
+    const intent = structuredClone(bridge.callServerTool.mock.calls[1]![0])
+    bridge.callServerTool.mockResolvedValueOnce({ structuredContent: { id: 'e'.repeat(24) } }).mockRejectedValueOnce(new Error('read lost'))
+    await connection.retry()
+    expect(bridge.callServerTool.mock.calls[2]![0]).toEqual(intent)
+    expect(connection.pending.value).toBeUndefined()
+    expect(connection.needsReadback.value).toBe(true)
+    expect(connection.saved.value).toBe(false)
+    bridge.callServerTool.mockResolvedValueOnce({ structuredContent: { ...goal, related: { ...goal.related, checkInCount: 1, checkIns: { data: [{ id: 'e'.repeat(24), goalId: goal.record.id, date: '2026-09-09', note: 'Two sessions' }], meta: { total: 1, page: 1, limit: 10 } } } } })
+    await connection.refresh()
+    expect(connection.saved.value).toBe(true)
+    expect(connection.route.value).toMatchObject({ view: 'goal', record: { status: 'active' }, related: { checkInCount: 1 } })
+    expect(bridge.updateModelContext).toHaveBeenLastCalledWith({ structuredContent: expect.objectContaining({ view: 'goal', recordId: goal.record.id, status: 'active', checkInCount: 1 }) })
+    expect(bridge.callServerTool.mock.calls.filter(([tool]) => tool.name === 'create_goal_check_in')).toHaveLength(2)
+  } finally { connection.close() }
+})
