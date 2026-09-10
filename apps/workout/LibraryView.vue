@@ -12,7 +12,10 @@ const search = (patch: Partial<LibraryView['record']['query']> = {}) => navigate
 const number = (value: number) => new Intl.NumberFormat(locale.value).format(value)
 </script>
 <template>
-  <section aria-labelledby="library-heading">
+  <section
+    class="pb-6"
+    aria-labelledby="library-heading"
+  >
     <p class="text-xs font-semibold uppercase tracking-wider text-gold-ink">
       {{ t('contextUi.eyebrow') }}
     </p>

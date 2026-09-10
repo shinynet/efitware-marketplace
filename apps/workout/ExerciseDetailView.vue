@@ -14,7 +14,10 @@ const lists = computed(() => [{ key: 'setup', rows: record.value.setupInstructio
 const tracking = computed(() => ([['tracksWeight', 'weight'], ['tracksReps', 'reps'], ['tracksTime', 'time'], ['tracksDistance', 'distance'], ['tracksHr', 'hr'], ['tracksPace', 'pace'], ['tracksCadence', 'cadence'], ['tracksPower', 'power'], ['tracksElevation', 'elevation']] as const).filter(([flag]) => record.value[flag]).map(([, label]) => t(`contextUi.${label}`)))
 </script>
 <template>
-  <article aria-labelledby="exercise-title">
+  <article
+    class="pb-6"
+    aria-labelledby="exercise-title"
+  >
     <p class="text-xs font-semibold uppercase tracking-wider text-gold-ink">
       {{ t(record.isCustom ? 'contextUi.customBadge' : 'contextUi.catalogBadge') }}
     </p>

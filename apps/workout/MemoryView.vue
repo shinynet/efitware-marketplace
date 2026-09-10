@@ -17,7 +17,10 @@ const submit = async () => { if (!canWrite || !draft.value.trim() || draft.value
 const date = (value: string) => new Intl.DateTimeFormat(locale.value, { dateStyle: 'medium', timeStyle: 'short', timeZone: memory.presentation.timeZone }).format(new Date(value))
 </script>
 <template>
-  <article aria-labelledby="memory-heading">
+  <article
+    class="pb-6"
+    aria-labelledby="memory-heading"
+  >
     <p class="text-xs font-semibold uppercase tracking-wider text-gold-ink">
       {{ t('contextUi.eyebrow') }}
     </p>
