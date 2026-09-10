@@ -65,3 +65,7 @@ General progress, a specific exercise and a specific body measurement have dedic
 Native SVG charts place observations at their real calendar-day spacing and expose exact dated values through a keyboard-accessible selector. Straight segments connect observed points only; no synthesized observations, smoothing or trend prediction. Zero-filled canonical weekly buckets use zero-based bars. Measurement direction is neutral and units convert at presentation. Range/section/pagination and source-workout navigation stay in the same iframe; measurement range controls work in a host sandbox without form-submission permission.
 
 Format 5 adds the three progress input schemas while retaining earlier inventories for rollback. The coverage registry has 108 tools including ten display tools. Library/context and remaining status/share/undo coverage remains planned. The card still bundles its own theme, fonts, Vue and bridge without a CDN, below the existing byte ceiling.
+
+## Library and context release
+
+0.1.12 adds library, exercise, training-context and memory views in format 6. Template exercise names navigate to their supporting definitions; no extra cards are opened for incidental creation. Simple controls use existing MCP mutations with readback and original retry intent; memory corrections carry the current revision. Complex changes use the host follow-up explicitly. The copied context vocabulary records its source commit and projection in PROVENANCE.json. Previous manifest inventories remain supported for rollback.

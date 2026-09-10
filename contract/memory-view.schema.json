@@ -1,0 +1,138 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "view": {
+      "type": "string",
+      "const": "memory"
+    },
+    "record": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{24}$"
+        },
+        "content": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "ai",
+            "user"
+          ]
+        },
+        "externalMcp": {
+          "type": "object",
+          "properties": {
+            "clientId": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "clientId"
+          ]
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^memory:1:[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "id",
+        "content",
+        "source",
+        "createdAt",
+        "updatedAt",
+        "revision"
+      ]
+    },
+    "related": {
+      "type": "object",
+      "properties": {}
+    },
+    "presentation": {
+      "type": "object",
+      "properties": {
+        "locale": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unitSystem": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "metric",
+                "imperial"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "theme": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "system",
+                "light",
+                "dark"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "skin": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "calm",
+                "cyanotype",
+                "camellia"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "timeZone": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "locale",
+        "unitSystem",
+        "theme",
+        "skin",
+        "timeZone"
+      ]
+    }
+  },
+  "required": [
+    "view",
+    "record",
+    "related",
+    "presentation"
+  ]
+}

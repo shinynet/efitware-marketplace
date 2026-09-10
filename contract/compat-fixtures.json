@@ -585,5 +585,31 @@
         "timeZone": "America/Denver"
       }
     }
+  ],
+  "contextVocabulary": [
+    {
+      "locale": "en",
+      "path": [
+        "equipment",
+        "dumbbells"
+      ],
+      "text": "Dumbbells"
+    },
+    {
+      "locale": "de",
+      "path": [
+        "equipment",
+        "dumbbells"
+      ],
+      "text": "Kurzhanteln"
+    },
+    {
+      "locale": "de",
+      "path": [
+        "limitations",
+        "knees"
+      ],
+      "text": "Knie"
+    }
   ]
 }
