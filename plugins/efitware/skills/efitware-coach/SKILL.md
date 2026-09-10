@@ -209,7 +209,7 @@ Successful reads include machine-readable `structuredContent` alongside the exis
   - `{ workouts, scheduled }` — `get_workout` called with `date`
   - a single workout object — `get_workout` called with `workoutId`
   - `{ profile, health, trainingSpaces, preferences }` — `get_user_profile`
-- **Edits return the updated record; individual deletes return `{ id }`**, and `log_set`/`update_workout` return the whole workout. Report from the response; do not re-read to confirm a write that succeeded.
+- **Edits return the updated record; individual deletes return `{ id }`**, and `log_set`/`update_workout` return the whole workout. Use the mutation response for the immediate acknowledgment. For the final interactive result, call the matching `open_*` display tool; its canonical read also reflects changes made inside the card. Never repeat a successful mutation merely to obtain its display.
 
 ## Sequencing: read before write
 
