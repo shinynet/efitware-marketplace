@@ -1,6 +1,6 @@
 {
   "name": "efitware",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "Plan workouts, log training and understand your progress with your own AI.",
   "author": {
     "name": "eFitware",
@@ -23,7 +23,7 @@
       "Help me record the results of my latest workout.",
       "Review my training progress and suggest what to adjust."
     ],
-    "longDescription": "Build a training week around your goals, equipment, recent workouts and calendar. Create reusable routines and programs, record workout results, and explore your progress with the AI you choose. Ask for a draft first, then choose what to save. In clients that support MCP Apps, open an interactive eFitware workout card to enter results and mark sets done.\n\nRequires an eFitware account and a signed-in eFitware MCP connection. Installing the plugin alone does not sign you in. No Node.js or local server is needed, and the built-in eFitware AI Coach can remain disabled. Setup: https://www.efitware.com/ai\n\nYour AI client receives the training records it requests through this connection, including profile and health information available under your account permissions. Your AI provider handles its own use of that information under its policies. Manage permissions in your client and revoke access in eFitware Settings \u2192 Connected AI clients. Billing and irreversible account deletion are outside this connection.",
+    "longDescription": "Build a training week around your goals, equipment, recent workouts and calendar. Create reusable routines and programs, record workout results, and explore your progress with the AI you choose. Ask for a draft first, then choose what to save. In clients that support MCP Apps, explore branded interactive workouts, templates, programs, goals and progress charts. Inspect a specific exercise or body measurement, enter results, mark sets done and review saved changes within your AI client.\n\nRequires an eFitware account and a signed-in eFitware MCP connection. Installing the plugin alone does not sign you in. No Node.js or local server is needed, and the built-in eFitware AI Coach can remain disabled. Setup: https://www.efitware.com/ai\n\nYour AI client receives the training records it requests through this connection, including profile and health information available under your account permissions. Your AI provider handles its own use of that information under its policies. Manage permissions in your client and revoke access in eFitware Settings \u2192 Connected AI clients. Billing and irreversible account deletion are outside this connection.",
     "websiteURL": "https://www.efitware.com",
     "privacyPolicyURL": "https://app.efitware.com/privacy",
     "termsOfServiceURL": "https://app.efitware.com/terms",

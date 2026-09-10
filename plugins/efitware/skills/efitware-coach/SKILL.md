@@ -42,7 +42,7 @@ For library browsing, use `open_library` only after the user-facing search is re
 
 ## What this surface can and cannot do
 
-112 tools: 58 reads, 54 writes.
+117 tools: 63 reads, 54 writes.
 
 | Read | Returns |
 | --- | --- |
@@ -130,6 +130,11 @@ For library browsing, use `open_library` only after the user-facing search is re
 | `open_exercise` | Owned/visible exercise detail, setup, equipment, tracking and personal state. |
 | `open_context` | Training-only profile, health, equipment, spaces, preferences or memories section. |
 | `open_memory` | One owned fact with dates, verified authorship and edit revision. |
+| `open_status` | Read-only account, connection or export-status card. |
+| `open_integration` | Read-only owned connection and recorded sync-history card. |
+| `open_receipts` | Read-only retained action receipts with explicit supported undo controls. |
+| `open_workout_review` | Read-only saved Coach reflection and separately attributed external commentary. |
+| `open_share` | Read-only private share preview; no publication or download. |
 | `open_body_metric` | One metric key with explicit inclusive from/to dates, up to 372 days. Dated observations and range controls. |
 | `open_goal` | Display the final saved goal, evidence/check-ins and program/plan links; goalId, today, page/limit. |
 | `open_goal_plan` | Display final saved phases, rationale and version history; planId, today, page/limit and optional versionId. Viewing history does not activate it. |
@@ -204,7 +209,7 @@ Successful reads include machine-readable `structuredContent` alongside the exis
   - `{ workouts, scheduled }` — `get_workout` called with `date`
   - a single workout object — `get_workout` called with `workoutId`
   - `{ profile, health, trainingSpaces, preferences }` — `get_user_profile`
-- **Edits return the updated record; individual deletes return `{ id }`**, and `log_set`/`update_workout` return the whole workout. Report from the response; do not re-read to confirm a write that succeeded.
+- **Edits return the updated record; individual deletes return `{ id }`**, and `log_set`/`update_workout` return the whole workout. Use the mutation response for the immediate acknowledgment. For the final interactive result, call the matching display tool; its canonical read also reflects changes made inside the card. Never repeat a successful mutation merely to obtain its display.
 
 ## Sequencing: read before write
 
@@ -411,3 +416,16 @@ Share preparation uses real source identifiers and canonical eligibility. Suppor
 Integration metadata may be empty. No production provider adapter is registered yet, so do not promise connection, sync, import review or provider disconnect merely because stored status can be read. Provider product delivery owns those future capabilities. Never request provider credentials in conversation. Use get_account_status for recorded onboarding/health-consent status and get_data_export_statuses or get_data_export_status for existing unexpired export metadata. Full portable archive creation and download stay in app Settings; status reads never start an export or expose its contents, identity details or download links. Do not infer Terms/Privacy acceptance from onboarding completion. Billing and account/whole-history deletion remain excluded.
 
 After a requested goal is created or changed, call `open_goal`. After publishing its plan, call `open_goal_plan`; present the saved phases and milestones in the card, without a duplicate table. Defer display while assembling supporting records. Check-ins are evidence, and phase dates are dates: neither implies achievement. CLI hosts retain usable structured data.
+
+
+## Saved outcomes and account status cards
+
+For the final workout review, call `open_workout_review` after reading actual results and existing reflections. Give your interpretation in chat; save external commentary only when requested, with its current revision. The card labels the external commentary separately from built-in Coach history. Opening a review never generates a built-in reflection.
+
+After an undo request or a question about recent saved changes, call `open_receipts`. Show which action is being reversed; `undo_action` is conflict-aware and may refuse when records have changed. Never promise that every action is reversible. After a successful undo, re-read the affected entity before interpreting the result.
+
+Use `open_status` for account/onboarding/consent, integration metadata or unexpired export status, and `open_integration` for one connection's recorded history. These are status views, not authorization, synchronization or archive-download flows.
+
+For a requested share preview, call `open_share` with the canonical source request, locale, unitSystem and explicit privacy options. The card displays already-localized content and can change inclusion options or copy its caption. Nothing is posted, uploaded or sent; do not claim a downloadable image was created. Use full progress tools for analysis because share charts are bounded previews.
+
+Finish by opening the requested outcome once. Supporting reads and intermediate mutations do not open cards. In an MCP Apps host, accompany the card with concise interpretation rather than repeating it as a table. A CLI can consume the same structured result and provide an accessible textual summary.

@@ -50,13 +50,22 @@
       "displayTool": "open_context"
     },
     "status": {
-      "delivery": "planned"
+      "delivery": "implemented",
+      "resourceUri": "ui://efitware/app-v1.html",
+      "schemaPath": "contract/status-view.schema.json",
+      "displayTool": "open_status"
     },
     "share": {
-      "delivery": "planned"
+      "delivery": "implemented",
+      "resourceUri": "ui://efitware/app-v1.html",
+      "schemaPath": "contract/share-view.schema.json",
+      "displayTool": "open_share"
     },
     "receipts": {
-      "delivery": "planned"
+      "delivery": "implemented",
+      "resourceUri": "ui://efitware/app-v1.html",
+      "schemaPath": "contract/receipts-view.schema.json",
+      "displayTool": "open_receipts"
     },
     "workout": {
       "delivery": "implemented",
@@ -93,6 +102,18 @@
       "resourceUri": "ui://efitware/app-v1.html",
       "schemaPath": "contract/memory-view.schema.json",
       "displayTool": "open_memory"
+    },
+    "integration": {
+      "delivery": "implemented",
+      "resourceUri": "ui://efitware/app-v1.html",
+      "schemaPath": "contract/integration-view.schema.json",
+      "displayTool": "open_integration"
+    },
+    "workout-review": {
+      "delivery": "implemented",
+      "resourceUri": "ui://efitware/app-v1.html",
+      "schemaPath": "contract/workout-review-view.schema.json",
+      "displayTool": "open_workout_review"
     }
   },
   "tools": {
@@ -101,784 +122,990 @@
       "views": [
         "goal-plan"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "direct-and-host",
+      "note": "Selected controls call this tool with owned identifiers and canonical readback; other edits use the host AI and reopen the saved outcome."
     },
     "add_workout_activity": {
       "role": "action",
       "views": [
         "workout"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "add_workout_exercise": {
       "role": "action",
       "views": [
         "workout"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "add_workout_set": {
       "role": "action",
       "views": [
         "workout"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "create_custom_equipment": {
       "role": "action",
       "views": [
         "context"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "create_custom_exercise": {
       "role": "action",
       "views": [
         "library"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "create_goal": {
       "role": "action",
       "views": [
         "goal"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "create_goal_check_in": {
       "role": "action",
       "views": [
         "goal"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "direct-and-host",
+      "note": "Selected controls call this tool with owned identifiers and canonical readback; other edits use the host AI and reopen the saved outcome."
     },
     "create_memory": {
       "role": "action",
       "views": [
         "context"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "create_program": {
       "role": "action",
       "views": [
         "program"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "create_schedule": {
       "role": "action",
       "views": [
         "schedule"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "create_template": {
       "role": "action",
       "views": [
         "template"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "create_training_space": {
       "role": "action",
       "views": [
         "context"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "create_workout": {
       "role": "action",
       "views": [
         "workout"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "direct-and-host",
+      "note": "Selected controls call this tool with owned identifiers and canonical readback; other edits use the host AI and reopen the saved outcome."
     },
     "delete_body_metric": {
       "role": "action",
       "views": [
-        "progress"
+        "body-metric"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "delete_custom_equipment": {
       "role": "action",
       "views": [
         "context"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "delete_custom_exercise": {
       "role": "action",
       "views": [
         "library"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "delete_goal": {
       "role": "action",
       "views": [
         "goal"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "delete_goal_check_in": {
       "role": "action",
       "views": [
         "goal"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "delete_memory": {
       "role": "action",
       "views": [
         "context"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "delete_program": {
       "role": "action",
       "views": [
         "program"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "delete_schedule": {
       "role": "action",
       "views": [
         "schedule"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "delete_template": {
       "role": "action",
       "views": [
         "template"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "delete_training_space": {
       "role": "action",
       "views": [
         "context"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "delete_workout": {
       "role": "action",
       "views": [
         "workout"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "delete_workout_activity": {
       "role": "action",
       "views": [
         "workout"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "delete_workout_commentary": {
       "role": "action",
       "views": [
-        "workout"
+        "workout-review"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "direct-and-host",
+      "note": "Selected controls call this tool with owned identifiers and canonical readback; other edits use the host AI and reopen the saved outcome."
     },
     "delete_workout_exercise": {
       "role": "action",
       "views": [
         "workout"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "delete_workout_set": {
       "role": "action",
       "views": [
         "workout"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "get_account_status": {
       "role": "status-read",
       "views": [
         "status"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_action_receipts": {
       "role": "supporting-read",
       "views": [
         "receipts"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_active_session": {
       "role": "supporting-read",
       "views": [
         "workout"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_body_metrics": {
       "role": "supporting-read",
       "views": [
-        "progress"
+        "body-metric"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_calendar": {
       "role": "supporting-read",
       "views": [
         "calendar"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_custom_equipment": {
       "role": "supporting-read",
       "views": [
         "context"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_data_export_status": {
       "role": "status-read",
       "views": [
         "status"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_data_export_statuses": {
       "role": "status-read",
       "views": [
         "status"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_exercise": {
       "role": "supporting-read",
       "views": [
         "library"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_exercise_history": {
       "role": "supporting-read",
       "views": [
-        "progress"
+        "exercise-progress"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_exercise_progression": {
       "role": "supporting-read",
       "views": [
-        "progress"
+        "exercise-progress"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_exercise_stats": {
       "role": "supporting-read",
       "views": [
-        "progress"
+        "exercise-progress"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_exercise_vocabulary": {
       "role": "supporting-read",
       "views": [
         "library"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_goal": {
       "role": "supporting-read",
       "views": [
         "goal"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_goal_check_ins": {
       "role": "supporting-read",
       "views": [
         "goal"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_goal_plan": {
       "role": "supporting-read",
       "views": [
         "goal-plan"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_goal_plan_version": {
       "role": "supporting-read",
       "views": [
         "goal-plan"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_goal_plan_workouts": {
       "role": "supporting-read",
       "views": [
         "goal-plan"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_goal_plans": {
       "role": "supporting-read",
       "views": [
         "goal-plan"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_goals": {
       "role": "supporting-read",
       "views": [
         "goal"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_integration_connection": {
       "role": "status-read",
       "views": [
-        "status"
+        "integration"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_integration_connections": {
       "role": "status-read",
       "views": [
         "status"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_integration_sync_run": {
       "role": "status-read",
       "views": [
-        "status"
+        "integration"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_integration_sync_runs": {
       "role": "status-read",
       "views": [
-        "status"
+        "integration"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_memories": {
       "role": "supporting-read",
       "views": [
         "context"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_memory": {
       "role": "supporting-read",
       "views": [
         "context"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_personal_records": {
       "role": "supporting-read",
       "views": [
-        "progress"
+        "exercise-progress"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_program": {
       "role": "supporting-read",
       "views": [
         "program"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_programs": {
       "role": "supporting-read",
       "views": [
         "program"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_progress": {
       "role": "supporting-read",
       "views": [
         "progress"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_recent_workouts": {
       "role": "supporting-read",
       "views": [
         "workout"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_schedule": {
       "role": "supporting-read",
       "views": [
         "schedule"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_schedules": {
       "role": "supporting-read",
       "views": [
         "schedule"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_share_artifact": {
       "role": "supporting-read",
       "views": [
         "share"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_taxonomies": {
       "role": "supporting-read",
       "views": [
         "context"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_template": {
       "role": "supporting-read",
       "views": [
         "template"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_templates": {
       "role": "supporting-read",
       "views": [
         "template"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_training_context": {
       "role": "supporting-read",
       "views": [
         "context"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_training_spaces": {
       "role": "supporting-read",
       "views": [
         "context"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_user_profile": {
       "role": "supporting-read",
       "views": [
         "context"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_workout": {
       "role": "supporting-read",
       "views": [
         "workout"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_workout_decisions": {
       "role": "supporting-read",
       "views": [
-        "workout"
+        "workout-review"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "get_workout_reflections": {
       "role": "supporting-read",
       "views": [
-        "workout"
+        "workout-review"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "log_set": {
       "role": "action",
       "views": [
         "workout"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "log_sets": {
       "role": "action",
       "views": [
         "workout"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "direct-and-host",
+      "note": "Selected controls call this tool with owned identifiers and canonical readback; other edits use the host AI and reopen the saved outcome."
     },
     "open_calendar": {
       "role": "display",
       "views": [
         "calendar"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "display"
     },
     "open_program": {
       "role": "display",
       "views": [
         "program"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "display"
     },
     "open_schedule": {
       "role": "display",
       "views": [
         "schedule"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "display"
     },
     "open_template": {
       "role": "display",
       "views": [
         "template"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "display"
     },
     "open_workout": {
       "role": "display",
       "views": [
         "workout"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "display"
     },
     "publish_goal_plan": {
       "role": "action",
       "views": [
         "goal-plan"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "record_body_metric": {
       "role": "action",
       "views": [
-        "progress"
+        "body-metric"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "reorder_workout": {
       "role": "action",
       "views": [
         "workout"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "save_week_plan": {
       "role": "action",
       "views": [
         "calendar"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "search_exercise_library": {
       "role": "supporting-read",
       "views": [
         "library"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "supporting-read"
     },
     "set_goal_plan_status": {
       "role": "action",
       "views": [
         "goal-plan"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "direct-and-host",
+      "note": "Selected controls call this tool with owned identifiers and canonical readback; other edits use the host AI and reopen the saved outcome."
     },
     "set_workout_commentary": {
       "role": "action",
       "views": [
-        "workout"
+        "workout-review"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "direct-and-host",
+      "note": "Selected controls call this tool with owned identifiers and canonical readback; other edits use the host AI and reopen the saved outcome."
     },
     "start_workout": {
       "role": "action",
       "views": [
         "workout"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "direct-and-host",
+      "note": "Selected controls call this tool with owned identifiers and canonical readback; other edits use the host AI and reopen the saved outcome."
     },
     "undo_action": {
       "role": "action",
       "views": [
         "receipts"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "direct-and-host",
+      "note": "Selected controls call this tool with owned identifiers and canonical readback; other edits use the host AI and reopen the saved outcome."
     },
     "update_custom_equipment": {
       "role": "action",
       "views": [
         "context"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "update_custom_exercise": {
       "role": "action",
       "views": [
         "library"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "update_exercise_preferences": {
       "role": "action",
       "views": [
         "library"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "direct-and-host",
+      "note": "Selected controls call this tool with owned identifiers and canonical readback; other edits use the host AI and reopen the saved outcome."
     },
     "update_goal": {
       "role": "action",
       "views": [
         "goal"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "direct-and-host",
+      "note": "Selected controls call this tool with owned identifiers and canonical readback; other edits use the host AI and reopen the saved outcome."
     },
     "update_health": {
       "role": "action",
       "views": [
         "context"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "update_memory": {
       "role": "action",
       "views": [
         "context"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "direct-and-host",
+      "note": "Selected controls call this tool with owned identifiers and canonical readback; other edits use the host AI and reopen the saved outcome."
     },
     "update_preferences": {
       "role": "action",
       "views": [
         "context"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "direct-and-host",
+      "note": "Selected controls call this tool with owned identifiers and canonical readback; other edits use the host AI and reopen the saved outcome."
     },
     "update_program": {
       "role": "action",
       "views": [
         "program"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "direct-and-host",
+      "note": "Selected controls call this tool with owned identifiers and canonical readback; other edits use the host AI and reopen the saved outcome."
     },
     "update_schedule": {
       "role": "action",
       "views": [
         "schedule"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "direct-and-host",
+      "note": "Selected controls call this tool with owned identifiers and canonical readback; other edits use the host AI and reopen the saved outcome."
     },
     "update_template": {
       "role": "action",
       "views": [
         "template"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "update_training_space": {
       "role": "action",
       "views": [
         "context"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "direct-and-host",
+      "note": "Selected controls call this tool with owned identifiers and canonical readback; other edits use the host AI and reopen the saved outcome."
     },
     "update_user_profile": {
       "role": "action",
       "views": [
         "context"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "update_workout": {
       "role": "action",
       "views": [
         "workout"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "direct-and-host",
+      "note": "Selected controls call this tool with owned identifiers and canonical readback; other edits use the host AI and reopen the saved outcome."
     },
     "update_workout_activity": {
       "role": "action",
       "views": [
         "workout"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "direct-and-host",
+      "note": "Selected controls call this tool with owned identifiers and canonical readback; other edits use the host AI and reopen the saved outcome."
     },
     "update_workout_exercise": {
       "role": "action",
       "views": [
         "workout"
       ],
-      "delivery": "planned"
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
     "open_goal": {
       "role": "display",
       "views": [
         "goal"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "display"
     },
     "open_goal_plan": {
       "role": "display",
       "views": [
         "goal-plan"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "display"
     },
     "open_progress": {
       "role": "display",
       "views": [
         "progress"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "display"
     },
     "open_exercise_progress": {
       "role": "display",
       "views": [
         "exercise-progress"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "display"
     },
     "open_body_metric": {
       "role": "display",
       "views": [
         "body-metric"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "display"
     },
     "open_library": {
       "role": "display",
       "views": [
         "library"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "display"
     },
     "open_exercise": {
       "role": "display",
       "views": [
         "exercise"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "display"
     },
     "open_context": {
       "role": "display",
       "views": [
         "context"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "display"
     },
     "open_memory": {
       "role": "display",
       "views": [
         "memory"
       ],
-      "delivery": "implemented"
+      "delivery": "implemented",
+      "interaction": "display"
+    },
+    "open_status": {
+      "role": "display",
+      "views": [
+        "status"
+      ],
+      "delivery": "implemented",
+      "interaction": "display"
+    },
+    "open_integration": {
+      "role": "display",
+      "views": [
+        "integration"
+      ],
+      "delivery": "implemented",
+      "interaction": "display"
+    },
+    "open_receipts": {
+      "role": "display",
+      "views": [
+        "receipts"
+      ],
+      "delivery": "implemented",
+      "interaction": "display"
+    },
+    "open_workout_review": {
+      "role": "display",
+      "views": [
+        "workout-review"
+      ],
+      "delivery": "implemented",
+      "interaction": "display"
+    },
+    "open_share": {
+      "role": "display",
+      "views": [
+        "share"
+      ],
+      "delivery": "implemented",
+      "interaction": "display"
     }
   },
   "appOnlyExclusions": [

@@ -81,13 +81,18 @@
     "open_exercise_progress",
     "open_goal",
     "open_goal_plan",
+    "open_integration",
     "open_library",
     "open_memory",
     "open_program",
     "open_progress",
+    "open_receipts",
     "open_schedule",
+    "open_share",
+    "open_status",
     "open_template",
     "open_workout",
+    "open_workout_review",
     "publish_goal_plan",
     "record_body_metric",
     "reorder_workout",
@@ -113,5 +118,5 @@
     "update_workout_activity",
     "update_workout_exercise"
   ],
-  "minimumAppCommit": "0e0b08818f6148601b00b6b51a6ed2cef9493df9"
+  "minimumAppCommit": "31720fe56bf75df7c071d0efcfdb8d0e233c2113"
 }

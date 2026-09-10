@@ -5,6 +5,11 @@ import { parseTrainingView, type TrainingView } from './templateModel'
 interface PendingAction { name: string, arguments: Record<string, unknown> }
 const intentKey = () => `mcp-app-${Array.from(crypto.getRandomValues(new Uint8Array(16)), byte => byte.toString(16).padStart(2, '0')).join('')}`
 const targetForView = (view: TrainingView): PendingAction => {
+  if (view.view === 'status') return { name: 'open_status', arguments: { section: view.related.section, page: view.related.connections.meta.page, limit: view.related.connections.meta.limit } }
+  if (view.view === 'integration') return { name: 'open_integration', arguments: { connectionId: view.record.id, page: view.related.runs.meta.page, limit: view.related.runs.meta.limit } }
+  if (view.view === 'receipts') return { name: 'open_receipts', arguments: { page: view.record.meta.page, limit: view.record.meta.limit } }
+  if (view.view === 'workout-review') return { name: 'open_workout_review', arguments: { workoutId: view.record.id, page: view.related.decisions.meta.page, limit: view.related.decisions.meta.limit } }
+  if (view.view === 'share') return { name: 'open_share', arguments: { request: { ...view.related.request } } }
   if (view.view === 'library') return { name: 'open_library', arguments: { ...view.record.query } }
   if (view.view === 'exercise') return { name: 'open_exercise', arguments: { exerciseId: view.record.id } }
   if (view.view === 'context') return { name: 'open_context', arguments: { section: view.related.section, page: view.related.memories.meta.page, limit: view.related.memories.meta.limit } }
@@ -21,6 +26,11 @@ const targetForView = (view: TrainingView): PendingAction => {
   return { name: 'open_calendar', arguments: { from: view.record.from, to: view.record.to, date: view.record.date } }
 }
 const modelContext = (view: TrainingView): Record<string, unknown> => {
+  if (view.view === 'status') return { view: view.view, section: view.related.section, status: view.record }
+  if (view.view === 'integration') return { view: view.view, connectionId: view.record.id, status: view.record.status }
+  if (view.view === 'receipts') return { view: view.view, page: view.record.meta.page, receiptIds: view.record.data.map(row => row.id) }
+  if (view.view === 'workout-review') return { view: view.view, workoutId: view.record.id, revision: view.related.reflections.revision, status: view.record.status }
+  if (view.view === 'share') return { view: view.view, request: view.related.request, caption: view.record.caption, published: false }
   if (view.view === 'library') return { view: view.view, query: view.record.query, total: view.related.exercises.meta.total }
   if (view.view === 'exercise') return { view: view.view, exerciseId: view.record.id, isFavorite: view.record.isFavorite, isHidden: view.record.isHidden }
   if (view.view === 'context') return { view: view.view, section: view.related.section, page: view.related.memories.meta.page }
@@ -56,6 +66,7 @@ export const createWorkoutConnection = () => {
   const template = computed(() => route.value?.view === 'template' ? route.value : undefined)
   const presentation = computed(() => route.value?.view === 'workout' ? route.value.record.presentation : route.value?.presentation)
   const sourceTemplateId = ref<string>()
+  const lastReceipt = ref<string>()
   const history = shallowRef<PendingAction[]>([])
   const backTarget = computed(() => history.value.at(-1))
   let readTarget: PendingAction | undefined
@@ -131,6 +142,8 @@ export const createWorkoutConnection = () => {
         error.value = code
         return
       }
+      const metadata = result._meta?.['com.efitware/receipt']
+      lastReceipt.value = typeof metadata === 'object' && metadata !== null && 'actionId' in metadata && typeof metadata.actionId === 'string' ? metadata.actionId : undefined
       if (pending.value.name === 'create_workout') {
         const content = result.structuredContent
         const id = typeof content === 'object' && content !== null && 'id' in content ? content.id : undefined
@@ -253,6 +266,28 @@ export const createWorkoutConnection = () => {
     if (current?.view !== 'memory' || !content.trim() || content.length > 500) return
     return contextAction({ name: 'update_memory', arguments: { memoryId: current.record.id, content, expectedRevision: current.record.revision } })
   }
+  const undoReceipt = (id: string) => {
+    const current = route.value
+    if (current?.view !== 'receipts' || !current.record.data.some(row => row.id === id && row.undoable)) return
+    return contextAction({ name: 'undo_action', arguments: { actionId: id } })
+  }
+  const saveCommentary = (content: string) => {
+    const current = route.value
+    if (current?.view !== 'workout-review' || current.record.status !== 'completed' || !content.trim() || content.length > 2000) return
+    return contextAction({ name: 'set_workout_commentary', arguments: { workoutId: current.record.id, content, expectedRevision: current.related.reflections.revision } })
+  }
+  const removeCommentary = () => {
+    const current = route.value
+    if (current?.view !== 'workout-review' || !current.related.reflections.revision) return
+    return contextAction({ name: 'delete_workout_commentary', arguments: { workoutId: current.record.id, expectedRevision: current.related.reflections.revision } })
+  }
+  const setWorkoutStatus = (status: 'in_progress' | 'completed') => {
+    const current = view.value?.workout
+    if (!current || !canWrite.value) return
+    if (status === 'in_progress' && current.status !== 'planned') return
+    return contextAction({ name: status === 'in_progress' ? 'start_workout' : 'update_workout', arguments: { workoutId: current.id, ...(status === 'completed' ? { patch: { status } } : {}), expectedRevision: current.revision } })
+  }
+  const openSettings = (onboarding = false) => app.openLink({ url: `https://app.efitware.com/${onboarding ? 'onboarding' : 'settings'}` })
   const sendFollowUp = async (prompt: string): Promise<'accepted' | 'unavailable' | 'rejected' | 'uncertain'> => {
     if (!app.getHostCapabilities()?.message?.text) return 'unavailable'
     try {
@@ -265,6 +300,6 @@ export const createWorkoutConnection = () => {
     clearTimeout(connectTimer)
     void app.close()
   }
-  return { route, updateExercisePreference, updatePreference, makeDefaultSpace, saveMemory, updateGoal, addCheckIn, updateGoalPlan, back, backTarget, createOccurrence, updatePlanning, view, template, presentation, sourceTemplateId, createFromTemplate, sendFollowUp, navigate, host, connected, busy, error, saved, stale, pending, needsReadback, canWrite, start, close, mutate,
+  return { route, lastReceipt, undoReceipt, saveCommentary, removeCommentary, setWorkoutStatus, openSettings, updateExercisePreference, updatePreference, makeDefaultSpace, saveMemory, updateGoal, addCheckIn, updateGoalPlan, back, backTarget, createOccurrence, updatePlanning, view, template, presentation, sourceTemplateId, createFromTemplate, sendFollowUp, navigate, host, connected, busy, error, saved, stale, pending, needsReadback, canWrite, start, close, mutate,
     retry: execute, refresh, open: () => view.value && app.openLink({ url: `https://app.efitware.com/workouts/${view.value.workout.date}/${view.value.workout.id}` }) }
 }

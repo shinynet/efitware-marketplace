@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
+import StatusView from './StatusView.vue'
+import IntegrationView from './IntegrationView.vue'
+import ReceiptsView from './ReceiptsView.vue'
+import WorkoutReviewView from './WorkoutReviewView.vue'
+import ShareView from './ShareView.vue'
+import HostFollowUp from './HostFollowUp.vue'
 import LibraryView from './LibraryView.vue'
 import ExerciseDetailView from './ExerciseDetailView.vue'
 import ContextView from './ContextView.vue'
@@ -26,6 +32,7 @@ import wordmarkDark from './theme/efitware-wordmark-reversed.svg?url'
 const connection = createWorkoutConnection()
 const dirtyRows = ref(new Set<string>())
 const leaving = ref(false)
+const confirmingComplete = ref(false)
 const setDirty = (id: string, dirty: boolean) => {
   if (dirty) dirtyRows.value.add(id)
   else dirtyRows.value.delete(id)
@@ -38,7 +45,7 @@ const returnToPreviousView = async (discard = false) => {
 
 const { route, backTarget, view, template, presentation, host, busy, error, saved, stale, pending, canWrite } = connection
 const { t, locale } = useI18n()
-const backLabel = computed(() => ({ open_library: 'contextUi.backLibrary', open_exercise: 'contextUi.backExercise', open_context: 'contextUi.backContext', open_memory: 'contextUi.backMemory', open_exercise_progress: 'progressUi.backExercise', open_body_metric: 'progressUi.backMetric', open_progress: 'progressUi.back', open_goal: 'backToGoal', open_goal_plan: 'backToGoalPlan', open_template: 'backToTemplate', open_program: 'backToProgram', open_schedule: 'backToSchedule', open_calendar: 'backToCalendar', open_workout: 'backToWorkout' })[backTarget.value?.name ?? 'open_workout'] ?? 'backToWorkout')
+const backLabel = computed(() => ({ open_status: 'outcomeUi.backStatus', open_integration: 'outcomeUi.backIntegration', open_receipts: 'outcomeUi.backReceipts', open_workout_review: 'outcomeUi.backReview', open_share: 'outcomeUi.backShare', open_library: 'contextUi.backLibrary', open_exercise: 'contextUi.backExercise', open_context: 'contextUi.backContext', open_memory: 'contextUi.backMemory', open_exercise_progress: 'progressUi.backExercise', open_body_metric: 'progressUi.backMetric', open_progress: 'progressUi.back', open_goal: 'backToGoal', open_goal_plan: 'backToGoalPlan', open_template: 'backToTemplate', open_program: 'backToProgram', open_schedule: 'backToSchedule', open_calendar: 'backToCalendar', open_workout: 'backToWorkout' })[backTarget.value?.name ?? 'open_workout'] ?? 'backToWorkout')
 const refreshLabel = computed(() => workout.value ? 'refresh' : template.value ? 'templateRefresh' : 'recordRefresh')
 const staleLabel = computed(() => workout.value ? 'stale' : template.value ? 'templateStale' : 'recordStale')
 const system = computed(() => resolveDisplayUnitSystem(presentation.value?.unitSystem, locale.value))
@@ -60,6 +67,7 @@ watchEffect(() => {
 const dateLabel = computed(() => workout.value ? new Intl.DateTimeFormat(locale.value, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${workout.value.date}T12:00:00Z`)) : '')
 const sections = computed(() => workoutSections(workout.value?.exercises ?? [], workout.value?.activities ?? []))
 const errorText = computed(() => {
+  if (error.value === 'MCP_UNDO_CONFLICT') return t('outcomeUi.undoConflict')
   if (error.value === 'MCP_REVISION_CONFLICT') return t(staleLabel.value)
   if (error.value === 'CONNECTION_LOST') return t(pending.value ? 'lost' : 'unavailable')
   if (pending.value) return t('lost')
@@ -163,6 +171,43 @@ onUnmounted(connection.close)
       :disabled="!canWrite"
       :navigate="connection.navigate"
       :follow-up="connection.sendFollowUp"
+    />
+    <StatusView
+      v-if="route?.view === 'status'"
+      :status="route"
+      :disabled="!canWrite"
+      :navigate="connection.navigate"
+      :open-settings="connection.openSettings"
+    />
+    <IntegrationView
+      v-if="route?.view === 'integration'"
+      :integration="route"
+      :disabled="!canWrite"
+      :navigate="connection.navigate"
+    />
+    <ReceiptsView
+      v-if="route?.view === 'receipts'"
+      :receipts="route"
+      :disabled="!canWrite"
+      :navigate="connection.navigate"
+      :undo="connection.undoReceipt"
+    />
+    <WorkoutReviewView
+      v-if="route?.view === 'workout-review'"
+      :key="route.record.id"
+      :review="route"
+      :disabled="!canWrite"
+      :navigate="connection.navigate"
+      :save="connection.saveCommentary"
+      :remove="connection.removeCommentary"
+      :follow-up="connection.sendFollowUp"
+      @dirty="setDirty('commentary', $event)"
+    />
+    <ShareView
+      v-if="route?.view === 'share'"
+      :share="route"
+      :disabled="!canWrite"
+      :navigate="connection.navigate"
     />
     <LibraryView
       v-if="route?.view === 'library'"
@@ -273,6 +318,66 @@ onUnmounted(connection.close)
           {{ workout.description }}
         </p>
       </header>
+      <div class="mb-5 flex flex-wrap gap-2">
+        <button
+          v-if="workout.status === 'planned'"
+          type="button"
+          class="primary"
+          :disabled="!canWrite || !!dirtyRows.size"
+          @click="connection.setWorkoutStatus('in_progress')"
+        >
+          {{ t('outcomeUi.startWorkout') }}
+        </button>
+        <button
+          v-if="workout.status === 'planned' || workout.status === 'in_progress'"
+          type="button"
+          class="secondary"
+          :disabled="!canWrite || !!dirtyRows.size"
+          @click="confirmingComplete = true"
+        >
+          {{ t('outcomeUi.completeWorkout') }}
+        </button>
+        <button
+          type="button"
+          class="secondary"
+          :disabled="!canWrite || !!dirtyRows.size"
+          @click="connection.navigate({ name: 'open_workout_review', arguments: { workoutId: workout.id } })"
+        >
+          {{ t('outcomeUi.savedReview') }}
+        </button>
+        <button
+          v-if="workout.status === 'completed'"
+          type="button"
+          class="secondary"
+          :disabled="!canWrite || !!dirtyRows.size"
+          @click="connection.navigate({ name: 'open_share', arguments: { request: { kind: 'workout_complete', workoutId: workout.id, locale, unitSystem: system, options: {} } } })"
+        >
+          {{ t('outcomeUi.prepareShare') }}
+        </button>
+      </div>
+      <aside
+        v-if="confirmingComplete && workout.status !== 'completed'"
+        role="alert"
+        class="mb-5 rounded border border-terracotta p-4"
+      >
+        <p>{{ t('outcomeUi.completeHint') }}</p><div class="mt-3 flex flex-wrap gap-2">
+          <button
+            type="button"
+            class="primary"
+            :disabled="!canWrite || !!dirtyRows.size"
+            @click="connection.setWorkoutStatus('completed')"
+          >
+            {{ t('outcomeUi.confirmComplete') }}
+          </button><button
+            type="button"
+            class="secondary"
+            :disabled="busy"
+            @click="confirmingComplete = false"
+          >
+            {{ t('outcomeUi.cancel') }}
+          </button>
+        </div>
+      </aside>
       <section
         v-if="sets.length"
         class="mb-6 rounded bg-surface p-4"
@@ -371,6 +476,22 @@ onUnmounted(connection.close)
         </template>
       </section>
     </template>
+    <HostFollowUp
+      v-if="workout"
+      :disabled="!canWrite || !!dirtyRows.size"
+      label="outcomeUi.editWorkout"
+      :request="t('outcomeUi.editWorkoutRequest', { id: workout.id })"
+      :send="connection.sendFollowUp"
+    />
+    <button
+      v-if="connection.lastReceipt.value && route?.view !== 'receipts'"
+      type="button"
+      class="secondary mb-5"
+      :disabled="!canWrite || !!dirtyRows.size"
+      @click="connection.navigate({ name: 'open_receipts', arguments: {} })"
+    >
+      {{ t('outcomeUi.lastReceipt') }}
+    </button>
     <footer
       v-if="route"
       class="flex flex-wrap items-center justify-between gap-3 border-t border-surface-dark pt-4"
