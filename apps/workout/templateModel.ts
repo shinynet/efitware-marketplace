@@ -1,3 +1,4 @@
+import { goalTrainingViewSchema, type GoalTrainingView } from './goalModel.ts'
 import { planningViewSchema, type PlanningView } from './planningModel.ts'
 import { z } from 'zod'
 import { activitySchema, exerciseSchema, presentationSchema, setSchema, trackingSchema, viewSchema } from './model.ts'
@@ -17,8 +18,10 @@ export const templateViewSchema = z.object({
   presentation: presentationSchema
 })
 export type TemplateView = z.infer<typeof templateViewSchema>
-export type TrainingView = PlanningView | TemplateView | { view: 'workout', record: z.infer<typeof viewSchema> }
+export type TrainingView = GoalTrainingView | PlanningView | TemplateView | { view: 'workout', record: z.infer<typeof viewSchema> }
 export const parseTrainingView = (input: unknown): TrainingView => {
+  const goal = goalTrainingViewSchema.safeParse(input)
+  if (goal.success) return goal.data
   const planning = planningViewSchema.safeParse(input)
   if (planning.success) return planning.data
   const template = templateViewSchema.safeParse(input)

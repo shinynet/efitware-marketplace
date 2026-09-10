@@ -20,10 +20,16 @@
       "displayTool": "open_schedule"
     },
     "goal": {
-      "delivery": "planned"
+      "delivery": "implemented",
+      "resourceUri": "ui://efitware/app-v1.html",
+      "schemaPath": "contract/goal-view.schema.json",
+      "displayTool": "open_goal"
     },
     "goal-plan": {
-      "delivery": "planned"
+      "delivery": "implemented",
+      "resourceUri": "ui://efitware/app-v1.html",
+      "schemaPath": "contract/goal-plan-view.schema.json",
+      "displayTool": "open_goal_plan"
     },
     "progress": {
       "delivery": "planned"
@@ -62,7 +68,7 @@
       "views": [
         "goal-plan"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "add_workout_activity": {
       "role": "action",
@@ -111,7 +117,7 @@
       "views": [
         "goal"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "create_memory": {
       "role": "action",
@@ -356,28 +362,28 @@
       "views": [
         "goal"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "get_goal_check_ins": {
       "role": "supporting-read",
       "views": [
         "goal"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "get_goal_plan": {
       "role": "supporting-read",
       "views": [
         "goal-plan"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "get_goal_plan_version": {
       "role": "supporting-read",
       "views": [
         "goal-plan"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "get_goal_plan_workouts": {
       "role": "supporting-read",
@@ -650,7 +656,7 @@
       "views": [
         "goal-plan"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "set_workout_commentary": {
       "role": "action",
@@ -777,6 +783,20 @@
         "workout"
       ],
       "delivery": "planned"
+    },
+    "open_goal": {
+      "role": "display",
+      "views": [
+        "goal"
+      ],
+      "delivery": "implemented"
+    },
+    "open_goal_plan": {
+      "role": "display",
+      "views": [
+        "goal-plan"
+      ],
+      "delivery": "implemented"
     }
   },
   "appOnlyExclusions": [

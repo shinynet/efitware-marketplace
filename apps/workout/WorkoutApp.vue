@@ -2,6 +2,8 @@
 import { computed, onMounted, onUnmounted, ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import TemplateView from './TemplateView.vue'
+import GoalView from './GoalView.vue'
+import GoalPlanView from './GoalPlanView.vue'
 import ProgramView from './ProgramView.vue'
 import ScheduleView from './ScheduleView.vue'
 import CalendarView from './CalendarView.vue'
@@ -28,7 +30,7 @@ const returnToPreviousView = async (discard = false) => {
 
 const { route, backTarget, view, template, presentation, host, busy, error, saved, stale, pending, canWrite } = connection
 const { t, locale } = useI18n()
-const backLabel = computed(() => ({ open_template: 'backToTemplate', open_program: 'backToProgram', open_schedule: 'backToSchedule', open_calendar: 'backToCalendar', open_workout: 'backToWorkout' })[backTarget.value?.name ?? 'open_workout'] ?? 'backToWorkout')
+const backLabel = computed(() => ({ open_goal: 'backToGoal', open_goal_plan: 'backToGoalPlan', open_template: 'backToTemplate', open_program: 'backToProgram', open_schedule: 'backToSchedule', open_calendar: 'backToCalendar', open_workout: 'backToWorkout' })[backTarget.value?.name ?? 'open_workout'] ?? 'backToWorkout')
 const refreshLabel = computed(() => workout.value ? 'refresh' : template.value ? 'templateRefresh' : 'recordRefresh')
 const staleLabel = computed(() => workout.value ? 'stale' : template.value ? 'templateStale' : 'recordStale')
 const system = computed(() => presentation.value?.unitSystem ?? 'metric')
@@ -144,6 +146,26 @@ onUnmounted(connection.close)
       :template
       :disabled="!canWrite"
       :create="connection.createFromTemplate"
+      :follow-up="connection.sendFollowUp"
+    />
+    <goal-view
+      v-if="route?.view === 'goal'"
+      :key="route.record.id"
+      :goal="route"
+      :disabled="!canWrite"
+      :saved
+      :navigate="connection.navigate"
+      :update="connection.updateGoal"
+      :add-check-in="connection.addCheckIn"
+      :follow-up="connection.sendFollowUp"
+      @dirty="setDirty"
+    />
+    <goal-plan-view
+      v-if="route?.view === 'goal-plan'"
+      :plan="route"
+      :disabled="!canWrite"
+      :navigate="connection.navigate"
+      :update="connection.updateGoalPlan"
       :follow-up="connection.sendFollowUp"
     />
     <program-view
@@ -296,7 +318,7 @@ onUnmounted(connection.close)
         {{ busy ? t(pending ? 'saving' : 'loading') : saved ? t('saved') : '' }}
       </p>
       <button
-        :disabled="busy || !!pending"
+        :disabled="busy || !!pending || (dirtyRows.has('goal-check-in') && !connection.needsReadback.value)"
         class="secondary text-xs"
         @click="connection.refresh()"
       >

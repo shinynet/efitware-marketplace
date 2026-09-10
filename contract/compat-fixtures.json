@@ -388,5 +388,138 @@
         "monthDay": 28
       }
     }
+  ],
+  "goalViews": [
+    {
+      "name": "Goal without a target",
+      "view": "goal",
+      "input": {
+        "view": "goal",
+        "record": {
+          "id": "111111111111111111111111",
+          "name": "Consistency",
+          "status": "active",
+          "programIds": [],
+          "revision": "goal:1:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "related": {
+          "programs": [],
+          "checkInCount": 0,
+          "checkIns": {
+            "data": [],
+            "meta": {
+              "total": 0,
+              "page": 1,
+              "limit": 10
+            }
+          },
+          "today": "2026-09-10"
+        },
+        "presentation": {
+          "locale": "en",
+          "unitSystem": "metric",
+          "theme": "light",
+          "skin": "calm",
+          "timeZone": "UTC"
+        }
+      },
+      "valid": true
+    },
+    {
+      "name": "Stable non-database phase identities and active content beyond history page",
+      "view": "goal-plan",
+      "input": {
+        "view": "goal-plan",
+        "record": {
+          "id": "222222222222222222222222",
+          "goalId": "111111111111111111111111",
+          "managementMode": "coach",
+          "status": "active",
+          "createdBy": "coach",
+          "revision": "goalplan:1:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        },
+        "related": {
+          "goal": {
+            "id": "111111111111111111111111",
+            "name": "Consistency",
+            "status": "active",
+            "programIds": []
+          },
+          "activeVersion": {
+            "id": "333333333333333333333333",
+            "version": 1,
+            "state": "published",
+            "authoredBy": "coach",
+            "feasibility": "reasonable",
+            "rationale": "Practice consistently.",
+            "changedSummary": [
+              "First plan."
+            ],
+            "createdAt": "2026-09-10T00:00:00Z",
+            "phases": [
+              {
+                "id": "phase-foundation",
+                "name": "Foundation",
+                "objective": "Practice twice weekly",
+                "startDate": "2026-09-10",
+                "endDate": "2026-10-10",
+                "milestones": [
+                  {
+                    "id": "milestone-review",
+                    "description": "Review consistency",
+                    "date": "2026-09-24"
+                  }
+                ]
+              }
+            ]
+          },
+          "displayedVersion": {
+            "id": "333333333333333333333333",
+            "version": 1,
+            "state": "published",
+            "authoredBy": "coach",
+            "feasibility": "reasonable",
+            "rationale": "Practice consistently.",
+            "changedSummary": [
+              "First plan."
+            ],
+            "createdAt": "2026-09-10T00:00:00Z",
+            "phases": [
+              {
+                "id": "phase-foundation",
+                "name": "Foundation",
+                "objective": "Practice twice weekly",
+                "startDate": "2026-09-10",
+                "endDate": "2026-10-10",
+                "milestones": [
+                  {
+                    "id": "milestone-review",
+                    "description": "Review consistency",
+                    "date": "2026-09-24"
+                  }
+                ]
+              }
+            ]
+          },
+          "history": [],
+          "historyMeta": {
+            "total": 1,
+            "page": 2,
+            "limit": 1
+          },
+          "aiPaused": true,
+          "today": "2026-09-10",
+          "noChangeReviews": []
+        },
+        "presentation": {
+          "locale": "en",
+          "unitSystem": "metric",
+          "theme": "light",
+          "skin": "calm",
+          "timeZone": "UTC"
+        }
+      },
+      "valid": true
+    }
   ]
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 /** Saved-template prescription and explicit dated-workout creation. No session actuals. */
 import { computed, ref } from 'vue'
+import HostFollowUp from './HostFollowUp.vue'
 import { useI18n } from 'vue-i18n'
 import type { TemplateView } from './templateModel'
 import { formatMeasure } from './presentation'
@@ -14,14 +15,6 @@ const { template, disabled, create, followUp } = defineProps<{
 }>()
 const { t, locale } = useI18n()
 const date = ref('')
-const prompt = ref('')
-const messageState = ref('')
-const sending = ref(false)
-const copied = ref(false)
-const copyRequest = async () => {
-  try { await navigator.clipboard.writeText(prompt.value); copied.value = true } catch { copied.value = false }
-}
-const clipboardAvailable = typeof navigator.clipboard?.writeText === 'function'
 const system = computed(() => template.presentation.unitSystem ?? 'metric')
 const exerciseDetails = computed(() => new Map(template.related.exercises.map(exercise => [exercise.id, exercise])))
 const missingExercises = computed(() => template.record.exercises.some(exercise => exerciseDetails.value.get(exercise.exerciseId)?.unavailable))
@@ -35,13 +28,6 @@ const sections = computed(() => workoutSections(template.record.exercises.map(ex
   sets: ex.sets.map(set => ({ ...set, completed: false })),
   activities: ex.activities?.map(activity => ({ ...activity, completed: false }))
 })), (template.record.activities ?? []).map(activity => ({ ...activity, completed: false }))))
-const ask = async () => {
-  if (sending.value) return
-  prompt.value = t('templateAdaptPrompt', { id: template.record.id })
-  sending.value = true
-  messageState.value = ''
-  try { messageState.value = await followUp(prompt.value) } finally { sending.value = false }
-}
 </script>
 
 <template>
@@ -109,46 +95,11 @@ const ask = async () => {
           {{ t('createDatedWorkout') }}
         </button>
       </fieldset>
-      <button
-        type="button"
-        class="secondary mt-3"
-        :disabled="disabled || sending"
-        @click="ask"
-      >
-        {{ t('askAdapt') }}
-      </button>
-      <p
-        v-if="messageState === 'accepted'"
-        role="status"
-        class="mt-3 text-sm"
-      >
-        {{ t('followUpAccepted') }}
-      </p>
-      <aside
-        v-else-if="messageState"
-        role="status"
-        class="mt-3"
-      >
-        <p class="text-sm">
-          {{ t(messageState === 'uncertain' ? 'followUpUncertain' : 'followUpUnavailable') }}
-        </p>
-        <label class="mt-3 block text-sm">
-          {{ t('followUpRequest') }}
-          <textarea
-            v-model="prompt"
-            class="mt-2 block w-full rounded border border-muted bg-bg p-3 text-ink"
-            rows="3"
-          />
-        </label>
-        <button
-          v-if="clipboardAvailable"
-          type="button"
-          class="secondary mt-2"
-          @click="copyRequest"
-        >
-          {{ t(copied ? 'copied' : 'copyRequest') }}
-        </button>
-      </aside>
+      <host-follow-up
+        :disabled
+        :send="followUp"
+        :request="t('templateAdaptPrompt', { id: template.record.id })"
+      />
     </section>
     <p
       v-if="!sections.length"

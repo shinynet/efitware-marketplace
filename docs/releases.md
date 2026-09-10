@@ -38,7 +38,7 @@ The single bundle serves `ui://efitware/app-v1.html` and the compatible `ui://ef
 
 The template's AI action checks `message.text` capability before `app.sendMessage`, with a 15-second timeout. Accepted messages are not persistence confirmations. Unsupported, refused or uncertain delivery leaves editable request text; uncertain delivery asks the user to check chat before retrying.
 
-Manifest format 2 adds `contract/template-view.schema.json` and `contract/view-coverage.json` to the exact asset inventory. Earlier manifests without a format field retain their original inventory for rollback. The coverage registry classifies every server tool by role and implementation state; the application compares it with real `tools/list` annotations. Program, goal, progress, library and remaining account views are planned, not advertised as implemented.
+Manifest format 2 adds `contract/template-view.schema.json` and `contract/view-coverage.json` to the exact asset inventory. Earlier manifests without a format field retain their original inventory for rollback. The coverage registry classifies every server tool by role and implementation state; the application compares it with real `tools/list` annotations. At 0.1.8, program, goal, progress, library and remaining account views were planned; later slices below extend that coverage.
 
 Both schema projections use draft-07 input semantics, preserve additive product fields at the application boundary, and share valid/invalid compatibility fixtures. The entire inline HTML must be at most 1,500,000 UTF-8 bytes; no runtime CDN dependency is allowed.
 
@@ -49,3 +49,11 @@ The shared shell adds `open_program`, `open_schedule` and `open_calendar`. Progr
 New views use the same `{view,record,related,presentation}` envelope with account `timeZone`. Calendar day formatting stays independent of time-zone offsets; only real timestamps use that zone. Human recurrence phrases reuse the product parser and vocabulary with provenance and shared fixtures. The calendar fixture set includes daylight-saving boundaries and leap day.
 
 Manifest format 3 adds `program-view.schema.json`, `schedule-view.schema.json` and `calendar-view.schema.json` under `contract/`. Earlier format inventories remain supported by the app for rollback. This slice has no CDN, migration or separate credentials. The stage, compatible app READY and catalog promotion gates remain unchanged.
+
+## Goal and goal-plan views (0.1.10)
+
+`open_goal` displays stated targets, linked programs/plans and paginated dated observations. Check-in creation, explicit goal status, manual-plan lifecycle and version activation reuse the server's revision/idempotency policies. A goal revision covers root fields, not independently changing observations. Confirmation after a recovered read also clears the saved check-in draft; ambiguous writes keep the exact original intent for retry.
+
+`open_goal_plan` preserves active content on every history page and separates displayed version from active version. Historical selection verifies its parent plan and never mutates. Phase dates, milestones and author feasibility assessments do not imply completion. Retained phase IDs may be non-database stable strings. Program references preserve a removed-record state. Actual authorship, changes and no-change reviews remain visible. Coach management needs explicit takeover through the host AI workflow; the card cannot silently take over.
+
+Format 4 adds the goal and goal-plan input schemas; all prior exact inventories remain supported for rollback. The shared follow-up component owns message capability, timeout and editable fallback across templates/goals/plans. The coverage matrix now has seven display tools (workout, template, program, schedule, calendar, goal, goal-plan); progress/library/context and remaining status/share/undo coverage stays planned.
