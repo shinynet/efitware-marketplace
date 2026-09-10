@@ -5,6 +5,10 @@ import { parseTrainingView, type TrainingView } from './templateModel'
 interface PendingAction { name: string, arguments: Record<string, unknown> }
 const intentKey = () => `mcp-app-${Array.from(crypto.getRandomValues(new Uint8Array(16)), byte => byte.toString(16).padStart(2, '0')).join('')}`
 const targetForView = (view: TrainingView): PendingAction => {
+  if (view.view === 'library') return { name: 'open_library', arguments: { ...view.record.query } }
+  if (view.view === 'exercise') return { name: 'open_exercise', arguments: { exerciseId: view.record.id } }
+  if (view.view === 'context') return { name: 'open_context', arguments: { section: view.related.section, page: view.related.memories.meta.page, limit: view.related.memories.meta.limit } }
+  if (view.view === 'memory') return { name: 'open_memory', arguments: { memoryId: view.record.id } }
   if (view.view === 'body-metric') return { name: 'open_body_metric', arguments: { ...view.record } }
   if (view.view === 'exercise-progress') return { name: 'open_exercise_progress', arguments: { exerciseId: view.record.id, range: view.related.progression.metadata.range, today: view.related.progression.metadata.today, collection: view.related.collection, page: view.related.page, limit: view.related.limit } }
   if (view.view === 'progress') return { name: 'open_progress', arguments: { range: view.record.range, today: view.record.asOf, section: view.related.section, page: view.related.section === 'goals' ? view.related.goals.meta.page : view.related.progression.meta.page, limit: view.related.progression.meta.limit } }
@@ -17,6 +21,10 @@ const targetForView = (view: TrainingView): PendingAction => {
   return { name: 'open_calendar', arguments: { from: view.record.from, to: view.record.to, date: view.record.date } }
 }
 const modelContext = (view: TrainingView): Record<string, unknown> => {
+  if (view.view === 'library') return { view: view.view, query: view.record.query, total: view.related.exercises.meta.total }
+  if (view.view === 'exercise') return { view: view.view, exerciseId: view.record.id, isFavorite: view.record.isFavorite, isHidden: view.record.isHidden }
+  if (view.view === 'context') return { view: view.view, section: view.related.section, page: view.related.memories.meta.page }
+  if (view.view === 'memory') return { view: view.view, memoryId: view.record.id, revision: view.record.revision }
   if (view.view === 'workout') return { view: 'workout', workoutId: view.record.workout.id, revision: view.record.workout.revision, status: view.record.workout.status, completedSets: view.record.workout.exercises.reduce((sum, ex) => sum + ex.sets.filter(set => set.completed).length, 0) }
   if (view.view === 'body-metric') return { view: view.view, ...view.record, observations: view.related.observations.data }
   if (view.view === 'exercise-progress') return { view: view.view, exerciseId: view.record.id, range: view.related.progression.metadata, allTimeStats: view.related.stats, collection: view.related.collection, page: view.related.page }
@@ -221,6 +229,30 @@ export const createWorkoutConnection = () => {
     pending.value = { name: 'versionId' in change ? 'activate_goal_plan_version' : 'set_goal_plan_status', arguments: { planId: current.record.id, ...change, expectedRevision: current.record.revision, idempotencyKey: intentKey() } }
     return execute()
   }
+  const contextAction = (action: PendingAction) => {
+    if (!canWrite.value || pending.value) return
+    pending.value = { name: action.name, arguments: { ...action.arguments, idempotencyKey: intentKey() } }
+    return execute()
+  }
+  const updateExercisePreference = (patch: { isFavorite?: boolean, hiddenFromSearch?: boolean }) => {
+    const current = route.value
+    if (current?.view !== 'exercise') return
+    return contextAction({ name: 'update_exercise_preferences', arguments: { exerciseId: current.record.id, patch } })
+  }
+  const updatePreference = (patch: { unitSystem?: 'metric' | 'imperial', theme?: 'system' | 'light' | 'dark' }) => {
+    if (route.value?.view !== 'context') return
+    return contextAction({ name: 'update_preferences', arguments: { patch } })
+  }
+  const makeDefaultSpace = (id: string) => {
+    const current = route.value
+    if (current?.view !== 'context' || !current.record.trainingSpaces.some(space => space.id === id)) return
+    return contextAction({ name: 'update_training_space', arguments: { trainingSpaceId: id, patch: { isDefault: true } } })
+  }
+  const saveMemory = (content: string) => {
+    const current = route.value
+    if (current?.view !== 'memory' || !content.trim() || content.length > 500) return
+    return contextAction({ name: 'update_memory', arguments: { memoryId: current.record.id, content, expectedRevision: current.record.revision } })
+  }
   const sendFollowUp = async (prompt: string): Promise<'accepted' | 'unavailable' | 'rejected' | 'uncertain'> => {
     if (!app.getHostCapabilities()?.message?.text) return 'unavailable'
     try {
@@ -233,6 +265,6 @@ export const createWorkoutConnection = () => {
     clearTimeout(connectTimer)
     void app.close()
   }
-  return { route, updateGoal, addCheckIn, updateGoalPlan, back, backTarget, createOccurrence, updatePlanning, view, template, presentation, sourceTemplateId, createFromTemplate, sendFollowUp, navigate, host, connected, busy, error, saved, stale, pending, needsReadback, canWrite, start, close, mutate,
+  return { route, updateExercisePreference, updatePreference, makeDefaultSpace, saveMemory, updateGoal, addCheckIn, updateGoalPlan, back, backTarget, createOccurrence, updatePlanning, view, template, presentation, sourceTemplateId, createFromTemplate, sendFollowUp, navigate, host, connected, busy, error, saved, stale, pending, needsReadback, canWrite, start, close, mutate,
     retry: execute, refresh, open: () => view.value && app.openLink({ url: `https://app.efitware.com/workouts/${view.value.workout.date}/${view.value.workout.id}` }) }
 }

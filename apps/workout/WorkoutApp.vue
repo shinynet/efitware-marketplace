@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
+import LibraryView from './LibraryView.vue'
+import ExerciseDetailView from './ExerciseDetailView.vue'
+import ContextView from './ContextView.vue'
+import MemoryView from './MemoryView.vue'
 import ExerciseProgressView from './ExerciseProgressView.vue'
 import BodyMetricView from './BodyMetricView.vue'
 import ProgressView from './ProgressView.vue'
@@ -34,7 +38,7 @@ const returnToPreviousView = async (discard = false) => {
 
 const { route, backTarget, view, template, presentation, host, busy, error, saved, stale, pending, canWrite } = connection
 const { t, locale } = useI18n()
-const backLabel = computed(() => ({ open_exercise_progress: 'progressUi.backExercise', open_body_metric: 'progressUi.backMetric', open_progress: 'progressUi.back', open_goal: 'backToGoal', open_goal_plan: 'backToGoalPlan', open_template: 'backToTemplate', open_program: 'backToProgram', open_schedule: 'backToSchedule', open_calendar: 'backToCalendar', open_workout: 'backToWorkout' })[backTarget.value?.name ?? 'open_workout'] ?? 'backToWorkout')
+const backLabel = computed(() => ({ open_library: 'contextUi.backLibrary', open_exercise: 'contextUi.backExercise', open_context: 'contextUi.backContext', open_memory: 'contextUi.backMemory', open_exercise_progress: 'progressUi.backExercise', open_body_metric: 'progressUi.backMetric', open_progress: 'progressUi.back', open_goal: 'backToGoal', open_goal_plan: 'backToGoalPlan', open_template: 'backToTemplate', open_program: 'backToProgram', open_schedule: 'backToSchedule', open_calendar: 'backToCalendar', open_workout: 'backToWorkout' })[backTarget.value?.name ?? 'open_workout'] ?? 'backToWorkout')
 const refreshLabel = computed(() => workout.value ? 'refresh' : template.value ? 'templateRefresh' : 'recordRefresh')
 const staleLabel = computed(() => workout.value ? 'stale' : template.value ? 'templateStale' : 'recordStale')
 const system = computed(() => resolveDisplayUnitSystem(presentation.value?.unitSystem, locale.value))
@@ -148,6 +152,7 @@ onUnmounted(connection.close)
     <template-view
       v-if="template"
       :template
+      :navigate="connection.navigate"
       :disabled="!canWrite"
       :create="connection.createFromTemplate"
       :follow-up="connection.sendFollowUp"
@@ -158,6 +163,40 @@ onUnmounted(connection.close)
       :disabled="!canWrite"
       :navigate="connection.navigate"
       :follow-up="connection.sendFollowUp"
+    />
+    <LibraryView
+      v-if="route?.view === 'library'"
+      :library="route"
+      :busy="busy"
+      :navigate="connection.navigate"
+      :send-follow-up="connection.sendFollowUp"
+    />
+    <ExerciseDetailView
+      v-if="route?.view === 'exercise'"
+      :exercise="route"
+      :busy="busy"
+      :can-write="canWrite"
+      :navigate="connection.navigate"
+      :update-exercise-preference="connection.updateExercisePreference"
+      :send-follow-up="connection.sendFollowUp"
+    />
+    <ContextView
+      v-if="route?.view === 'context'"
+      :context="route"
+      :busy="busy"
+      :can-write="canWrite"
+      :navigate="connection.navigate"
+      :update-preference="connection.updatePreference"
+      :make-default="connection.makeDefaultSpace"
+      :send-follow-up="connection.sendFollowUp"
+    />
+    <MemoryView
+      v-if="route?.view === 'memory'"
+      :key="route.record.id"
+      :memory="route"
+      :can-write="canWrite"
+      :save="connection.saveMemory"
+      @dirty="setDirty('memory', $event)"
     />
     <body-metric-view
       v-if="route?.view === 'body-metric'"

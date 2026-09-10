@@ -1,0 +1,283 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "view": {
+      "type": "string",
+      "const": "exercise"
+    },
+    "record": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{24}$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "modality": {
+          "type": "string",
+          "enum": [
+            "resistance",
+            "cardio",
+            "mobility"
+          ]
+        },
+        "summary": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "instructions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "i18n": {
+          "type": "object",
+          "properties": {
+            "de": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "summary": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "description": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "instructions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "summary"
+              ]
+            }
+          },
+          "required": [
+            "de"
+          ]
+        },
+        "equipmentRequired": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "primaryMuscles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "isCustom": {
+          "type": "boolean"
+        },
+        "isFavorite": {
+          "type": "boolean"
+        },
+        "isHidden": {
+          "type": "boolean"
+        },
+        "archived": {
+          "type": "boolean"
+        },
+        "setupInstructions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "formCues": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "commonMistakes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "breathingPattern": {
+          "type": "string"
+        },
+        "safetyNotes": {
+          "type": "string"
+        },
+        "contraindications": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tracksWeight": {
+          "type": "boolean"
+        },
+        "tracksReps": {
+          "type": "boolean"
+        },
+        "tracksTime": {
+          "type": "boolean"
+        },
+        "tracksDistance": {
+          "type": "boolean"
+        },
+        "tracksHr": {
+          "type": "boolean"
+        },
+        "tracksPace": {
+          "type": "boolean"
+        },
+        "tracksCadence": {
+          "type": "boolean"
+        },
+        "tracksPower": {
+          "type": "boolean"
+        },
+        "tracksElevation": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "modality",
+        "archived"
+      ]
+    },
+    "related": {
+      "type": "object",
+      "properties": {
+        "customEquipment": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "trainingInterests": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "trainingInterests"
+            ]
+          }
+        }
+      },
+      "required": [
+        "customEquipment"
+      ]
+    },
+    "presentation": {
+      "type": "object",
+      "properties": {
+        "locale": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unitSystem": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "metric",
+                "imperial"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "theme": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "system",
+                "light",
+                "dark"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "skin": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "calm",
+                "cyanotype",
+                "camellia"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "timeZone": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "locale",
+        "unitSystem",
+        "theme",
+        "skin",
+        "timeZone"
+      ]
+    }
+  },
+  "required": [
+    "view",
+    "record",
+    "related",
+    "presentation"
+  ]
+}

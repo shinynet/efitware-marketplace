@@ -38,10 +38,16 @@
       "displayTool": "open_progress"
     },
     "library": {
-      "delivery": "planned"
+      "delivery": "implemented",
+      "resourceUri": "ui://efitware/app-v1.html",
+      "schemaPath": "contract/library-view.schema.json",
+      "displayTool": "open_library"
     },
     "context": {
-      "delivery": "planned"
+      "delivery": "implemented",
+      "resourceUri": "ui://efitware/app-v1.html",
+      "schemaPath": "contract/context-view.schema.json",
+      "displayTool": "open_context"
     },
     "status": {
       "delivery": "planned"
@@ -75,6 +81,18 @@
       "resourceUri": "ui://efitware/app-v1.html",
       "schemaPath": "contract/body-metric-view.schema.json",
       "displayTool": "open_body_metric"
+    },
+    "exercise": {
+      "delivery": "implemented",
+      "resourceUri": "ui://efitware/app-v1.html",
+      "schemaPath": "contract/exercise-view.schema.json",
+      "displayTool": "open_exercise"
+    },
+    "memory": {
+      "delivery": "implemented",
+      "resourceUri": "ui://efitware/app-v1.html",
+      "schemaPath": "contract/memory-view.schema.json",
+      "displayTool": "open_memory"
     }
   },
   "tools": {
@@ -321,7 +339,7 @@
       "views": [
         "context"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "get_data_export_status": {
       "role": "status-read",
@@ -342,7 +360,7 @@
       "views": [
         "library"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "get_exercise_history": {
       "role": "supporting-read",
@@ -370,7 +388,7 @@
       "views": [
         "library"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "get_goal": {
       "role": "supporting-read",
@@ -454,14 +472,14 @@
       "views": [
         "context"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "get_memory": {
       "role": "supporting-read",
       "views": [
         "context"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "get_personal_records": {
       "role": "supporting-read",
@@ -524,7 +542,7 @@
       "views": [
         "context"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "get_template": {
       "role": "supporting-read",
@@ -545,21 +563,21 @@
       "views": [
         "context"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "get_training_spaces": {
       "role": "supporting-read",
       "views": [
         "context"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "get_user_profile": {
       "role": "supporting-read",
       "views": [
         "context"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "get_workout": {
       "role": "supporting-read",
@@ -664,7 +682,7 @@
       "views": [
         "library"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "set_goal_plan_status": {
       "role": "action",
@@ -713,7 +731,7 @@
       "views": [
         "library"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "update_goal": {
       "role": "action",
@@ -734,14 +752,14 @@
       "views": [
         "context"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "update_preferences": {
       "role": "action",
       "views": [
         "context"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "update_program": {
       "role": "action",
@@ -769,7 +787,7 @@
       "views": [
         "context"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "update_user_profile": {
       "role": "action",
@@ -831,6 +849,34 @@
       "role": "display",
       "views": [
         "body-metric"
+      ],
+      "delivery": "implemented"
+    },
+    "open_library": {
+      "role": "display",
+      "views": [
+        "library"
+      ],
+      "delivery": "implemented"
+    },
+    "open_exercise": {
+      "role": "display",
+      "views": [
+        "exercise"
+      ],
+      "delivery": "implemented"
+    },
+    "open_context": {
+      "role": "display",
+      "views": [
+        "context"
+      ],
+      "delivery": "implemented"
+    },
+    "open_memory": {
+      "role": "display",
+      "views": [
+        "memory"
       ],
       "delivery": "implemented"
     }

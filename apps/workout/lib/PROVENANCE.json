@@ -184,6 +184,24 @@
       "commit": "eed338b591d50dd486f177abdfb4f7202085ed43",
       "sourceSha256": "8b2329457f3e3f0ec9e874f5f14548f5ea99949cee87246d57edbb45b9538568",
       "sha256": "256d9d9dff249493ad98dc08818f4ddd0be2d9147855ce213817e0e2422038a2"
+    },
+    {
+      "path": "apps/workout/contextVocabulary.en.json",
+      "source": "i18n/locales/en.json",
+      "repository": "shinynet/efitware-app",
+      "commit": "9512bb35433820922b3b56274dc2148e0ab87af5",
+      "sourceSha256": "938c3f8b18deaec9db192f576e89dce91089c6432660598cb181a93906a492cc",
+      "sha256": "a673096e64d9a46b9a394515351c30f8d209950431fb55cc7ab8c306f58f6d9e",
+      "transformation": "Projection of equipment, trainingGoals, trainingInterests and limitations translations."
+    },
+    {
+      "path": "apps/workout/contextVocabulary.de.json",
+      "source": "i18n/locales/de.json",
+      "repository": "shinynet/efitware-app",
+      "commit": "9512bb35433820922b3b56274dc2148e0ab87af5",
+      "sourceSha256": "8b2329457f3e3f0ec9e874f5f14548f5ea99949cee87246d57edbb45b9538568",
+      "sha256": "4b248e5f3ba19a158f895919211c831bd32d09a36944418b7319ae8bb9ed1f8e",
+      "transformation": "Projection of equipment, trainingGoals, trainingInterests and limitations translations."
     }
   ]
 }

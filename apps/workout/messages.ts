@@ -1,8 +1,12 @@
+import { contextMessages } from './contextMessages'
+import contextVocabularyEn from './contextVocabulary.en.json'
+import contextVocabularyDe from './contextVocabulary.de.json'
 import { progressMessages } from './progressMessages'
 import { goalMessages } from './goalMessages'
 import recurrenceMessages from './recurrenceMessages.json'
 export const messages = {
   en: {
+    contextUi: contextMessages.en, contextVocabulary: contextVocabularyEn,
     ...goalMessages.en,
     progressUi: progressMessages.en,
     viewTrainingWeek: 'View my training week', supportsGoal: 'Supports your goal: {name}',
@@ -52,6 +56,7 @@ export const messages = {
     activity: 'Activity', restKind: 'Rest', water_break: 'Water break', stretching: 'Stretching', custom: 'Activity'
   },
   de: {
+    contextUi: contextMessages.de, contextVocabulary: contextVocabularyDe,
     ...goalMessages.de,
     progressUi: progressMessages.de,
     viewTrainingWeek: 'Meine Trainingswoche ansehen', supportsGoal: 'Unterstützt dein Ziel: {name}',

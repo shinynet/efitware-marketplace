@@ -1,0 +1,581 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "view": {
+      "type": "string",
+      "const": "context"
+    },
+    "record": {
+      "type": "object",
+      "properties": {
+        "profile": {
+          "type": "object",
+          "properties": {
+            "preferredName": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "heightCm": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "weightKg": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "trainingGoals": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "trainingInterests": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sportEventContext": {
+              "type": "string"
+            },
+            "focusAreas": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "motivation": {
+              "type": "string"
+            },
+            "experience": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "daysPerWeek": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "availableDays": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "MO",
+                  "TU",
+                  "WE",
+                  "TH",
+                  "FR",
+                  "SA",
+                  "SU"
+                ]
+              }
+            },
+            "minutesPerSession": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "goalWeightKg": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "bodyFatPercent": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "restingHeartRate": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "measurements": {
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            }
+          },
+          "required": [
+            "preferredName",
+            "heightCm",
+            "weightKg",
+            "trainingGoals",
+            "trainingInterests",
+            "sportEventContext",
+            "focusAreas",
+            "motivation",
+            "experience",
+            "daysPerWeek",
+            "availableDays",
+            "minutesPerSession",
+            "goalWeightKg",
+            "bodyFatPercent",
+            "restingHeartRate",
+            "measurements"
+          ]
+        },
+        "health": {
+          "type": "object",
+          "properties": {
+            "limitations": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "healthNotes": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "limitations",
+            "healthNotes"
+          ]
+        },
+        "customEquipment": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "trainingInterests": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "trainingInterests"
+            ]
+          }
+        },
+        "trainingSpaces": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "access": {
+                "type": "string",
+                "enum": [
+                  "unconfigured",
+                  "selected"
+                ]
+              },
+              "equipment": {
+                "type": "object",
+                "properties": {
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "custom": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "items",
+                  "custom"
+                ]
+              },
+              "notes": {
+                "type": "string"
+              },
+              "isDefault": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "access",
+              "equipment",
+              "notes",
+              "isDefault"
+            ]
+          }
+        },
+        "preferences": {
+          "type": "object",
+          "properties": {
+            "locale": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "unitSystem": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "metric",
+                    "imperial"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "theme": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "system",
+                    "light",
+                    "dark"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "skin": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "calm",
+                    "cyanotype",
+                    "camellia"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "weekStart": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "sunday",
+                    "monday"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "locale",
+            "unitSystem",
+            "theme",
+            "skin",
+            "weekStart"
+          ]
+        },
+        "context": {
+          "type": "object",
+          "properties": {
+            "today": {
+              "type": "string"
+            },
+            "timezone": {
+              "type": "string"
+            },
+            "unitSystem": {
+              "type": "string",
+              "enum": [
+                "metric",
+                "imperial"
+              ]
+            },
+            "weekStart": {
+              "type": "string",
+              "enum": [
+                "sunday",
+                "monday"
+              ]
+            },
+            "locale": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "today",
+            "timezone",
+            "unitSystem",
+            "weekStart",
+            "locale"
+          ]
+        }
+      },
+      "required": [
+        "profile",
+        "health",
+        "customEquipment",
+        "trainingSpaces",
+        "preferences",
+        "context"
+      ]
+    },
+    "related": {
+      "type": "object",
+      "properties": {
+        "section": {
+          "type": "string",
+          "enum": [
+            "profile",
+            "health",
+            "equipment",
+            "spaces",
+            "preferences",
+            "memories"
+          ]
+        },
+        "memories": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{24}$"
+                  },
+                  "content": {
+                    "type": "string",
+                    "maxLength": 500
+                  },
+                  "source": {
+                    "type": "string",
+                    "enum": [
+                      "ai",
+                      "user"
+                    ]
+                  },
+                  "externalMcp": {
+                    "type": "object",
+                    "properties": {
+                      "clientId": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "clientId"
+                    ]
+                  },
+                  "createdAt": {
+                    "type": "string"
+                  },
+                  "updatedAt": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "content",
+                  "source",
+                  "createdAt",
+                  "updatedAt"
+                ]
+              }
+            },
+            "meta": {
+              "type": "object",
+              "properties": {
+                "page": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "limit": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "total": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "page",
+                "limit",
+                "total"
+              ]
+            }
+          },
+          "required": [
+            "data",
+            "meta"
+          ]
+        }
+      },
+      "required": [
+        "section",
+        "memories"
+      ]
+    },
+    "presentation": {
+      "type": "object",
+      "properties": {
+        "locale": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unitSystem": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "metric",
+                "imperial"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "theme": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "system",
+                "light",
+                "dark"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "skin": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "calm",
+                "cyanotype",
+                "camellia"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "timeZone": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "locale",
+        "unitSystem",
+        "theme",
+        "skin",
+        "timeZone"
+      ]
+    }
+  },
+  "required": [
+    "view",
+    "record",
+    "related",
+    "presentation"
+  ]
+}

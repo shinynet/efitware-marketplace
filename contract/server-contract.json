@@ -76,9 +76,13 @@
     "log_sets",
     "open_body_metric",
     "open_calendar",
+    "open_context",
+    "open_exercise",
     "open_exercise_progress",
     "open_goal",
     "open_goal_plan",
+    "open_library",
+    "open_memory",
     "open_program",
     "open_progress",
     "open_schedule",
@@ -109,5 +113,5 @@
     "update_workout_activity",
     "update_workout_exercise"
   ],
-  "minimumAppCommit": "9512bb35433820922b3b56274dc2148e0ab87af5"
+  "minimumAppCommit": "0e0b08818f6148601b00b6b51a6ed2cef9493df9"
 }

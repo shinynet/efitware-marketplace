@@ -8,8 +8,9 @@ import { resolveDisplayUnitSystem, formatMeasure } from './presentation'
 import { interleavedExerciseSequence } from './lib/sequenceUtils'
 import { workoutSections } from './lib/sections'
 
-const { template, disabled, create, followUp } = defineProps<{
+const { template, disabled, create, followUp, navigate } = defineProps<{
   template: TemplateView, disabled: boolean,
+  navigate: (target: { name: string, arguments: Record<string, unknown> }) => Promise<void>,
   create: (date: string) => Promise<boolean | undefined> | undefined,
   followUp: (prompt: string) => Promise<'accepted' | 'unavailable' | 'rejected' | 'uncertain'>
 }>()
@@ -156,7 +157,14 @@ const sections = computed(() => workoutSections(template.record.exercises.map(ex
         >
           <summary class="cursor-pointer px-4 py-4">
             <h3 class="inline font-semibold">
-              {{ locale === 'de' ? (exerciseDetails.get(item.data.exerciseId)?.nameDe ?? item.data.exerciseName) : item.data.exerciseName }}
+              <button
+                type="button"
+                :disabled="disabled || exerciseDetails.get(item.data.exerciseId)?.unavailable"
+                class="text-left underline decoration-surface-dark underline-offset-4"
+                @click="navigate({ name: 'open_exercise', arguments: { exerciseId: item.data.exerciseId } })"
+              >
+                {{ locale === 'de' ? (exerciseDetails.get(item.data.exerciseId)?.nameDe ?? item.data.exerciseName) : item.data.exerciseName }}
+              </button>
             </h3>
           </summary>
           <p
