@@ -2,7 +2,7 @@
 
 ![eFitware](apps/workout/theme/efitware-wordmark.svg)
 
-Use your own AI to plan workouts, record results, and understand your training. This repository contains the official eFitware plugin and coaching skill, plus the branded interactive workout card for clients supporting MCP Apps.
+Use your own AI to plan workouts, record results, and understand your training. This repository contains the official eFitware plugin and coaching skill, plus the branded interactive training views for clients supporting MCP Apps.
 
 ## Install
 
@@ -18,4 +18,4 @@ Development requires Node.js 24, the pinned pnpm version, and the `zip` utility.
 
 The application owns authentication, permissions, MCP tools and persistence. The card sends authenticated tool requests through the host bridge; it has no separate database or API credentials. Both catalogs point at the committed plugin under `plugins/efitware`. All runtime assets are bundled, including fonts and brand artwork.
 
-[Release and compatibility procedures](docs/releases.md) describe immutable artifacts, staging, production verification, promotion and rollback. `channels.json` identifies the advertised version. The initial extracted catalog preserves version 0.1.6; the first staged artifact release will be 0.1.7.
+[Release and compatibility procedures](docs/releases.md) describe immutable artifacts, staging, production verification, promotion and rollback. `channels.json` identifies the advertised version. Template presentation is staged in 0.1.8. The advertised catalog stays on its verified version until the compatible application deployment is READY.

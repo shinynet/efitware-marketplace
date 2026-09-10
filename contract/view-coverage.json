@@ -1,0 +1,759 @@
+{
+  "schemaVersion": 1,
+  "views": {
+    "program": {
+      "delivery": "planned"
+    },
+    "calendar": {
+      "delivery": "planned"
+    },
+    "schedule": {
+      "delivery": "planned"
+    },
+    "goal": {
+      "delivery": "planned"
+    },
+    "goal-plan": {
+      "delivery": "planned"
+    },
+    "progress": {
+      "delivery": "planned"
+    },
+    "library": {
+      "delivery": "planned"
+    },
+    "context": {
+      "delivery": "planned"
+    },
+    "status": {
+      "delivery": "planned"
+    },
+    "share": {
+      "delivery": "planned"
+    },
+    "receipts": {
+      "delivery": "planned"
+    },
+    "workout": {
+      "delivery": "implemented",
+      "resourceUri": "ui://efitware/workout-v1.html",
+      "schemaPath": "contract/workout-view.schema.json",
+      "displayTool": "open_workout"
+    },
+    "template": {
+      "delivery": "implemented",
+      "resourceUri": "ui://efitware/app-v1.html",
+      "schemaPath": "contract/template-view.schema.json",
+      "displayTool": "open_template"
+    }
+  },
+  "tools": {
+    "activate_goal_plan_version": {
+      "role": "action",
+      "views": [
+        "goal-plan"
+      ],
+      "delivery": "planned"
+    },
+    "add_workout_activity": {
+      "role": "action",
+      "views": [
+        "workout"
+      ],
+      "delivery": "planned"
+    },
+    "add_workout_exercise": {
+      "role": "action",
+      "views": [
+        "workout"
+      ],
+      "delivery": "planned"
+    },
+    "add_workout_set": {
+      "role": "action",
+      "views": [
+        "workout"
+      ],
+      "delivery": "planned"
+    },
+    "create_custom_equipment": {
+      "role": "action",
+      "views": [
+        "context"
+      ],
+      "delivery": "planned"
+    },
+    "create_custom_exercise": {
+      "role": "action",
+      "views": [
+        "library"
+      ],
+      "delivery": "planned"
+    },
+    "create_goal": {
+      "role": "action",
+      "views": [
+        "goal"
+      ],
+      "delivery": "planned"
+    },
+    "create_goal_check_in": {
+      "role": "action",
+      "views": [
+        "goal"
+      ],
+      "delivery": "planned"
+    },
+    "create_memory": {
+      "role": "action",
+      "views": [
+        "context"
+      ],
+      "delivery": "planned"
+    },
+    "create_program": {
+      "role": "action",
+      "views": [
+        "program"
+      ],
+      "delivery": "planned"
+    },
+    "create_schedule": {
+      "role": "action",
+      "views": [
+        "schedule"
+      ],
+      "delivery": "planned"
+    },
+    "create_template": {
+      "role": "action",
+      "views": [
+        "template"
+      ],
+      "delivery": "planned"
+    },
+    "create_training_space": {
+      "role": "action",
+      "views": [
+        "context"
+      ],
+      "delivery": "planned"
+    },
+    "create_workout": {
+      "role": "action",
+      "views": [
+        "workout"
+      ],
+      "delivery": "implemented"
+    },
+    "delete_body_metric": {
+      "role": "action",
+      "views": [
+        "progress"
+      ],
+      "delivery": "planned"
+    },
+    "delete_custom_equipment": {
+      "role": "action",
+      "views": [
+        "context"
+      ],
+      "delivery": "planned"
+    },
+    "delete_custom_exercise": {
+      "role": "action",
+      "views": [
+        "library"
+      ],
+      "delivery": "planned"
+    },
+    "delete_goal": {
+      "role": "action",
+      "views": [
+        "goal"
+      ],
+      "delivery": "planned"
+    },
+    "delete_goal_check_in": {
+      "role": "action",
+      "views": [
+        "goal"
+      ],
+      "delivery": "planned"
+    },
+    "delete_memory": {
+      "role": "action",
+      "views": [
+        "context"
+      ],
+      "delivery": "planned"
+    },
+    "delete_program": {
+      "role": "action",
+      "views": [
+        "program"
+      ],
+      "delivery": "planned"
+    },
+    "delete_schedule": {
+      "role": "action",
+      "views": [
+        "schedule"
+      ],
+      "delivery": "planned"
+    },
+    "delete_template": {
+      "role": "action",
+      "views": [
+        "template"
+      ],
+      "delivery": "planned"
+    },
+    "delete_training_space": {
+      "role": "action",
+      "views": [
+        "context"
+      ],
+      "delivery": "planned"
+    },
+    "delete_workout": {
+      "role": "action",
+      "views": [
+        "workout"
+      ],
+      "delivery": "planned"
+    },
+    "delete_workout_activity": {
+      "role": "action",
+      "views": [
+        "workout"
+      ],
+      "delivery": "planned"
+    },
+    "delete_workout_commentary": {
+      "role": "action",
+      "views": [
+        "workout"
+      ],
+      "delivery": "planned"
+    },
+    "delete_workout_exercise": {
+      "role": "action",
+      "views": [
+        "workout"
+      ],
+      "delivery": "planned"
+    },
+    "delete_workout_set": {
+      "role": "action",
+      "views": [
+        "workout"
+      ],
+      "delivery": "planned"
+    },
+    "get_account_status": {
+      "role": "status-read",
+      "views": [
+        "status"
+      ],
+      "delivery": "planned"
+    },
+    "get_action_receipts": {
+      "role": "supporting-read",
+      "views": [
+        "receipts"
+      ],
+      "delivery": "planned"
+    },
+    "get_active_session": {
+      "role": "supporting-read",
+      "views": [
+        "workout"
+      ],
+      "delivery": "implemented"
+    },
+    "get_body_metrics": {
+      "role": "supporting-read",
+      "views": [
+        "progress"
+      ],
+      "delivery": "planned"
+    },
+    "get_calendar": {
+      "role": "supporting-read",
+      "views": [
+        "calendar"
+      ],
+      "delivery": "planned"
+    },
+    "get_custom_equipment": {
+      "role": "supporting-read",
+      "views": [
+        "context"
+      ],
+      "delivery": "planned"
+    },
+    "get_data_export_status": {
+      "role": "status-read",
+      "views": [
+        "status"
+      ],
+      "delivery": "planned"
+    },
+    "get_data_export_statuses": {
+      "role": "status-read",
+      "views": [
+        "status"
+      ],
+      "delivery": "planned"
+    },
+    "get_exercise": {
+      "role": "supporting-read",
+      "views": [
+        "library"
+      ],
+      "delivery": "planned"
+    },
+    "get_exercise_history": {
+      "role": "supporting-read",
+      "views": [
+        "progress"
+      ],
+      "delivery": "planned"
+    },
+    "get_exercise_progression": {
+      "role": "supporting-read",
+      "views": [
+        "progress"
+      ],
+      "delivery": "planned"
+    },
+    "get_exercise_stats": {
+      "role": "supporting-read",
+      "views": [
+        "progress"
+      ],
+      "delivery": "planned"
+    },
+    "get_exercise_vocabulary": {
+      "role": "supporting-read",
+      "views": [
+        "library"
+      ],
+      "delivery": "planned"
+    },
+    "get_goal": {
+      "role": "supporting-read",
+      "views": [
+        "goal"
+      ],
+      "delivery": "planned"
+    },
+    "get_goal_check_ins": {
+      "role": "supporting-read",
+      "views": [
+        "goal"
+      ],
+      "delivery": "planned"
+    },
+    "get_goal_plan": {
+      "role": "supporting-read",
+      "views": [
+        "goal-plan"
+      ],
+      "delivery": "planned"
+    },
+    "get_goal_plan_version": {
+      "role": "supporting-read",
+      "views": [
+        "goal-plan"
+      ],
+      "delivery": "planned"
+    },
+    "get_goal_plan_workouts": {
+      "role": "supporting-read",
+      "views": [
+        "goal-plan"
+      ],
+      "delivery": "planned"
+    },
+    "get_goal_plans": {
+      "role": "supporting-read",
+      "views": [
+        "goal-plan"
+      ],
+      "delivery": "planned"
+    },
+    "get_goals": {
+      "role": "supporting-read",
+      "views": [
+        "goal"
+      ],
+      "delivery": "planned"
+    },
+    "get_integration_connection": {
+      "role": "status-read",
+      "views": [
+        "status"
+      ],
+      "delivery": "planned"
+    },
+    "get_integration_connections": {
+      "role": "status-read",
+      "views": [
+        "status"
+      ],
+      "delivery": "planned"
+    },
+    "get_integration_sync_run": {
+      "role": "status-read",
+      "views": [
+        "status"
+      ],
+      "delivery": "planned"
+    },
+    "get_integration_sync_runs": {
+      "role": "status-read",
+      "views": [
+        "status"
+      ],
+      "delivery": "planned"
+    },
+    "get_memories": {
+      "role": "supporting-read",
+      "views": [
+        "context"
+      ],
+      "delivery": "planned"
+    },
+    "get_memory": {
+      "role": "supporting-read",
+      "views": [
+        "context"
+      ],
+      "delivery": "planned"
+    },
+    "get_personal_records": {
+      "role": "supporting-read",
+      "views": [
+        "progress"
+      ],
+      "delivery": "planned"
+    },
+    "get_program": {
+      "role": "supporting-read",
+      "views": [
+        "program"
+      ],
+      "delivery": "planned"
+    },
+    "get_programs": {
+      "role": "supporting-read",
+      "views": [
+        "program"
+      ],
+      "delivery": "planned"
+    },
+    "get_progress": {
+      "role": "supporting-read",
+      "views": [
+        "progress"
+      ],
+      "delivery": "planned"
+    },
+    "get_recent_workouts": {
+      "role": "supporting-read",
+      "views": [
+        "workout"
+      ],
+      "delivery": "implemented"
+    },
+    "get_schedule": {
+      "role": "supporting-read",
+      "views": [
+        "schedule"
+      ],
+      "delivery": "planned"
+    },
+    "get_schedules": {
+      "role": "supporting-read",
+      "views": [
+        "schedule"
+      ],
+      "delivery": "planned"
+    },
+    "get_share_artifact": {
+      "role": "supporting-read",
+      "views": [
+        "share"
+      ],
+      "delivery": "planned"
+    },
+    "get_taxonomies": {
+      "role": "supporting-read",
+      "views": [
+        "context"
+      ],
+      "delivery": "planned"
+    },
+    "get_template": {
+      "role": "supporting-read",
+      "views": [
+        "template"
+      ],
+      "delivery": "implemented"
+    },
+    "get_templates": {
+      "role": "supporting-read",
+      "views": [
+        "template"
+      ],
+      "delivery": "implemented"
+    },
+    "get_training_context": {
+      "role": "supporting-read",
+      "views": [
+        "context"
+      ],
+      "delivery": "planned"
+    },
+    "get_training_spaces": {
+      "role": "supporting-read",
+      "views": [
+        "context"
+      ],
+      "delivery": "planned"
+    },
+    "get_user_profile": {
+      "role": "supporting-read",
+      "views": [
+        "context"
+      ],
+      "delivery": "planned"
+    },
+    "get_workout": {
+      "role": "supporting-read",
+      "views": [
+        "workout"
+      ],
+      "delivery": "implemented"
+    },
+    "get_workout_decisions": {
+      "role": "supporting-read",
+      "views": [
+        "workout"
+      ],
+      "delivery": "implemented"
+    },
+    "get_workout_reflections": {
+      "role": "supporting-read",
+      "views": [
+        "workout"
+      ],
+      "delivery": "implemented"
+    },
+    "log_set": {
+      "role": "action",
+      "views": [
+        "workout"
+      ],
+      "delivery": "planned"
+    },
+    "log_sets": {
+      "role": "action",
+      "views": [
+        "workout"
+      ],
+      "delivery": "implemented"
+    },
+    "open_template": {
+      "role": "display",
+      "views": [
+        "template"
+      ],
+      "delivery": "implemented"
+    },
+    "open_workout": {
+      "role": "display",
+      "views": [
+        "workout"
+      ],
+      "delivery": "implemented"
+    },
+    "publish_goal_plan": {
+      "role": "action",
+      "views": [
+        "goal-plan"
+      ],
+      "delivery": "planned"
+    },
+    "record_body_metric": {
+      "role": "action",
+      "views": [
+        "progress"
+      ],
+      "delivery": "planned"
+    },
+    "reorder_workout": {
+      "role": "action",
+      "views": [
+        "workout"
+      ],
+      "delivery": "planned"
+    },
+    "save_week_plan": {
+      "role": "action",
+      "views": [
+        "calendar"
+      ],
+      "delivery": "planned"
+    },
+    "search_exercise_library": {
+      "role": "supporting-read",
+      "views": [
+        "library"
+      ],
+      "delivery": "planned"
+    },
+    "set_goal_plan_status": {
+      "role": "action",
+      "views": [
+        "goal-plan"
+      ],
+      "delivery": "planned"
+    },
+    "set_workout_commentary": {
+      "role": "action",
+      "views": [
+        "workout"
+      ],
+      "delivery": "planned"
+    },
+    "start_workout": {
+      "role": "action",
+      "views": [
+        "workout"
+      ],
+      "delivery": "planned"
+    },
+    "undo_action": {
+      "role": "action",
+      "views": [
+        "receipts"
+      ],
+      "delivery": "planned"
+    },
+    "update_custom_equipment": {
+      "role": "action",
+      "views": [
+        "context"
+      ],
+      "delivery": "planned"
+    },
+    "update_custom_exercise": {
+      "role": "action",
+      "views": [
+        "library"
+      ],
+      "delivery": "planned"
+    },
+    "update_exercise_preferences": {
+      "role": "action",
+      "views": [
+        "library"
+      ],
+      "delivery": "planned"
+    },
+    "update_goal": {
+      "role": "action",
+      "views": [
+        "goal"
+      ],
+      "delivery": "planned"
+    },
+    "update_health": {
+      "role": "action",
+      "views": [
+        "context"
+      ],
+      "delivery": "planned"
+    },
+    "update_memory": {
+      "role": "action",
+      "views": [
+        "context"
+      ],
+      "delivery": "planned"
+    },
+    "update_preferences": {
+      "role": "action",
+      "views": [
+        "context"
+      ],
+      "delivery": "planned"
+    },
+    "update_program": {
+      "role": "action",
+      "views": [
+        "program"
+      ],
+      "delivery": "planned"
+    },
+    "update_schedule": {
+      "role": "action",
+      "views": [
+        "schedule"
+      ],
+      "delivery": "planned"
+    },
+    "update_template": {
+      "role": "action",
+      "views": [
+        "template"
+      ],
+      "delivery": "planned"
+    },
+    "update_training_space": {
+      "role": "action",
+      "views": [
+        "context"
+      ],
+      "delivery": "planned"
+    },
+    "update_user_profile": {
+      "role": "action",
+      "views": [
+        "context"
+      ],
+      "delivery": "planned"
+    },
+    "update_workout": {
+      "role": "action",
+      "views": [
+        "workout"
+      ],
+      "delivery": "planned"
+    },
+    "update_workout_activity": {
+      "role": "action",
+      "views": [
+        "workout"
+      ],
+      "delivery": "implemented"
+    },
+    "update_workout_exercise": {
+      "role": "action",
+      "views": [
+        "workout"
+      ],
+      "delivery": "planned"
+    }
+  },
+  "appOnlyExclusions": [
+    "billing",
+    "portable-archive-download",
+    "account-deletion",
+    "whole-history-deletion",
+    "native-phone-functions"
+  ]
+}

@@ -9,12 +9,12 @@ export const setSchema = z.object({
   plannedReps: z.object({ min: z.number(), max: z.number() }).optional(),
   restTarget: measure, rirTarget: measure
 })
-const activitySchema = z.object({
+export const activitySchema = z.object({
   id: z.string(), kind: z.enum(['rest', 'water_break', 'stretching', 'warmup', 'cooldown', 'custom']), title: z.string(), detail: z.string().optional(), notes: z.string().optional(),
   durationTarget: measure, durationActual: measure, completed: z.boolean(), order: z.number(),
   section: z.enum(['warmup', 'main', 'cooldown']).optional()
 })
-const exerciseSchema = z.object({
+export const exerciseSchema = z.object({
   id: z.string(), exerciseId: z.string(), exerciseName: z.string(),
   modality: z.enum(['resistance', 'cardio', 'mobility']), order: z.number(),
   section: z.enum(['warmup', 'main', 'cooldown']).optional(), comments: z.string().optional(),
@@ -26,18 +26,16 @@ export const workoutSchema = z.object({
   description: z.string().optional(), revision: z.string().regex(/^workout:1:[a-f0-9]{64}$/),
   exercises: z.array(exerciseSchema), activities: z.array(activitySchema).optional()
 })
-const trackingSchema = z.object({
+export const trackingSchema = z.object({
   id: z.string(), unavailable: z.boolean().optional(), nameDe: z.string().optional(),
   tracksWeight: z.boolean().optional(), tracksReps: z.boolean().optional(),
   tracksTime: z.boolean().optional(), tracksDistance: z.boolean().optional()
 })
-export const viewSchema = z.object({
-  workout: workoutSchema, exercises: z.array(trackingSchema),
-  presentation: z.object({
+export const presentationSchema = z.object({
     locale: z.string().nullable(), unitSystem: z.enum(['metric', 'imperial']).nullable(),
     theme: z.enum(['system', 'light', 'dark']).nullable(), skin: z.enum(['calm', 'cyanotype', 'camellia']).nullable()
-  })
 })
+export const viewSchema = z.object({ workout: workoutSchema, exercises: z.array(trackingSchema), presentation: presentationSchema })
 export type WorkoutView = z.infer<typeof viewSchema>
 export type ViewSet = z.infer<typeof setSchema>
 export type ViewExercise = z.infer<typeof exerciseSchema>

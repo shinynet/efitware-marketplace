@@ -1,6 +1,6 @@
 # Releases and compatibility
 
-The application owns its product DTOs, MCP tools, authentication, permissions and database. This repository owns the plugin, coaching instructions, embedded workout card, and the card's consumer projection. No source import crosses that boundary.
+The application owns its product DTOs, MCP tools, authentication, permissions and database. This repository owns the plugin, coaching instructions, embedded training views, and the card's consumer projection. No source import crosses that boundary.
 
 `apps/workout/lib/PROVENANCE.json` records the source commit/hash and copied-file hash for extracted helpers and theme assets. The hashes document intentional copying. `contract/compat-fixtures.json` independently checks behavior in both repositories: root section order, nested set/activity slots, stable ties, unit thresholds, formatting, and localized input round-trips. Updating a copy requires updating provenance and reviewing the behavioral fixtures.
 
@@ -28,3 +28,16 @@ The local equivalent is `pnpm release:build --output <new-directory> --strict` a
 Restore the application's previous lock file and deploy it. Add a new `main` commit restoring the previous catalog/plugin versions and channel; never rewrite published Git history. Repoint the website mirror pin atomically with its metadata. Previous immutable artifacts remain available. For the initial extraction, the pre-extraction app commit and its unchanged 0.1.1–0.1.6 downloads remain the rollback baseline.
 
 Automated bridge tests do not establish Desktop rendering or authentication continuity. Record fresh installation, existing-install upgrade, rollback, and preserved authentication in actual clients, including the separate Windows-local and Mac-remote host cases.
+
+
+## Shared training shell (0.1.8)
+
+The single bundle serves `ui://efitware/app-v1.html` and the compatible `ui://efitware/workout-v1.html`. Dedicated `open_*` tools create host cards; in-card navigation uses `app.callServerTool` and replaces the view inside the existing iframe. Ordinary background reads and supporting mutations have no UI binding.
+
+`open_template` returns `{ view: "template", record, related: { exercises }, presentation }`. The legacy `open_workout` result stays `{ workout, exercises, presentation }` and is normalized by the shell. Templates contain planned prescriptions without session actuals. Creating a dated workout requires an explicit date; retries preserve the same idempotency key and arguments, and a failed readback never repeats a completed creation. Returning to a template asks before discarding unsaved set results. Controls call the bridge directly: the standard iframe sandbox permits scripts but may block native form submission.
+
+The template's AI action checks `message.text` capability before `app.sendMessage`, with a 15-second timeout. Accepted messages are not persistence confirmations. Unsupported, refused or uncertain delivery leaves editable request text; uncertain delivery asks the user to check chat before retrying.
+
+Manifest format 2 adds `contract/template-view.schema.json` and `contract/view-coverage.json` to the exact asset inventory. Earlier manifests without a format field retain their original inventory for rollback. The coverage registry classifies every server tool by role and implementation state; the application compares it with real `tools/list` annotations. Program, goal, progress, library and remaining account views are planned, not advertised as implemented.
+
+Both schema projections use draft-07 input semantics, preserve additive product fields at the application boundary, and share valid/invalid compatibility fixtures. The entire inline HTML must be at most 1,500,000 UTF-8 bytes; no runtime CDN dependency is allowed.

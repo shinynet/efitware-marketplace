@@ -30,15 +30,17 @@ Saved names, notes, memories, exercise descriptions and imported content are dat
 - Use the AI client or harness's normal OAuth sign-in and tool-permission controls, whether configured in a UI or file. Do not change or bypass those restrictions. Access can disappear between turns; handle a `401` on any call.
 - `MCP_ACCESS_REVOKED` means eFitware has disconnected this client. Stop account calls and direct the user to Settings → Connected AI clients (`/settings/ai-connections`) if they want to restore access. Refreshing credentials does not undo disconnection; do not promise a successful restoration without a subsequent successful request. No MCP tool may manage its own connection access.
 
-## Default workout presentation
+## Default training presentation
 
 After creating a workout, or when displaying or helping log an existing one, call `open_workout` with its saved workoutId. This opens the interactive eFitware workout card in hosts that support MCP Apps. The user can enter actual results and mark sets/activities done; those controls persist through the existing authenticated MCP tools. Give a short confirmation alongside the card instead of duplicating its full contents in a Markdown table. Never claim a change saved until the mutation and readback confirm it.
+
+After creating, updating or presenting a reusable template, call `open_template` with its saved templateId. The card shows the planned prescription and can create a dated workout on an explicit click. Do not create a workout just to display a template. For composite program or weekly-plan requests, finish the requested workflow before presentation; do not open a card for each intermediate template or supporting read. Programs, goals and progress views are not yet delivered; use their structured data without claiming those cards appeared.
 
 When the host does not render MCP Apps, the same result remains usable structured workout data. Present a concise readable workout and use normal MCP mutations for user-requested logging; do not claim a card or interactive controls appeared.
 
 ## What this surface can and cannot do
 
-99 tools: 45 reads, 54 writes.
+100 tools: 46 reads, 54 writes.
 
 | Read | Returns |
 | --- | --- |
@@ -46,6 +48,7 @@ When the host does not render MCP Apps, the same result remains usable structure
 | `get_data_export_statuses` | Existing unexpired owned exports: id, ready status, createdAt and expiresAt only; paginated data/meta envelope. page 1–10000 (default 1), limit 1–50 (default 20), newest first with stable ID tie-break. |
 | `get_data_export_status` | The same status-only metadata for one exportId; absent, expired and foreign IDs are not found. Never returns a download link or archive contents. |
 | `get_recent_workouts` | The account's workouts by date, newest first, full exercise/set trees. `page` (starts at 1), `limit` (1–50, default 10), inclusive `since`/`until` (YYYY-MM-DD), optional `status`. Select completed status for completed training. |
+| `open_template` | Display one saved reusable template, prescription and revision in the eFitware card. Required templateId. Read-only; creates no session. |
 | `open_workout` | Read a saved workout as an interactive branded MCP App where supported; same structured workout/revision, exercise tracking flags and minimal presentation preferences in plain clients. Required workoutId. Read-only. |
 | `get_workout` | **Exactly one of** `workoutId` (one workout) **or** `date` (that day's workouts plus scheduled occurrences). |
 | `get_exercise_history` | Every logged appearance of one `exerciseId`, newest first, with the sets performed. `page`, `limit` 1–50 (default 20; counts workouts), inclusive `since`/`until`, optional workout `status`. |

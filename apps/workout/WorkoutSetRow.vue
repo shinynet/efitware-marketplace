@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, onUnmounted, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { Tracking, ViewSet } from './model'
 import { displayMeasure, formatMeasure, parseInput, storageValue, type ActualField } from './presentation'
@@ -13,9 +13,12 @@ const { set, number, tracking = undefined, system, disabled, save } = defineProp
   disabled: boolean
   save: (patch: Record<string, number | boolean | null>) => Promise<boolean | undefined> | undefined
 }>()
+const emit = defineEmits<{ dirty: [value: boolean] }>()
 const { t, locale } = useI18n()
 const invalid = ref(false)
 const draft = reactive<Partial<Record<ActualField, { text: string, unit?: string, locale: string }>>>({})
+watch(() => Object.values(draft).some(value => value !== undefined), value => emit('dirty', value), { immediate: true })
+onUnmounted(() => emit('dirty', false))
 const fields = computed(() => (['weight', 'reps', 'duration', 'distance'] as const).filter((field) => {
   const flag = { weight: 'tracksWeight', reps: 'tracksReps', duration: 'tracksTime', distance: 'tracksDistance' } as const
   return tracking?.[flag[field]] || set[field] !== undefined
