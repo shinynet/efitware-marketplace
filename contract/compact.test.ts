@@ -117,6 +117,34 @@ it('binds undo to the displayed receipt only and counts trained days from comple
   expect(summary.facts).toEqual([{ label: 'Sessions', value: '3' }, { label: 'Completed', value: '1' }, { label: 'Days trained', value: '1' }])
 })
 
+it('translates every goal, plan, program and workout status in both locales', () => {
+  const goal = structuredClone(fixtures.goalViews.find(fixture => fixture.view === 'goal' && fixture.valid)!.input) as { record: Record<string, unknown> }
+  const plan = structuredClone(fixtures.goalViews.find(fixture => fixture.view === 'goal-plan' && fixture.valid)!.input) as { record: Record<string, unknown> }
+  const expected = {
+    en: { goal: { active: 'Active', achieved: 'Achieved', abandoned: 'Abandoned' }, plan: { active: 'Active', paused: 'Paused', completed: 'Completed', archived: 'Archived' } },
+    de: { goal: { active: 'Aktiv', achieved: 'Erreicht', abandoned: 'Aufgegeben' }, plan: { active: 'Aktiv', paused: 'Pausiert', completed: 'Abgeschlossen', archived: 'Archiviert' } }
+  }
+  for (const locale of ['en', 'de'] as const) {
+    const options = { locale, system: 'metric' as const, ...translator(locale) }
+    for (const [status, label] of Object.entries(expected[locale].goal)) {
+      const summary = compactSummary(parseTrainingView({ ...goal, record: { ...goal.record, status }, presentation }), options)
+      expect(summary.eyebrow.endsWith(` · ${label}`), summary.eyebrow).toBe(true)
+    }
+    for (const [status, label] of Object.entries(expected[locale].plan)) {
+      const summary = compactSummary(parseTrainingView({ ...plan, record: { ...plan.record, status }, presentation }), options)
+      expect(summary.eyebrow.endsWith(` · ${label}`), summary.eyebrow).toBe(true)
+    }
+    for (const status of ['planned', 'in_progress', 'completed', 'skipped', 'abandoned']) {
+      const summary = compactSummary(parseTrainingView({ ...workout, workout: { ...workout.workout, status } }), options)
+      expect(summary.facts[2]!.value).not.toBe(status === 'completed' && locale === 'en' ? 'completed' : status)
+      expect(summary.facts[2]!.value).not.toMatch(/_/)
+    }
+  }
+  const program = (status: string) => parseTrainingView({ view: 'program', record: { id: 'a'.repeat(24), name: 'Block', status, revision: `program:1:${'a'.repeat(64)}` }, related: { schedules: [], schedulesMeta: { total: 0, page: 1, limit: 10 }, attachedWorkouts: [], attachedWorkoutsMeta: { total: 0, page: 1, limit: 10 }, recentWorkouts: [], recentWorkoutsMeta: { total: 0, page: 1, limit: 10 }, workoutCount: 0, today: '2026-09-10', page: 1, limit: 10, collection: 'schedules' }, presentation })
+  expect(compactSummary(program('active'), { locale: 'de', system: 'metric', ...translator('de') }).eyebrow).toMatch(/Aktiv$/)
+  expect(compactSummary(program('archived'), { locale: 'en', system: 'metric', ...translator('en') }).eyebrow).toMatch(/Archived$/)
+})
+
 it('labels the exercise progression series as an estimate', () => {
   const day = (index: number) => `2026-09-0${index + 1}`
   const view = parseTrainingView({ view: 'exercise-progress', record: { id: 'd'.repeat(24), name: 'Bench press', modality: 'resistance' }, related: {

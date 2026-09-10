@@ -124,7 +124,7 @@ export const compactSummary = (view: TrainingView, options: Options): CompactSum
       const { record, related } = view
       const latest = related.latestCheckIn
       return {
-        eyebrow: dot(t('compact.goal'), t(record.status)), title: record.name,
+        eyebrow: dot(t('compact.goal'), t(`goalStatus.${record.status}`)), title: record.name,
         facts: [fact(t('compact.targetDate'), record.targetDate ? monthDay(record.targetDate, locale) : t('compact.none')), fact(t('compact.daysLeft'), record.targetDate ? count(Math.max(0, daysBetween(related.today, record.targetDate))) : '—'), fact(t('compact.lastCheckIn'), latest ? dot(latest.value, monthDay(latest.date, locale)) : t('compact.none'))],
         path: `/goals/${record.id}`
       }
@@ -134,7 +134,7 @@ export const compactSummary = (view: TrainingView, options: Options): CompactSum
       const version = related.displayedVersion
       const current = version.phases.find(phase => phase.startDate <= related.today && related.today <= phase.endDate)
       return {
-        eyebrow: dot(t('compact.goalPlan'), t(record.status)), title: related.goal.name,
+        eyebrow: dot(t('compact.goalPlan'), t(`planStatus.${record.status}`)), title: related.goal.name,
         facts: [fact(t('compact.phases'), count(version.phases.length)), fact(t('compact.currentPhase'), current?.name ?? t('compact.none')), fact(t('compact.version'), count(version.version))],
         path: `/goals/${record.goalId}/plan`
       }
