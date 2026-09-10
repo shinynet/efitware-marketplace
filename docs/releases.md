@@ -69,3 +69,11 @@ Format 5 adds the three progress input schemas while retaining earlier inventori
 ## Library and context release
 
 0.1.12 adds library, exercise, training-context and memory views in format 6. Template exercise names navigate to their supporting definitions; no extra cards are opened for incidental creation. Simple controls use existing MCP mutations with readback and original retry intent; memory corrections carry the current revision. Complex changes use the host follow-up explicitly. The copied context vocabulary records its source commit and projection in PROVENANCE.json. Previous manifest inventories remain supported for rollback.
+
+## Setup guidance and naming (0.1.14)
+
+The skill is now `efitware` (directory `plugins/efitware/skills/efitware`, display name "eFitware"); the standalone archive keeps the file name `efitware-coach.zip` so every published inventory format stays valid, but it now extracts to `efitware/`. Consumers that read the skill out of the archive must accept both entry paths across releases. The Claude catalog entry carries `displayName`, `author`, `homepage` and `keywords` so hosts render "eFitware" rather than a capitalised identifier.
+
+INSTALL.md, the skill's Connecting section and the Codex listing copy describe the observed Claude flow: after Sync the Discover tab is filtered to the marketplace and the card needs an explicit Add, and the server is connected from the plugin's Connectors tab (Connect → Add → Connect → sign in), without which a chat has the skill but no tools. The skill tells the model to say exactly that instead of claiming the plugin is missing.
+
+No tool inventory, schema or card change; `minimumAppCommit` is unchanged.

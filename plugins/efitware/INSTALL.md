@@ -1,12 +1,18 @@
 # eFitware external AI preview
 
-Use your own AI to design, record and review training. The plugin contains the efitware-coach skill and a remote MCP connection to `https://app.efitware.com/mcp/v1`. Your AI supplies the reasoning and renders its own charts. eFitware stores the records. The built-in Coach may be disabled and the eFitware app may be closed.
+Use your own AI to design, record and review training. The plugin contains the eFitware skill and a remote MCP connection to `https://app.efitware.com/mcp/v1`. Your AI supplies the reasoning and renders its own charts. eFitware stores the records. The built-in Coach may be disabled and the eFitware app may be closed.
 
 This is a preview, separate from an accepted public-directory listing. Tool availability follows the connected server; the package cannot grant access or enable unavailable tools. Current setup instructions are at https://www.efitware.com/ai.
 
-## Claude Desktop
+## Claude (Desktop app and claude.ai)
 
-Open Customize → Plugins → + → Add marketplace → Add from a repository. Add `https://www.efitware.com/marketplace.git`, select eFitware and install it. Enable its connector and follow normal browser sign-in. Start a fresh conversation. No manual archive download is needed.
+1. Open Customize → Plugins → Add → Add marketplace → Add from a repository.
+2. Pick `shinynet/efitware-marketplace` from the GitHub list (search for it if it is not shown) and click Sync. The dialog closes and the Discover tab switches to a view filtered to this marketplace, showing one eFitware card.
+3. Click **Add** on that card. eFitware now appears under Plugins → Yours.
+4. Open the eFitware plugin, then its **Connectors** tab. Click **Connect**, keep the pre-filled endpoint `https://app.efitware.com/mcp/v1` and the detected sign-in settings, click Add, then click Connect again and sign in to your eFitware account.
+5. Start a new conversation and ask for your training context or your progress.
+
+Until step 4 is done, a chat loads the eFitware skill but has no eFitware tools. If Claude says the connection is missing, do step 4; you do not need to reinstall the plugin. A notice may ask you to grant the Claude GitHub App access to the marketplace repository; that only enables automatic plugin updates and can be skipped.
 
 ## Codex Desktop
 
@@ -22,7 +28,7 @@ The ZIP archives are optional fallbacks for clients that support custom upload o
 
 ## Standalone skill or plain MCP
 
-For a client with Agent Skills support, upload `efitware-coach.zip` or put its `efitware-coach` directory in that client's supported skill location. Configure the remote MCP endpoint separately and sign in normally. For a client without skills, connect only the endpoint: tool descriptions and schemas remain usable. Do not paste access tokens into the skill or plugin files.
+For a client with Agent Skills support, upload `efitware-coach.zip` or put its `efitware` directory in that client's supported skill location. (The archive keeps its original file name for compatibility with existing installers.) Configure the remote MCP endpoint separately and sign in normally. For a client without skills, connect only the endpoint: tool descriptions and schemas remain usable. Do not paste access tokens into the skill or plugin files.
 
 ## First use
 

@@ -146,7 +146,7 @@
       "sha256": "45f2fbd4d1b69df53c8f93f9af5406055eea1388fac17a8d78cc115ca6d7a775"
     },
     {
-      "path": "plugins/efitware/skills/efitware-coach/assets/efitware-icon.png",
+      "path": "plugins/efitware/skills/efitware/assets/efitware-icon.png",
       "source": "assets/brand/platform/android/play-store-icon-512.png",
       "repository": "shinynet/efitware-app",
       "commit": "c46b6ede6c59dc82f1d5300c7b0dc2fe25652b42",
