@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "efitware": {
+    "eFitware": {
       "type": "http",
       "url": "https://app.efitware.com/mcp/v1"
     }
