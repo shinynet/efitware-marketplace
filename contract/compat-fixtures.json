@@ -321,5 +321,72 @@
       },
       "valid": false
     }
+  ],
+  "calendarRanges": [
+    {
+      "from": "2026-03-07",
+      "to": "2026-03-09",
+      "days": [
+        "2026-03-07",
+        "2026-03-08",
+        "2026-03-09"
+      ]
+    },
+    {
+      "from": "2026-10-31",
+      "to": "2026-11-02",
+      "days": [
+        "2026-10-31",
+        "2026-11-01",
+        "2026-11-02"
+      ]
+    },
+    {
+      "from": "2028-02-28",
+      "to": "2028-03-01",
+      "days": [
+        "2028-02-28",
+        "2028-02-29",
+        "2028-03-01"
+      ]
+    }
+  ],
+  "recurrences": [
+    {
+      "rule": "FREQ=DAILY;INTERVAL=2",
+      "expected": {
+        "freq": "DAILY",
+        "interval": 2,
+        "byDays": []
+      }
+    },
+    {
+      "rule": "FREQ=WEEKLY;BYDAY=FR,MO,WE",
+      "expected": {
+        "freq": "WEEKLY",
+        "byDays": [
+          "MO",
+          "WE",
+          "FR"
+        ]
+      }
+    },
+    {
+      "rule": "FREQ=MONTHLY;BYDAY=-1FR",
+      "expected": {
+        "freq": "MONTHLY",
+        "monthlyMode": "weekday",
+        "ordinal": -1,
+        "weekday": "FR"
+      }
+    },
+    {
+      "rule": "FREQ=YEARLY;BYMONTH=2;BYMONTHDAY=28",
+      "expected": {
+        "freq": "YEARLY",
+        "month": 2,
+        "monthDay": 28
+      }
+    }
   ]
 }

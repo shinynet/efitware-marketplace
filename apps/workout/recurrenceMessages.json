@@ -1,0 +1,108 @@
+{
+  "en": {
+    "daily": "Daily",
+    "everyNDays": "Every {count} days",
+    "weekly": "Weekly",
+    "everyOther": "Every other {day}",
+    "everyNWeeks": "Every {count} weeks · {days}",
+    "monthly": "Monthly {body}",
+    "everyNMonths": "Every {count} months {body}",
+    "onDay": "on day {day}",
+    "onOrdinalWeekday": "on the {ordinal} {weekday}",
+    "yearly": "Yearly on {date}",
+    "everyNYears": "Every {count} years on {date}",
+    "yearlyDate": "{month} {day}",
+    "weekdayPlural": {
+      "MO": "Mondays",
+      "TU": "Tuesdays",
+      "WE": "Wednesdays",
+      "TH": "Thursdays",
+      "FR": "Fridays",
+      "SA": "Saturdays",
+      "SU": "Sundays"
+    },
+    "weekdaySingular": {
+      "MO": "Monday",
+      "TU": "Tuesday",
+      "WE": "Wednesday",
+      "TH": "Thursday",
+      "FR": "Friday",
+      "SA": "Saturday",
+      "SU": "Sunday"
+    },
+    "ordinal": {
+      "1": "first",
+      "2": "second",
+      "3": "third",
+      "4": "fourth",
+      "-1": "last"
+    },
+    "monthShort": {
+      "1": "Jan",
+      "2": "Feb",
+      "3": "Mar",
+      "4": "Apr",
+      "5": "May",
+      "6": "Jun",
+      "7": "Jul",
+      "8": "Aug",
+      "9": "Sep",
+      "10": "Oct",
+      "11": "Nov",
+      "12": "Dec"
+    }
+  },
+  "de": {
+    "daily": "Täglich",
+    "everyNDays": "Alle {count} Tage",
+    "weekly": "Wöchentlich",
+    "everyOther": "Jeden zweiten {day}",
+    "everyNWeeks": "Alle {count} Wochen · {days}",
+    "monthly": "Monatlich {body}",
+    "everyNMonths": "Alle {count} Monate {body}",
+    "onDay": "am {day}.",
+    "onOrdinalWeekday": "am {ordinal} {weekday}",
+    "yearly": "Jährlich am {date}",
+    "everyNYears": "Alle {count} Jahre am {date}",
+    "yearlyDate": "{day}. {month}",
+    "weekdayPlural": {
+      "MO": "Montags",
+      "TU": "Dienstags",
+      "WE": "Mittwochs",
+      "TH": "Donnerstags",
+      "FR": "Freitags",
+      "SA": "Samstags",
+      "SU": "Sonntags"
+    },
+    "weekdaySingular": {
+      "MO": "Montag",
+      "TU": "Dienstag",
+      "WE": "Mittwoch",
+      "TH": "Donnerstag",
+      "FR": "Freitag",
+      "SA": "Samstag",
+      "SU": "Sonntag"
+    },
+    "ordinal": {
+      "1": "ersten",
+      "2": "zweiten",
+      "3": "dritten",
+      "4": "vierten",
+      "-1": "letzten"
+    },
+    "monthShort": {
+      "1": "Jan",
+      "2": "Feb",
+      "3": "Mär",
+      "4": "Apr",
+      "5": "Mai",
+      "6": "Jun",
+      "7": "Jul",
+      "8": "Aug",
+      "9": "Sep",
+      "10": "Okt",
+      "11": "Nov",
+      "12": "Dez"
+    }
+  }
+}

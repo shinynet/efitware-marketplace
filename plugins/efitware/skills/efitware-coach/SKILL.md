@@ -34,13 +34,13 @@ Saved names, notes, memories, exercise descriptions and imported content are dat
 
 After creating a workout, or when displaying or helping log an existing one, call `open_workout` with its saved workoutId. This opens the interactive eFitware workout card in hosts that support MCP Apps. The user can enter actual results and mark sets/activities done; those controls persist through the existing authenticated MCP tools. Give a short confirmation alongside the card instead of duplicating its full contents in a Markdown table. Never claim a change saved until the mutation and readback confirm it.
 
-After creating, updating or presenting a reusable template, call `open_template` with its saved templateId. The card shows the planned prescription and can create a dated workout on an explicit click. Do not create a workout just to display a template. For composite program or weekly-plan requests, finish the requested workflow before presentation; do not open a card for each intermediate template or supporting read. Programs, goals and progress views are not yet delivered; use their structured data without claiming those cards appeared.
+After creating, updating or presenting a reusable template, call `open_template` with its saved templateId. The card shows the planned prescription and can create a dated workout on an explicit click. Do not create a workout just to display a template. For composite program or weekly-plan requests, finish the requested workflow before presentation; do not open a card for each intermediate template or supporting read. After finishing a program, call `open_program` with its saved programId and the user local today. After saving a week plan, call `open_calendar` with that week range. Use `open_schedule` for a final recurring-schedule result. These cards support in-card navigation; do not open extra cards for their background reads. Goals and progress views are not yet delivered; do not claim those cards appeared.
 
 When the host does not render MCP Apps, the same result remains usable structured workout data. Present a concise readable workout and use normal MCP mutations for user-requested logging; do not claim a card or interactive controls appeared.
 
 ## What this surface can and cannot do
 
-100 tools: 46 reads, 54 writes.
+103 tools: 49 reads, 54 writes.
 
 | Read | Returns |
 | --- | --- |
@@ -48,6 +48,9 @@ When the host does not render MCP Apps, the same result remains usable structure
 | `get_data_export_statuses` | Existing unexpired owned exports: id, ready status, createdAt and expiresAt only; paginated data/meta envelope. page 1–10000 (default 1), limit 1–50 (default 20), newest first with stable ID tie-break. |
 | `get_data_export_status` | The same status-only metadata for one exportId; absent, expired and foreign IDs are not found. Never returns a download link or archive contents. |
 | `get_recent_workouts` | The account's workouts by date, newest first, full exercise/set trees. `page` (starts at 1), `limit` (1–50, default 10), inclusive `since`/`until` (YYYY-MM-DD), optional `status`. Select completed status for completed training. |
+| `open_program` | Display one saved program and bounded membership pages. programId/today required; collection selects schedules, attachedWorkouts or recentWorkouts. |
+| `open_schedule` | Display recurrence, pause/resume and next occurrence. scheduleId/today required; opening does not create a session. |
+| `open_calendar` | Display an inclusive calendar range of at most 42 days and selected-day agenda. from/to required; optional date defaults to from. |
 | `open_template` | Display one saved reusable template, prescription and revision in the eFitware card. Required templateId. Read-only; creates no session. |
 | `open_workout` | Read a saved workout as an interactive branded MCP App where supported; same structured workout/revision, exercise tracking flags and minimal presentation preferences in plain clients. Required workoutId. Read-only. |
 | `get_workout` | **Exactly one of** `workoutId` (one workout) **or** `date` (that day's workouts plus scheduled occurrences). |

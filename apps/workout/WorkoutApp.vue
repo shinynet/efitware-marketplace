@@ -2,6 +2,9 @@
 import { computed, onMounted, onUnmounted, ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import TemplateView from './TemplateView.vue'
+import ProgramView from './ProgramView.vue'
+import ScheduleView from './ScheduleView.vue'
+import CalendarView from './CalendarView.vue'
 import WorkoutSetRow from './WorkoutSetRow.vue'
 import { workoutSections } from './lib/sections'
 import { interleavedExerciseSequence } from './lib/sequenceUtils'
@@ -17,15 +20,17 @@ const setDirty = (id: string, dirty: boolean) => {
   if (dirty) dirtyRows.value.add(id)
   else dirtyRows.value.delete(id)
 }
-const returnToTemplate = async (discard = false) => {
+const returnToPreviousView = async (discard = false) => {
   if (dirtyRows.value.size && !discard) { leaving.value = true; return }
-  if (!connection.sourceTemplateId.value) return
-  await connection.navigate({ name: 'open_template', arguments: { templateId: connection.sourceTemplateId.value } })
+  await connection.back()
   leaving.value = false
 }
 
-const { view, template, presentation, sourceTemplateId, host, busy, error, saved, stale, pending, canWrite } = connection
+const { route, backTarget, view, template, presentation, host, busy, error, saved, stale, pending, canWrite } = connection
 const { t, locale } = useI18n()
+const backLabel = computed(() => ({ open_template: 'backToTemplate', open_program: 'backToProgram', open_schedule: 'backToSchedule', open_calendar: 'backToCalendar', open_workout: 'backToWorkout' })[backTarget.value?.name ?? 'open_workout'] ?? 'backToWorkout')
+const refreshLabel = computed(() => workout.value ? 'refresh' : template.value ? 'templateRefresh' : 'recordRefresh')
+const staleLabel = computed(() => workout.value ? 'stale' : template.value ? 'templateStale' : 'recordStale')
 const system = computed(() => presentation.value?.unitSystem ?? 'metric')
 const workout = computed(() => view.value?.workout)
 const sets = computed(() => workout.value?.exercises.flatMap(exercise => exercise.sets) ?? [])
@@ -45,12 +50,12 @@ watchEffect(() => {
 const dateLabel = computed(() => workout.value ? new Intl.DateTimeFormat(locale.value, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${workout.value.date}T12:00:00Z`)) : '')
 const sections = computed(() => workoutSections(workout.value?.exercises ?? [], workout.value?.activities ?? []))
 const errorText = computed(() => {
-  if (error.value === 'MCP_REVISION_CONFLICT') return t(template.value ? 'templateStale' : 'stale')
+  if (error.value === 'MCP_REVISION_CONFLICT') return t(staleLabel.value)
   if (error.value === 'CONNECTION_LOST') return t(pending.value ? 'lost' : 'unavailable')
   if (pending.value) return t('lost')
-  if (error.value.startsWith('READ_FAILED')) return t(template.value ? 'templateReadFailed' : 'readFailed')
+  if (error.value.startsWith('READ_FAILED')) return t(workout.value ? 'readFailed' : 'templateReadFailed')
   if (error.value === 'TOOLS_UNAVAILABLE') return t('unavailable')
-  return t(template.value ? 'templateFailed' : 'failed')
+  return t(workout.value ? 'failed' : template.value ? 'templateFailed' : 'recordFailed')
 })
 onMounted(connection.start)
 onUnmounted(connection.close)
@@ -73,7 +78,7 @@ onUnmounted(connection.close)
       </button>
     </header>
     <p
-      v-if="!workout && !template && !error"
+      v-if="!route && !error"
       role="status"
     >
       {{ t('loading') }}
@@ -83,7 +88,7 @@ onUnmounted(connection.close)
       role="alert"
       class="mb-5 rounded border border-terracotta p-4"
     >
-      <p>{{ error ? errorText : t(template ? 'templateStale' : 'stale') }}</p>
+      <p>{{ error ? errorText : t(staleLabel) }}</p>
       <button
         v-if="pending"
         :disabled="busy"
@@ -93,25 +98,25 @@ onUnmounted(connection.close)
         {{ t('retry') }}
       </button>
       <button
-        v-else-if="workout || template"
+        v-else-if="route"
         :disabled="busy"
         class="secondary mt-3"
         @click="connection.refresh()"
       >
-        {{ t(template ? 'templateRefresh' : 'refresh') }}
+        {{ t(refreshLabel) }}
       </button>
     </aside>
     <nav
-      v-if="sourceTemplateId && workout"
+      v-if="backTarget"
       :aria-label="t('navigation')"
       class="mb-4"
     >
       <button
         class="secondary"
         :disabled="busy || !!pending || connection.needsReadback.value"
-        @click="returnToTemplate()"
+        @click="returnToPreviousView()"
       >
-        ← {{ t('backToTemplate') }}
+        <span aria-hidden="true">←</span> {{ t(backLabel) }}
       </button>
     </nav>
     <aside
@@ -119,7 +124,7 @@ onUnmounted(connection.close)
       class="mb-4 rounded border border-terracotta p-4"
       role="alert"
     >
-      <p>{{ t('leaveUnsaved') }}</p>
+      <p>{{ t(backTarget?.name === 'open_template' ? 'leaveUnsaved' : 'leaveViewUnsaved') }}</p>
       <button
         class="secondary mt-3"
         @click="leaving = false"
@@ -129,7 +134,7 @@ onUnmounted(connection.close)
       <button
         class="secondary mt-3"
         :disabled="busy || !!pending"
-        @click="returnToTemplate(true)"
+        @click="returnToPreviousView(true)"
       >
         {{ t('discardAndBack') }}
       </button>
@@ -140,6 +145,28 @@ onUnmounted(connection.close)
       :disabled="!canWrite"
       :create="connection.createFromTemplate"
       :follow-up="connection.sendFollowUp"
+    />
+    <program-view
+      v-if="route?.view === 'program'"
+      :program="route"
+      :disabled="!canWrite"
+      :navigate="connection.navigate"
+      :update="connection.updatePlanning"
+    />
+    <schedule-view
+      v-if="route?.view === 'schedule'"
+      :schedule="route"
+      :disabled="!canWrite"
+      :navigate="connection.navigate"
+      :update="connection.updatePlanning"
+      :create="connection.createOccurrence"
+    />
+    <calendar-view
+      v-if="route?.view === 'calendar'"
+      :calendar="route"
+      :disabled="!canWrite"
+      :navigate="connection.navigate"
+      :create="connection.createOccurrence"
     />
     <template v-if="workout">
       <header class="mb-6">
@@ -259,7 +286,7 @@ onUnmounted(connection.close)
       </section>
     </template>
     <footer
-      v-if="workout || template"
+      v-if="route"
       class="flex flex-wrap items-center justify-between gap-3 border-t border-surface-dark pt-4"
     >
       <p
@@ -273,7 +300,7 @@ onUnmounted(connection.close)
         class="secondary text-xs"
         @click="connection.refresh()"
       >
-        {{ t(template ? 'templateRefresh' : 'refresh') }}
+        {{ t(refreshLabel) }}
       </button>
     </footer>
   </main>

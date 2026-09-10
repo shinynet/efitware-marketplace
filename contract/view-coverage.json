@@ -2,13 +2,22 @@
   "schemaVersion": 1,
   "views": {
     "program": {
-      "delivery": "planned"
+      "delivery": "implemented",
+      "resourceUri": "ui://efitware/app-v1.html",
+      "schemaPath": "contract/program-view.schema.json",
+      "displayTool": "open_program"
     },
     "calendar": {
-      "delivery": "planned"
+      "delivery": "implemented",
+      "resourceUri": "ui://efitware/app-v1.html",
+      "schemaPath": "contract/calendar-view.schema.json",
+      "displayTool": "open_calendar"
     },
     "schedule": {
-      "delivery": "planned"
+      "delivery": "implemented",
+      "resourceUri": "ui://efitware/app-v1.html",
+      "schemaPath": "contract/schedule-view.schema.json",
+      "displayTool": "open_schedule"
     },
     "goal": {
       "delivery": "planned"
@@ -284,7 +293,7 @@
       "views": [
         "calendar"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "get_custom_equipment": {
       "role": "supporting-read",
@@ -445,7 +454,7 @@
       "views": [
         "program"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "get_programs": {
       "role": "supporting-read",
@@ -473,7 +482,7 @@
       "views": [
         "schedule"
       ],
-      "delivery": "planned"
+      "delivery": "implemented"
     },
     "get_schedules": {
       "role": "supporting-read",
@@ -563,6 +572,27 @@
       "role": "action",
       "views": [
         "workout"
+      ],
+      "delivery": "implemented"
+    },
+    "open_calendar": {
+      "role": "display",
+      "views": [
+        "calendar"
+      ],
+      "delivery": "implemented"
+    },
+    "open_program": {
+      "role": "display",
+      "views": [
+        "program"
+      ],
+      "delivery": "implemented"
+    },
+    "open_schedule": {
+      "role": "display",
+      "views": [
+        "schedule"
       ],
       "delivery": "implemented"
     },

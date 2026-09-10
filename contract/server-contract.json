@@ -74,6 +74,9 @@
     "get_workout_reflections",
     "log_set",
     "log_sets",
+    "open_calendar",
+    "open_program",
+    "open_schedule",
     "open_template",
     "open_workout",
     "publish_goal_plan",
@@ -101,5 +104,5 @@
     "update_workout_activity",
     "update_workout_exercise"
   ],
-  "minimumAppCommit": "eed338b591d50dd486f177abdfb4f7202085ed43"
+  "minimumAppCommit": "ba0fad22423fb6ed3d3946e02fad2b19c55cab91"
 }

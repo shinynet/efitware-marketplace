@@ -1,7 +1,20 @@
+import recurrenceMessages from './recurrenceMessages.json'
 export const messages = {
   en: {
+    viewTrainingWeek: 'View my training week', supportsGoal: 'Supports your goal: {name}',
     amrapTarget: 'As many repetitions as possible', rpeTarget: 'Target effort: RPE {value}', tempoTarget: 'Tempo: {value}', sideTarget: { left: 'Left side', right: 'Right side', both: 'Both sides' },
     setCategory: { warmup: 'Warm-up set', working: 'Working set', dropset: 'Drop set', backoff: 'Back-off set', topset: 'Top set', amrap: 'AMRAP set', interval: 'Interval', recovery: 'Recovery', cooldown: 'Cool-down set' },
+
+    recurrence: recurrenceMessages.en,
+    trainingProgram: 'Training program', programMembers: 'Program members', schedules: 'Schedules', attachedWorkouts: 'Attached workouts', recentWorkouts: 'Recent workouts', workoutCount: 'Workouts',
+    active: 'Active', archived: 'Archived', archiveProgram: 'Archive program', reactivateProgram: 'Reactivate program', archiveDoesNotPause: 'Archiving keeps your history and members. It does not pause recurring schedules.',
+    emptyCollection: 'No records on this page.', pagination: 'Pages', previous: 'Previous', next: 'Next', pageOf: 'Page {page} of {total}', through: 'through',
+    recurringSchedule: 'Recurring schedule', scheduleEnabled: 'Schedule active', schedulePaused: 'Schedule paused', nextOccurrence: 'Next occurrence', noOccurrence: 'No upcoming occurrence', starts: 'Starts', ends: 'Ends',
+    viewTemplate: 'View template', viewProgram: 'View program', viewWorkout: 'View workout', manageSchedule: 'Manage schedule', pauseSchedule: 'Pause schedule', resumeSchedule: 'Resume schedule', scheduleActionNote: 'Pause or resume future recurrence. Existing workouts stay unchanged.',
+    createOccurrence: 'Create planned workout and open', createOccurrenceNote: 'This saves the scheduled workout if it does not already exist. It does not start the session or log results.',
+    trainingCalendar: 'Training calendar', yourTraining: 'Your training', calendarRange: 'Calendar range', previousRange: 'Earlier dates', nextRange: 'Later dates', calendarCounts: '{completed} complete · {total} sessions | {completed} complete · {total} session | {completed} complete · {total} sessions', emptyAgenda: 'Nothing scheduled for this day.', scheduledOccurrence: 'Scheduled — no saved workout yet',
+    backToProgram: 'Back to program', backToSchedule: 'Back to schedule', backToCalendar: 'Back to calendar', backToWorkout: 'Back to workout', leaveViewUnsaved: 'You have unsaved results. Keep editing, or discard them to go back.', recordRefresh: 'Reload saved record', recordStale: 'This record changed. Reload it before making another change.', recordFailed: 'The action could not be completed. Reload the record and check your connection permissions.',
+
     templateRefresh: 'Reload saved template', templateReadFailed: 'Could not reload the saved record. Check its current state before continuing.',
     templateFailed: 'The action could not be completed. Reload the template and check your connection permissions.',
     templateStale: 'This template changed. Reload it before making another change.',
@@ -35,8 +48,20 @@ export const messages = {
     activity: 'Activity', restKind: 'Rest', water_break: 'Water break', stretching: 'Stretching', custom: 'Activity'
   },
   de: {
+    viewTrainingWeek: 'Meine Trainingswoche ansehen', supportsGoal: 'Unterstützt dein Ziel: {name}',
     amrapTarget: 'So viele Wiederholungen wie möglich', rpeTarget: 'Zielanstrengung: RPE {value}', tempoTarget: 'Tempo: {value}', sideTarget: { left: 'Linke Seite', right: 'Rechte Seite', both: 'Beide Seiten' },
     setCategory: { warmup: 'Aufwärmsatz', working: 'Arbeitssatz', dropset: 'Reduktionssatz', backoff: 'Back-off-Satz', topset: 'Topsatz', amrap: 'AMRAP-Satz', interval: 'Intervall', recovery: 'Erholung', cooldown: 'Abwärmsatz' },
+
+    recurrence: recurrenceMessages.de,
+    trainingProgram: 'Trainingsprogramm', programMembers: 'Programminhalte', schedules: 'Zeitpläne', attachedWorkouts: 'Zugeordnete Trainings', recentWorkouts: 'Letzte Trainings', workoutCount: 'Trainings',
+    active: 'Aktiv', archived: 'Archiviert', archiveProgram: 'Programm archivieren', reactivateProgram: 'Programm reaktivieren', archiveDoesNotPause: 'Beim Archivieren bleiben Verlauf und Inhalte erhalten. Wiederkehrende Zeitpläne werden nicht pausiert.',
+    emptyCollection: 'Keine Einträge auf dieser Seite.', pagination: 'Seiten', previous: 'Zurück', next: 'Weiter', pageOf: 'Seite {page} von {total}', through: 'bis',
+    recurringSchedule: 'Wiederkehrender Zeitplan', scheduleEnabled: 'Zeitplan aktiv', schedulePaused: 'Zeitplan pausiert', nextOccurrence: 'Nächster Termin', noOccurrence: 'Kein bevorstehender Termin', starts: 'Beginn', ends: 'Ende',
+    viewTemplate: 'Vorlage ansehen', viewProgram: 'Programm ansehen', viewWorkout: 'Training ansehen', manageSchedule: 'Zeitplan verwalten', pauseSchedule: 'Zeitplan pausieren', resumeSchedule: 'Zeitplan fortsetzen', scheduleActionNote: 'Pausiere oder aktiviere zukünftige Wiederholungen. Bestehende Trainings bleiben unverändert.',
+    createOccurrence: 'Geplantes Training erstellen und öffnen', createOccurrenceNote: 'Das geplante Training wird gespeichert, falls es noch nicht existiert. Die Einheit wird nicht gestartet; Ergebnisse werden nicht erfasst.',
+    trainingCalendar: 'Trainingskalender', yourTraining: 'Dein Training', calendarRange: 'Kalenderzeitraum', previousRange: 'Frühere Tage', nextRange: 'Spätere Tage', calendarCounts: '{completed} abgeschlossen · {total} Einheiten | {completed} abgeschlossen · {total} Einheit | {completed} abgeschlossen · {total} Einheiten', emptyAgenda: 'Für diesen Tag ist nichts geplant.', scheduledOccurrence: 'Geplant — noch kein Training gespeichert',
+    backToProgram: 'Zurück zum Programm', backToSchedule: 'Zurück zum Zeitplan', backToCalendar: 'Zurück zum Kalender', backToWorkout: 'Zurück zum Training', leaveViewUnsaved: 'Du hast ungespeicherte Ergebnisse. Bearbeite sie weiter oder verwirf sie, um zurückzugehen.', recordRefresh: 'Gespeicherten Eintrag neu laden', recordStale: 'Dieser Eintrag wurde geändert. Lade ihn vor weiteren Änderungen neu.', recordFailed: 'Die Aktion konnte nicht abgeschlossen werden. Lade den Eintrag neu und prüfe die Berechtigungen der Verbindung.',
+
     templateRefresh: 'Gespeicherte Vorlage neu laden', templateReadFailed: 'Der gespeicherte Eintrag konnte nicht neu geladen werden. Prüfe seinen aktuellen Stand vor dem Fortfahren.',
     templateFailed: 'Die Aktion konnte nicht abgeschlossen werden. Lade die Vorlage neu und prüfe die Berechtigungen der Verbindung.',
     templateStale: 'Diese Vorlage wurde geändert. Lade sie vor weiteren Änderungen neu.',
