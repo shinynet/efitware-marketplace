@@ -24,7 +24,7 @@ for (const path of paths) {
   files[path] = { sha256: sha256(content), bytes: content.length, asset: path.split('/').at(-1)! }
 }
 const plugin = JSON.parse(await readFile('plugins/efitware/.codex-plugin/plugin.json', 'utf8')) as { version: string }
-const skill = await readFile('plugins/efitware/skills/efitware-coach/SKILL.md')
+const skill = await readFile('plugins/efitware/skills/efitware/SKILL.md')
 const serverContract = JSON.parse(await readFile('contract/server-contract.json', 'utf8'))
 const provenance = JSON.parse(await readFile('apps/workout/lib/PROVENANCE.json', 'utf8')) as { files: { path: string }[] }
 const theme = createHash('sha256')

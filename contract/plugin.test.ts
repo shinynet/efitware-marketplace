@@ -3,7 +3,7 @@ import { expect, it } from 'vitest'
 import serverContract from './server-contract.json'
 
 it('keeps the published skill inventory consistent with the required server surface', () => {
-  const skill = readFileSync('plugins/efitware/skills/efitware-coach/SKILL.md', 'utf8')
+  const skill = readFileSync('plugins/efitware/skills/efitware/SKILL.md', 'utf8')
   const start = skill.indexOf('## What this surface can and cannot do')
   const section = skill.slice(start, skill.indexOf('\n## ', start + 5))
   const names = [...new Set([...section.matchAll(/^\| `([^`\s]+)` \|/gm)].map(match => match[1]))].sort()

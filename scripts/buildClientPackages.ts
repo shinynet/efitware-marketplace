@@ -20,10 +20,10 @@ export const buildClientPackages = async (output: string) => {
   const packages = [
     { name: 'codex', files: [
       ['.agents/plugins/marketplace.json', '.agents/plugins/marketplace.json'],
-      ...['.codex-plugin/plugin.json', '.mcp.json', 'INSTALL.md', ...iconFiles, ...skillFiles.map(path => `skills/efitware-coach/${path}`)].map(path => [`${plugin}/${path}`, `${plugin}/${path}`])
+      ...['.codex-plugin/plugin.json', '.mcp.json', 'INSTALL.md', ...iconFiles, ...skillFiles.map(path => `skills/efitware/${path}`)].map(path => [`${plugin}/${path}`, `${plugin}/${path}`])
     ] },
-    { name: 'claude', files: ['.claude-plugin/plugin.json', '.mcp.json', 'INSTALL.md', ...skillFiles.map(path => `skills/efitware-coach/${path}`)].map(path => [`${plugin}/${path}`, path]) },
-    { name: 'coach', files: skillFiles.map(path => [`${plugin}/skills/efitware-coach/${path}`, `efitware-coach/${path}`]) }
+    { name: 'claude', files: ['.claude-plugin/plugin.json', '.mcp.json', 'INSTALL.md', ...skillFiles.map(path => `skills/efitware/${path}`)].map(path => [`${plugin}/${path}`, path]) },
+    { name: 'coach', files: skillFiles.map(path => [`${plugin}/skills/efitware/${path}`, `efitware/${path}`]) }
   ]
   for (const bundle of packages) {
     const cwd = resolve(destination, bundle.name)
