@@ -1,0 +1,428 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "view": {
+      "type": "string",
+      "const": "share"
+    },
+    "record": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "number",
+          "const": 2
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "personal_record",
+            "workout_complete",
+            "exercise_progress",
+            "training_progress",
+            "period_summary"
+          ]
+        },
+        "locale": {
+          "type": "string",
+          "enum": [
+            "en",
+            "de"
+          ]
+        },
+        "unitSystem": {
+          "type": "string",
+          "enum": [
+            "metric",
+            "imperial"
+          ]
+        },
+        "theme": {
+          "type": "string",
+          "enum": [
+            "light",
+            "dark"
+          ]
+        },
+        "eyebrow": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "titleLines": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "hero": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value"
+          ]
+        },
+        "subline": {
+          "type": "string"
+        },
+        "facts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              },
+              "unit": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "label",
+              "value"
+            ]
+          }
+        },
+        "chart": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "dots"
+                },
+                "weeks": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "weeks"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "bars"
+                },
+                "bars": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "label": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "label",
+                      "value"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "bars"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "line"
+                },
+                "points": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                },
+                "startLabel": {
+                  "type": "string"
+                },
+                "endLabel": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "points",
+                "startLabel",
+                "endLabel"
+              ]
+            }
+          ]
+        },
+        "attribution": {
+          "type": "object",
+          "properties": {
+            "brand": {
+              "type": "string",
+              "const": "eFitware"
+            },
+            "domain": {
+              "type": "string",
+              "const": "efitware.com"
+            }
+          },
+          "required": [
+            "brand",
+            "domain"
+          ]
+        },
+        "caption": {
+          "type": "string"
+        },
+        "landingUrl": {
+          "type": "string"
+        },
+        "filename": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "kind",
+        "locale",
+        "unitSystem",
+        "theme",
+        "eyebrow",
+        "titleLines",
+        "hero",
+        "facts",
+        "attribution",
+        "caption",
+        "landingUrl",
+        "filename"
+      ]
+    },
+    "related": {
+      "type": "object",
+      "properties": {
+        "request": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "personal_record",
+                "workout_complete",
+                "exercise_progress",
+                "training_progress",
+                "period_summary"
+              ]
+            },
+            "locale": {
+              "type": "string",
+              "enum": [
+                "en",
+                "de"
+              ]
+            },
+            "unitSystem": {
+              "type": "string",
+              "enum": [
+                "metric",
+                "imperial"
+              ]
+            },
+            "options": {
+              "type": "object",
+              "propertyNames": {
+                "type": "string",
+                "enum": [
+                  "includeFirstName",
+                  "includeWorkoutName",
+                  "includeExerciseName",
+                  "includeDate"
+                ]
+              },
+              "additionalProperties": {
+                "type": "boolean"
+              }
+            },
+            "workoutId": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{24}$"
+            },
+            "exerciseId": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{24}$"
+            },
+            "setId": {
+              "type": "string"
+            },
+            "range": {
+              "type": "string",
+              "enum": [
+                "4w",
+                "8w",
+                "12w",
+                "1y"
+              ]
+            },
+            "today": {
+              "type": "string"
+            },
+            "metric": {
+              "type": "string",
+              "enum": [
+                "volume",
+                "consistency",
+                "training_time"
+              ]
+            },
+            "period": {
+              "type": "string",
+              "enum": [
+                "week",
+                "month",
+                "year"
+              ]
+            },
+            "through": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "locale",
+            "unitSystem",
+            "options"
+          ]
+        },
+        "availableOptions": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "enum": [
+              "includeFirstName",
+              "includeWorkoutName",
+              "includeExerciseName",
+              "includeDate"
+            ]
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean"
+              },
+              "defaultValue": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "enabled",
+              "defaultValue"
+            ]
+          }
+        }
+      },
+      "required": [
+        "request",
+        "availableOptions"
+      ]
+    },
+    "presentation": {
+      "type": "object",
+      "properties": {
+        "locale": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unitSystem": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "metric",
+                "imperial"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "theme": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "system",
+                "light",
+                "dark"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "skin": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "calm",
+                "cyanotype",
+                "camellia"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "timeZone": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "locale",
+        "unitSystem",
+        "theme",
+        "skin",
+        "timeZone"
+      ]
+    }
+  },
+  "required": [
+    "view",
+    "record",
+    "related",
+    "presentation"
+  ]
+}

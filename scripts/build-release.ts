@@ -12,7 +12,7 @@ const output = resolve(values.output)
 const sha256 = (content: Uint8Array) => createHash('sha256').update(content).digest('hex')
 await mkdir(output)
 await buildClientPackages(resolve(output, 'packages'))
-const paths = ['workout.html', 'efitware-codex.zip', 'efitware-claude.zip', 'efitware-coach.zip', 'contract/workout-view.schema.json', 'contract/compat-fixtures.json', 'contract/template-view.schema.json', 'contract/view-coverage.json', 'contract/program-view.schema.json', 'contract/schedule-view.schema.json', 'contract/calendar-view.schema.json', 'contract/goal-view.schema.json', 'contract/goal-plan-view.schema.json', 'contract/progress-view.schema.json', 'contract/exercise-progress-view.schema.json', 'contract/body-metric-view.schema.json', 'contract/library-view.schema.json', 'contract/exercise-view.schema.json', 'contract/context-view.schema.json', 'contract/memory-view.schema.json']
+const paths = ['workout.html', 'efitware-codex.zip', 'efitware-claude.zip', 'efitware-coach.zip', 'contract/workout-view.schema.json', 'contract/compat-fixtures.json', 'contract/template-view.schema.json', 'contract/view-coverage.json', 'contract/program-view.schema.json', 'contract/schedule-view.schema.json', 'contract/calendar-view.schema.json', 'contract/goal-view.schema.json', 'contract/goal-plan-view.schema.json', 'contract/progress-view.schema.json', 'contract/exercise-progress-view.schema.json', 'contract/body-metric-view.schema.json', 'contract/library-view.schema.json', 'contract/exercise-view.schema.json', 'contract/context-view.schema.json', 'contract/memory-view.schema.json', 'contract/status-view.schema.json', 'contract/integration-view.schema.json', 'contract/receipts-view.schema.json', 'contract/workout-review-view.schema.json', 'contract/share-view.schema.json']
 await mkdir(resolve(output, 'contract'))
 for (const path of paths) {
   const source = path === 'workout.html' ? 'dist/card/workout.html' : path.startsWith('contract/') ? path : resolve(output, 'packages', path)
@@ -29,6 +29,6 @@ const serverContract = JSON.parse(await readFile('contract/server-contract.json'
 const provenance = JSON.parse(await readFile('apps/workout/lib/PROVENANCE.json', 'utf8')) as { files: { path: string }[] }
 const theme = createHash('sha256')
 for (const path of provenance.files.map(file => file.path).filter(path => path.startsWith('apps/workout/theme/')).sort()) theme.update(path).update('\0').update(await readFile(path))
-const manifest = { formatVersion: 6, version: plugin.version, commit: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), serverContract, skillSha256: sha256(skill), cardSha256: files['workout.html']!.sha256, themeSha256: theme.digest('hex'), files }
+const manifest = { formatVersion: 7, version: plugin.version, commit: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), serverContract, skillSha256: sha256(skill), cardSha256: files['workout.html']!.sha256, themeSha256: theme.digest('hex'), files }
 await writeFile(resolve(output, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`, { flag: 'wx' })
 console.log(JSON.stringify({ version: manifest.version, commit: manifest.commit, output, manifestSha256: sha256(await readFile(resolve(output, 'manifest.json'))) }))

@@ -1,3 +1,4 @@
+import { outcomeMessages } from './outcomeMessages'
 import { contextMessages } from './contextMessages'
 import contextVocabularyEn from './contextVocabulary.en.json'
 import contextVocabularyDe from './contextVocabulary.de.json'
@@ -6,6 +7,7 @@ import { goalMessages } from './goalMessages'
 import recurrenceMessages from './recurrenceMessages.json'
 export const messages = {
   en: {
+    outcomeUi: outcomeMessages.en,
     contextUi: contextMessages.en, contextVocabulary: contextVocabularyEn,
     ...goalMessages.en,
     progressUi: progressMessages.en,
@@ -56,6 +58,7 @@ export const messages = {
     activity: 'Activity', restKind: 'Rest', water_break: 'Water break', stretching: 'Stretching', custom: 'Activity'
   },
   de: {
+    outcomeUi: outcomeMessages.de,
     contextUi: contextMessages.de, contextVocabulary: contextVocabularyDe,
     ...goalMessages.de,
     progressUi: progressMessages.de,
