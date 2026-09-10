@@ -4,15 +4,19 @@ Use your own AI to design, record and review training. The plugin contains the e
 
 This is a preview, separate from an accepted public-directory listing. Tool availability follows the connected server; the package cannot grant access or enable unavailable tools. Current setup instructions are at https://www.efitware.com/ai.
 
-## Claude (Desktop app and claude.ai)
+## Claude (claude.ai and the Desktop app)
 
-1. Open Customize → Plugins → Add → Add marketplace → Add from a repository.
+Add the marketplace on **claude.ai** (the website). The Desktop app's own Add marketplace dialog currently does not register a marketplace, and only claude.ai has the menu that updates or removes one. Once added on claude.ai, the marketplace and plugin appear in the Desktop app as well.
+
+1. On claude.ai, open Customize → Plugins → Add → Add marketplace → Add from a repository.
 2. Pick `shinynet/efitware-marketplace` from the GitHub list (search for it if it is not shown) and click Sync. The dialog closes and the Discover tab switches to a view filtered to this marketplace, showing one eFitware card.
 3. Click **Add** on that card. eFitware now appears under Plugins → Yours.
 4. Open the eFitware plugin, then its **Connectors** tab. Click **Connect**, keep the pre-filled endpoint `https://app.efitware.com/mcp/v1` and the detected sign-in settings, click Add, then click Connect again and sign in to your eFitware account.
 5. Start a new conversation and ask for your training context or your progress.
 
-Until step 4 is done, a chat loads the eFitware skill but has no eFitware tools. If Claude says the connection is missing, do step 4; you do not need to reinstall the plugin. A notice may ask you to grant the Claude GitHub App access to the marketplace repository; that only enables automatic plugin updates and can be skipped.
+Until step 4 is done, a chat loads the eFitware skill but has no eFitware tools. If Claude says the connection is missing, do step 4; you do not need to reinstall the plugin.
+
+**Updates and removal (claude.ai only):** Plugins → Add → **Manage marketplaces** lists the marketplace with a menu offering *Check for updates*, a *Sync automatically* switch (off by default; turn it on to receive new eFitware releases without visiting this menu) and *Remove*. A plugin installed from the marketplace stays on the version last synced until one of these runs; the Desktop app's Update button does not refresh it. If Add marketplace says the marketplace is already added, use Manage marketplaces instead.
 
 ## Codex Desktop
 
