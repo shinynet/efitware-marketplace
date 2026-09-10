@@ -46,6 +46,7 @@ const bars = computed(() => {
     >
       <svg
         viewBox="0 0 350 48"
+        preserveAspectRatio="none"
         role="img"
         :aria-label="summary.bars!.label"
         class="block h-12 w-full text-olive"
