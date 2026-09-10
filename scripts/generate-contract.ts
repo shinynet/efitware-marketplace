@@ -1,3 +1,5 @@
+import { exerciseProgressViewSchema, bodyMetricViewSchema } from '../apps/workout/focusedProgressModel.ts'
+import { progressViewSchema } from '../apps/workout/progressModel.ts'
 import { goalViewSchema, goalPlanViewSchema } from '../apps/workout/goalModel.ts'
 import { programViewSchema, scheduleViewSchema, calendarViewSchema } from '../apps/workout/planningModel.ts'
 import { mkdir, writeFile, readFile } from 'node:fs/promises'
@@ -14,4 +16,4 @@ await writeFile(new URL('../contract/template-view.schema.json', import.meta.url
 const html = await readFile(new URL('../dist/card/workout.html', import.meta.url))
 if (html.byteLength > 1_500_000) throw new Error(`MCP App exceeds 1,500,000 bytes: ${html.byteLength}`)
 
-for (const [name, schema] of Object.entries({ goal: goalViewSchema, 'goal-plan': goalPlanViewSchema, program: programViewSchema, schedule: scheduleViewSchema, calendar: calendarViewSchema })) await writeFile(new URL(`../contract/${name}-view.schema.json`, import.meta.url), `${JSON.stringify(z.toJSONSchema(schema, { io: 'input', target: 'draft-07' }), null, 2)}\n`)
+for (const [name, schema] of Object.entries({ 'exercise-progress': exerciseProgressViewSchema, 'body-metric': bodyMetricViewSchema, progress: progressViewSchema, goal: goalViewSchema, 'goal-plan': goalPlanViewSchema, program: programViewSchema, schedule: scheduleViewSchema, calendar: calendarViewSchema })) await writeFile(new URL(`../contract/${name}-view.schema.json`, import.meta.url), `${JSON.stringify(z.toJSONSchema(schema, { io: 'input', target: 'draft-07' }), null, 2)}\n`)

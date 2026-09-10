@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-const { disabled, request, send } = defineProps<{ disabled: boolean, request: string, send: (prompt: string) => Promise<'accepted' | 'unavailable' | 'rejected' | 'uncertain'> }>()
+const { disabled, request, send, label = 'askAdapt' } = defineProps<{ disabled: boolean, request: string, label?: string, send: (prompt: string) => Promise<'accepted' | 'unavailable' | 'rejected' | 'uncertain'> }>()
 const { t } = useI18n()
 const prompt = ref('')
 const state = ref('')
@@ -27,7 +27,7 @@ const ask = async () => {
     :disabled="disabled || sending"
     @click="ask"
   >
-    {{ t('askAdapt') }}
+    {{ t(label) }}
   </button>
   <p
     v-if="state === 'accepted'"

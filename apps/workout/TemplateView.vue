@@ -4,7 +4,7 @@ import { computed, ref } from 'vue'
 import HostFollowUp from './HostFollowUp.vue'
 import { useI18n } from 'vue-i18n'
 import type { TemplateView } from './templateModel'
-import { formatMeasure } from './presentation'
+import { resolveDisplayUnitSystem, formatMeasure } from './presentation'
 import { interleavedExerciseSequence } from './lib/sequenceUtils'
 import { workoutSections } from './lib/sections'
 
@@ -15,7 +15,7 @@ const { template, disabled, create, followUp } = defineProps<{
 }>()
 const { t, locale } = useI18n()
 const date = ref('')
-const system = computed(() => template.presentation.unitSystem ?? 'metric')
+const system = computed(() => resolveDisplayUnitSystem(template.presentation.unitSystem, locale.value))
 const exerciseDetails = computed(() => new Map(template.related.exercises.map(exercise => [exercise.id, exercise])))
 const missingExercises = computed(() => template.record.exercises.some(exercise => exerciseDetails.value.get(exercise.exerciseId)?.unavailable))
 const instructions = (id: string) => {

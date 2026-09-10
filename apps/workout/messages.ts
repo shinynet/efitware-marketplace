@@ -1,8 +1,10 @@
+import { progressMessages } from './progressMessages'
 import { goalMessages } from './goalMessages'
 import recurrenceMessages from './recurrenceMessages.json'
 export const messages = {
   en: {
     ...goalMessages.en,
+    progressUi: progressMessages.en,
     viewTrainingWeek: 'View my training week', supportsGoal: 'Supports your goal: {name}',
     amrapTarget: 'As many repetitions as possible', rpeTarget: 'Target effort: RPE {value}', tempoTarget: 'Tempo: {value}', sideTarget: { left: 'Left side', right: 'Right side', both: 'Both sides' },
     setCategory: { warmup: 'Warm-up set', working: 'Working set', dropset: 'Drop set', backoff: 'Back-off set', topset: 'Top set', amrap: 'AMRAP set', interval: 'Interval', recovery: 'Recovery', cooldown: 'Cool-down set' },
@@ -51,6 +53,7 @@ export const messages = {
   },
   de: {
     ...goalMessages.de,
+    progressUi: progressMessages.de,
     viewTrainingWeek: 'Meine Trainingswoche ansehen', supportsGoal: 'Unterstützt dein Ziel: {name}',
     amrapTarget: 'So viele Wiederholungen wie möglich', rpeTarget: 'Zielanstrengung: RPE {value}', tempoTarget: 'Tempo: {value}', sideTarget: { left: 'Linke Seite', right: 'Rechte Seite', both: 'Beide Seiten' },
     setCategory: { warmup: 'Aufwärmsatz', working: 'Arbeitssatz', dropset: 'Reduktionssatz', backoff: 'Back-off-Satz', topset: 'Topsatz', amrap: 'AMRAP-Satz', interval: 'Intervall', recovery: 'Erholung', cooldown: 'Abwärmsatz' },

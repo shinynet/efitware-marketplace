@@ -32,7 +32,10 @@
       "displayTool": "open_goal_plan"
     },
     "progress": {
-      "delivery": "planned"
+      "delivery": "implemented",
+      "resourceUri": "ui://efitware/app-v1.html",
+      "schemaPath": "contract/progress-view.schema.json",
+      "displayTool": "open_progress"
     },
     "library": {
       "delivery": "planned"
@@ -60,6 +63,18 @@
       "resourceUri": "ui://efitware/app-v1.html",
       "schemaPath": "contract/template-view.schema.json",
       "displayTool": "open_template"
+    },
+    "exercise-progress": {
+      "delivery": "implemented",
+      "resourceUri": "ui://efitware/app-v1.html",
+      "schemaPath": "contract/exercise-progress-view.schema.json",
+      "displayTool": "open_exercise_progress"
+    },
+    "body-metric": {
+      "delivery": "implemented",
+      "resourceUri": "ui://efitware/app-v1.html",
+      "schemaPath": "contract/body-metric-view.schema.json",
+      "displayTool": "open_body_metric"
     }
   },
   "tools": {
@@ -795,6 +810,27 @@
       "role": "display",
       "views": [
         "goal-plan"
+      ],
+      "delivery": "implemented"
+    },
+    "open_progress": {
+      "role": "display",
+      "views": [
+        "progress"
+      ],
+      "delivery": "implemented"
+    },
+    "open_exercise_progress": {
+      "role": "display",
+      "views": [
+        "exercise-progress"
+      ],
+      "delivery": "implemented"
+    },
+    "open_body_metric": {
+      "role": "display",
+      "views": [
+        "body-metric"
       ],
       "delivery": "implemented"
     }
