@@ -46,3 +46,8 @@ it('runs the released template fixtures without changing input bytes', () => {
     expect(fixture.input).toEqual(before)
   }
 })
+
+it('preserves the full template prescription including effort, tempo and side', () => {
+  const input = { view: 'template', record: { id: 'a'.repeat(24), name: 'Training', revision: `template:1:${'a'.repeat(64)}`, exercises: [{ id: 'we-one', exerciseId: 'b'.repeat(24), exerciseName: 'Row', modality: 'resistance', order: 0, sets: [{ id: 's-one', category: 'amrap', plannedAmrap: true, plannedRpe: 7, tempo: '3-1-1-0', side: 'left' }] }] }, related: { exercises: [] }, presentation: { locale: 'en', unitSystem: 'metric', theme: null, skin: null } }
+  expect(templateViewSchema.parse(input).record.exercises[0]!.sets[0]).toMatchObject({ plannedAmrap: true, plannedRpe: 7, tempo: '3-1-1-0', side: 'left' })
+})

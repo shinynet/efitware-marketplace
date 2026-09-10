@@ -30,3 +30,5 @@ progress { accent-color: var(--color-olive); }
 progress::-webkit-progress-bar { background: var(--color-surface-dark); }
 progress::-webkit-progress-value { background: var(--color-olive); }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }
+
+button[aria-pressed='true'] { border-color: var(--color-terracotta); background: var(--color-surface); box-shadow: inset 0 0 0 1px var(--color-terracotta); }

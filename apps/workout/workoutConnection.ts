@@ -4,6 +4,14 @@ import { parseTrainingView, type TrainingView } from './templateModel'
 
 interface PendingAction { name: string, arguments: Record<string, unknown> }
 const intentKey = () => `mcp-app-${Array.from(crypto.getRandomValues(new Uint8Array(16)), byte => byte.toString(16).padStart(2, '0')).join('')}`
+const targetForView = (view: TrainingView): PendingAction => {
+  if (view.view === 'workout') return { name: 'open_workout', arguments: { workoutId: view.record.workout.id } }
+  if (view.view === 'template') return { name: 'open_template', arguments: { templateId: view.record.id } }
+  if (view.view === 'program') return { name: 'open_program', arguments: { programId: view.record.id, today: view.related.today, page: view.related.page, limit: view.related.limit, collection: view.related.collection } }
+  if (view.view === 'schedule') return { name: 'open_schedule', arguments: { scheduleId: view.record.id, today: view.related.today } }
+  return { name: 'open_calendar', arguments: { from: view.record.from, to: view.record.to, date: view.record.date } }
+}
+const validDay = (date: string) => /^\d{4}-\d{2}-\d{2}$/.test(date) && !Number.isNaN(Date.parse(`${date}T12:00:00Z`)) && new Date(`${date}T12:00:00Z`).toISOString().slice(0, 10) === date
 interface ToolResult { isError?: boolean, structuredContent?: unknown }
 const failure = (result: ToolResult) => {
   const content = result.structuredContent
@@ -22,6 +30,8 @@ export const createWorkoutConnection = () => {
   const template = computed(() => route.value?.view === 'template' ? route.value : undefined)
   const presentation = computed(() => route.value?.view === 'workout' ? route.value.record.presentation : route.value?.presentation)
   const sourceTemplateId = ref<string>()
+  const history = shallowRef<PendingAction[]>([])
+  const backTarget = computed(() => history.value.at(-1))
   let readTarget: PendingAction | undefined
   let navigationGeneration = 0
   const host = shallowRef<McpUiHostContext>()
@@ -37,9 +47,7 @@ export const createWorkoutConnection = () => {
   const canWrite = computed(() => connected.value && !busy.value && !error.value && !stale.value && !!route.value)
 
   const read = async () => {
-    const target = readTarget ?? (template.value
-      ? { name: 'open_template', arguments: { templateId: template.value.record.id } }
-      : view.value ? { name: 'open_workout', arguments: { workoutId: view.value.workout.id } } : undefined)
+    const target = readTarget ?? (route.value ? targetForView(route.value) : undefined)
     if (!target) return
     const generation = ++navigationGeneration
     const result = await app.callServerTool(target, { timeout: 15_000 })
@@ -50,11 +58,18 @@ export const createWorkoutConnection = () => {
     readTarget = undefined
     stale.value = false
   }
-  const navigate = async (target: PendingAction) => {
+  const navigate = async (target: PendingAction, replace = false) => {
     if (busy.value || pending.value || needsReadback.value) return
+    if (!replace && route.value) history.value = [...history.value, targetForView(route.value)]
     readTarget = target
     saved.value = false
     await refresh()
+  }
+  const back = async () => {
+    if (busy.value || pending.value || needsReadback.value) return
+    const target = history.value.at(-1)
+    history.value = history.value.slice(0, -1)
+    if (target) await navigate(target, true)
   }
   const refresh = async () => {
     if (busy.value || pending.value) return
@@ -90,6 +105,7 @@ export const createWorkoutConnection = () => {
         const content = result.structuredContent
         const id = typeof content === 'object' && content !== null && 'id' in content ? content.id : undefined
         if (typeof id !== 'string' || !/^[a-f0-9]{24}$/i.test(id)) throw new Error('INVALID_CREATED_WORKOUT')
+        if (route.value) history.value = [...history.value, targetForView(route.value)]
         sourceTemplateId.value = template.value?.record.id
         readTarget = { name: 'open_workout', arguments: { workoutId: id } }
       }
@@ -150,9 +166,22 @@ export const createWorkoutConnection = () => {
   }
   const createFromTemplate = (date: string) => {
     if (!canWrite.value || !template.value || pending.value) return
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || Number.isNaN(Date.parse(`${date}T12:00:00Z`)) || new Date(`${date}T12:00:00Z`).toISOString().slice(0, 10) !== date) return
+    if (!validDay(date)) return
     pending.value = { name: 'create_workout', arguments: { date, sourceTemplateId: template.value.record.id,
       idempotencyKey: intentKey() } }
+    return execute()
+  }
+  const createOccurrence = (scheduleId: string, date: string) => {
+    if (!canWrite.value || pending.value || !validDay(date) || !/^[a-f0-9]{24}$/i.test(scheduleId)) return
+    pending.value = { name: 'create_workout', arguments: { scheduleId, date, idempotencyKey: intentKey() } }
+    return execute()
+  }
+  const updatePlanning = (patch: { enabled: boolean } | { status: 'active' | 'archived' }) => {
+    const current = route.value
+    if (!canWrite.value || pending.value || !current || (current.view !== 'program' && current.view !== 'schedule')) return
+    pending.value = { name: `update_${current.view}`, arguments: { [`${current.view}Id`]: current.record.id,
+      ...(current.view === 'schedule' ? { today: current.related.today } : {}), patch,
+      expectedRevision: current.record.revision, idempotencyKey: intentKey() } }
     return execute()
   }
   const sendFollowUp = async (prompt: string): Promise<'accepted' | 'unavailable' | 'rejected' | 'uncertain'> => {
@@ -167,6 +196,6 @@ export const createWorkoutConnection = () => {
     clearTimeout(connectTimer)
     void app.close()
   }
-  return { view, template, presentation, sourceTemplateId, createFromTemplate, sendFollowUp, navigate, host, connected, busy, error, saved, stale, pending, needsReadback, canWrite, start, close, mutate,
+  return { route, back, backTarget, createOccurrence, updatePlanning, view, template, presentation, sourceTemplateId, createFromTemplate, sendFollowUp, navigate, host, connected, busy, error, saved, stale, pending, needsReadback, canWrite, start, close, mutate,
     retry: execute, refresh, open: () => view.value && app.openLink({ url: `https://app.efitware.com/workouts/${view.value.workout.date}/${view.value.workout.id}` }) }
 }

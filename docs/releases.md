@@ -41,3 +41,11 @@ The template's AI action checks `message.text` capability before `app.sendMessag
 Manifest format 2 adds `contract/template-view.schema.json` and `contract/view-coverage.json` to the exact asset inventory. Earlier manifests without a format field retain their original inventory for rollback. The coverage registry classifies every server tool by role and implementation state; the application compares it with real `tools/list` annotations. Program, goal, progress, library and remaining account views are planned, not advertised as implemented.
 
 Both schema projections use draft-07 input semantics, preserve additive product fields at the application boundary, and share valid/invalid compatibility fixtures. The entire inline HTML must be at most 1,500,000 UTF-8 bytes; no runtime CDN dependency is allowed.
+
+## Planning views (0.1.9)
+
+The shared shell adds `open_program`, `open_schedule` and `open_calendar`. Program membership tabs use canonical collection metadata and explicit paging; schedule pause/resume and program archive/reactivate use the current revision. Archiving never implies schedule pause. Calendar selection is read-only; occurrences require a labelled create-and-open action, with one saved workout per schedule/date. Back navigation retains the prior view parameters and guards unsaved workout results.
+
+New views use the same `{view,record,related,presentation}` envelope with account `timeZone`. Calendar day formatting stays independent of time-zone offsets; only real timestamps use that zone. Human recurrence phrases reuse the product parser and vocabulary with provenance and shared fixtures. The calendar fixture set includes daylight-saving boundaries and leap day.
+
+Manifest format 3 adds `program-view.schema.json`, `schedule-view.schema.json` and `calendar-view.schema.json` under `contract/`. Earlier format inventories remain supported by the app for rollback. This slice has no CDN, migration or separate credentials. The stage, compatible app READY and catalog promotion gates remain unchanged.

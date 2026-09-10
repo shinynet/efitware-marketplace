@@ -147,6 +147,24 @@
                     "rirTarget": {
                       "type": "number",
                       "minimum": 0
+                    },
+                    "plannedAmrap": {
+                      "type": "boolean"
+                    },
+                    "plannedRpe": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "tempo": {
+                      "type": "string"
+                    },
+                    "side": {
+                      "type": "string",
+                      "enum": [
+                        "left",
+                        "right",
+                        "both"
+                      ]
                     }
                   },
                   "required": [

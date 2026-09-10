@@ -80,3 +80,21 @@ it('distinguishes accepted, rejected and uncertain host messages from persistenc
     expect(bridge.callServerTool).not.toHaveBeenCalled()
   } finally { connection.close() }
 })
+
+it('pauses a schedule with its revision and returns through program and template views in one bridge', async () => {
+  const connection = await open()
+  const schedule = { view: 'schedule', record: { id: 'c'.repeat(24), name: 'Soloflex Mondays', templateId: template.record.id, recurrence: 'FREQ=WEEKLY;BYDAY=MO', startDate: '2026-09-07', endDate: '2026-12-31', enabled: true, revision: `schedule:1:${'c'.repeat(64)}` }, related: { today: '2026-09-09' }, presentation: { ...presentation, timeZone: 'America/Denver' } }
+  try {
+    bridge.callServerTool.mockResolvedValueOnce({ structuredContent: schedule })
+    await connection.navigate({ name: 'open_schedule', arguments: { scheduleId: schedule.record.id, today: schedule.related.today } })
+    bridge.callServerTool.mockResolvedValueOnce({ structuredContent: { id: schedule.record.id } }).mockResolvedValueOnce({ structuredContent: { ...schedule, record: { ...schedule.record, enabled: false } } })
+    await connection.updatePlanning({ enabled: false })
+    expect(bridge.callServerTool.mock.calls[1]![0]).toMatchObject({ name: 'update_schedule', arguments: { scheduleId: schedule.record.id, today: '2026-09-09', expectedRevision: schedule.record.revision, patch: { enabled: false } } })
+    expect(connection.route.value).toMatchObject({ view: 'schedule', record: { enabled: false } })
+    bridge.callServerTool.mockResolvedValueOnce({ structuredContent: template })
+    await connection.back()
+    expect(connection.template.value?.record.id).toBe(template.record.id)
+    expect(bridge.connect).toHaveBeenCalledTimes(1)
+    expect(connection.saved.value).toBe(false)
+  } finally { connection.close() }
+})
