@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watchEffect } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import StatusView from './StatusView.vue'
 import IntegrationView from './IntegrationView.vue'
@@ -49,11 +49,15 @@ const returnToPreviousView = async (discard = false) => {
 const { route, backTarget, view, template, presentation, host, busy, error, saved, stale, pending, canWrite } = connection
 const { t, te, locale } = useI18n()
 const expanded = ref(false)
+const checkInDraft = ref('')
+// The compact card owns the draft while the goal view is unmounted; the goal view reports it once mounted.
+watch(checkInDraft, draft => { if (!expanded.value) setDirty('goal-check-in', !!draft.trim()) })
 const backLabel = computed(() => ({ open_status: 'outcomeUi.backStatus', open_integration: 'outcomeUi.backIntegration', open_receipts: 'outcomeUi.backReceipts', open_workout_review: 'outcomeUi.backReview', open_share: 'outcomeUi.backShare', open_library: 'contextUi.backLibrary', open_exercise: 'contextUi.backExercise', open_context: 'contextUi.backContext', open_memory: 'contextUi.backMemory', open_exercise_progress: 'progressUi.backExercise', open_body_metric: 'progressUi.backMetric', open_progress: 'progressUi.back', open_goal: 'backToGoal', open_goal_plan: 'backToGoalPlan', open_template: 'backToTemplate', open_program: 'backToProgram', open_schedule: 'backToSchedule', open_calendar: 'backToCalendar', open_workout: 'backToWorkout' })[backTarget.value?.name ?? 'open_workout'] ?? 'backToWorkout')
 const refreshLabel = computed(() => workout.value ? 'refresh' : template.value ? 'templateRefresh' : 'recordRefresh')
 const staleLabel = computed(() => workout.value ? 'stale' : template.value ? 'templateStale' : 'recordStale')
 const system = computed(() => resolveDisplayUnitSystem(presentation.value?.unitSystem, locale.value))
 const summary = computed(() => route.value ? compactSummary(route.value, { locale: locale.value, system: system.value, t, te }) : undefined)
+watch(() => route.value?.view === 'goal' ? route.value.record.id : '', () => { checkInDraft.value = '' })
 const workout = computed(() => view.value?.workout)
 const sets = computed(() => workout.value?.exercises.flatMap(exercise => exercise.sets) ?? [])
 const done = computed(() => sets.value.filter(set => set.completed).length)
@@ -172,6 +176,7 @@ onUnmounted(connection.close)
     >
       <template #action>
         <compact-actions
+          v-model:check-in="checkInDraft"
           :route
           :can-write="canWrite"
           :busy
@@ -285,6 +290,7 @@ onUnmounted(connection.close)
       <goal-view
         v-if="route?.view === 'goal'"
         :key="route.record.id"
+        v-model:draft="checkInDraft"
         :goal="route"
         :disabled="!canWrite"
         :saved

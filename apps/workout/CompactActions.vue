@@ -2,17 +2,17 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { TrainingView } from './templateModel'
-import { nextSet } from './compactSummary'
+import { nextSet, undoTarget } from './compactSummary'
 import type { createWorkoutConnection } from './workoutConnection'
 type Connection = ReturnType<typeof createWorkoutConnection>
 const { route, canWrite, busy, connection, locale, system } = defineProps<{ route: TrainingView, canWrite: boolean, busy: boolean, connection: Connection, locale: string, system: 'metric' | 'imperial' }>()
 const { t } = useI18n()
-const checkIn = ref('')
+const checkIn = defineModel<string>('checkIn', { default: '' })
 const copyState = ref<'' | 'copied' | 'copyFailed'>('')
 const today = computed(() => new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()))
 const workout = computed(() => route.view === 'workout' ? route.record.workout : undefined)
 const next = computed(() => workout.value ? nextSet(workout.value.exercises) : undefined)
-const receipt = computed(() => route.view === 'receipts' ? route.record.data.find(row => row.undoable && !row.undoneAt) : undefined)
+const receipt = computed(() => route.view === 'receipts' ? undoTarget(route) : undefined)
 const submitCheckIn = async () => {
   if (route.view !== 'goal') return
   const value = checkIn.value.trim()

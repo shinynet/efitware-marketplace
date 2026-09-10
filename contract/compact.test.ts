@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest'
 import fixtures from './compat-fixtures.json'
-import { MIN_BARS, appUrl, compactSummary, completedVolumeKg, nextSet } from '../apps/workout/compactSummary'
+import { MIN_BARS, appUrl, compactSummary, completedVolumeKg, nextSet, undoTarget } from '../apps/workout/compactSummary'
 import { parseTrainingView } from '../apps/workout/templateModel'
 import { messages } from '../apps/workout/messages'
 
@@ -85,4 +85,33 @@ it('renders a goal summary with target countdown and inline check-in evidence', 
   expect(summary.eyebrow).toBe('Goal · Active')
   expect(summary.facts).toEqual([{ label: 'Target date', value: 'Dec 1' }, { label: 'Days left', value: '82' }, { label: 'Last check-in', value: '72.5 kg × 5 · Sep 8' }])
   expect(summary.path).toBe(`/goals/${goal.record.id}`)
+})
+
+it('binds undo to the displayed receipt only and counts trained days from completed sessions', () => {
+  const receipt = (id: string, undoable: boolean, undoneAt: string | null) => ({ id, tool: 'create_workout', entities: [], createdAt: '2026-09-10T10:00:00.000Z', undoneAt, undoable })
+  const receipts = (data: ReturnType<typeof receipt>[]) => parseTrainingView({ view: 'receipts', record: { data, meta: { page: 1, limit: 20, total: data.length } }, related: {}, presentation }) as Extract<ReturnType<typeof parseTrainingView>, { view: 'receipts' }>
+  expect(undoTarget(receipts([receipt('a'.repeat(24), false, null), receipt('b'.repeat(24), true, null)]))).toBeUndefined()
+  expect(undoTarget(receipts([receipt('a'.repeat(24), true, '2026-09-10T11:00:00.000Z'), receipt('b'.repeat(24), true, null)]))).toBeUndefined()
+  expect(undoTarget(receipts([receipt('c'.repeat(24), true, null), receipt('b'.repeat(24), true, null)]))?.id).toBe('c'.repeat(24))
+  const calendar = parseTrainingView({ view: 'calendar', record: { from: '2026-09-07', to: '2026-09-13', date: '2026-09-08', days: [
+    { date: '2026-09-07', status: 'completed', sessionCount: 2, completedSessionCount: 1 },
+    { date: '2026-09-08', status: 'incomplete', sessionCount: 1, completedSessionCount: 0 },
+    { date: '2026-09-09', status: null, sessionCount: 0, completedSessionCount: 0 }
+  ], agenda: null }, related: {}, presentation })
+  const summary = compactSummary(calendar, { locale: 'en', system: 'metric', ...translator('en') })
+  expect(summary.facts).toEqual([{ label: 'Sessions', value: '3' }, { label: 'Completed', value: '1' }, { label: 'Days trained', value: '1' }])
+})
+
+it('labels the exercise progression series as an estimate', () => {
+  const day = (index: number) => `2026-09-0${index + 1}`
+  const view = parseTrainingView({ view: 'exercise-progress', record: { id: 'd'.repeat(24), name: 'Bench press', modality: 'resistance' }, related: {
+    stats: { sessions: 4, prCount: 1, unlockAt: 3 },
+    progression: { data: [{ id: 'd'.repeat(24), name: 'Bench press', modality: 'resistance', bestSetReps: 5, bestSetWeightKg: 80, sessionDates: [day(0)], series: [0, 1, 2, 3].map(index => ({ date: day(index), value: 90 + index })), unlocked: true }], meta: { total: 1, page: 1, limit: 10 }, metadata: { range: '4w', rangeStart: day(0), today: day(3), timezone: 'UTC', readAt: '2026-09-04T00:00:00.000Z' } },
+    history: [], records: [], collection: 'history', page: 1, limit: 10
+  }, presentation })
+  for (const locale of ['en', 'de'] as const) {
+    const summary = compactSummary(view, { locale, system: 'metric', ...translator(locale) })
+    expect(summary.bars?.label).toBe(locale === 'en' ? 'Estimated one-rep maximum' : 'Geschätztes Einwiederholungsmaximum')
+    expect(summary.bars?.values).toEqual([90, 91, 92, 93])
+  }
 })

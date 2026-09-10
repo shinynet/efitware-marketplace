@@ -1,4 +1,5 @@
 import type { TrainingView } from './templateModel'
+import type { ReceiptsView } from './outcomeModel'
 import type { ViewExercise, ViewSet } from './model'
 import type { UnitSystem } from './lib/units'
 import { formatMeasure } from './presentation'
@@ -54,6 +55,12 @@ const setTarget = (set: ViewSet, { locale, system, t }: Options) => {
   return parts.length ? parts.join(' × ') : t('noTarget')
 }
 
+/** The receipt the compact card displays, only when that exact action can still be undone. */
+export const undoTarget = (view: ReceiptsView) => {
+  const latest = view.record.data[0]
+  return latest && latest.undoable && !latest.undoneAt ? latest : undefined
+}
+
 /** Pure at-a-glance projection of any training view; actions stay in the card component. */
 export const compactSummary = (view: TrainingView, options: Options): CompactSummary => {
   const { locale, system, t } = options
@@ -100,7 +107,7 @@ export const compactSummary = (view: TrainingView, options: Options): CompactSum
       const { record } = view
       const sessions = record.days.reduce((sum, day) => sum + day.sessionCount, 0)
       const completed = record.days.reduce((sum, day) => sum + day.completedSessionCount, 0)
-      const trained = record.days.filter(day => day.status).length
+      const trained = record.days.filter(day => day.completedSessionCount > 0).length
       const item = record.agenda?.items[0]
       return {
         eyebrow: dot(t('trainingCalendar'), `${monthDay(record.from, locale)} – ${monthDay(record.to, locale)}`), title: shortDay(record.date, locale),
@@ -149,7 +156,7 @@ export const compactSummary = (view: TrainingView, options: Options): CompactSum
       return {
         eyebrow: t('compact.exerciseProgress'), title: locale === 'de' ? record.i18n?.de?.name ?? record.name : record.name,
         facts: [fact(t('compact.sessions'), count(related.stats.sessions)), fact(t('compact.records'), count(related.stats.prCount)), fact(t('compact.topSet'), top ? `${formatMeasure('weight', top.weightKg, system, locale)} × ${count(top.reps)}` : t('compact.none'))],
-        ...(series.length >= MIN_BARS ? { bars: { label: t('compact.bestSet'), values: series.map(point => point.value), start: monthDay(series[0]!.date, locale), end: monthDay(series.at(-1)!.date, locale) } } : {}),
+        ...(series.length >= MIN_BARS ? { bars: { label: t('progressUi.estimated'), values: series.map(point => point.value), start: monthDay(series[0]!.date, locale), end: monthDay(series.at(-1)!.date, locale) } } : {}),
         path: `/progress/exercises/${record.id}`
       }
     }
