@@ -4,6 +4,7 @@
     "add_workout_activity",
     "add_workout_exercise",
     "add_workout_set",
+    "assign_goal_phase_program",
     "create_custom_equipment",
     "create_custom_exercise",
     "create_goal",

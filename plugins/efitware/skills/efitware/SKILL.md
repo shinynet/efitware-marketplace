@@ -43,7 +43,7 @@ For library browsing, use `open_library` only after the user-facing search is re
 
 ## What this surface can and cannot do
 
-117 tools: 63 reads, 54 writes.
+118 tools: 63 reads, 55 writes.
 
 | Read | Returns |
 | --- | --- |
@@ -153,6 +153,7 @@ For library browsing, use `open_library` only after the user-facing search is re
 | `set_goal_plan_status` | planId, status active/paused/completed/archived, expectedRevision; externally managed plans only. |
 | `activate_goal_plan_version` | planId, versionId, expectedRevision; changes active pointers without rewriting versions or workouts. |
 | `save_week_plan` | weekStart, 1–7 dated entries, optional repeat and owned goalPlanVersionId. Creates attributed training atomically. |
+| `assign_goal_phase_program` | goalId, programId or null, expectedRevision; makes an owned program the plan's current-phase program (Coach-managed plans only) and links it to the goal. Clearing is null. Not for externally managed plans — publish a version with the phase programId instead. |
 | `get_goal_plan_workouts` | versionId, page/limit; workouts prescribed from that version, date/id descending. |
 
 **History needs an explicit scope.** Without a status filter, `get_recent_workouts` includes future plans, which sort first. Use `status: "completed"` and inclusive `since`/`until` for completed training. Supported workout statuses are planned, in_progress, completed, skipped and abandoned. Exercise-history calls retain every matching instance and its prescribed and actual set fields; inspect each set's completion and actuals before saying it was performed.
@@ -164,7 +165,7 @@ Ordering is repeatable for an unchanged result set, using stable IDs to break ti
 Everything else is absent. Do not plan around it, do not offer it, and never report it as done:
 
 - **No account or whole-history deletion.** Individual workout deletion and supported receipt undo are available.
-- **No AI memory, no reflections, no generation, no chat.**
+- **No AI memory, no reflections, no generation, no chat.** No tool asks the built-in Coach to build a program: generate the training yourself with `save_week_plan`, then attach it with `assign_goal_phase_program`.
 - **No global library authoring.** You can author your own custom exercises and favorite/hide visible exercises for your account.
 - **No identity, account, email, subscription, billing, auth, or consent fields**.
 
@@ -394,11 +395,11 @@ Planning undo restores only affected fields and the exact retained deletion casc
 1. Read the user's training context, goals and relevant history. Use their stated objective and constraints; a chart or chat artifact is not a saved plan. Create a goal only when they intend to keep it.
 2. Read `get_goal_plans` for the goal. Publish with expectedRevision null only when no plan exists. Otherwise read its current revision. Replacing built-in Coach management requires the user's intent to manage it externally and explicit takeOverFromCoach true. External plans do not receive automatic internal Coach review, even if that Coach is enabled.
 3. Author content: feasibility, rationale, summary and 1–6 current/future phases. Each needs name, objective, real startDate/endDate and a milestones array; optional reviewDate and owned programId. Each phase spans at least seven days (end minus start), the first starts between seven days ago and 21 days ahead, phases do not overlap and gaps are at most 14 days. Date milestones/reviews inside their phase. A reasonable feasibility claim cannot overrun the stated target by more than seven days. Completed prefix phases are retained exactly, with at most eight phases stored overall. Reuse an existing open phase/milestone id only for the corresponding content; otherwise omit ids for server assignment.
-4. Save concrete training with `save_week_plan`. Entries fall within weekStart through +6, at most one per day, and each prescribes exercises or activities. Activity durationTarget is seconds. Optional repeat requires programName and weeks 1–52; it creates templates/schedules/program and only materializes the visible week. Link the created program explicitly with `update_goal`, or reference it in a new published phase version. Neither action rewrites earlier immutable versions. Pass goalPlanVersionId to retain prescription provenance in future occurrences and copies.
+4. Save concrete training with `save_week_plan`. Entries fall within weekStart through +6, at most one per day, and each prescribes exercises or activities. Activity durationTarget is seconds. Optional repeat requires programName and weeks 1–52; it creates templates/schedules/program and only materializes the visible week. Attach the created program to the current phase of a Coach-managed plan with `assign_goal_phase_program`; for an externally managed plan, reference it in a new published phase version. `update_goal` programIds is a goal-side reference only: linking never assigns a phase. Neither action rewrites earlier immutable versions. Pass goalPlanVersionId to retain prescription provenance in future occurrences and copies.
 5. Record only stated check-ins. Correct an entry by deleting that identified check-in and adding the replacement. Do not infer achievement from evidence; goal status is a separate user decision.
 6. Read back the plan, linked workouts and check-ins. Version authorship and externalMcp identify the external client; no internal generation or model usage is fabricated. A paused plan remains readable. Reactivate a completed/archived plan explicitly before revising it.
 
-All goal/plan writes require idempotencyKey. Reuse it unchanged after a lost response. A stale plan revision also detects a changed goal target: re-read and reconsider the plan. Undo restores only unchanged affected fields or plan pointers; newer immutable versions remain in history. Reversing a saved week refuses later edits or new dependents. Individual goal deletion is not undoable and must be intentional; account and whole-history erasure are never available.
+All goal/plan writes require idempotencyKey. Reuse it unchanged after a lost response. A stale plan revision also detects a changed goal target: re-read and reconsider the plan. Undo restores only unchanged affected fields or plan pointers; newer immutable versions remain in history. Undoing a phase assignment restores the prior version pointer and leaves programs, schedules, workouts and the goal's program link in place. Reversing a saved week refuses later edits or new dependents. Individual goal deletion is not undoable and must be intentional; account and whole-history erasure are never available.
 
 
 ## Progress, memory and external reflections
@@ -416,7 +417,7 @@ Share preparation uses real source identifiers and canonical eligibility. Suppor
 
 Integration metadata may be empty. No production provider adapter is registered yet, so do not promise connection, sync, import review or provider disconnect merely because stored status can be read. Provider product delivery owns those future capabilities. Never request provider credentials in conversation. Use get_account_status for recorded onboarding/health-consent status and get_data_export_statuses or get_data_export_status for existing unexpired export metadata. Full portable archive creation and download stay in app Settings; status reads never start an export or expose its contents, identity details or download links. Do not infer Terms/Privacy acceptance from onboarding completion. Billing and account/whole-history deletion remain excluded.
 
-After a requested goal is created or changed, call `open_goal`. After publishing its plan, call `open_goal_plan`; present the saved phases and milestones in the card, without a duplicate table. Defer display while assembling supporting records. Check-ins are evidence, and phase dates are dates: neither implies achievement. CLI hosts retain usable structured data.
+After a requested goal is created or changed, call `open_goal`. After publishing its plan or assigning its phase program, call `open_goal_plan`; present the saved phases and milestones in the card, without a duplicate table. Defer display while assembling supporting records. Check-ins are evidence, and phase dates are dates: neither implies achievement. CLI hosts retain usable structured data.
 
 
 ## Saved outcomes and account status cards
