@@ -6,6 +6,10 @@ The application owns its product DTOs, MCP tools, authentication, permissions an
 
 `pnpm build` bundles Vue, fonts, brand assets and theme tokens into `dist/card/workout.html`, then generates the open draft-07 input schema. The product validates its raw tool output against that schema using Ajv without stripping extra fields, applying defaults or coercing types. The product DTO remains authoritative.
 
+## Goal phase assignment (0.1.17)
+
+Tool inventory change (EF-1327, epic EF-1321): `assign_goal_phase_program` makes an owned program the current phase's program of a goal's Coach-managed plan, or clears it with `null`, as an immutable user-authored plan version with a `goalPlan` receipt the external undo restores; the goal link stays on undo. `save_week_plan` is unchanged and refuses the application builder's `repeat.goal` field. The skill's workflow step 4 now attaches a saved program with the new verb (or, for an externally managed plan, a published phase version); `update_goal` `programIds` is a goal-side reference only. `contract/server-contract.json` and `view-coverage.json` carry the tool; `minimumAppCommit` is the application commit that registers it. No card or schema change.
+
 ## Stage
 
 1. Prepare a reviewed release branch. Bump both plugin manifest versions together. Keep `main` on its published catalog version while staging.
