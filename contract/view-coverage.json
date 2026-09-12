@@ -816,6 +816,15 @@
       "interaction": "host",
       "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
     },
+    "assign_goal_phase_program": {
+      "role": "action",
+      "views": [
+        "goal-plan"
+      ],
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested edit using canonical tools and opens the resulting view; this is not a full in-card editor."
+    },
     "search_exercise_library": {
       "role": "supporting-read",
       "views": [
