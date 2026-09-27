@@ -6,6 +6,12 @@ The application owns its product DTOs, MCP tools, authentication, permissions an
 
 `pnpm build` bundles Vue, fonts, brand assets and theme tokens into `dist/card/workout.html`, then generates the open draft-07 input schema. The product validates its raw tool output against that schema using Ajv without stripping extra fields, applying defaults or coercing types. The product DTO remains authoritative.
 
+## Health sharing per connected assistant (0.1.19)
+
+Skill guidance (EF-1426, app EF-1422 (b)). An account now lets each connected assistant read health and body data only with a separate permission for that connection. Without it, the app refuses the health-only tools with `HEALTH_SHARING_REQUIRED`. Other results come back with the health values withheld and marked `_meta['com.efitware/health-sharing'].status = 'withheld'`. The skill tells assistants to treat withheld values as unknown, to name the setting, and never to infer or work around it. Skill-only change: no tool inventory, schema or card change, and `minimumAppCommit` is unchanged.
+
+The release workflow stages the tagged asset set as a prerelease before any app change. Promotion happens only after the application deployment carrying EF-1422 (b) (app commit `fb98cf1b`) is READY in production: the app lock pin and deployment, then the catalog and `channels.json`.
+
 ## Existing-workout lookups open the card (0.1.18)
 
 Reported in an MCP Apps host (EF-1339): "Do I have a workout scheduled today?" found the workout but answered in text only. The skill now treats a question about an existing workout as a display request. It reads the local day with `get_workout` by date, opens a saved workout with `open_workout`, and opens `open_calendar` for a day whose only plan is an unmaterialized scheduled occurrence (it has no workoutId). The application's server instructions and tool descriptions carry the same routing for clients without the skill. Skill-only change; no tool inventory, schema or card change, and `minimumAppCommit` is unchanged.
