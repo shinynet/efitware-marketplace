@@ -12,6 +12,8 @@ Reported in an MCP Apps host (EF-1339): "Do I have a workout scheduled today?" f
 
 ## Goal phase assignment (0.1.17)
 
+Skill guidance (EF-1426, app EF-1422 (b)), 0.1.19: an account now allows each connected assistant to read health and body data with a separate, per-connection permission. Without it the app refuses the health-only tools with `HEALTH_SHARING_REQUIRED` and returns other results with health values withheld and marked `_meta['com.efitware/health-sharing'].status = 'withheld'`. The skill tells assistants to treat withheld values as unknown, name the setting, and never infer or work around it. No tool inventory, schema or card change; release only after the app deployment carrying EF-1422 (b) is READY.
+
 Tool inventory change (EF-1327, epic EF-1321): `assign_goal_phase_program` makes an owned program the current phase's program of a goal's Coach-managed plan, or clears it with `null`, as an immutable user-authored plan version with a `goalPlan` receipt the external undo restores; the goal link stays on undo. `save_week_plan` is unchanged and refuses the application builder's `repeat.goal` field. The skill's workflow step 4 now attaches a saved program with the new verb (or, for an externally managed plan, a published phase version); `update_goal` `programIds` is a goal-side reference only. `contract/server-contract.json` and `view-coverage.json` carry the tool; `minimumAppCommit` is the application commit that registers it. No card or schema change.
 
 ## Stage
