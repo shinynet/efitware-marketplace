@@ -41,21 +41,37 @@ const exerciseWith = (records: unknown[]) => {
   return view
 }
 const [bench, squat] = awards.getPersonalRecords.data
+/**
+ * The same awards in a metric account, in the application's metric shape: loads on the 0.25 kg grid, the
+ * estimate a whole kilogram. Epley over 77.5 kg × 8 is 98.17, read as 98 kg.
+ */
+const heaviestKg = { value: 85.25, unit: 'kg' }, liftedKg = { value: 77.5, unit: 'kg' }, estimateKg = { value: 98, unit: 'kg' }
+const recentPrsKg = awards.getProgressRecentPrs.recentPrs.map(pr => pr.type === 'weight' ? { ...clone(pr), weight: heaviestKg } : { ...clone(pr), weight: liftedKg, estimatedOneRm: estimateKg })
+const recordsKg = [
+  { ...clone(bench!), weight: heaviestKg, prs: [{ type: 'weight', weight: heaviestKg, reps: 6 }] },
+  { ...clone(squat!), weight: liftedKg, prs: [{ type: 'oneRm', weight: liftedKg, reps: 8 }], estimatedOneRm: estimateKg }
+]
 /** A records row whose stored markers were written before the application's refresh (EF-1470). */
 const legacyRow = (prs: unknown[], patch: Record<string, unknown> = {}) => ({ ...clone(bench!), setId: `legacy-${JSON.stringify(prs).length}`, prs, ...patch })
 
-const render = async (component: Component, props: Record<string, unknown>, locale: 'en' | 'de' = 'en') => {
+const renderHtml = async (component: Component, props: Record<string, unknown>, locale: 'en' | 'de' = 'en') => {
   const app = createSSRApp(component, { disabled: false, navigate: () => undefined, followUp: async () => 'accepted', ...props })
   app.use(createI18n({ legacy: false, locale, fallbackLocale: 'en', messages }))
-  return (await renderToString(app)).replace(/<!--.*?-->/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ')
+  return renderToString(app)
 }
+const flatten = (html: string) => html.replace(/<!--.*?-->/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ')
+const render = async (component: Component, props: Record<string, unknown>, locale: 'en' | 'de' = 'en') => flatten(await renderHtml(component, props, locale))
 const showProgress = (recentPrs: unknown[], locale: 'en' | 'de' = 'en') => render(ProgressView, { progress: progressViewSchema.parse(progressWith(recentPrs)) }, locale)
 const showRecords = (records: unknown[], locale: 'en' | 'de' = 'en') => render(ExerciseProgressView, { exercise: exerciseProgressViewSchema.parse(exerciseWith(records)) }, locale)
-/** The rendered records cards (English), each from its date to its button; the page heading before them is dropped. */
-const recordCards = (text: string) => {
+/** The rendered records collection (English), after its note: the page heading and charts before it are dropped. */
+const recordsSection = (text: string) => {
   const note = messages.en.progressUi.actualsNote
-  return text.slice(text.indexOf(note) + note.length).split('View workout').slice(0, -1)
+  return text.slice(text.indexOf(note) + note.length)
 }
+/** The rendered records cards (English), each from its date to its button. */
+const recordCards = (text: string) => recordsSection(text).split('View workout').slice(0, -1)
+/** The rendered recent-PR section (English), from its heading to the read note after it. */
+const recentSection = (text: string) => text.slice(text.indexOf(messages.en.progressUi.recentPrs), text.indexOf(messages.en.progressUi.readNote))
 
 describe('personal-record award kinds (EF-1469)', () => {
   it('publishes the committed progress and exercise-progress projections', () => {
@@ -139,27 +155,69 @@ describe('personal-record award kinds (EF-1469)', () => {
     expect(cards[1]).not.toContain('Heaviest')
   })
 
-  it('ExerciseProgressView shows a legacy volume marker as a row with no kind', async () => {
+  it('ExerciseProgressView leaves out rows whose markers present no award', async () => {
     const volume = { type: 'volume', weight: bench!.weight, reps: 6 }
-    const cards = recordCards(await showRecords([
-      legacyRow([volume]),
-      legacyRow([{ ...volume, first: true }]),
-      legacyRow([{ type: 'oneRm', weight: bench!.weight, reps: 15 }], { reps: 15 }),
-      legacyRow([volume, { type: 'weight', weight: bench!.weight, reps: 6 }])
-    ]))
-    expect(cards).toHaveLength(4)
-    for (const card of cards.slice(0, 3)) {
-      expect(card).not.toMatch(/Heaviest|Est\. 1RM|volume|Volume|~/)
-      expect(card).toMatch(/\d+ reps · 187\.5 lb $/)
-    }
-    expect(cards[3]).toContain('6 reps · 187.5 lb Heaviest')
-    expect(cards[3]).not.toMatch(/volume|Volume/)
+    const legacy = [
+      legacyRow([volume], { date: '2026-09-11', setId: 'legacy-volume' }),
+      legacyRow([{ ...volume, first: true }], { date: '2026-09-12', setId: 'legacy-first' }),
+      legacyRow([{ type: 'oneRm', weight: bench!.weight, reps: 15 }], { date: '2026-09-13', setId: 'legacy-15-reps', reps: 15 }),
+      legacyRow([{ type: 'weight', weight: bench!.weight }], { date: '2026-09-14', setId: 'legacy-no-reps' })
+    ]
+    const text = await showRecords([...legacy, legacyRow([volume, { type: 'weight', weight: bench!.weight, reps: 6 }], { date: '2026-09-15', setId: 'legacy-with-award' })])
+    const cards = recordCards(text)
+    expect(cards).toHaveLength(1)
+    expect(cards[0]).toContain('Tue, Sep 15, 2026 6 reps · 187.5 lb Heaviest')
+    expect(cards[0]).not.toMatch(/volume|Volume/)
+    const section = recordsSection(text)
+    for (const day of ['Sep 11', 'Sep 12', 'Sep 13', 'Sep 14']) expect(section).not.toContain(day)
+    expect(section).not.toContain('15 reps')
+    expect(section).not.toContain(messages.en.emptyCollection)
+  })
+
+  it('ExerciseProgressView shows the empty state for a page of only legacy rows and keeps paging', async () => {
+    const volume = { type: 'volume', weight: bench!.weight, reps: 6 }
+    const html = await renderHtml(ExerciseProgressView, { exercise: exerciseProgressViewSchema.parse(exerciseWith([
+      legacyRow([volume], { setId: 'legacy-volume' }),
+      legacyRow([{ type: 'oneRm', weight: bench!.weight, reps: 15 }], { setId: 'legacy-15-reps', reps: 15 })
+    ])) })
+    const text = flatten(html)
+    expect(text).toContain(messages.en.emptyCollection)
+    expect(recordCards(text)).toHaveLength(0)
+    expect(recordsSection(text)).not.toMatch(/Heaviest|Est\. 1RM|15 reps|Sep 24/)
+    // The server's page holds rows, so Next stays available: the application decides where the pages end.
+    const next = html.match(/<button[^>]*>\s*Next\s*<\/button>/)?.[0]
+    expect(next).toBeDefined()
+    expect(next).not.toMatch(/disabled/)
   })
 
   it('an Est. 1RM row without an estimate names its kind only', async () => {
     const cards = recordCards(await showRecords([omit(squat!, 'estimatedOneRm')]))
     expect(cards[0]).toContain('8 reps · 170 lb Est. 1RM')
     expect(cards[0]).not.toMatch(/~|from/)
+  })
+
+  it('accepts and renders the metric awards in both views as given', async () => {
+    const metricProgress = progressWith(recentPrsKg)
+    const metricRecords = exerciseWith(recordsKg)
+    expect(validateProgress(metricProgress), JSON.stringify(validateProgress.errors)).toBe(true)
+    expect(validateExercise(metricRecords), JSON.stringify(validateExercise.errors)).toBe(true)
+    const progress = await showProgress(recentPrsKg)
+    expect(progress).toContain('Barbell Bench Press Heaviest 85.25 kg · 6 reps')
+    expect(progress).toContain('Back Squat Est. 1RM ~98 kg · from 77.5 kg × 8')
+    const cards = recordCards(await showRecords(recordsKg))
+    expect(cards).toHaveLength(2)
+    expect(cards[0]).toContain('6 reps · 85.25 kg Heaviest')
+    expect(cards[1]).toContain('8 reps · 77.5 kg Est. 1RM ~98 kg · from 77.5 kg × 8')
+    for (const text of [recentSection(progress), ...cards]) expect(text).not.toMatch(/\blb\b/)
+  })
+
+  it('renders the metric awards in German', async () => {
+    const progress = await showProgress(recentPrsKg, 'de')
+    expect(progress).toContain('Höchstgewicht 85,25 kg · 6 Wdh.')
+    expect(progress).toContain('Gesch. 1RM ~98 kg · aus 77,5 kg × 8')
+    const records = await showRecords(recordsKg, 'de')
+    expect(records).toContain('6 Wdh. · 85,25 kg Höchstgewicht')
+    expect(records).toContain('8 Wdh. · 77,5 kg Gesch. 1RM ~98 kg · aus 77,5 kg × 8')
   })
 
   it('localizes the kinds, the estimate and the award copy in German', async () => {

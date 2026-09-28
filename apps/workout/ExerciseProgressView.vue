@@ -26,9 +26,15 @@ const estimate = computed(() => {
 const select = (patch: Record<string, unknown>) => navigate({ name: 'open_exercise_progress', arguments: { exerciseId: exercise.record.id, range: window.value.range, today: window.value.today, collection: exercise.related.collection, page: 1, limit: exercise.related.limit, ...patch } }, true)
 const openWorkout = (workoutId: string) => navigate({ name: 'open_workout', arguments: { workoutId } })
 const request = computed(() => t('progressUi.exerciseExplain', { exerciseId: exercise.record.id, name: title.value, from: window.value.rangeStart, to: window.value.today }))
-// A row names the award its markers present; a legacy volume-only row names none (EF-1468).
-const records = computed(() => exercise.related.records.map(record => ({ record, award: presentedPrAward(record.prs) })))
+// A records row shows the award its markers present. A row whose markers present none (a legacy volume marker,
+// a oneRm marker from a set over 12 reps) is not a personal record and is not shown (EF-1468, EF-1469).
+const records = computed(() => exercise.related.records.flatMap(record => {
+  const award = presentedPrAward(record.prs)
+  return award ? [{ record, award }] : []
+}))
+// The server's page decides pagination; only the empty state reads the rows that are shown.
 const rows = computed(() => exercise.related.collection === 'history' ? exercise.related.history : exercise.related.records)
+const shown = computed(() => exercise.related.collection === 'history' ? exercise.related.history.length : records.value.length)
 </script>
 <template>
   <article class="mb-6">
@@ -140,7 +146,7 @@ const rows = computed(() => exercise.related.collection === 'history' ? exercise
       {{ t('progressUi.actualsNote') }}
     </p>
     <p
-      v-if="!rows.length"
+      v-if="!shown"
       class="py-5 text-muted"
     >
       {{ t('emptyCollection') }}
@@ -204,10 +210,7 @@ const rows = computed(() => exercise.related.collection === 'history' ? exercise
         <p class="mt-2 text-xl">
           {{ record.reps === null ? t('progressUi.unavailable') : t('progressUi.reps', { value: number(record.reps) }) }} · {{ record.weight === null ? t('progressUi.unavailable') : load(record.weight) }}
         </p>
-        <p
-          v-if="award"
-          class="mt-1 text-sm"
-        >
+        <p class="mt-1 text-sm">
           <pr-award
             :kind="award.type"
             :estimate="record.estimatedOneRm"
