@@ -1,7 +1,13 @@
 import { convertDistance, convertWeight, metresFromDisplayDistance, poundsToKilograms } from './lib/unitUtils'
 import type { UnitSystem } from './lib/units'
+import { accountLoadUnit, type Load, type LoadUnit } from './measurement'
 
 export type ActualField = 'weight' | 'reps' | 'duration' | 'distance'
+/**
+ * Loads and body metrics arrive as measurement objects already in the account's unit and render through
+ * measurement.ts without conversion. The `weight` branches below remain only for the shared canonical-kg
+ * compatibility fixtures (conversions, formats, round trips); no view feeds them a load.
+ */
 /** Match the product's locale default while respecting an explicit account choice. */
 export const resolveDisplayUnitSystem = (preference: UnitSystem | null | undefined, locale: string): UnitSystem => preference ?? (locale.toLowerCase().startsWith('de') ? 'metric' : 'imperial')
 export const displayMeasure = (field: ActualField, value: number, system: UnitSystem) => {
@@ -30,3 +36,10 @@ export const parseInput = (input: string, locale: string): number | null => {
   if (!Number.isFinite(value)) throw new Error('INVALID_NUMBER')
   return value
 }
+/**
+ * The unit a set's weight field is shown and sent in: the recorded load's own unit, else the planned load's,
+ * else the account's. Loads are never converted; the application converts and snaps what it receives.
+ */
+export const inputLoadUnit = (set: { weight?: Load, plannedWeight?: Load }, system: UnitSystem): LoadUnit => set.weight?.unit ?? set.plannedWeight?.unit ?? accountLoadUnit(system)
+/** What an edited field is sent as: a load is a measurement object in the unit it was typed in; other fields are canonical storage. */
+export const sentValue = (field: ActualField, value: number, unit: string | undefined): number | Load => field === 'weight' ? { value, unit: unit === 'pound' ? 'lb' : 'kg' } : storageValue(field, value, unit)

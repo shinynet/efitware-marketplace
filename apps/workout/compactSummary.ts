@@ -2,7 +2,8 @@ import type { TrainingView } from './templateModel'
 import type { ReceiptsView } from './outcomeModel'
 import type { ViewExercise, ViewSet } from './model'
 import type { UnitSystem } from './lib/units'
-import { displayMeasure, formatMeasure } from './presentation'
+import { formatMeasure } from './presentation'
+import { accountBodyMetricUnit, accountLoadUnit, bodyMetricLabelKey, bodyMetricPageKey, formatBodyMetric, formatLoad, formatTotal, seriesUnit, sumLoads, type Total } from './measurement'
 import { summarizeRecurrence } from './recurrencePresentation'
 import { workoutSections } from './lib/sections'
 
@@ -34,12 +35,9 @@ const monthDay = (date: string, locale: string) => new Intl.DateTimeFormat(local
 const number = (value: number, locale: string, digits = 1) => new Intl.NumberFormat(locale, { maximumFractionDigits: digits }).format(value)
 const daysBetween = (from: string, to: string) => Math.round((Date.parse(`${to}T12:00:00Z`) - Date.parse(`${from}T12:00:00Z`)) / 86_400_000)
 const clip = (text: string, max = 90) => text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text
+/** A headline metric's plain number; training volume is a measurement object instead. */
+const plain = (value: number | Total | undefined) => typeof value === 'number' ? value : undefined
 const dot = (...parts: Array<string | undefined>) => parts.filter(Boolean).join(' · ')
-/** Volume totals read as whole units; per-set loads keep their precision. */
-const wholeWeight = (kg: number, system: UnitSystem, locale: string) => {
-  const display = displayMeasure('weight', kg, system)
-  return new Intl.NumberFormat(locale, { maximumFractionDigits: 0, ...(display.unit ? { style: 'unit', unit: display.unit, unitDisplay: 'short' } as const : {}) }).format(display.value)
-}
 
 /** First incomplete set in the presented order (warm-up → main → cool-down, then order within each section), with its parent exercise. */
 export const nextSet = (exercises: ViewExercise[]): { exercise: ViewExercise, set: ViewSet } | undefined => {
@@ -52,11 +50,17 @@ export const nextSet = (exercises: ViewExercise[]): { exercise: ViewExercise, se
   }
   return undefined
 }
-/** Completed-set volume in kilograms; only sets with recorded weight and reps count. */
-export const completedVolumeKg = (exercises: ViewExercise[]) => exercises.flatMap(exercise => exercise.sets).reduce((sum, set) => sum + (set.completed && set.weight && set.reps ? set.weight * set.reps : 0), 0)
+/**
+ * Completed-set volume as a whole-unit total in the loads' own unit; only sets with recorded weight and
+ * reps count. Undefined when nothing counts or the loads mix units: the card never converts a load.
+ */
+export const completedVolume = (exercises: ViewExercise[]): Total | undefined => {
+  const entries = exercises.flatMap(exercise => exercise.sets).flatMap(set => set.completed && set.weight && set.weight.value > 0 && set.reps ? [{ load: set.weight, reps: set.reps }] : [])
+  return entries.length ? sumLoads(entries) : undefined
+}
 const setTarget = (set: ViewSet, { locale, system, t }: Options) => {
   const parts: string[] = []
-  if (set.plannedWeight !== undefined) parts.push(formatMeasure('weight', set.plannedWeight, system, locale))
+  if (set.plannedWeight !== undefined) parts.push(formatLoad(set.plannedWeight, locale))
   if (set.plannedReps) parts.push(t('repTarget', { value: set.plannedReps.min === set.plannedReps.max ? number(set.plannedReps.min, locale, 0) : t('range', { min: number(set.plannedReps.min, locale, 0), max: number(set.plannedReps.max, locale, 0) }) }))
   if (set.plannedDuration !== undefined) parts.push(formatMeasure('duration', set.plannedDuration, system, locale))
   if (set.plannedDistance !== undefined) parts.push(formatMeasure('distance', set.plannedDistance, system, locale))
@@ -80,12 +84,12 @@ export const compactSummary = (view: TrainingView, options: Options): CompactSum
       const { workout, exercises } = view.record
       const sets = workout.exercises.flatMap(exercise => exercise.sets)
       const done = sets.filter(set => set.completed).length
-      const volume = completedVolumeKg(workout.exercises)
+      const volume = completedVolume(workout.exercises)
       const next = nextSet(workout.exercises)
       const name = (exercise: ViewExercise) => locale === 'de' ? exercises.find(tracked => tracked.id === exercise.exerciseId)?.nameDe ?? exercise.exerciseName : exercise.exerciseName
       return {
         eyebrow: dot(t('compact.workout'), shortDay(workout.date, locale)), title: workout.title,
-        facts: [fact(t('compact.setsDone'), t('compact.ofTotal', { done: count(done), total: count(sets.length) })), volume > 0 ? fact(t('compact.volume'), wholeWeight(volume, system, locale)) : fact(t('compact.exercises'), count(workout.exercises.length)), fact(t('compact.status'), t(workout.status))],
+        facts: [fact(t('compact.setsDone'), t('compact.ofTotal', { done: count(done), total: count(sets.length) })), volume ? fact(t('compact.volume'), formatTotal(volume, locale)) : fact(t('compact.exercises'), count(workout.exercises.length)), fact(t('compact.status'), t(workout.status))],
         ...(next ? { detail: fact(t('compact.nextSet'), dot(name(next.exercise), setTarget(next.set, options))) } : {}),
         path: `/workouts/${workout.date}/${workout.id}`
       }
@@ -151,10 +155,11 @@ export const compactSummary = (view: TrainingView, options: Options): CompactSum
       const volume = metric('volume')
       const delta = volume?.delta !== undefined && volume.deltaKind === 'percent' ? volume.delta : undefined
       const title = delta === undefined ? t('progressUi.title') : t(delta >= 0 ? 'compact.volumeUp' : 'compact.volumeDown', { value: new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: 0 }).format(Math.abs(delta)) })
-      const bars = record.weeklyVolume.map(week => week.volumeKg)
+      const bars = record.weeklyVolume.map(week => week.volume.value)
+      const total = volume && typeof volume.value === 'object' ? volume.value : { value: 0, unit: accountLoadUnit(system) }
       return {
         eyebrow: dot(t('compact.progress'), t(`progressUi.ranges.${record.range}`)), title,
-        facts: [fact(t('compact.sessions'), count(metric('sessions')?.value ?? record.consistency.sessionsDone)), fact(t('compact.volume'), wholeWeight(volume?.value ?? 0, system, locale)), fact(t('compact.records'), count(metric('prs')?.value ?? record.recentPrs.length))],
+        facts: [fact(t('compact.sessions'), count(plain(metric('sessions')?.value) ?? record.consistency.sessionsDone)), fact(t('compact.volume'), formatTotal(total, locale)), fact(t('compact.records'), count(plain(metric('prs')?.value) ?? record.recentPrs.length))],
         ...(bars.length >= MIN_BARS ? { bars: { label: t('compact.weeklyVolume'), values: bars, start: monthDay(record.weeklyVolume[0]!.weekStart, locale), end: monthDay(record.weeklyVolume.at(-1)!.weekStart, locale) } } : {}),
         path: '/progress'
       }
@@ -165,27 +170,26 @@ export const compactSummary = (view: TrainingView, options: Options): CompactSum
       const top = related.stats.topSet
       return {
         eyebrow: t('compact.exerciseProgress'), title: locale === 'de' ? record.i18n?.de?.name ?? record.name : record.name,
-        facts: [fact(t('compact.sessions'), count(related.stats.sessions)), fact(t('compact.records'), count(related.stats.prCount)), fact(t('compact.topSet'), top ? `${formatMeasure('weight', top.weightKg, system, locale)} × ${count(top.reps)}` : t('compact.none'))],
-        ...(series.length >= MIN_BARS ? { bars: { label: t('progressUi.estimated'), values: series.map(point => point.value), start: monthDay(series[0]!.date, locale), end: monthDay(series.at(-1)!.date, locale) } } : {}),
+        facts: [fact(t('compact.sessions'), count(related.stats.sessions)), fact(t('compact.records'), count(related.stats.prCount)), fact(t('compact.topSet'), top ? `${formatLoad(top.weight, locale)} × ${count(top.reps)}` : t('compact.none'))],
+        ...(series.length >= MIN_BARS ? { bars: { label: t('progressUi.estimated'), values: series.map(point => point.value.value), start: monthDay(series[0]!.date, locale), end: monthDay(series.at(-1)!.date, locale) } } : {}),
         path: `/progress/exercises/${record.id}`
       }
     }
     case 'body-metric': {
       const { record, related } = view
       const key = record.key
-      const label = t(`progressUi.${key === 'weight_kg' ? 'weight' : key === 'body_fat_percent' ? 'fat' : key === 'resting_heart_rate_bpm' ? 'restingHr' : `measurement.${key.replace('_cm', '')}`}`)
-      const format = (value: number) => key === 'weight_kg' ? formatMeasure('weight', value, system, locale)
-        : key === 'body_fat_percent' ? new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: 1 }).format(value / 100)
-          : key === 'resting_heart_rate_bpm' ? t('progressUi.bpm', { value: count(value) })
-            : new Intl.NumberFormat(locale, { style: 'unit', unit: system === 'imperial' ? 'inch' : 'centimeter', maximumFractionDigits: 1 }).format(system === 'imperial' ? value / 2.54 : value)
+      const label = t(bodyMetricLabelKey(key))
+      // Observations render as given, unsnapped at one decimal and never converted (measurement.ts).
+      const unit = seriesUnit(related.observations.data, accountBodyMetricUnit(key, system))
+      const format = (value: number) => formatBodyMetric({ value, unit }, locale, text => t('progressUi.bpm', { value: text }))
       const points = [...related.observations.data].sort((a, b) => a.date.localeCompare(b.date))
       const first = points[0], last = points.at(-1)
-      const change = first && last && first !== last ? last.value - first.value : undefined
+      const change = first && last && first !== last && first.value.unit === last.value.unit ? Math.round((last.value.value - first.value.value) * 10) / 10 : undefined
       return {
-        eyebrow: dot(t('progressUi.body'), `${monthDay(record.from, locale)} – ${monthDay(record.to, locale)}`), title: last ? `${label}: ${format(last.value)}` : label,
+        eyebrow: dot(t('progressUi.body'), `${monthDay(record.from, locale)} – ${monthDay(record.to, locale)}`), title: last ? `${label}: ${format(last.value.value)}` : label,
         facts: [fact(t('compact.latest'), last ? monthDay(last.date, locale) : t('compact.none')), fact(t('compact.change'), change === undefined ? '—' : `${change > 0 ? '+' : change < 0 ? '−' : ''}${format(Math.abs(change))}`), fact(t('compact.observations'), count(related.observations.meta.total))],
-        ...(points.length >= MIN_BARS ? { bars: { label, values: points.map(point => point.value), start: monthDay(first!.date, locale), end: monthDay(last!.date, locale) } } : {}),
-        path: `/progress/body/${key}`
+        ...(points.length >= MIN_BARS ? { bars: { label, values: points.map(point => point.value.value), start: monthDay(first!.date, locale), end: monthDay(last!.date, locale) } } : {}),
+        path: `/progress/body/${bodyMetricPageKey(key)}`
       }
     }
     case 'library': {

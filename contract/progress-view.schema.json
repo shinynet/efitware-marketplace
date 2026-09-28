@@ -39,57 +39,135 @@
         "metrics": {
           "type": "array",
           "items": {
-            "type": "object",
-            "properties": {
-              "key": {
-                "type": "string"
-              },
-              "kind": {
-                "type": "string",
-                "enum": [
-                  "count",
-                  "decimal"
-                ]
-              },
-              "value": {
-                "type": "number"
-              },
-              "unitKey": {
-                "anyOf": [
-                  {
-                    "type": "string"
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "const": "volume"
                   },
-                  {
-                    "type": "null"
+                  "value": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 9007199254740991
+                      },
+                      "unit": {
+                        "type": "string",
+                        "enum": [
+                          "lb",
+                          "kg"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "unit"
+                    ]
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "count",
+                      "decimal"
+                    ]
+                  },
+                  "unitKey": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "tone": {
+                    "type": "string",
+                    "enum": [
+                      "positive",
+                      "steady"
+                    ]
+                  },
+                  "delta": {
+                    "type": "number"
+                  },
+                  "deltaKind": {
+                    "type": "string",
+                    "enum": [
+                      "percent",
+                      "count",
+                      "decimal"
+                    ]
                   }
+                },
+                "required": [
+                  "key",
+                  "value",
+                  "kind",
+                  "unitKey",
+                  "tone",
+                  "deltaKind"
                 ]
               },
-              "tone": {
-                "type": "string",
-                "enum": [
-                  "positive",
-                  "steady"
-                ]
-              },
-              "delta": {
-                "type": "number"
-              },
-              "deltaKind": {
-                "type": "string",
-                "enum": [
-                  "percent",
-                  "count",
-                  "decimal"
+              {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "pattern": "^(?!volume$)"
+                  },
+                  "value": {
+                    "type": "number"
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "count",
+                      "decimal"
+                    ]
+                  },
+                  "unitKey": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "tone": {
+                    "type": "string",
+                    "enum": [
+                      "positive",
+                      "steady"
+                    ]
+                  },
+                  "delta": {
+                    "type": "number"
+                  },
+                  "deltaKind": {
+                    "type": "string",
+                    "enum": [
+                      "percent",
+                      "count",
+                      "decimal"
+                    ]
+                  }
+                },
+                "required": [
+                  "key",
+                  "value",
+                  "kind",
+                  "unitKey",
+                  "tone",
+                  "deltaKind"
                 ]
               }
-            },
-            "required": [
-              "key",
-              "kind",
-              "value",
-              "unitKey",
-              "tone",
-              "deltaKind"
             ]
           }
         },
@@ -102,8 +180,26 @@
                 "type": "string",
                 "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
               },
-              "volumeKg": {
-                "type": "number"
+              "volume": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "lb",
+                      "kg"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "unit"
+                ]
               },
               "inProgress": {
                 "type": "boolean"
@@ -111,7 +207,7 @@
             },
             "required": [
               "weekStart",
-              "volumeKg"
+              "volume"
             ]
           }
         },
@@ -212,30 +308,78 @@
         "body": {
           "type": "object",
           "properties": {
-            "weightKg": {
+            "weight": {
               "anyOf": [
                 {
-                  "type": "number"
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "lb",
+                        "kg"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "value",
+                    "unit"
+                  ]
                 },
                 {
                   "type": "null"
                 }
               ]
             },
-            "goalWeightKg": {
+            "goalWeight": {
               "anyOf": [
                 {
-                  "type": "number"
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "lb",
+                        "kg"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "value",
+                    "unit"
+                  ]
                 },
                 {
                   "type": "null"
                 }
               ]
             },
-            "bodyFatPercent": {
+            "bodyFat": {
               "anyOf": [
                 {
-                  "type": "number"
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "unit": {
+                      "type": "string",
+                      "const": "percent"
+                    }
+                  },
+                  "required": [
+                    "value",
+                    "unit"
+                  ]
                 },
                 {
                   "type": "null"
@@ -252,10 +396,24 @@
                     "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
                   },
                   "value": {
-                    "type": "number"
-                  },
-                  "isPr": {
-                    "type": "boolean"
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "unit": {
+                        "type": "string",
+                        "enum": [
+                          "lb",
+                          "kg"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "unit"
+                    ]
                   }
                 },
                 "required": [
@@ -274,10 +432,21 @@
                     "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
                   },
                   "value": {
-                    "type": "number"
-                  },
-                  "isPr": {
-                    "type": "boolean"
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "unit": {
+                        "type": "string",
+                        "const": "percent"
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "unit"
+                    ]
                   }
                 },
                 "required": [
@@ -292,10 +461,38 @@
                 "type": "object",
                 "properties": {
                   "key": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                      "neck",
+                      "shoulders",
+                      "chest",
+                      "waist",
+                      "hips",
+                      "biceps",
+                      "forearms",
+                      "thighs",
+                      "calves"
+                    ]
                   },
-                  "valueCm": {
-                    "type": "number"
+                  "value": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "unit": {
+                        "type": "string",
+                        "enum": [
+                          "cm",
+                          "in"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "unit"
+                    ]
                   },
                   "series": {
                     "type": "array",
@@ -307,10 +504,24 @@
                           "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
                         },
                         "value": {
-                          "type": "number"
-                        },
-                        "isPr": {
-                          "type": "boolean"
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "number",
+                              "minimum": 0
+                            },
+                            "unit": {
+                              "type": "string",
+                              "enum": [
+                                "cm",
+                                "in"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "value",
+                            "unit"
+                          ]
                         }
                       },
                       "required": [
@@ -322,16 +533,16 @@
                 },
                 "required": [
                   "key",
-                  "valueCm",
+                  "value",
                   "series"
                 ]
               }
             }
           },
           "required": [
-            "weightKg",
-            "goalWeightKg",
-            "bodyFatPercent",
+            "weight",
+            "goalWeight",
+            "bodyFat",
             "weightSeries",
             "bodyFatSeries",
             "measurements"
@@ -343,7 +554,22 @@
             "restingHr": {
               "anyOf": [
                 {
-                  "type": "number"
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "unit": {
+                      "type": "string",
+                      "const": "bpm"
+                    }
+                  },
+                  "required": [
+                    "value",
+                    "unit"
+                  ]
                 },
                 {
                   "type": "null"
@@ -360,10 +586,22 @@
                     "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
                   },
                   "value": {
-                    "type": "number"
-                  },
-                  "isPr": {
-                    "type": "boolean"
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 9007199254740991
+                      },
+                      "unit": {
+                        "type": "string",
+                        "const": "bpm"
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "unit"
+                    ]
                   }
                 },
                 "required": [
@@ -487,8 +725,45 @@
               "reps": {
                 "type": "number"
               },
-              "weightKg": {
-                "type": "number"
+              "weight": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "number",
+                        "minimum": 0,
+                        "multipleOf": 0.5
+                      },
+                      "unit": {
+                        "type": "string",
+                        "const": "lb"
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "unit"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "number",
+                        "minimum": 0,
+                        "multipleOf": 0.25
+                      },
+                      "unit": {
+                        "type": "string",
+                        "const": "kg"
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "unit"
+                    ]
+                  }
+                ]
               },
               "durationSeconds": {
                 "type": "number"
@@ -595,8 +870,45 @@
                   "bestSetReps": {
                     "type": "number"
                   },
-                  "bestSetWeightKg": {
-                    "type": "number"
+                  "bestSetWeight": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": "number",
+                            "minimum": 0,
+                            "multipleOf": 0.5
+                          },
+                          "unit": {
+                            "type": "string",
+                            "const": "lb"
+                          }
+                        },
+                        "required": [
+                          "value",
+                          "unit"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": "number",
+                            "minimum": 0,
+                            "multipleOf": 0.25
+                          },
+                          "unit": {
+                            "type": "string",
+                            "const": "kg"
+                          }
+                        },
+                        "required": [
+                          "value",
+                          "unit"
+                        ]
+                      }
+                    ]
                   },
                   "sessionDates": {
                     "type": "array",
@@ -620,7 +932,25 @@
                           "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
                         },
                         "value": {
-                          "type": "number"
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991
+                            },
+                            "unit": {
+                              "type": "string",
+                              "enum": [
+                                "lb",
+                                "kg"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "value",
+                            "unit"
+                          ]
                         },
                         "isPr": {
                           "type": "boolean"
@@ -641,7 +971,7 @@
                   "name",
                   "modality",
                   "bestSetReps",
-                  "bestSetWeightKg",
+                  "bestSetWeight",
                   "sessionDates",
                   "series",
                   "unlocked"

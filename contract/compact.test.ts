@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest'
 import fixtures from './compat-fixtures.json'
-import { MIN_BARS, appUrl, compactSummary, completedVolumeKg, nextSet, undoTarget } from '../apps/workout/compactSummary'
+import { MIN_BARS, appUrl, compactSummary, completedVolume, nextSet, undoTarget } from '../apps/workout/compactSummary'
 import { parseTrainingView } from '../apps/workout/templateModel'
 import { messages } from '../apps/workout/messages'
 
@@ -18,8 +18,8 @@ const presentation = { locale: 'en', unitSystem: 'metric', theme: null, skin: nu
 const set = (id: string, completed: boolean, extra: Record<string, unknown> = {}) => ({ id, category: 'working', completed, ...extra })
 const workout = {
   workout: { id: 'b'.repeat(24), title: 'Lower/push A', date: '2026-09-08', status: 'in_progress', revision: `workout:1:${'b'.repeat(64)}`, exercises: [
-    { id: 'we2', exerciseId: 'e'.repeat(24), exerciseName: 'Bent-over row', modality: 'resistance', order: 1, sets: [set('s3', false, { plannedWeight: 60, plannedReps: { min: 8, max: 8 } })] },
-    { id: 'we1', exerciseId: 'f'.repeat(24), exerciseName: 'Goblet squat', modality: 'resistance', order: 0, sets: [set('s1', true, { weight: 20, reps: 10 }), set('s2', true, { weight: 20, reps: 8 })] }
+    { id: 'we2', exerciseId: 'e'.repeat(24), exerciseName: 'Bent-over row', modality: 'resistance', order: 1, sets: [set('s3', false, { plannedWeight: { value: 60, unit: 'kg' }, plannedReps: { min: 8, max: 8 } })] },
+    { id: 'we1', exerciseId: 'f'.repeat(24), exerciseName: 'Goblet squat', modality: 'resistance', order: 0, sets: [set('s1', true, { weight: { value: 20, unit: 'kg' }, reps: 10 }), set('s2', true, { weight: { value: 20, unit: 'kg' }, reps: 8 })] }
   ] },
   exercises: [{ id: 'e'.repeat(24), nameDe: 'Rudern vorgebeugt' }],
   presentation: { locale: 'en', unitSystem: 'metric', theme: null, skin: null }
@@ -37,14 +37,15 @@ it('summarises a workout with sets done, completed volume and the next set in wo
   expect(appUrl('https://www.efitware.com/share/x')).toBe('https://www.efitware.com/share/x')
   const de = compactSummary(view, { locale: 'de', system: 'imperial', ...translator('de') })
   expect(de.detail?.value).toContain('Rudern vorgebeugt')
-  expect(de.facts[1]!.value).toMatch(/^794 lb$/)
+  // Loads arrive in their unit and are never converted, whatever the presentation hint says.
+  expect(de.facts[1]!.value).toBe('360 kg')
   expect(nextSet(workout.workout.exercises as never)?.set.id).toBe('s3')
-  expect(completedVolumeKg(workout.workout.exercises as never)).toBe(360)
+  expect(completedVolume(workout.workout.exercises as never)).toEqual({ value: 360, unit: 'kg' })
 })
 
 it('picks the next set in section order, not global order, matching the expanded view', () => {
   const exercises = [
-    { id: 'we-main', exerciseId: 'e'.repeat(24), exerciseName: 'Main bench press', modality: 'resistance', order: 0, section: 'main', sets: [set('m1', false, { plannedWeight: 60 })] },
+    { id: 'we-main', exerciseId: 'e'.repeat(24), exerciseName: 'Main bench press', modality: 'resistance', order: 0, section: 'main', sets: [set('m1', false, { plannedWeight: { value: 60, unit: 'kg' } })] },
     { id: 'we-warm', exerciseId: 'f'.repeat(24), exerciseName: 'Band pull-apart', modality: 'mobility', order: 1, section: 'warmup', sets: [set('w1', false), set('w2', false)] },
     { id: 'we-cool', exerciseId: 'a'.repeat(24), exerciseName: 'Stretch', modality: 'mobility', order: -1, section: 'cooldown', sets: [set('c1', false)] }
   ]
@@ -83,7 +84,7 @@ it('omits the bar chart below the minimum series length and keeps it bounded oth
   const short = compactSummary(parseTrainingView(metric), { locale: 'en', system: 'metric', ...translator('en') })
   expect(metric.related.observations.data.length).toBeLessThan(MIN_BARS)
   expect(short.bars).toBeUndefined()
-  metric.related.observations.data = Array.from({ length: MIN_BARS }, (_, index) => ({ key: 'waist_cm', date: `2026-03-0${index + 1}`, value: 80 + index }))
+  metric.related.observations.data = Array.from({ length: MIN_BARS }, (_, index) => ({ key: 'waist', date: `2026-03-0${index + 1}`, value: { value: 80 + index, unit: 'cm' } }))
   const long = compactSummary(parseTrainingView(metric), { locale: 'en', system: 'metric', ...translator('en') })
   expect(long.bars?.values).toEqual([80, 81, 82, 83])
   expect(long.bars?.start).toBe('Mar 1')
@@ -149,7 +150,7 @@ it('labels the exercise progression series as an estimate', () => {
   const day = (index: number) => `2026-09-0${index + 1}`
   const view = parseTrainingView({ view: 'exercise-progress', record: { id: 'd'.repeat(24), name: 'Bench press', modality: 'resistance' }, related: {
     stats: { sessions: 4, prCount: 1, unlockAt: 3 },
-    progression: { data: [{ id: 'd'.repeat(24), name: 'Bench press', modality: 'resistance', bestSetReps: 5, bestSetWeightKg: 80, sessionDates: [day(0)], series: [0, 1, 2, 3].map(index => ({ date: day(index), value: 90 + index })), unlocked: true }], meta: { total: 1, page: 1, limit: 10 }, metadata: { range: '4w', rangeStart: day(0), today: day(3), timezone: 'UTC', readAt: '2026-09-04T00:00:00.000Z' } },
+    progression: { data: [{ id: 'd'.repeat(24), name: 'Bench press', modality: 'resistance', bestSetReps: 5, bestSetWeight: { value: 80, unit: 'kg' }, sessionDates: [day(0)], series: [0, 1, 2, 3].map(index => ({ date: day(index), value: { value: 90 + index, unit: 'kg' } })), unlocked: true }], meta: { total: 1, page: 1, limit: 10 }, metadata: { range: '4w', rangeStart: day(0), today: day(3), timezone: 'UTC', readAt: '2026-09-04T00:00:00.000Z' } },
     history: [], records: [], collection: 'history', page: 1, limit: 10
   }, presentation })
   for (const locale of ['en', 'de'] as const) {

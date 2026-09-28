@@ -6,6 +6,7 @@ import { unlockProgressDays } from './progressModel'
 import type { createWorkoutConnection } from './workoutConnection'
 import { formatDay } from './planningModel'
 import { resolveDisplayUnitSystem, formatMeasure } from './presentation'
+import { accountLoadUnit, chartPoints, formatLoad, formatTotal, seriesUnit, type Measurement } from './measurement'
 import ProgressChart from './ProgressChart.vue'
 import HostFollowUp from './HostFollowUp.vue'
 const { exercise, disabled, navigate, followUp } = defineProps<{ exercise: ExerciseProgressView, disabled: boolean, navigate: ReturnType<typeof createWorkoutConnection>['navigate'], followUp: ReturnType<typeof createWorkoutConnection>['sendFollowUp'] }>()
@@ -15,7 +16,12 @@ const window = computed(() => exercise.related.progression.metadata)
 const curve = computed(() => exercise.related.progression.data[0])
 const system = computed(() => resolveDisplayUnitSystem(exercise.presentation.unitSystem, locale.value))
 const number = (value: number) => new Intl.NumberFormat(locale.value, { maximumFractionDigits: 1 }).format(value)
-const weight = (value: number) => formatMeasure('weight', value, system.value, locale.value)
+// Loads and estimates render as given, never converted (measurement.ts); the account unit only labels an empty series.
+const load = (measurement: Measurement) => formatLoad(measurement, locale.value)
+const estimate = computed(() => {
+  const unit = seriesUnit(curve.value?.series ?? [], accountLoadUnit(system.value))
+  return (value: number) => formatTotal({ value, unit }, locale.value)
+})
 const select = (patch: Record<string, unknown>) => navigate({ name: 'open_exercise_progress', arguments: { exerciseId: exercise.record.id, range: window.value.range, today: window.value.today, collection: exercise.related.collection, page: 1, limit: exercise.related.limit, ...patch } }, true)
 const openWorkout = (workoutId: string) => navigate({ name: 'open_workout', arguments: { workoutId } })
 const request = computed(() => t('progressUi.exerciseExplain', { exerciseId: exercise.record.id, name: title.value, from: window.value.rangeStart, to: window.value.today }))
@@ -83,7 +89,7 @@ const rows = computed(() => exercise.related.collection === 'history' ? exercise
           <dt class="text-sm text-muted">
             {{ t('progressUi.heaviestSet') }}
           </dt><dd class="mt-1 text-xl">
-            {{ number(exercise.related.stats.topSet.reps) }} × {{ weight(exercise.related.stats.topSet.weightKg) }}
+            {{ number(exercise.related.stats.topSet.reps) }} × {{ load(exercise.related.stats.topSet.weight) }}
           </dd><dd class="mt-1 text-xs">
             <time :datetime="exercise.related.stats.topSet.date">{{ formatDay(exercise.related.stats.topSet.date, locale) }}</time>
           </dd>
@@ -93,8 +99,8 @@ const rows = computed(() => exercise.related.collection === 'history' ? exercise
     <template v-if="curve?.unlocked">
       <progress-chart
         :title="t('progressUi.estimated')"
-        :points="curve.series"
-        :format="weight"
+        :points="chartPoints(curve.series)"
+        :format="estimate"
       />
       <p class="-mt-2 mb-5 text-xs text-muted">
         {{ t('progressUi.estimateNote') }}
@@ -162,7 +168,7 @@ const rows = computed(() => exercise.related.collection === 'history' ? exercise
               {{ t('progressUi.set', { value: number(index + 1) }) }} · {{ t(`setCategory.${set.category}`) }}
             </p>
             <p class="mt-1 text-lg">
-              <span v-if="set.weight !== undefined && set.weight !== null">{{ weight(set.weight) }} · </span>
+              <span v-if="set.weight !== undefined && set.weight !== null">{{ load(set.weight) }} · </span>
               <span v-if="set.reps !== undefined && set.reps !== null">{{ t('progressUi.reps', { value: number(set.reps) }) }}</span>
               <span v-if="set.duration !== undefined && set.duration !== null">{{ formatMeasure('duration', set.duration, system, locale) }} </span>
               <span v-if="set.distance !== undefined && set.distance !== null">{{ formatMeasure('distance', set.distance, system, locale) }}</span>
@@ -193,7 +199,7 @@ const rows = computed(() => exercise.related.collection === 'history' ? exercise
           class="block text-sm text-muted"
         >{{ formatDay(record.date, locale) }}</time>
         <p class="mt-2 text-xl">
-          {{ record.reps === null ? t('progressUi.unavailable') : t('progressUi.reps', { value: number(record.reps) }) }} · {{ record.weightKg === null ? t('progressUi.unavailable') : weight(record.weightKg) }}
+          {{ record.reps === null ? t('progressUi.unavailable') : t('progressUi.reps', { value: number(record.reps) }) }} · {{ record.weight === null ? t('progressUi.unavailable') : load(record.weight) }}
         </p>
         <p class="mt-1 text-sm text-muted">
           {{ new Intl.ListFormat(locale).format(record.prs.map(pr => t(`progressUi.prType.${pr.type}`))) }}

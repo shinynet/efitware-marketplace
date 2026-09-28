@@ -5,6 +5,7 @@ import HostFollowUp from './HostFollowUp.vue'
 import { useI18n } from 'vue-i18n'
 import type { TemplateView } from './templateModel'
 import { resolveDisplayUnitSystem, formatMeasure } from './presentation'
+import { formatLoad } from './measurement'
 import { interleavedExerciseSequence } from './lib/sequenceUtils'
 import { workoutSections } from './lib/sections'
 
@@ -210,7 +211,7 @@ const sections = computed(() => workoutSections(template.record.exercises.map(ex
                   v-if="entry.set.plannedWeight !== undefined"
                   class="mt-1 text-sm"
                 >
-                  {{ formatMeasure('weight', entry.set.plannedWeight, system, locale) }}
+                  {{ formatLoad(entry.set.plannedWeight, locale) }}
                 </p>
                 <p
                   v-if="entry.set.plannedDuration !== undefined"

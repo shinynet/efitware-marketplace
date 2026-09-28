@@ -61,8 +61,45 @@
             "topSet": {
               "type": "object",
               "properties": {
-                "weightKg": {
-                  "type": "number"
+                "weight": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "value": {
+                          "type": "number",
+                          "minimum": 0,
+                          "multipleOf": 0.5
+                        },
+                        "unit": {
+                          "type": "string",
+                          "const": "lb"
+                        }
+                      },
+                      "required": [
+                        "value",
+                        "unit"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "value": {
+                          "type": "number",
+                          "minimum": 0,
+                          "multipleOf": 0.25
+                        },
+                        "unit": {
+                          "type": "string",
+                          "const": "kg"
+                        }
+                      },
+                      "required": [
+                        "value",
+                        "unit"
+                      ]
+                    }
+                  ]
                 },
                 "reps": {
                   "type": "number"
@@ -73,7 +110,7 @@
                 }
               },
               "required": [
-                "weightKg",
+                "weight",
                 "reps",
                 "date"
               ]
@@ -136,8 +173,45 @@
                   "bestSetReps": {
                     "type": "number"
                   },
-                  "bestSetWeightKg": {
-                    "type": "number"
+                  "bestSetWeight": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": "number",
+                            "minimum": 0,
+                            "multipleOf": 0.5
+                          },
+                          "unit": {
+                            "type": "string",
+                            "const": "lb"
+                          }
+                        },
+                        "required": [
+                          "value",
+                          "unit"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": "number",
+                            "minimum": 0,
+                            "multipleOf": 0.25
+                          },
+                          "unit": {
+                            "type": "string",
+                            "const": "kg"
+                          }
+                        },
+                        "required": [
+                          "value",
+                          "unit"
+                        ]
+                      }
+                    ]
                   },
                   "sessionDates": {
                     "type": "array",
@@ -161,7 +235,25 @@
                           "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
                         },
                         "value": {
-                          "type": "number"
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991
+                            },
+                            "unit": {
+                              "type": "string",
+                              "enum": [
+                                "lb",
+                                "kg"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "value",
+                            "unit"
+                          ]
                         },
                         "isPr": {
                           "type": "boolean"
@@ -182,7 +274,7 @@
                   "name",
                   "modality",
                   "bestSetReps",
-                  "bestSetWeightKg",
+                  "bestSetWeight",
                   "sessionDates",
                   "series",
                   "unlocked"
@@ -310,8 +402,44 @@
                       "type": "string"
                     },
                     "weight": {
-                      "type": "number",
-                      "minimum": 0
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "number",
+                              "minimum": 0,
+                              "multipleOf": 0.5
+                            },
+                            "unit": {
+                              "type": "string",
+                              "const": "lb"
+                            }
+                          },
+                          "required": [
+                            "value",
+                            "unit"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "number",
+                              "minimum": 0,
+                              "multipleOf": 0.25
+                            },
+                            "unit": {
+                              "type": "string",
+                              "const": "kg"
+                            }
+                          },
+                          "required": [
+                            "value",
+                            "unit"
+                          ]
+                        }
+                      ]
                     },
                     "reps": {
                       "type": "number",
@@ -326,8 +454,44 @@
                       "minimum": 0
                     },
                     "plannedWeight": {
-                      "type": "number",
-                      "minimum": 0
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "number",
+                              "minimum": 0,
+                              "multipleOf": 0.5
+                            },
+                            "unit": {
+                              "type": "string",
+                              "const": "lb"
+                            }
+                          },
+                          "required": [
+                            "value",
+                            "unit"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "number",
+                              "minimum": 0,
+                              "multipleOf": 0.25
+                            },
+                            "unit": {
+                              "type": "string",
+                              "const": "kg"
+                            }
+                          },
+                          "required": [
+                            "value",
+                            "unit"
+                          ]
+                        }
+                      ]
                     },
                     "plannedDuration": {
                       "type": "number",
@@ -377,6 +541,72 @@
                         "right",
                         "both"
                       ]
+                    },
+                    "prs": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "weight",
+                              "oneRm",
+                              "volume"
+                            ]
+                          },
+                          "weight": {
+                            "oneOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "value": {
+                                    "type": "number",
+                                    "minimum": 0,
+                                    "multipleOf": 0.5
+                                  },
+                                  "unit": {
+                                    "type": "string",
+                                    "const": "lb"
+                                  }
+                                },
+                                "required": [
+                                  "value",
+                                  "unit"
+                                ]
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "value": {
+                                    "type": "number",
+                                    "minimum": 0,
+                                    "multipleOf": 0.25
+                                  },
+                                  "unit": {
+                                    "type": "string",
+                                    "const": "kg"
+                                  }
+                                },
+                                "required": [
+                                  "value",
+                                  "unit"
+                                ]
+                              }
+                            ]
+                          },
+                          "reps": {
+                            "type": "number"
+                          },
+                          "first": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "weight"
+                        ]
+                      }
                     }
                   },
                   "required": [
@@ -427,10 +657,47 @@
               "modality": {
                 "type": "string"
               },
-              "weightKg": {
+              "weight": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": "number",
+                            "minimum": 0,
+                            "multipleOf": 0.5
+                          },
+                          "unit": {
+                            "type": "string",
+                            "const": "lb"
+                          }
+                        },
+                        "required": [
+                          "value",
+                          "unit"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": "number",
+                            "minimum": 0,
+                            "multipleOf": 0.25
+                          },
+                          "unit": {
+                            "type": "string",
+                            "const": "kg"
+                          }
+                        },
+                        "required": [
+                          "value",
+                          "unit"
+                        ]
+                      }
+                    ]
                   },
                   {
                     "type": "null"
@@ -461,7 +728,44 @@
                       ]
                     },
                     "weight": {
-                      "type": "number"
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "number",
+                              "minimum": 0,
+                              "multipleOf": 0.5
+                            },
+                            "unit": {
+                              "type": "string",
+                              "const": "lb"
+                            }
+                          },
+                          "required": [
+                            "value",
+                            "unit"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "number",
+                              "minimum": 0,
+                              "multipleOf": 0.25
+                            },
+                            "unit": {
+                              "type": "string",
+                              "const": "kg"
+                            }
+                          },
+                          "required": [
+                            "value",
+                            "unit"
+                          ]
+                        }
+                      ]
                     },
                     "reps": {
                       "type": "number"
@@ -485,7 +789,7 @@
               "instanceId",
               "setId",
               "modality",
-              "weightKg",
+              "weight",
               "reps",
               "prs"
             ]

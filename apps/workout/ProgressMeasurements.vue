@@ -3,16 +3,21 @@ import { useI18n } from 'vue-i18n'
 import type { createWorkoutConnection } from './workoutConnection'
 import type { ProgressView } from './progressModel'
 import { resolveDisplayUnitSystem, formatMeasure } from './presentation'
+import { accountLoadUnit, chartPoints, formatBodyMetric, seriesUnit, type BodyMetricId, type Measurement } from './measurement'
 import { formatDay } from './planningModel'
 import ProgressChart from './ProgressChart.vue'
 const { progress, disabled, navigate } = defineProps<{ progress: ProgressView, disabled: boolean, navigate: ReturnType<typeof createWorkoutConnection>['navigate'] }>()
-const open = (key: string) => navigate({ name: 'open_body_metric', arguments: { key, from: progress.record.rangeStart, to: progress.record.asOf } })
+const open = (key: BodyMetricId) => navigate({ name: 'open_body_metric', arguments: { key, from: progress.record.rangeStart, to: progress.record.asOf } })
 const { t, locale } = useI18n()
-const weight = (value: number) => formatMeasure('weight', value, (resolveDisplayUnitSystem(progress.presentation.unitSystem, locale.value)), locale.value)
-const percent = (value: number) => new Intl.NumberFormat(locale.value, { style: 'percent', maximumFractionDigits: 1 }).format(value / 100)
-const length = (value: number) => new Intl.NumberFormat(locale.value, { style: 'unit', unit: resolveDisplayUnitSystem(progress.presentation.unitSystem, locale.value) === 'imperial' ? 'inch' : 'centimeter', maximumFractionDigits: 1 }).format(resolveDisplayUnitSystem(progress.presentation.unitSystem, locale.value) === 'imperial' ? value / 2.54 : value)
 const number = (value: number) => new Intl.NumberFormat(locale.value, { maximumFractionDigits: 1 }).format(value)
-const heartRate = (value: number) => t('progressUi.bpm', { value: number(value) })
+// Body measurements render as given, unsnapped at one decimal and never converted (measurement.ts).
+const body = (measurement: Measurement) => formatBodyMetric(measurement, locale.value, value => t('progressUi.bpm', { value }))
+const accountUnit = () => accountLoadUnit(resolveDisplayUnitSystem(progress.presentation.unitSystem, locale.value))
+/** A chart's formatter in its series' unit; the account unit only labels an empty series. */
+const bodyIn = (points: ReadonlyArray<{ value: Measurement }>, fallback: string) => {
+  const unit = seriesUnit(points, fallback)
+  return (value: number) => body({ value, unit })
+}
 </script>
 <template>
   <section
@@ -34,47 +39,47 @@ const heartRate = (value: number) => t('progressUi.bpm', { value: number(value) 
         <dt class="text-sm text-muted">
           {{ t('progressUi.weight') }}
         </dt><dd class="mt-1 text-xl">
-          {{ progress.record.body.weightKg === null ? t('progressUi.unavailable') : weight(progress.record.body.weightKg) }}
+          {{ progress.record.body.weight === null ? t('progressUi.unavailable') : body(progress.record.body.weight) }}
         </dd>
       </div>
       <div>
         <dt class="text-sm text-muted">
           {{ t('progressUi.targetWeight') }}
         </dt><dd class="mt-1 text-xl">
-          {{ progress.record.body.goalWeightKg === null ? t('progressUi.unavailable') : weight(progress.record.body.goalWeightKg) }}
+          {{ progress.record.body.goalWeight === null ? t('progressUi.unavailable') : body(progress.record.body.goalWeight) }}
         </dd>
       </div>
       <div>
         <dt class="text-sm text-muted">
           {{ t('progressUi.fat') }}
         </dt><dd class="mt-1 text-xl">
-          {{ progress.record.body.bodyFatPercent === null ? t('progressUi.unavailable') : percent(progress.record.body.bodyFatPercent) }}
+          {{ progress.record.body.bodyFat === null ? t('progressUi.unavailable') : body(progress.record.body.bodyFat) }}
         </dd>
       </div>
     </dl>
     <button
       class="secondary mt-4"
       :disabled
-      @click="open('weight_kg')"
+      @click="open('weight')"
     >
       {{ t('progressUi.viewWeight') }}
     </button>
     <button
       class="secondary mt-4"
       :disabled
-      @click="open('body_fat_percent')"
+      @click="open('body_fat')"
     >
       {{ t('progressUi.viewFat') }}
     </button>
     <progress-chart
       :title="t('progressUi.weight')"
-      :points="progress.record.body.weightSeries"
-      :format="weight"
+      :points="chartPoints(progress.record.body.weightSeries)"
+      :format="bodyIn(progress.record.body.weightSeries, accountUnit())"
     />
     <progress-chart
       :title="t('progressUi.fat')"
-      :points="progress.record.body.bodyFatSeries"
-      :format="percent"
+      :points="chartPoints(progress.record.body.bodyFatSeries)"
+      :format="bodyIn(progress.record.body.bodyFatSeries, 'percent')"
     />
     <section
       v-for="measurement in progress.record.body.measurements"
@@ -85,19 +90,19 @@ const heartRate = (value: number) => t('progressUi.bpm', { value: number(value) 
         {{ t(`progressUi.measurement.${measurement.key}`) }}
       </h3>
       <p class="mt-1 text-sm">
-        {{ t('progressUi.current', { value: length(measurement.valueCm) }) }}
+        {{ t('progressUi.current', { value: body(measurement.value) }) }}
       </p>
       <button
         class="secondary mt-3"
         :disabled
-        @click="open(`${measurement.key}_cm`)"
+        @click="open(measurement.key)"
       >
         {{ t('progressUi.viewMetric') }}
       </button>
       <progress-chart
         :title="t(`progressUi.measurement.${measurement.key}`)"
-        :points="measurement.series"
-        :format="length"
+        :points="chartPoints(measurement.series)"
+        :format="bodyIn(measurement.series, measurement.value.unit)"
       />
     </section>
   </section>
@@ -124,21 +129,21 @@ const heartRate = (value: number) => t('progressUi.bpm', { value: number(value) 
         <dt class="text-sm text-muted">
           {{ t('progressUi.restingHr') }}
         </dt><dd class="mt-1 text-xl">
-          {{ progress.record.cardio.restingHr === null ? t('progressUi.unavailable') : heartRate(progress.record.cardio.restingHr) }}
+          {{ progress.record.cardio.restingHr === null ? t('progressUi.unavailable') : body(progress.record.cardio.restingHr) }}
         </dd>
       </div>
     </dl>
     <button
       class="secondary mt-4"
       :disabled
-      @click="open('resting_heart_rate_bpm')"
+      @click="open('resting_heart_rate')"
     >
       {{ t('progressUi.viewMetric') }}
     </button>
     <progress-chart
       :title="t('progressUi.restingHr')"
-      :points="progress.record.cardio.restingHrSeries"
-      :format="heartRate"
+      :points="chartPoints(progress.record.cardio.restingHrSeries)"
+      :format="bodyIn(progress.record.cardio.restingHrSeries, 'bpm')"
     />
     <dl class="space-y-4">
       <div
