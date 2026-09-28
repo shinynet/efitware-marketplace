@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { ProgressView } from './progressModel'
+import { unlockProgressDays, type ProgressView } from './progressModel'
 import type { createWorkoutConnection } from './workoutConnection'
 import { formatDay } from './planningModel'
 import { resolveDisplayUnitSystem, formatMeasure } from './presentation'
@@ -221,7 +221,7 @@ const request = computed(() => t('progressUi.explain', { from: progress.record.r
           v-else
           class="mt-3 text-sm text-muted"
         >
-          {{ t('progressUi.locked', { count: number(exercise.sessionDates.length), required: number(progress.record.unlockSessions) }) }}
+          {{ t(exercise.eligibleProgressionDays === undefined ? 'progressUi.locked' : 'progressUi.lockedEligible', { count: number(unlockProgressDays(exercise)), required: number(progress.record.unlockSessions) }) }}
         </p>
       </section>
     </section>

@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { ExerciseProgressView } from './focusedProgressModel'
+import { unlockProgressDays } from './progressModel'
 import type { createWorkoutConnection } from './workoutConnection'
 import { formatDay } from './planningModel'
 import { resolveDisplayUnitSystem, formatMeasure } from './presentation'
@@ -103,7 +104,7 @@ const rows = computed(() => exercise.related.collection === 'history' ? exercise
       v-else-if="exercise.related.stats.progressionEligible !== false && exercise.record.modality === 'resistance'"
       class="my-5 text-sm text-muted"
     >
-      {{ t('progressUi.locked', { count: number(curve?.sessionDates.length ?? 0), required: number(exercise.related.stats.unlockAt) }) }}
+      {{ t(curve?.eligibleProgressionDays === undefined ? 'progressUi.locked' : 'progressUi.lockedEligible', { count: number(curve ? unlockProgressDays(curve) : 0), required: number(exercise.related.stats.unlockAt) }) }}
     </p>
     <nav
       :aria-label="t('progressUi.exerciseSections')"

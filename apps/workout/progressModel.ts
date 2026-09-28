@@ -24,13 +24,20 @@ export const progressViewSchema = z.object({
   }),
   related: z.object({
     section: z.enum(['overview', 'strength', 'body', 'cardio', 'goals']),
-    progression: z.object({ data: z.array(z.object({ id, name: z.string(), i18n: localizedName, modality: z.string(), bestSetReps: n, bestSetWeightKg: n, sessionDates: z.array(day), series: z.array(point), unlocked: z.boolean() })), meta }),
+    progression: z.object({ data: z.array(z.object({ id, name: z.string(), i18n: localizedName, modality: z.string(), bestSetReps: n, bestSetWeightKg: n, sessionDates: z.array(day), eligibleProgressionDays: count.optional(), series: z.array(point), unlocked: z.boolean() })), meta }),
     goals: z.object({ data: z.array(z.object({ id, name: z.string(), status: z.enum(['active', 'achieved', 'abandoned']), targetMeasure: z.string().optional(), targetDate: day.optional(), checkInCount: count, latestCheckIn: z.object({ date: day, value: z.string().optional(), note: z.string().optional() }).optional() })), meta })
   }),
   presentation: presentationSchema.extend({ timeZone: z.string() })
 })
 export type ProgressView = z.infer<typeof progressViewSchema>
 export type SeriesPoint = z.infer<typeof point>
+
+/**
+ * Days counted toward the estimate unlock. The application's `eligibleProgressionDays`
+ * (EF-1466) counts only days with a set of 12 reps or fewer; before it emits that field,
+ * every session day counted. `sessionDates` stays every session day either way.
+ */
+export const unlockProgressDays = (entry: { sessionDates: string[], eligibleProgressionDays?: number }) => entry.eligibleProgressionDays ?? entry.sessionDates.length
 
 /** Calendar days have uniform spacing even across daylight-saving changes. */
 export const chartGeometry = (points: SeriesPoint[], bars = false) => {
