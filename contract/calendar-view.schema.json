@@ -35,9 +35,11 @@
                   {
                     "type": "string",
                     "enum": [
+                      "in_progress",
+                      "missed",
+                      "planned",
                       "completed",
-                      "incomplete",
-                      "in_progress"
+                      "ended"
                     ]
                   },
                   {
@@ -51,6 +53,26 @@
                 "maximum": 9007199254740991
               },
               "completedSessionCount": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "inProgressSessionCount": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "plannedSessionCount": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "missedSessionCount": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "endedSessionCount": {
                 "type": "integer",
                 "minimum": 0,
                 "maximum": 9007199254740991
@@ -85,7 +107,11 @@
               "date",
               "status",
               "sessionCount",
-              "completedSessionCount"
+              "completedSessionCount",
+              "inProgressSessionCount",
+              "plannedSessionCount",
+              "missedSessionCount",
+              "endedSessionCount"
             ]
           }
         },
@@ -119,6 +145,17 @@
                           "abandoned"
                         ]
                       },
+                      "displayStatus": {
+                        "type": "string",
+                        "enum": [
+                          "planned",
+                          "in_progress",
+                          "completed",
+                          "skipped",
+                          "abandoned",
+                          "missed"
+                        ]
+                      },
                       "time": {
                         "type": "string"
                       },
@@ -131,6 +168,7 @@
                       "id",
                       "name",
                       "status",
+                      "displayStatus",
                       "time"
                     ]
                   }

@@ -2,7 +2,8 @@
 /** Read-only calendar selection; creating an occurrence is a separately labelled, explicit mutation. */
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { formatDay, rangeDays, shiftDay, type CalendarView } from './planningModel'
+import { dayMarks, formatDay, rangeDays, sessionMark, shiftDay, type CalendarView } from './planningModel'
+import CalendarMark from './CalendarMark.vue'
 import type { createWorkoutConnection } from './workoutConnection'
 const { calendar, disabled, navigate, create } = defineProps<{
   calendar: CalendarView, disabled: boolean,
@@ -15,6 +16,10 @@ const byDate = computed(() => new Map(calendar.record.days.map(day => [day.date,
 const select = (date: string) => navigate({ name: 'open_calendar', arguments: { from: calendar.record.from, to: calendar.record.to, date } }, true)
 const shift = (direction: number) => navigate({ name: 'open_calendar', arguments: { from: shiftDay(calendar.record.from, days.value.length * direction), to: shiftDay(calendar.record.to, days.value.length * direction), date: shiftDay(calendar.record.date, days.value.length * direction) } }, true)
 const n = (value: number) => new Intl.NumberFormat(locale.value).format(value)
+type AgendaItem = NonNullable<CalendarView['record']['agenda']>['items'][number]
+/** Visible label: missed and terminal rows name their presentation state; an untapped occurrence says it has no saved workout. */
+const itemLabel = (item: AgendaItem) => item.displayStatus === 'missed' ? t(item.scheduleId ? 'missedOccurrence' : 'missed') : t(item.scheduleId ? 'scheduledOccurrence' : item.displayStatus)
+const timed = (item: AgendaItem) => !item.scheduleId && item.displayStatus !== 'planned' && item.displayStatus !== 'missed'
 const time = (instant: string) => new Intl.DateTimeFormat(locale.value, { hour: 'numeric', minute: '2-digit', timeZone: calendar.presentation.timeZone }).format(new Date(instant))
 </script>
 <template>
@@ -67,6 +72,17 @@ const time = (instant: string) => new Intl.DateTimeFormat(locale.value, { hour: 
             :datetime="date"
             class="block font-semibold"
           >{{ formatDay(date, locale) }}</time>
+          <span
+            v-if="dayMarks(byDate.get(date)).length"
+            class="mt-2 flex flex-wrap gap-1.5"
+          >
+            <calendar-mark
+              v-for="(kind, index) in dayMarks(byDate.get(date))"
+              :key="`${kind}-${index}`"
+              :kind="kind"
+              :label="t(`calendarMark.${kind}`)"
+            />
+          </span>
           <span class="mt-1 block text-sm text-muted">{{ t('calendarCounts', { total: n(byDate.get(date)?.sessionCount ?? 0), completed: n(byDate.get(date)?.completedSessionCount ?? 0) }, byDate.get(date)?.sessionCount ?? 0) }}</span>
           <span
             v-if="byDate.get(date)?.summary"
@@ -100,14 +116,24 @@ const time = (instant: string) => new Intl.DateTimeFormat(locale.value, { hour: 
           <h3 class="text-lg font-semibold">
             {{ item.name }}
           </h3>
-          <p class="mt-2 text-sm text-muted">
-            {{ t(item.scheduleId ? 'scheduledOccurrence' : item.status) }} <time
-              v-if="!item.scheduleId && item.status !== 'planned'"
+          <p
+            class="mt-2 flex items-center gap-2 text-sm text-muted"
+            :data-display-status="item.displayStatus"
+          >
+            <calendar-mark :kind="sessionMark(item.displayStatus)" />
+            <span>{{ itemLabel(item) }} <time
+              v-if="timed(item)"
               :datetime="item.time"
-            >· {{ time(item.time) }}</time>
+            >· {{ time(item.time) }}</time></span>
           </p>
           <p
-            v-if="item.scheduleId"
+            v-if="item.displayStatus === 'missed'"
+            class="mt-2 text-sm text-muted"
+          >
+            {{ t(item.scheduleId ? 'logPastOccurrenceNote' : 'logPastWorkoutNote') }}
+          </p>
+          <p
+            v-else-if="item.scheduleId"
             class="mt-2 text-sm text-muted"
           >
             {{ t('createOccurrenceNote') }}
@@ -115,11 +141,20 @@ const time = (instant: string) => new Intl.DateTimeFormat(locale.value, { hour: 
           <button
             v-if="item.scheduleId"
             type="button"
-            class="primary mt-3"
+            :class="item.displayStatus === 'missed' ? 'secondary mt-3' : 'primary mt-3'"
             :disabled="disabled"
             @click="create(item.scheduleId, calendar.record.date)"
           >
-            {{ t('createOccurrence') }}
+            {{ t(item.displayStatus === 'missed' ? 'logPastWorkout' : 'createOccurrence') }}
+          </button>
+          <button
+            v-else-if="item.displayStatus === 'missed'"
+            type="button"
+            class="secondary mt-3"
+            :disabled="disabled"
+            @click="navigate({ name: 'open_workout', arguments: { workoutId: item.id } })"
+          >
+            {{ t('logPastWorkout') }}
           </button>
           <button
             v-else

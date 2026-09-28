@@ -113,6 +113,7 @@ export const compactSummary = (view: TrainingView, options: Options): CompactSum
       }
     }
     case 'calendar': {
+      // Counts only: a `completed` day status means completed is the highest bucket present, not that every session was done.
       const { record } = view
       const sessions = record.days.reduce((sum, day) => sum + day.sessionCount, 0)
       const completed = record.days.reduce((sum, day) => sum + day.completedSessionCount, 0)
@@ -121,7 +122,7 @@ export const compactSummary = (view: TrainingView, options: Options): CompactSum
       return {
         eyebrow: dot(t('trainingCalendar'), `${monthDay(record.from, locale)} – ${monthDay(record.to, locale)}`), title: shortDay(record.date, locale),
         facts: [fact(t('compact.sessions'), count(sessions)), fact(t('completed'), count(completed)), fact(t('compact.daysTrained'), count(trained))],
-        ...(item ? { detail: fact(t('compact.agenda'), dot(item.name, t(item.status))) } : {}),
+        ...(item ? { detail: fact(t('compact.agenda'), dot(item.name, t(item.displayStatus))) } : {}),
         path: `/training/${record.date}`
       }
     }
