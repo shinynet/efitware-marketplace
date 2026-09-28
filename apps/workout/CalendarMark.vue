@@ -1,8 +1,8 @@
 <script setup lang="ts">
 /**
  * One calendar session mark (EF-1474). Shapes differ without colour: done is a filled dot, planned a ring, missed a
- * muted ring with a diagonal slash, ended a muted ring with a short bar. In progress keeps the product's filled
- * terracotta dot. With a label the mark is an image with that name; without one it is decorative beside visible text.
+ * muted ring with a diagonal slash, ended a muted ring with a short bar, and in progress a ring with its left half
+ * filled (terracotta), so no two marks differ by colour alone. With a label the mark is an image with that name; without one it is decorative beside visible text.
  */
 import type { CalendarMarkKind } from './planningModel'
 const { kind, label = '' } = defineProps<{ kind: CalendarMarkKind, label?: string }>()
@@ -25,7 +25,7 @@ const { kind, label = '' } = defineProps<{ kind: CalendarMarkKind, label?: strin
       focusable="false"
     >
       <circle
-        v-if="kind === 'completed' || kind === 'in_progress'"
+        v-if="kind === 'completed'"
         cx="6"
         cy="6"
         r="4.5"
@@ -39,6 +39,11 @@ const { kind, label = '' } = defineProps<{ kind: CalendarMarkKind, label?: strin
         fill="none"
         stroke="currentColor"
         stroke-width="1.5"
+      />
+      <path
+        v-if="kind === 'in_progress'"
+        d="M6 1.75 A4.25 4.25 0 0 0 6 10.25 Z"
+        fill="currentColor"
       />
       <line
         v-if="kind === 'missed'"

@@ -130,12 +130,16 @@ describe('CalendarView rendering (EF-1474)', () => {
     const shapes = Object.fromEntries(cell.split('data-mark="').slice(1).map(part => [part.slice(0, part.indexOf('"')), {
       filled: /<circle[^>]*fill="currentColor"/.test(part.split('</svg>')[0]!),
       ring: /<circle[^>]*fill="none"/.test(part.split('</svg>')[0]!),
+      half: /<path[^>]*d="M6 1\.75 A4\.25 4\.25 0 0 0 6 10\.25 Z"[^>]*fill="currentColor"/.test(part.split('</svg>')[0]!),
       line: /<line[^>]*x1="([\d.]+)"[^>]*y1="([\d.]+)"[^>]*x2="([\d.]+)"[^>]*y2="([\d.]+)"/.exec(part.split('</svg>')[0]!)?.slice(1).map(Number)
     }]))
     expect(Object.keys(shapes)).toEqual(['completed', 'in_progress', 'planned', 'missed', 'ended'])
-    expect(shapes.completed).toEqual({ filled: true, ring: false, line: undefined })
-    expect(shapes.in_progress).toEqual({ filled: true, ring: false, line: undefined })
-    expect(shapes.planned).toEqual({ filled: false, ring: true, line: undefined })
+    expect(shapes.completed).toEqual({ filled: true, ring: false, half: false, line: undefined })
+    expect(shapes.in_progress).toEqual({ filled: false, ring: true, half: true, line: undefined })
+    expect(shapes.in_progress).not.toEqual(shapes.completed)
+    expect(shapes.planned).toEqual({ filled: false, ring: true, half: false, line: undefined })
+    // No two marks share a shape: colour is never the only difference.
+    expect(new Set(Object.values(shapes).map(shape => JSON.stringify({ ...shape, line: shape.line ? (shape.line[1] === shape.line[3] ? 'bar' : 'slash') : null }))).size).toBe(5)
     const [mx1, my1, mx2, my2] = shapes.missed!.line!
     expect(shapes.missed!.ring && mx1 !== mx2 && my1 !== my2).toBe(true)
     const [ex1, ey1, ex2, ey2] = shapes.ended!.line!
