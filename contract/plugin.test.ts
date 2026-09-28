@@ -13,6 +13,10 @@ it('keeps the published skill inventory consistent with the required server surf
   // EF-1339: a lookup question opens the existing card without being asked to.
   expect(skill).toContain('is a display request even when the user does not ask for a card')
   expect(skill).toMatch(/has no workoutId: call `open_calendar` for that day instead/)
+  // EF-1469: a PR is one award of two kinds; legacy markers are never announced.
+  expect(skill).toContain('A PR is an award, at most one per exercise per workout: Heaviest (`weight`, a new top weight) or Est. 1RM (`oneRm`')
+  expect(skill).toContain('The first workout with an exercise sets the reference and earns none.')
+  expect(skill).toContain('A stored `volume` marker, or a `oneRm` marker from a set over 12 reps, is not an award: never announce it.')
 })
 
 it('preserves marketplace identity and sign-in policy', () => {
