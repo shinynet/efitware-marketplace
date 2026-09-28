@@ -2133,5 +2133,103 @@
         "timeZone": "America/Denver"
       }
     }
+  },
+  "prAwards": {
+    "name": "pr-award-kinds",
+    "note": "The application fixtures test/fixtures/mcp/progress-recent-prs.json and test/fixtures/mcp/personal-records.json (EF-1468, in the EF-1448 measurement contract), copied verbatim. getProgressRecentPrs is get_progress/open_progress record.recentPrs; getPersonalRecords is a get_personal_records response, whose data rows are open_exercise_progress related.records. type weight is Heaviest and type oneRm is Est. 1RM; an Est. 1RM row adds estimatedOneRm, the whole-unit Epley estimate of the lifted set (170 lb x 8 reads 215 lb).",
+    "getProgressRecentPrs": {
+      "recentPrs": [
+        {
+          "id": "66f1a2b3c4d5e6f708192a3b-we-bench-1-set-bench-1-3",
+          "workoutId": "66f1a2b3c4d5e6f708192a3b",
+          "exerciseId": "66e0a1b2c3d4e5f607182930",
+          "setId": "set-bench-1-3",
+          "modality": "resistance",
+          "exerciseName": "Barbell Bench Press",
+          "date": "2026-09-24",
+          "type": "weight",
+          "reps": 6,
+          "weight": {
+            "value": 187.5,
+            "unit": "lb"
+          }
+        },
+        {
+          "id": "66ef9a8b7c6d5e4f30211203-we-squat-1-set-squat-1-2",
+          "workoutId": "66ef9a8b7c6d5e4f30211203",
+          "exerciseId": "66e0a1b2c3d4e5f607182931",
+          "setId": "set-squat-1-2",
+          "modality": "resistance",
+          "exerciseName": "Back Squat",
+          "date": "2026-09-22",
+          "type": "oneRm",
+          "reps": 8,
+          "weight": {
+            "value": 170,
+            "unit": "lb"
+          },
+          "estimatedOneRm": {
+            "value": 215,
+            "unit": "lb"
+          }
+        }
+      ]
+    },
+    "getPersonalRecords": {
+      "data": [
+        {
+          "workoutId": "66f1a2b3c4d5e6f708192a3b",
+          "date": "2026-09-24",
+          "exerciseId": "66e0a1b2c3d4e5f607182930",
+          "exerciseName": "Barbell Bench Press",
+          "instanceId": "we-bench-1",
+          "setId": "set-bench-1-3",
+          "modality": "resistance",
+          "weight": {
+            "value": 187.5,
+            "unit": "lb"
+          },
+          "reps": 6,
+          "prs": [
+            {
+              "type": "weight",
+              "weight": {
+                "value": 187.5,
+                "unit": "lb"
+              },
+              "reps": 6
+            }
+          ]
+        },
+        {
+          "workoutId": "66ef9a8b7c6d5e4f30211203",
+          "date": "2026-09-22",
+          "exerciseId": "66e0a1b2c3d4e5f607182931",
+          "exerciseName": "Back Squat",
+          "instanceId": "we-squat-1",
+          "setId": "set-squat-1-2",
+          "modality": "resistance",
+          "weight": {
+            "value": 170,
+            "unit": "lb"
+          },
+          "reps": 8,
+          "prs": [
+            {
+              "type": "oneRm",
+              "weight": {
+                "value": 170,
+                "unit": "lb"
+              },
+              "reps": 8
+            }
+          ],
+          "estimatedOneRm": {
+            "value": 215,
+            "unit": "lb"
+          }
+        }
+      ]
+    }
   }
 }
