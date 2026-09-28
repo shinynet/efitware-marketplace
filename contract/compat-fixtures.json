@@ -552,7 +552,7 @@
     {
       "view": "body-metric",
       "record": {
-        "key": "waist_cm",
+        "key": "waist",
         "from": "2026-03-01",
         "to": "2026-03-10"
       },
@@ -560,14 +560,20 @@
         "observations": {
           "data": [
             {
-              "key": "waist_cm",
+              "key": "waist",
               "date": "2026-03-07",
-              "value": 83.82
+              "value": {
+                "value": 33,
+                "unit": "in"
+              }
             },
             {
-              "key": "waist_cm",
+              "key": "waist",
               "date": "2026-03-10",
-              "value": 82.55
+              "value": {
+                "value": 32.5,
+                "unit": "in"
+              }
             }
           ],
           "meta": {
@@ -749,6 +755,1382 @@
             "scheduleId": "5f0000000000000000000002"
           }
         ]
+      }
+    }
+  },
+  "measurementContract": {
+    "openWorkout": {
+      "imperial": {
+        "workout": {
+          "id": "666666666666666666666666",
+          "title": "Upper A",
+          "date": "2026-09-24",
+          "status": "in_progress",
+          "revision": "workout:1:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "exercises": [
+            {
+              "id": "we-bench",
+              "exerciseId": "777777777777777777777777",
+              "exerciseName": "Bench press",
+              "modality": "resistance",
+              "order": 0,
+              "section": "main",
+              "sets": [
+                {
+                  "id": "s1",
+                  "category": "working",
+                  "completed": true,
+                  "weight": {
+                    "value": 187.5,
+                    "unit": "lb"
+                  },
+                  "reps": 5,
+                  "plannedWeight": {
+                    "value": 187.5,
+                    "unit": "lb"
+                  },
+                  "plannedReps": {
+                    "min": 5,
+                    "max": 5
+                  },
+                  "prs": [
+                    {
+                      "type": "weight",
+                      "weight": {
+                        "value": 187.5,
+                        "unit": "lb"
+                      },
+                      "reps": 5
+                    }
+                  ]
+                },
+                {
+                  "id": "s2",
+                  "category": "working",
+                  "completed": false,
+                  "plannedWeight": {
+                    "value": 185,
+                    "unit": "lb"
+                  },
+                  "plannedReps": {
+                    "min": 5,
+                    "max": 5
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "exercises": [
+          {
+            "id": "777777777777777777777777",
+            "nameDe": "Bankdrücken",
+            "tracksWeight": true,
+            "tracksReps": true
+          }
+        ],
+        "presentation": {
+          "locale": "en",
+          "unitSystem": "imperial",
+          "theme": null,
+          "skin": null
+        }
+      },
+      "metric": {
+        "workout": {
+          "id": "666666666666666666666666",
+          "title": "Upper A",
+          "date": "2026-09-24",
+          "status": "in_progress",
+          "revision": "workout:1:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "exercises": [
+            {
+              "id": "we-bench",
+              "exerciseId": "777777777777777777777777",
+              "exerciseName": "Bench press",
+              "modality": "resistance",
+              "order": 0,
+              "section": "main",
+              "sets": [
+                {
+                  "id": "s1",
+                  "category": "working",
+                  "completed": true,
+                  "weight": {
+                    "value": 85.25,
+                    "unit": "kg"
+                  },
+                  "reps": 5,
+                  "plannedWeight": {
+                    "value": 85.25,
+                    "unit": "kg"
+                  },
+                  "plannedReps": {
+                    "min": 5,
+                    "max": 5
+                  },
+                  "prs": [
+                    {
+                      "type": "weight",
+                      "weight": {
+                        "value": 85.25,
+                        "unit": "kg"
+                      },
+                      "reps": 5
+                    }
+                  ]
+                },
+                {
+                  "id": "s2",
+                  "category": "working",
+                  "completed": false,
+                  "plannedWeight": {
+                    "value": 85,
+                    "unit": "kg"
+                  },
+                  "plannedReps": {
+                    "min": 5,
+                    "max": 5
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "exercises": [
+          {
+            "id": "777777777777777777777777",
+            "nameDe": "Bankdrücken",
+            "tracksWeight": true,
+            "tracksReps": true
+          }
+        ],
+        "presentation": {
+          "locale": "de",
+          "unitSystem": "metric",
+          "theme": null,
+          "skin": null
+        }
+      }
+    },
+    "openExerciseProgress": {
+      "view": "exercise-progress",
+      "record": {
+        "id": "777777777777777777777777",
+        "name": "Bench press",
+        "modality": "resistance"
+      },
+      "related": {
+        "stats": {
+          "sessions": 8,
+          "prCount": 3,
+          "unlockAt": 6,
+          "progressionEligible": true,
+          "topSet": {
+            "weight": {
+              "value": 187.5,
+              "unit": "lb"
+            },
+            "reps": 5,
+            "date": "2026-09-18"
+          },
+          "lastRpe": {
+            "value": 8,
+            "date": "2026-09-18"
+          }
+        },
+        "progression": {
+          "data": [
+            {
+              "id": "777777777777777777777777",
+              "name": "Bench press",
+              "modality": "resistance",
+              "bestSetReps": 5,
+              "bestSetWeight": {
+                "value": 187.5,
+                "unit": "lb"
+              },
+              "sessionDates": [
+                "2026-09-01",
+                "2026-09-04",
+                "2026-09-08",
+                "2026-09-11",
+                "2026-09-15",
+                "2026-09-18"
+              ],
+              "eligibleProgressionDays": 6,
+              "series": [
+                {
+                  "date": "2026-09-01",
+                  "value": {
+                    "value": 204,
+                    "unit": "lb"
+                  }
+                },
+                {
+                  "date": "2026-09-04",
+                  "value": {
+                    "value": 207,
+                    "unit": "lb"
+                  }
+                },
+                {
+                  "date": "2026-09-08",
+                  "value": {
+                    "value": 210,
+                    "unit": "lb"
+                  }
+                },
+                {
+                  "date": "2026-09-11",
+                  "value": {
+                    "value": 213,
+                    "unit": "lb"
+                  }
+                },
+                {
+                  "date": "2026-09-15",
+                  "value": {
+                    "value": 215,
+                    "unit": "lb"
+                  }
+                },
+                {
+                  "date": "2026-09-18",
+                  "value": {
+                    "value": 219,
+                    "unit": "lb"
+                  },
+                  "isPr": true
+                }
+              ],
+              "unlocked": true
+            }
+          ],
+          "meta": {
+            "total": 1,
+            "page": 1,
+            "limit": 10
+          },
+          "metadata": {
+            "range": "4w",
+            "rangeStart": "2026-08-31",
+            "today": "2026-09-24",
+            "timezone": "America/Denver",
+            "readAt": "2026-09-24T18:00:00.000Z"
+          }
+        },
+        "history": [
+          {
+            "workoutId": "666666666666666666666666",
+            "date": "2026-09-18",
+            "workoutTitle": "Upper A",
+            "instanceId": "we-bench",
+            "exerciseName": "Bench press",
+            "modality": "resistance",
+            "sets": [
+              {
+                "id": "s1",
+                "category": "working",
+                "completed": true,
+                "weight": {
+                  "value": 187.5,
+                  "unit": "lb"
+                },
+                "reps": 5,
+                "prs": [
+                  {
+                    "type": "weight",
+                    "weight": {
+                      "value": 187.5,
+                      "unit": "lb"
+                    },
+                    "reps": 5
+                  },
+                  {
+                    "type": "oneRm",
+                    "weight": {
+                      "value": 187.5,
+                      "unit": "lb"
+                    },
+                    "reps": 5
+                  }
+                ]
+              },
+              {
+                "id": "s2",
+                "category": "backoff",
+                "completed": true,
+                "weight": {
+                  "value": 165,
+                  "unit": "lb"
+                },
+                "reps": 8
+              }
+            ]
+          }
+        ],
+        "records": [
+          {
+            "workoutId": "666666666666666666666666",
+            "date": "2026-09-18",
+            "exerciseId": "777777777777777777777777",
+            "exerciseName": "Bench press",
+            "instanceId": "we-bench",
+            "setId": "s1",
+            "modality": "resistance",
+            "weight": {
+              "value": 187.5,
+              "unit": "lb"
+            },
+            "reps": 5,
+            "prs": [
+              {
+                "type": "weight",
+                "weight": {
+                  "value": 187.5,
+                  "unit": "lb"
+                },
+                "reps": 5
+              }
+            ]
+          }
+        ],
+        "collection": "history",
+        "page": 1,
+        "limit": 10
+      },
+      "presentation": {
+        "locale": "en",
+        "unitSystem": "imperial",
+        "theme": null,
+        "skin": null,
+        "timeZone": "America/Denver"
+      }
+    },
+    "openProgress": {
+      "view": "progress",
+      "record": {
+        "asOf": "2026-09-24",
+        "rangeStart": "2026-08-31",
+        "range": "4w",
+        "unlockSessions": 6,
+        "progressionCount": 1,
+        "metrics": [
+          {
+            "key": "sessions",
+            "kind": "count",
+            "value": 8,
+            "unitKey": null,
+            "tone": "positive",
+            "delta": 0.14,
+            "deltaKind": "percent"
+          },
+          {
+            "key": "volume",
+            "kind": "decimal",
+            "value": {
+              "value": 12346,
+              "unit": "lb"
+            },
+            "unitKey": "unit",
+            "tone": "positive",
+            "delta": 0.06,
+            "deltaKind": "percent"
+          },
+          {
+            "key": "prs",
+            "kind": "count",
+            "value": 3,
+            "unitKey": null,
+            "tone": "positive",
+            "delta": 1,
+            "deltaKind": "count"
+          },
+          {
+            "key": "avgRpe",
+            "kind": "decimal",
+            "value": 7.9,
+            "unitKey": null,
+            "tone": "steady",
+            "delta": 0.2,
+            "deltaKind": "decimal"
+          }
+        ],
+        "weeklyVolume": [
+          {
+            "weekStart": "2026-08-31",
+            "volume": {
+              "value": 2810,
+              "unit": "lb"
+            }
+          },
+          {
+            "weekStart": "2026-09-07",
+            "volume": {
+              "value": 3105,
+              "unit": "lb"
+            }
+          },
+          {
+            "weekStart": "2026-09-14",
+            "volume": {
+              "value": 3264,
+              "unit": "lb"
+            }
+          },
+          {
+            "weekStart": "2026-09-21",
+            "volume": {
+              "value": 3167,
+              "unit": "lb"
+            }
+          }
+        ],
+        "consistency": {
+          "heatmap": [
+            {
+              "weekStart": "2026-08-31",
+              "sets": 18
+            },
+            {
+              "weekStart": "2026-09-07",
+              "sets": 20
+            },
+            {
+              "weekStart": "2026-09-14",
+              "sets": 22
+            },
+            {
+              "weekStart": "2026-09-21",
+              "sets": 14
+            }
+          ],
+          "sessionsDone": 8,
+          "sessionsPlanned": 9,
+          "streakWeeks": 4
+        },
+        "balance": {
+          "muscles": [
+            {
+              "muscle": "chest",
+              "sets": 24
+            }
+          ],
+          "movements": [
+            {
+              "movement": "push",
+              "share": 0.6
+            },
+            {
+              "movement": "pull",
+              "share": 0.4
+            }
+          ]
+        },
+        "body": {
+          "weight": {
+            "value": 180.4,
+            "unit": "lb"
+          },
+          "goalWeight": {
+            "value": 175,
+            "unit": "lb"
+          },
+          "bodyFat": {
+            "value": 18.5,
+            "unit": "percent"
+          },
+          "weightSeries": [
+            {
+              "date": "2026-09-03",
+              "value": {
+                "value": 181.2,
+                "unit": "lb"
+              }
+            },
+            {
+              "date": "2026-09-17",
+              "value": {
+                "value": 180.4,
+                "unit": "lb"
+              }
+            }
+          ],
+          "bodyFatSeries": [
+            {
+              "date": "2026-09-03",
+              "value": {
+                "value": 19,
+                "unit": "percent"
+              }
+            },
+            {
+              "date": "2026-09-17",
+              "value": {
+                "value": 18.5,
+                "unit": "percent"
+              }
+            }
+          ],
+          "measurements": [
+            {
+              "key": "waist",
+              "value": {
+                "value": 32.5,
+                "unit": "in"
+              },
+              "series": [
+                {
+                  "date": "2026-09-03",
+                  "value": {
+                    "value": 32.8,
+                    "unit": "in"
+                  }
+                },
+                {
+                  "date": "2026-09-17",
+                  "value": {
+                    "value": 32.5,
+                    "unit": "in"
+                  }
+                }
+              ]
+            },
+            {
+              "key": "chest",
+              "value": {
+                "value": 41.3,
+                "unit": "in"
+              },
+              "series": []
+            }
+          ]
+        },
+        "cardio": {
+          "restingHr": {
+            "value": 58,
+            "unit": "bpm"
+          },
+          "restingHrSeries": [
+            {
+              "date": "2026-09-03",
+              "value": {
+                "value": 60,
+                "unit": "bpm"
+              }
+            },
+            {
+              "date": "2026-09-17",
+              "value": {
+                "value": 58,
+                "unit": "bpm"
+              }
+            }
+          ],
+          "zone2Minutes": 95,
+          "bestEfforts": []
+        },
+        "modalitySplit": [
+          {
+            "modality": "resistance",
+            "share": 1
+          }
+        ],
+        "recentPrs": [
+          {
+            "id": "pr-1",
+            "workoutId": "666666666666666666666666",
+            "exerciseId": "777777777777777777777777",
+            "setId": "s1",
+            "modality": "resistance",
+            "exerciseName": "Bench press",
+            "date": "2026-09-18",
+            "reps": 5,
+            "weight": {
+              "value": 187.5,
+              "unit": "lb"
+            }
+          }
+        ],
+        "metadata": {
+          "today": "2026-09-24",
+          "timezone": "America/Denver",
+          "readAt": "2026-09-24T18:00:00.000Z",
+          "readConsistency": "primaryPreferred"
+        }
+      },
+      "related": {
+        "section": "overview",
+        "progression": {
+          "data": [
+            {
+              "id": "777777777777777777777777",
+              "name": "Bench press",
+              "modality": "resistance",
+              "bestSetReps": 5,
+              "bestSetWeight": {
+                "value": 187.5,
+                "unit": "lb"
+              },
+              "sessionDates": [
+                "2026-09-01",
+                "2026-09-04",
+                "2026-09-08",
+                "2026-09-11",
+                "2026-09-15",
+                "2026-09-18"
+              ],
+              "eligibleProgressionDays": 6,
+              "series": [
+                {
+                  "date": "2026-09-01",
+                  "value": {
+                    "value": 204,
+                    "unit": "lb"
+                  }
+                },
+                {
+                  "date": "2026-09-04",
+                  "value": {
+                    "value": 207,
+                    "unit": "lb"
+                  }
+                },
+                {
+                  "date": "2026-09-08",
+                  "value": {
+                    "value": 210,
+                    "unit": "lb"
+                  }
+                },
+                {
+                  "date": "2026-09-11",
+                  "value": {
+                    "value": 213,
+                    "unit": "lb"
+                  }
+                },
+                {
+                  "date": "2026-09-15",
+                  "value": {
+                    "value": 215,
+                    "unit": "lb"
+                  }
+                },
+                {
+                  "date": "2026-09-18",
+                  "value": {
+                    "value": 219,
+                    "unit": "lb"
+                  },
+                  "isPr": true
+                }
+              ],
+              "unlocked": true
+            }
+          ],
+          "meta": {
+            "total": 1,
+            "page": 1,
+            "limit": 10
+          }
+        },
+        "goals": {
+          "data": [],
+          "meta": {
+            "total": 0,
+            "page": 1,
+            "limit": 10
+          }
+        }
+      },
+      "presentation": {
+        "locale": "en",
+        "unitSystem": "imperial",
+        "theme": null,
+        "skin": null,
+        "timeZone": "America/Denver"
+      }
+    },
+    "openBodyMetric": [
+      {
+        "view": "body-metric",
+        "record": {
+          "key": "weight",
+          "from": "2026-06-27",
+          "to": "2026-09-24"
+        },
+        "related": {
+          "observations": {
+            "data": [
+              {
+                "key": "weight",
+                "date": "2026-09-03",
+                "value": {
+                  "value": 181.2,
+                  "unit": "lb"
+                }
+              },
+              {
+                "key": "weight",
+                "date": "2026-09-17",
+                "value": {
+                  "value": 180.4,
+                  "unit": "lb"
+                }
+              }
+            ],
+            "meta": {
+              "page": 1,
+              "limit": 372,
+              "total": 2
+            }
+          }
+        },
+        "presentation": {
+          "locale": "en",
+          "unitSystem": "imperial",
+          "theme": null,
+          "skin": null,
+          "timeZone": "America/Denver"
+        }
+      },
+      {
+        "view": "body-metric",
+        "record": {
+          "key": "neck",
+          "from": "2026-06-27",
+          "to": "2026-09-24"
+        },
+        "related": {
+          "observations": {
+            "data": [
+              {
+                "key": "neck",
+                "date": "2026-09-03",
+                "value": {
+                  "value": 15.5,
+                  "unit": "in"
+                }
+              },
+              {
+                "key": "neck",
+                "date": "2026-09-17",
+                "value": {
+                  "value": 15.4,
+                  "unit": "in"
+                }
+              }
+            ],
+            "meta": {
+              "page": 1,
+              "limit": 372,
+              "total": 2
+            }
+          }
+        },
+        "presentation": {
+          "locale": "en",
+          "unitSystem": "imperial",
+          "theme": null,
+          "skin": null,
+          "timeZone": "America/Denver"
+        }
+      },
+      {
+        "view": "body-metric",
+        "record": {
+          "key": "shoulders",
+          "from": "2026-06-27",
+          "to": "2026-09-24"
+        },
+        "related": {
+          "observations": {
+            "data": [
+              {
+                "key": "shoulders",
+                "date": "2026-09-03",
+                "value": {
+                  "value": 48.2,
+                  "unit": "in"
+                }
+              },
+              {
+                "key": "shoulders",
+                "date": "2026-09-17",
+                "value": {
+                  "value": 48.5,
+                  "unit": "in"
+                }
+              }
+            ],
+            "meta": {
+              "page": 1,
+              "limit": 372,
+              "total": 2
+            }
+          }
+        },
+        "presentation": {
+          "locale": "en",
+          "unitSystem": "imperial",
+          "theme": null,
+          "skin": null,
+          "timeZone": "America/Denver"
+        }
+      },
+      {
+        "view": "body-metric",
+        "record": {
+          "key": "chest",
+          "from": "2026-06-27",
+          "to": "2026-09-24"
+        },
+        "related": {
+          "observations": {
+            "data": [
+              {
+                "key": "chest",
+                "date": "2026-09-03",
+                "value": {
+                  "value": 41.5,
+                  "unit": "in"
+                }
+              },
+              {
+                "key": "chest",
+                "date": "2026-09-17",
+                "value": {
+                  "value": 41.3,
+                  "unit": "in"
+                }
+              }
+            ],
+            "meta": {
+              "page": 1,
+              "limit": 372,
+              "total": 2
+            }
+          }
+        },
+        "presentation": {
+          "locale": "en",
+          "unitSystem": "imperial",
+          "theme": null,
+          "skin": null,
+          "timeZone": "America/Denver"
+        }
+      },
+      {
+        "view": "body-metric",
+        "record": {
+          "key": "waist",
+          "from": "2026-06-27",
+          "to": "2026-09-24"
+        },
+        "related": {
+          "observations": {
+            "data": [
+              {
+                "key": "waist",
+                "date": "2026-09-03",
+                "value": {
+                  "value": 32.8,
+                  "unit": "in"
+                }
+              },
+              {
+                "key": "waist",
+                "date": "2026-09-17",
+                "value": {
+                  "value": 32.5,
+                  "unit": "in"
+                }
+              }
+            ],
+            "meta": {
+              "page": 1,
+              "limit": 372,
+              "total": 2
+            }
+          }
+        },
+        "presentation": {
+          "locale": "en",
+          "unitSystem": "imperial",
+          "theme": null,
+          "skin": null,
+          "timeZone": "America/Denver"
+        }
+      },
+      {
+        "view": "body-metric",
+        "record": {
+          "key": "hips",
+          "from": "2026-06-27",
+          "to": "2026-09-24"
+        },
+        "related": {
+          "observations": {
+            "data": [
+              {
+                "key": "hips",
+                "date": "2026-09-03",
+                "value": {
+                  "value": 38.9,
+                  "unit": "in"
+                }
+              },
+              {
+                "key": "hips",
+                "date": "2026-09-17",
+                "value": {
+                  "value": 38.6,
+                  "unit": "in"
+                }
+              }
+            ],
+            "meta": {
+              "page": 1,
+              "limit": 372,
+              "total": 2
+            }
+          }
+        },
+        "presentation": {
+          "locale": "en",
+          "unitSystem": "imperial",
+          "theme": null,
+          "skin": null,
+          "timeZone": "America/Denver"
+        }
+      },
+      {
+        "view": "body-metric",
+        "record": {
+          "key": "biceps",
+          "from": "2026-06-27",
+          "to": "2026-09-24"
+        },
+        "related": {
+          "observations": {
+            "data": [
+              {
+                "key": "biceps",
+                "date": "2026-09-03",
+                "value": {
+                  "value": 14.6,
+                  "unit": "in"
+                }
+              },
+              {
+                "key": "biceps",
+                "date": "2026-09-17",
+                "value": {
+                  "value": 14.8,
+                  "unit": "in"
+                }
+              }
+            ],
+            "meta": {
+              "page": 1,
+              "limit": 372,
+              "total": 2
+            }
+          }
+        },
+        "presentation": {
+          "locale": "en",
+          "unitSystem": "imperial",
+          "theme": null,
+          "skin": null,
+          "timeZone": "America/Denver"
+        }
+      },
+      {
+        "view": "body-metric",
+        "record": {
+          "key": "forearms",
+          "from": "2026-06-27",
+          "to": "2026-09-24"
+        },
+        "related": {
+          "observations": {
+            "data": [
+              {
+                "key": "forearms",
+                "date": "2026-09-03",
+                "value": {
+                  "value": 12.2,
+                  "unit": "in"
+                }
+              },
+              {
+                "key": "forearms",
+                "date": "2026-09-17",
+                "value": {
+                  "value": 12.3,
+                  "unit": "in"
+                }
+              }
+            ],
+            "meta": {
+              "page": 1,
+              "limit": 372,
+              "total": 2
+            }
+          }
+        },
+        "presentation": {
+          "locale": "en",
+          "unitSystem": "imperial",
+          "theme": null,
+          "skin": null,
+          "timeZone": "America/Denver"
+        }
+      },
+      {
+        "view": "body-metric",
+        "record": {
+          "key": "thighs",
+          "from": "2026-06-27",
+          "to": "2026-09-24"
+        },
+        "related": {
+          "observations": {
+            "data": [
+              {
+                "key": "thighs",
+                "date": "2026-09-03",
+                "value": {
+                  "value": 23.4,
+                  "unit": "in"
+                }
+              },
+              {
+                "key": "thighs",
+                "date": "2026-09-17",
+                "value": {
+                  "value": 23.6,
+                  "unit": "in"
+                }
+              }
+            ],
+            "meta": {
+              "page": 1,
+              "limit": 372,
+              "total": 2
+            }
+          }
+        },
+        "presentation": {
+          "locale": "en",
+          "unitSystem": "imperial",
+          "theme": null,
+          "skin": null,
+          "timeZone": "America/Denver"
+        }
+      },
+      {
+        "view": "body-metric",
+        "record": {
+          "key": "calves",
+          "from": "2026-06-27",
+          "to": "2026-09-24"
+        },
+        "related": {
+          "observations": {
+            "data": [
+              {
+                "key": "calves",
+                "date": "2026-09-03",
+                "value": {
+                  "value": 15.1,
+                  "unit": "in"
+                }
+              },
+              {
+                "key": "calves",
+                "date": "2026-09-17",
+                "value": {
+                  "value": 15.2,
+                  "unit": "in"
+                }
+              }
+            ],
+            "meta": {
+              "page": 1,
+              "limit": 372,
+              "total": 2
+            }
+          }
+        },
+        "presentation": {
+          "locale": "en",
+          "unitSystem": "imperial",
+          "theme": null,
+          "skin": null,
+          "timeZone": "America/Denver"
+        }
+      },
+      {
+        "view": "body-metric",
+        "record": {
+          "key": "body_fat",
+          "from": "2026-06-27",
+          "to": "2026-09-24"
+        },
+        "related": {
+          "observations": {
+            "data": [
+              {
+                "key": "body_fat",
+                "date": "2026-09-03",
+                "value": {
+                  "value": 19,
+                  "unit": "percent"
+                }
+              },
+              {
+                "key": "body_fat",
+                "date": "2026-09-17",
+                "value": {
+                  "value": 18.5,
+                  "unit": "percent"
+                }
+              }
+            ],
+            "meta": {
+              "page": 1,
+              "limit": 372,
+              "total": 2
+            }
+          }
+        },
+        "presentation": {
+          "locale": "en",
+          "unitSystem": "imperial",
+          "theme": null,
+          "skin": null,
+          "timeZone": "America/Denver"
+        }
+      },
+      {
+        "view": "body-metric",
+        "record": {
+          "key": "resting_heart_rate",
+          "from": "2026-06-27",
+          "to": "2026-09-24"
+        },
+        "related": {
+          "observations": {
+            "data": [
+              {
+                "key": "resting_heart_rate",
+                "date": "2026-09-03",
+                "value": {
+                  "value": 60,
+                  "unit": "bpm"
+                }
+              },
+              {
+                "key": "resting_heart_rate",
+                "date": "2026-09-17",
+                "value": {
+                  "value": 58,
+                  "unit": "bpm"
+                }
+              }
+            ],
+            "meta": {
+              "page": 1,
+              "limit": 372,
+              "total": 2
+            }
+          }
+        },
+        "presentation": {
+          "locale": "en",
+          "unitSystem": "imperial",
+          "theme": null,
+          "skin": null,
+          "timeZone": "America/Denver"
+        }
+      },
+      {
+        "view": "body-metric",
+        "record": {
+          "key": "weight",
+          "from": "2026-06-27",
+          "to": "2026-09-24"
+        },
+        "related": {
+          "observations": {
+            "data": [
+              {
+                "key": "weight",
+                "date": "2026-09-03",
+                "value": {
+                  "value": 82.2,
+                  "unit": "kg"
+                }
+              },
+              {
+                "key": "weight",
+                "date": "2026-09-17",
+                "value": {
+                  "value": 81.8,
+                  "unit": "kg"
+                }
+              }
+            ],
+            "meta": {
+              "page": 1,
+              "limit": 372,
+              "total": 2
+            }
+          }
+        },
+        "presentation": {
+          "locale": "en",
+          "unitSystem": "metric",
+          "theme": null,
+          "skin": null,
+          "timeZone": "America/Denver"
+        }
+      },
+      {
+        "view": "body-metric",
+        "record": {
+          "key": "waist",
+          "from": "2026-06-27",
+          "to": "2026-09-24"
+        },
+        "related": {
+          "observations": {
+            "data": [
+              {
+                "key": "waist",
+                "date": "2026-09-03",
+                "value": {
+                  "value": 83.3,
+                  "unit": "cm"
+                }
+              },
+              {
+                "key": "waist",
+                "date": "2026-09-17",
+                "value": {
+                  "value": 82.6,
+                  "unit": "cm"
+                }
+              }
+            ],
+            "meta": {
+              "page": 1,
+              "limit": 372,
+              "total": 2
+            }
+          }
+        },
+        "presentation": {
+          "locale": "en",
+          "unitSystem": "metric",
+          "theme": null,
+          "skin": null,
+          "timeZone": "America/Denver"
+        }
+      }
+    ],
+    "openContext": {
+      "view": "context",
+      "record": {
+        "profile": {
+          "preferredName": null,
+          "heightCm": 180,
+          "weight": {
+            "value": 180.4,
+            "unit": "lb"
+          },
+          "trainingGoals": [
+            "strength"
+          ],
+          "trainingInterests": [],
+          "sportEventContext": "",
+          "focusAreas": [],
+          "motivation": "",
+          "experience": "intermediate",
+          "daysPerWeek": 4,
+          "availableDays": [
+            "MO",
+            "WE",
+            "FR",
+            "SA"
+          ],
+          "minutesPerSession": 60,
+          "goalWeight": {
+            "value": 175,
+            "unit": "lb"
+          },
+          "bodyFat": {
+            "value": 18.5,
+            "unit": "percent"
+          },
+          "restingHeartRate": {
+            "value": 58,
+            "unit": "bpm"
+          },
+          "measurements": {
+            "waist": {
+              "value": 32.5,
+              "unit": "in"
+            },
+            "chest": {
+              "value": 41.3,
+              "unit": "in"
+            },
+            "neck": null
+          }
+        },
+        "health": {
+          "limitations": [],
+          "healthNotes": ""
+        },
+        "customEquipment": [],
+        "trainingSpaces": [],
+        "preferences": {
+          "locale": "en",
+          "unitSystem": "imperial",
+          "theme": null,
+          "skin": null,
+          "weekStart": null
+        },
+        "context": {
+          "today": "2026-09-24",
+          "timezone": "America/Denver",
+          "unitSystem": "imperial",
+          "weekStart": "sunday",
+          "locale": "en"
+        }
+      },
+      "related": {
+        "section": "profile",
+        "memories": {
+          "data": [],
+          "meta": {
+            "page": 1,
+            "limit": 10,
+            "total": 0
+          }
+        }
+      },
+      "presentation": {
+        "locale": "en",
+        "unitSystem": "imperial",
+        "theme": null,
+        "skin": null,
+        "timeZone": "America/Denver"
       }
     }
   }

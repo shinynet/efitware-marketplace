@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { presentationSchema } from './model.ts'
+import { bodyFatSchema, bodyWeightSchema, circumferenceIdSchema, circumferenceSchema, heartRateSchema } from './measurement.ts'
 const id = z.string().regex(/^[a-f0-9]{24}$/i)
 const meta = z.object({ page: z.number().int().positive(), limit: z.number().int().positive(), total: z.number().int().nonnegative() })
 const presentation = presentationSchema.extend({ timeZone: z.string() })
@@ -10,7 +11,7 @@ const memory = z.object({ id, content: z.string().max(500), source: z.enum(['ai'
 export const libraryViewSchema = z.object({ view: z.literal('library'), record: z.object({ query: z.object({ q: z.string().optional(), show: z.enum(['all', 'favorites', 'custom', 'hidden']), modality: z.enum(['resistance', 'cardio', 'mobility']).optional(), page: z.number(), limit: z.number() }) }), related: z.object({ exercises: z.object({ data: z.array(libraryExerciseSchema), meta }) }), presentation })
 export const exerciseViewSchema = z.object({ view: z.literal('exercise'), record: libraryExerciseSchema, related: z.object({ customEquipment: z.array(equipment) }), presentation })
 export const contextViewSchema = z.object({ view: z.literal('context'), record: z.object({
-  profile: z.object({ preferredName: z.string().nullable(), heightCm: z.number().nullable(), weightKg: z.number().nullable(), trainingGoals: z.array(z.string()), trainingInterests: z.array(z.string()), sportEventContext: z.string(), focusAreas: z.array(z.string()), motivation: z.string(), experience: z.string().nullable(), daysPerWeek: z.number().nullable(), availableDays: z.array(z.enum(['MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU'])), minutesPerSession: z.number().nullable(), goalWeightKg: z.number().nullable(), bodyFatPercent: z.number().nullable(), restingHeartRate: z.number().nullable(), measurements: z.record(z.string(), z.number().nullable()) }),
+  profile: z.object({ preferredName: z.string().nullable(), heightCm: z.number().nullable(), weight: bodyWeightSchema.nullable(), trainingGoals: z.array(z.string()), trainingInterests: z.array(z.string()), sportEventContext: z.string(), focusAreas: z.array(z.string()), motivation: z.string(), experience: z.string().nullable(), daysPerWeek: z.number().nullable(), availableDays: z.array(z.enum(['MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU'])), minutesPerSession: z.number().nullable(), goalWeight: bodyWeightSchema.nullable(), bodyFat: bodyFatSchema.nullable(), restingHeartRate: heartRateSchema.nullable(), measurements: z.partialRecord(circumferenceIdSchema, circumferenceSchema.nullable()) }),
   health: z.object({ limitations: z.array(z.string()), healthNotes: z.string() }), customEquipment: z.array(equipment),
   trainingSpaces: z.array(z.object({ id: z.string(), name: z.string(), access: z.enum(['unconfigured', 'selected']), equipment: z.object({ items: z.array(z.string()), custom: z.array(z.string()) }), notes: z.string(), isDefault: z.boolean() })),
   preferences: presentationSchema.extend({ weekStart: z.enum(['sunday', 'monday']).nullable() }),

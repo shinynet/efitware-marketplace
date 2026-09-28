@@ -14,14 +14,14 @@ const id = 'b'.repeat(24)
 const presentation = { locale: 'en', unitSystem: 'metric', theme: null, skin: null, timeZone: 'UTC' }
 const sevenDays = [1, 2, 3, 4, 5, 6, 7].map(day => `2026-09-0${day}`)
 /** Seven high-rep session days: none holds a set of 12 reps or fewer (EF-1466). */
-const row = (patch: Record<string, unknown> = {}) => ({ id, name: 'Goblet squat', modality: 'resistance', bestSetReps: 15, bestSetWeightKg: 20, sessionDates: sevenDays, series: [], unlocked: false, ...patch })
+const row = (patch: Record<string, unknown> = {}) => ({ id, name: 'Goblet squat', modality: 'resistance', bestSetReps: 15, bestSetWeight: { value: 20, unit: 'kg' }, sessionDates: sevenDays, series: [], unlocked: false, ...patch })
 const meta = { total: 1, page: 1, limit: 10 }
 const progress = (entry: Record<string, unknown>) => ({
   view: 'progress',
   record: {
     asOf: '2026-09-07', rangeStart: '2026-08-11', range: '4w', unlockSessions: 6, progressionCount: 1, metrics: [], weeklyVolume: [],
     consistency: { heatmap: [], sessionsDone: 7, sessionsPlanned: 7, streakWeeks: 1 }, balance: { muscles: [], movements: [] },
-    body: { weightKg: null, goalWeightKg: null, bodyFatPercent: null, weightSeries: [], bodyFatSeries: [], measurements: [] },
+    body: { weight: null, goalWeight: null, bodyFat: null, weightSeries: [], bodyFatSeries: [], measurements: [] },
     cardio: { restingHr: null, restingHrSeries: [], zone2Minutes: 0, bestEfforts: [] }, modalitySplit: [], recentPrs: [],
     metadata: { today: '2026-09-07', timezone: 'UTC', readAt: '2026-09-07T12:00:00.000Z', readConsistency: 'snapshot' }
   },
@@ -80,7 +80,7 @@ describe('estimate unlock counts eligible progression days (EF-1483)', () => {
     })
 
     it(`${name}: an unlocked card shows its chart and no locked count`, async () => {
-      const series = sevenDays.map((date, index) => ({ date, value: 30 + index }))
+      const series = sevenDays.map((date, index) => ({ date, value: { value: 30 + index, unit: 'kg' } }))
       const withField = await show(row({ bestSetReps: 8, series, unlocked: true, eligibleProgressionDays: 7 }))
       const without = await show(row({ bestSetReps: 8, series, unlocked: true }))
       expect(withField).toBe(without)

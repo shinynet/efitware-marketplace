@@ -5,6 +5,7 @@ import { unlockProgressDays, type ProgressView } from './progressModel'
 import type { createWorkoutConnection } from './workoutConnection'
 import { formatDay } from './planningModel'
 import { resolveDisplayUnitSystem, formatMeasure } from './presentation'
+import { accountLoadUnit, chartPoints, formatLoad, formatTotal, seriesUnit, type Measurement } from './measurement'
 import ProgressChart from './ProgressChart.vue'
 import ProgressBalance from './ProgressBalance.vue'
 import ProgressMeasurements from './ProgressMeasurements.vue'
@@ -16,7 +17,14 @@ const sections = ['overview', 'strength', 'body', 'cardio', 'goals'] as const
 const select = (patch: Record<string, unknown>) => navigate({ name: 'open_progress', arguments: { range: progress.record.range, today: progress.record.asOf, section: progress.related.section, page: 1, limit: 10, ...patch } }, true)
 const meta = computed(() => progress.related.section === 'goals' ? progress.related.goals.meta : progress.related.progression.meta)
 const number = (value: number) => new Intl.NumberFormat(locale.value, { maximumFractionDigits: 1 }).format(value)
-const weight = (value: number) => formatMeasure('weight', value, (resolveDisplayUnitSystem(progress.presentation.unitSystem, locale.value)), locale.value)
+// Measurements render as given, never converted (measurement.ts); the account unit only labels an empty series.
+const load = (measurement: Measurement) => formatLoad(measurement, locale.value)
+const total = (measurement: Measurement) => formatTotal(measurement, locale.value)
+const totalIn = (points: ReadonlyArray<{ value: Measurement }>) => {
+  const unit = seriesUnit(points, accountLoadUnit(resolveDisplayUnitSystem(progress.presentation.unitSystem, locale.value)))
+  return (value: number) => total({ value, unit })
+}
+const weeklyVolume = computed(() => progress.record.weeklyVolume.map(week => ({ date: week.weekStart, value: week.volume })))
 const delta = (value: number, kind: string) => new Intl.NumberFormat(locale.value, { maximumFractionDigits: 1, signDisplay: 'exceptZero', ...(kind === 'percent' ? { style: 'percent' } as const : {}) }).format(value)
 const day = (date: string) => navigate({ name: 'open_calendar', arguments: { from: date, to: date, date } })
 const request = computed(() => t('progressUi.explain', { from: progress.record.rangeStart, to: progress.record.asOf, range: t(`progressUi.ranges.${progress.record.range}`) }))
@@ -82,7 +90,7 @@ const request = computed(() => t('progressUi.explain', { from: progress.record.r
             {{ t(`progressUi.metrics.${metric.key}`) }}
           </dt>
           <dd class="mt-2 font-serif text-2xl sm:text-3xl">
-            {{ metric.key === 'volume' ? weight(metric.value) : metric.key === 'avgRpe' && metric.value === 0 ? t('progressUi.unavailable') : number(metric.value) }}
+            {{ typeof metric.value === 'object' ? total(metric.value) : metric.key === 'avgRpe' && metric.value === 0 ? t('progressUi.unavailable') : number(metric.value) }}
           </dd>
           <dd class="mt-2 text-xs text-muted">
             {{ metric.delta === undefined ? t('progressUi.noComparison') : t('progressUi.previous', { value: delta(metric.delta, metric.deltaKind) }) }}
@@ -91,8 +99,8 @@ const request = computed(() => t('progressUi.explain', { from: progress.record.r
       </dl>
       <progress-chart
         :title="t('progressUi.weeklyVolume')"
-        :points="progress.record.weeklyVolume.map(week => ({ date: week.weekStart, value: week.volumeKg }))"
-        :format="weight"
+        :points="chartPoints(weeklyVolume)"
+        :format="totalIn(weeklyVolume)"
         bars
       />
       <p
@@ -152,7 +160,7 @@ const request = computed(() => t('progressUi.explain', { from: progress.record.r
               {{ pr.i18n?.[locale]?.name ?? pr.exerciseName }}
             </h3>
             <p class="mt-2 text-lg">
-              <span v-if="pr.weightKg !== undefined">{{ weight(pr.weightKg) }} · </span><span v-if="pr.reps !== undefined">{{ t('progressUi.reps', { value: number(pr.reps) }) }}</span><span v-if="pr.durationSeconds !== undefined">{{ formatMeasure('duration', pr.durationSeconds, (resolveDisplayUnitSystem(progress.presentation.unitSystem, locale)), locale) }}</span>
+              <span v-if="pr.weight !== undefined">{{ load(pr.weight) }} · </span><span v-if="pr.reps !== undefined">{{ t('progressUi.reps', { value: number(pr.reps) }) }}</span><span v-if="pr.durationSeconds !== undefined">{{ formatMeasure('duration', pr.durationSeconds, (resolveDisplayUnitSystem(progress.presentation.unitSystem, locale)), locale) }}</span>
             </p>
             <time
               :datetime="pr.date"
@@ -199,7 +207,7 @@ const request = computed(() => t('progressUi.explain', { from: progress.record.r
           {{ exercise.i18n?.[locale]?.name ?? exercise.name }}
         </h3>
         <p class="mt-2 text-sm">
-          {{ t('progressUi.topSet', { reps: number(exercise.bestSetReps), weight: weight(exercise.bestSetWeightKg) }) }}
+          {{ t('progressUi.topSet', { reps: number(exercise.bestSetReps), weight: load(exercise.bestSetWeight) }) }}
         </p>
         <button
           class="secondary mt-3"
@@ -211,8 +219,8 @@ const request = computed(() => t('progressUi.explain', { from: progress.record.r
         <progress-chart
           v-if="exercise.unlocked"
           :title="t('progressUi.estimated')"
-          :points="exercise.series"
-          :format="weight"
+          :points="chartPoints(exercise.series)"
+          :format="totalIn(exercise.series)"
           :disabled
           source
           @select="day"

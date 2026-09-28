@@ -2,7 +2,8 @@
 import { computed, onUnmounted, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { Tracking, ViewSet } from './model'
-import { displayMeasure, formatMeasure, parseInput, storageValue, type ActualField } from './presentation'
+import { displayMeasure, formatMeasure, inputLoadUnit, parseInput, sentValue, storageValue, type ActualField } from './presentation'
+import { formatLoad, intlUnitOf, type Load } from './measurement'
 import type { UnitSystem } from './lib/units'
 
 const { set, number, tracking = undefined, system, disabled, save } = defineProps<{
@@ -11,7 +12,7 @@ const { set, number, tracking = undefined, system, disabled, save } = defineProp
   tracking?: Tracking
   system: UnitSystem
   disabled: boolean
-  save: (patch: Record<string, number | boolean | null>) => Promise<boolean | undefined> | undefined
+  save: (patch: Record<string, number | boolean | null | Load>) => Promise<boolean | undefined> | undefined
 }>()
 const emit = defineEmits<{ dirty: [value: boolean] }>()
 const { t, locale } = useI18n()
@@ -24,7 +25,12 @@ const fields = computed(() => (['weight', 'reps', 'duration', 'distance'] as con
   return tracking?.[flag[field]] || set[field] !== undefined
 }))
 const numberText = (value: number) => new Intl.NumberFormat(locale.value, { useGrouping: false, maximumFractionDigits: 2 }).format(value)
-const display = (field: ActualField) => displayMeasure(field, set[field] ?? 0, system)
+const display = (field: ActualField) => field === 'weight' ? { value: set.weight?.value ?? 0, unit: intlUnitOf(inputLoadUnit(set, system)) } : displayMeasure(field, set[field] ?? 0, system)
+const matches = (field: ActualField, value: number, unit: string | undefined) => {
+  if (field === 'weight') return set.weight !== undefined && set.weight.value === value && intlUnitOf(set.weight.unit) === unit
+  const actual = set[field]
+  return actual !== undefined && Math.abs(storageValue(field, value, unit) - actual) < 0.0000001
+}
 const valueText = (field: ActualField) => draft[field]?.text ?? (set[field] === undefined ? '' : numberText(display(field).value))
 const edit = (field: ActualField, text: string) => {
   draft[field] = { text, unit: draft[field]?.unit ?? display(field).unit, locale: locale.value }
@@ -44,7 +50,8 @@ const target = computed(() => {
   for (const field of ['weight', 'duration', 'distance'] as const) {
     const key = { weight: 'plannedWeight', duration: 'plannedDuration', distance: 'plannedDistance' } as const
     const value = set[key[field]]
-    if (value !== undefined) parts.push(formatMeasure(field, value, system, locale.value))
+    if (value === undefined) continue
+    parts.push(typeof value === 'number' ? formatMeasure(field, value, system, locale.value) : formatLoad(value, locale.value))
   }
   return new Intl.ListFormat(locale.value, { style: 'short', type: 'unit' }).format(parts) || t('noTarget')
 })
@@ -55,8 +62,7 @@ watch(() => set, () => {
     if (text === undefined) continue
     try {
       const parsed = parseInput(text.text, text.locale)
-      const actual = set[field]
-      if ((parsed === null && actual === undefined) || (parsed !== null && actual !== undefined && Math.abs(storageValue(field, parsed, text.unit) - actual) < 0.0000001)) draft[field] = undefined
+      if ((parsed === null && set[field] === undefined) || (parsed !== null && matches(field, parsed, text.unit))) draft[field] = undefined
     } catch {
       // Keep incomplete or invalid input for the user to correct.
     }
@@ -65,14 +71,14 @@ watch(() => set, () => {
 
 const submit = async (completed: boolean) => {
   invalid.value = false
-  const patch: Record<string, number | boolean | null> = { completed }
+  const patch: Record<string, number | boolean | null | Load> = { completed }
   try {
     for (const field of fields.value) {
       const text = draft[field]
       if (text === undefined) continue
       const parsed = parseInput(text.text, text.locale)
       if (field === 'reps' && parsed !== null && !Number.isInteger(parsed)) throw new Error('INVALID_REPS')
-      patch[field] = parsed === null ? null : storageValue(field, parsed, text.unit)
+      patch[field] = parsed === null ? null : sentValue(field, parsed, text.unit)
     }
     const submitted = { ...draft }
     if (await save(patch)) {

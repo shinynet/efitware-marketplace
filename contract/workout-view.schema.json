@@ -98,8 +98,44 @@
                       "type": "string"
                     },
                     "weight": {
-                      "type": "number",
-                      "minimum": 0
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "number",
+                              "minimum": 0,
+                              "multipleOf": 0.5
+                            },
+                            "unit": {
+                              "type": "string",
+                              "const": "lb"
+                            }
+                          },
+                          "required": [
+                            "value",
+                            "unit"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "number",
+                              "minimum": 0,
+                              "multipleOf": 0.25
+                            },
+                            "unit": {
+                              "type": "string",
+                              "const": "kg"
+                            }
+                          },
+                          "required": [
+                            "value",
+                            "unit"
+                          ]
+                        }
+                      ]
                     },
                     "reps": {
                       "type": "number",
@@ -114,8 +150,44 @@
                       "minimum": 0
                     },
                     "plannedWeight": {
-                      "type": "number",
-                      "minimum": 0
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "number",
+                              "minimum": 0,
+                              "multipleOf": 0.5
+                            },
+                            "unit": {
+                              "type": "string",
+                              "const": "lb"
+                            }
+                          },
+                          "required": [
+                            "value",
+                            "unit"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "number",
+                              "minimum": 0,
+                              "multipleOf": 0.25
+                            },
+                            "unit": {
+                              "type": "string",
+                              "const": "kg"
+                            }
+                          },
+                          "required": [
+                            "value",
+                            "unit"
+                          ]
+                        }
+                      ]
                     },
                     "plannedDuration": {
                       "type": "number",
@@ -165,6 +237,72 @@
                         "right",
                         "both"
                       ]
+                    },
+                    "prs": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "weight",
+                              "oneRm",
+                              "volume"
+                            ]
+                          },
+                          "weight": {
+                            "oneOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "value": {
+                                    "type": "number",
+                                    "minimum": 0,
+                                    "multipleOf": 0.5
+                                  },
+                                  "unit": {
+                                    "type": "string",
+                                    "const": "lb"
+                                  }
+                                },
+                                "required": [
+                                  "value",
+                                  "unit"
+                                ]
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "value": {
+                                    "type": "number",
+                                    "minimum": 0,
+                                    "multipleOf": 0.25
+                                  },
+                                  "unit": {
+                                    "type": "string",
+                                    "const": "kg"
+                                  }
+                                },
+                                "required": [
+                                  "value",
+                                  "unit"
+                                ]
+                              }
+                            ]
+                          },
+                          "reps": {
+                            "type": "number"
+                          },
+                          "first": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "weight"
+                        ]
+                      }
                     }
                   },
                   "required": [
