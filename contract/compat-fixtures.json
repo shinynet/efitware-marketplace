@@ -611,5 +611,145 @@
       ],
       "text": "Knie"
     }
-  ]
+  ],
+  "getCalendarResponse": {
+    "name": "missed-and-ended-days",
+    "note": "One get_calendar response (EF-1474). today is the account's calendar day; open_calendar wraps the same response as { view: 'calendar', record: { from, to, date, ...response }, related: {}, presentation }. Every day satisfies sessionCount = completed + inProgress + planned + missed + ended.",
+    "today": "2026-09-12",
+    "from": "2026-09-07",
+    "to": "2026-09-13",
+    "date": "2026-09-09",
+    "dayRoles": {
+      "2026-09-07": "trained by hand: an untapped occurrence satisfied by an unplanned completed workout, counted once",
+      "2026-09-08": "missed: a past untapped occurrence",
+      "2026-09-09": "mixed past day: a completed scheduled workout and a second schedule's untapped occurrence",
+      "2026-09-10": "skipped only",
+      "2026-09-11": "abandoned only",
+      "2026-09-12": "planned: today's untapped occurrence"
+    },
+    "response": {
+      "days": [
+        {
+          "date": "2026-09-07",
+          "status": "completed",
+          "sessionCount": 1,
+          "completedSessionCount": 1,
+          "inProgressSessionCount": 0,
+          "plannedSessionCount": 0,
+          "missedSessionCount": 0,
+          "endedSessionCount": 0,
+          "summary": {
+            "title": "Hotel gym session",
+            "status": "completed",
+            "durationSeconds": 2700
+          }
+        },
+        {
+          "date": "2026-09-08",
+          "status": "missed",
+          "sessionCount": 1,
+          "completedSessionCount": 0,
+          "inProgressSessionCount": 0,
+          "plannedSessionCount": 0,
+          "missedSessionCount": 1,
+          "endedSessionCount": 0,
+          "summary": {
+            "title": "Upper body A",
+            "status": "planned",
+            "programId": "6a0000000000000000000001",
+            "programSessionCount": 1,
+            "programName": "Winter strength"
+          }
+        },
+        {
+          "date": "2026-09-09",
+          "status": "missed",
+          "sessionCount": 2,
+          "completedSessionCount": 1,
+          "inProgressSessionCount": 0,
+          "plannedSessionCount": 0,
+          "missedSessionCount": 1,
+          "endedSessionCount": 0,
+          "summary": {
+            "title": "Lower body B",
+            "status": "completed",
+            "durationSeconds": 3300,
+            "programId": "6a0000000000000000000001",
+            "programSessionCount": 1,
+            "programName": "Winter strength"
+          }
+        },
+        {
+          "date": "2026-09-10",
+          "status": "ended",
+          "sessionCount": 1,
+          "completedSessionCount": 0,
+          "inProgressSessionCount": 0,
+          "plannedSessionCount": 0,
+          "missedSessionCount": 0,
+          "endedSessionCount": 1,
+          "summary": {
+            "title": "Easy run",
+            "status": "skipped"
+          }
+        },
+        {
+          "date": "2026-09-11",
+          "status": "ended",
+          "sessionCount": 1,
+          "completedSessionCount": 0,
+          "inProgressSessionCount": 0,
+          "plannedSessionCount": 0,
+          "missedSessionCount": 0,
+          "endedSessionCount": 1,
+          "summary": {
+            "title": "Upper body A",
+            "status": "abandoned",
+            "programId": "6a0000000000000000000001",
+            "programSessionCount": 1,
+            "programName": "Winter strength"
+          }
+        },
+        {
+          "date": "2026-09-12",
+          "status": "planned",
+          "sessionCount": 1,
+          "completedSessionCount": 0,
+          "inProgressSessionCount": 0,
+          "plannedSessionCount": 1,
+          "missedSessionCount": 0,
+          "endedSessionCount": 0,
+          "summary": {
+            "title": "Lower body B",
+            "status": "planned",
+            "programId": "6a0000000000000000000001",
+            "programSessionCount": 1,
+            "programName": "Winter strength"
+          }
+        }
+      ],
+      "agenda": {
+        "date": "2026-09-09",
+        "items": [
+          {
+            "id": "6b0000000000000000000003",
+            "time": "2026-09-09T06:05:00.000Z",
+            "modality": "resistance",
+            "name": "Lower body B",
+            "status": "completed",
+            "displayStatus": "completed"
+          },
+          {
+            "id": "occ-5f0000000000000000000002-2026-09-09",
+            "time": "2026-09-09T00:00:00.000Z",
+            "modality": "mobility",
+            "name": "Evening mobility",
+            "status": "planned",
+            "displayStatus": "missed",
+            "scheduleId": "5f0000000000000000000002"
+          }
+        ]
+      }
+    }
+  }
 }

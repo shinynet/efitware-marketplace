@@ -16,6 +16,8 @@
   "include": [
     "scripts/**/*.ts",
     "contract/**/*.test.ts",
+    "contract/vue-shim.d.ts",
+    "vitest.config.ts",
     "apps/workout/vite.config.ts"
   ]
 }

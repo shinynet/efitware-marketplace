@@ -109,9 +109,9 @@ it('binds undo to the displayed receipt only and counts trained days from comple
   expect(undoTarget(receipts([receipt('a'.repeat(24), true, '2026-09-10T11:00:00.000Z'), receipt('b'.repeat(24), true, null)]))).toBeUndefined()
   expect(undoTarget(receipts([receipt('c'.repeat(24), true, null), receipt('b'.repeat(24), true, null)]))?.id).toBe('c'.repeat(24))
   const calendar = parseTrainingView({ view: 'calendar', record: { from: '2026-09-07', to: '2026-09-13', date: '2026-09-08', days: [
-    { date: '2026-09-07', status: 'completed', sessionCount: 2, completedSessionCount: 1 },
-    { date: '2026-09-08', status: 'incomplete', sessionCount: 1, completedSessionCount: 0 },
-    { date: '2026-09-09', status: null, sessionCount: 0, completedSessionCount: 0 }
+    { date: '2026-09-07', status: 'completed', sessionCount: 2, completedSessionCount: 1, inProgressSessionCount: 0, plannedSessionCount: 0, missedSessionCount: 0, endedSessionCount: 1 },
+    { date: '2026-09-08', status: 'planned', sessionCount: 1, completedSessionCount: 0, inProgressSessionCount: 0, plannedSessionCount: 1, missedSessionCount: 0, endedSessionCount: 0 },
+    { date: '2026-09-09', status: null, sessionCount: 0, completedSessionCount: 0, inProgressSessionCount: 0, plannedSessionCount: 0, missedSessionCount: 0, endedSessionCount: 0 }
   ], agenda: null }, related: {}, presentation })
   const summary = compactSummary(calendar, { locale: 'en', system: 'metric', ...translator('en') })
   expect(summary.facts).toEqual([{ label: 'Sessions', value: '3' }, { label: 'Completed', value: '1' }, { label: 'Days trained', value: '1' }])

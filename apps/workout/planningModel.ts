@@ -20,13 +20,28 @@ export const programViewSchema = z.object({
   }), presentation
 })
 export const scheduleViewSchema = z.object({ view: z.literal('schedule'), record: schedule.extend({ revision: revision('schedule') }), related: z.object({ today: day }), presentation })
+/**
+ * Calendar presentation contract (EF-1474). `missed` and `ended` are presentation states only: a session keeps its
+ * lifecycle `status`, and the canonical workout schema in model.ts is unchanged. A past `planned` session or an
+ * unsatisfied past occurrence displays `missed`; `skipped` and `abandoned` sessions fall in the day's `ended` bucket.
+ */
+export const calendarSessionDisplayStatus = z.enum([...status.options, 'missed'])
+export const scheduledOccurrenceDisplayStatus = z.enum(['planned', 'missed'])
+/** The day aggregate, in precedence order: the highest bucket present, never "every session". */
+export const calendarDayStatus = z.enum(['in_progress', 'missed', 'planned', 'completed', 'ended'])
+const count = z.number().int().nonnegative()
 export const calendarViewSchema = z.object({
   view: z.literal('calendar'),
   record: z.object({ from: day, to: day, date: day,
-    days: z.array(z.object({ date: day, status: z.enum(['completed', 'incomplete', 'in_progress']).nullable(), sessionCount: z.number().int().nonnegative(), completedSessionCount: z.number().int().nonnegative(), summary: z.object({ title: z.string(), status, programName: z.string().optional() }).optional() })),
-    agenda: z.object({ date: day, items: z.array(z.object({ id: z.string(), name: z.string(), status, time: z.string(), scheduleId: id.optional() })) }).nullable()
+    days: z.array(z.object({ date: day, status: calendarDayStatus.nullable(),
+      sessionCount: count, completedSessionCount: count, inProgressSessionCount: count, plannedSessionCount: count, missedSessionCount: count, endedSessionCount: count,
+      summary: z.object({ title: z.string(), status, programName: z.string().optional() }).optional() })),
+    agenda: z.object({ date: day, items: z.array(z.object({ id: z.string(), name: z.string(), status, displayStatus: calendarSessionDisplayStatus, time: z.string(), scheduleId: id.optional() })) }).nullable()
   }), related: z.object({}), presentation
 })
+export type CalendarSessionDisplayStatus = z.infer<typeof calendarSessionDisplayStatus>
+export type ScheduledOccurrenceDisplayStatus = z.infer<typeof scheduledOccurrenceDisplayStatus>
+export type CalendarDayStatus = z.infer<typeof calendarDayStatus>
 export type ProgramView = z.infer<typeof programViewSchema>
 export type ScheduleView = z.infer<typeof scheduleViewSchema>
 export type CalendarView = z.infer<typeof calendarViewSchema>
@@ -41,3 +56,12 @@ export const rangeDays = (from: string, to: string) => {
   for (let date = from; date <= to && days.length < 42; date = shiftDay(date, 1)) days.push(date)
   return days
 }
+
+/** One mark per session, drawn from the day's buckets in this order. */
+export const calendarMarkKinds = ['completed', 'in_progress', 'planned', 'missed', 'ended'] as const
+export type CalendarMarkKind = typeof calendarMarkKinds[number]
+type CalendarDay = CalendarView['record']['days'][number]
+const bucket = { completed: 'completedSessionCount', in_progress: 'inProgressSessionCount', planned: 'plannedSessionCount', missed: 'missedSessionCount', ended: 'endedSessionCount' } as const satisfies Record<CalendarMarkKind, keyof CalendarDay>
+export const dayMarks = (day: CalendarDay | undefined): CalendarMarkKind[] => day ? calendarMarkKinds.flatMap(kind => Array.from({ length: day[bucket[kind]] }, () => kind)) : []
+/** The mark a single agenda row wears: skipped and abandoned sessions are the day's ended bucket. */
+export const sessionMark = (displayStatus: CalendarSessionDisplayStatus): CalendarMarkKind => displayStatus === 'skipped' || displayStatus === 'abandoned' ? 'ended' : displayStatus
