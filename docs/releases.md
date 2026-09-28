@@ -6,6 +6,18 @@ The application owns its product DTOs, MCP tools, authentication, permissions an
 
 `pnpm build` bundles Vue, fonts, brand assets and theme tokens into `dist/card/workout.html`, then generates the open draft-07 input schema. The product validates its raw tool output against that schema using Ajv without stripping extra fields, applying defaults or coercing types. The product DTO remains authoritative.
 
+## Personal-record award kinds (0.1.23)
+
+Card and schema change (EF-1469, application EF-1466, EF-1467 and EF-1468). The application awards at most one personal record per exercise per workout, of two kinds: Heaviest (`weight`, a new maximum weight at any reps) and Est. 1RM (`oneRm`, a new best Epley estimate from a set of 1 to 12 reps). The first workout with an exercise sets the reference and earns nothing, and `volume` is no longer awarded.
+
+- **Schemas.** A progress `recentPrs[]` row admits `type` (`weight` | `oneRm`) and `estimatedOneRm`; an exercise-progress `records[]` row admits `estimatedOneRm`. `estimatedOneRm` is the Epley estimate of the lifted set as a whole-unit measurement object in the account's unit (the same shape as every other estimate); `weight` and `reps` stay the lifted set. Both fields are optional, so an application that predates EF-1468 still validates. The stored-marker schema still admits `volume` and `first`: markers written under the old rules persist until the application's refresh (EF-1470), and their removal is EF-1471.
+- **Views.** A recent PR reads "Heaviest 187.5 lb · 6 reps" or "Est. 1RM ~215 lb · from 170 lb × 8"; a records row adds the same kind line under its set. The card decides a records row's kind from its stored markers exactly as the application's `presentedPrAward` does: Heaviest outranks Est. 1RM, and a `volume` marker, or a `oneRm` marker from a set outside 1 to 12 reps, presents no kind. A recent PR without `type` renders as before, without a kind. German reads "Höchstgewicht" and "Gesch. 1RM … · aus …", matching the application.
+- **Copy.** The count reads "Personal record awards", and the recent-PR note reads "Latest six in this window. Each is one award: at most one per exercise per workout." The retired "Set volume record" label is gone.
+
+`contract/compat-fixtures.json` gains `prAwards`: the application's `test/fixtures/mcp/progress-recent-prs.json` and `test/fixtures/mcp/personal-records.json`, copied verbatim, each holding one Heaviest and one Est. 1RM row in the EF-1448 measurement shapes. `contract/pr-awards.test.ts` validates them against the published schemas, checks that a payload without the new fields still validates, and renders both kinds, the estimate line and a legacy `volume` row. `contract/progress-view.schema.json` and `contract/exercise-progress-view.schema.json` are regenerated. No tool inventory change, so `minimumAppCommit` is unchanged.
+
+This release builds on 0.1.22 and its measurement contract. The application pins it after EF-1448, which emits the measurement shapes these fixtures use. This is a staged prerelease: catalog promotion and `channels.json` follow only after that application deployment is READY in production.
+
 ## Measurements carry their unit (0.1.22)
 
 Card, schema and skill change (EF-1447, app plan "Imperial accounts" §1 and §6). The cards and skill adopt the MCP measurement contract: every weight and body measurement an assistant or card reads is a measurement object `{ value, unit }` already in the account's unit, and the card renders it as given. The `weightUnit: 'kg'` metadata is gone; `presentation.unitSystem` stays only as a hint for the unit of a value typed into an empty field. The card never converts a measurement a second time: `{ value: 85, unit: 'kg' }` on an imperial payload reads "85 kg".

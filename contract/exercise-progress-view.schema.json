@@ -779,6 +779,27 @@
                     "weight"
                   ]
                 }
+              },
+              "estimatedOneRm": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "lb",
+                      "kg"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "unit"
+                ]
               }
             },
             "required": [

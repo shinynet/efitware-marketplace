@@ -2,13 +2,14 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { ExerciseProgressView } from './focusedProgressModel'
-import { unlockProgressDays } from './progressModel'
+import { presentedPrAward, unlockProgressDays } from './progressModel'
 import type { createWorkoutConnection } from './workoutConnection'
 import { formatDay } from './planningModel'
 import { resolveDisplayUnitSystem, formatMeasure } from './presentation'
 import { accountLoadUnit, chartPoints, formatLoad, formatTotal, seriesUnit, type Measurement } from './measurement'
 import ProgressChart from './ProgressChart.vue'
 import HostFollowUp from './HostFollowUp.vue'
+import PrAward from './PrAward.vue'
 const { exercise, disabled, navigate, followUp } = defineProps<{ exercise: ExerciseProgressView, disabled: boolean, navigate: ReturnType<typeof createWorkoutConnection>['navigate'], followUp: ReturnType<typeof createWorkoutConnection>['sendFollowUp'] }>()
 const { t, locale } = useI18n()
 const title = computed(() => exercise.record.i18n?.[locale.value]?.name ?? exercise.record.name)
@@ -25,6 +26,8 @@ const estimate = computed(() => {
 const select = (patch: Record<string, unknown>) => navigate({ name: 'open_exercise_progress', arguments: { exerciseId: exercise.record.id, range: window.value.range, today: window.value.today, collection: exercise.related.collection, page: 1, limit: exercise.related.limit, ...patch } }, true)
 const openWorkout = (workoutId: string) => navigate({ name: 'open_workout', arguments: { workoutId } })
 const request = computed(() => t('progressUi.exerciseExplain', { exerciseId: exercise.record.id, name: title.value, from: window.value.rangeStart, to: window.value.today }))
+// A row names the award its markers present; a legacy volume-only row names none (EF-1468).
+const records = computed(() => exercise.related.records.map(record => ({ record, award: presentedPrAward(record.prs) })))
 const rows = computed(() => exercise.related.collection === 'history' ? exercise.related.history : exercise.related.records)
 </script>
 <template>
@@ -190,7 +193,7 @@ const rows = computed(() => exercise.related.collection === 'history' ? exercise
       class="space-y-3"
     >
       <li
-        v-for="record in exercise.related.records"
+        v-for="{ record, award } in records"
         :key="`${record.workoutId}:${record.instanceId}:${record.setId}`"
         class="rounded border border-surface-dark p-4"
       >
@@ -201,8 +204,16 @@ const rows = computed(() => exercise.related.collection === 'history' ? exercise
         <p class="mt-2 text-xl">
           {{ record.reps === null ? t('progressUi.unavailable') : t('progressUi.reps', { value: number(record.reps) }) }} · {{ record.weight === null ? t('progressUi.unavailable') : load(record.weight) }}
         </p>
-        <p class="mt-1 text-sm text-muted">
-          {{ new Intl.ListFormat(locale).format(record.prs.map(pr => t(`progressUi.prType.${pr.type}`))) }}
+        <p
+          v-if="award"
+          class="mt-1 text-sm"
+        >
+          <pr-award
+            :kind="award.type"
+            :estimate="record.estimatedOneRm"
+            :weight="award.weight"
+            :reps="award.reps"
+          />
         </p>
         <button
           class="secondary mt-3"
