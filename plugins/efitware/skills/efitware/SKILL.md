@@ -46,7 +46,7 @@ For library browsing, use `open_library` only after the user-facing search is re
 
 ## What this surface can and cannot do
 
-118 tools: 63 reads, 55 writes.
+119 tools: 63 reads, 56 writes.
 
 | Read | Returns |
 | --- | --- |
@@ -94,6 +94,7 @@ For library browsing, use `open_library` only after the user-facing search is re
 | `update_workout_activity` | `workoutId`, optional `weId`, `activityId`, `patch`; absent weId selects a root activity. |
 | `delete_workout_activity` | Remove one activity at the specified root or exercise scope. |
 | `reorder_workout` | Complete root `order: { exerciseOrders, activityOrders }` maps, with unique values across both lists. |
+| `update_execution_groups` | Exactly one of `workoutId` or `templateId`, plus the complete `executionGroups` list over that record's current exercise and set ids; `[]` ungroups. See supersets and circuits below. |
 | `delete_workout` | Soft-delete one owned `workoutId`. Restore it through its returned undo receipt while retained and unchanged. |
 | `update_template` | `templateId`, `patch`: name, description, tags, planned exercises/activities. A supplied tree scope replaces that whole scope with fresh ids; omitted scopes remain. |
 | `delete_template` | Soft-delete one template and its schedules; materialized workouts remain. Receipt undo restores only its retained cascade. |
@@ -262,6 +263,15 @@ Use `get_active_session` before assuming an ongoing workout belongs to today's d
 
 For reported sets in one session, prefer `log_sets` over repeated single-set calls. Up to 50 distinct entries commit together with one receipt; one invalid entry leaves every set unchanged. It costs one ordinary MCP call. Send loads as measurement objects, durations in seconds and distances in meters, using the exercise's actual tracking fields. Separate workouts and batches have separate outcomes.
 
+### Supersets and circuits
+
+A workout or template may carry `executionGroups`: each is a `superset` (exactly two exercises) or a `circuit` (2–10) whose members alternate by round. Round N runs each member's Nth selected set in member order; a member's other sets run before round 1. Members must be adjacent, in member order, in one section, and select only non-warm-up, non-cool-down sets, with the same number of rounds each. Reads return them with the record's own ids: `{ id, kind, members: [{ workoutExerciseId, setIds }] }`. Absent means the exercises run in sequence.
+
+- **Full-tree writes use positions.** `create_workout` (explicit tree), `create_template`, `update_template` (only together with `exercises`) and each `save_week_plan` entry accept `executionGroups: [{ kind, members: [{ exerciseIndex, setIndexes }] }]`, zero-based into the `exercises` you send and that exercise's `sets`. Replacing a grouped template's `exercises` without `executionGroups` is refused; send `[]` to ungroup on purpose. Copies, template use and schedule occurrences keep the groups on their own new ids.
+- **Existing records use ids.** `update_execution_groups` replaces the whole list using current `workoutExerciseId`/`setIds` from `get_workout` or `get_template` and new group ids of the form `eg-<unique>`. A completed workout must be reopened first. Its receipt is undoable.
+- **Rest is an activity, not a group setting.** Rest between members or after a round is an ordinary `rest` activity after the set it follows (`durationTarget` seconds); grouping never adds, removes or retimes one.
+- **Routine edits never break a group.** Deleting a grouped set or exercise, or moving a member out of place, is refused. Ungroup with `update_execution_groups`, then retry the original edit. A newly added set joins no group.
+
 The `setOrder` field on `update_workout_exercise` must include every set exactly once. If the exercise contains activities, also provide a complete `activitySlots` map from activity ID to its 1-based set position. Root reordering similarly includes every exercise and root activity with unique order values. Activity patch `detail`, `durationTarget`, `durationActual` and `notes` accept null to clear; `title` and `section` do not.
 
 `delete_workout` removes one session. Keep its receipt to restore through `undo_action`; restoration refuses a changed/missing tombstone or a replacement workout on the same scheduled occurrence. Workouts have an aggregate size limit; split an oversized session instead of dropping prescribed data to force it through.
@@ -378,6 +388,10 @@ Malformed JSON is HTTP 400 / JSON-RPC -32700; unsupported content types and prot
 | `You've reached today's limit for this AI feature — try again tomorrow` | The account's daily tool-call cap is exhausted; it resets at UTC midnight. | Stop calling tools and tell the user. Retrying will not help today. |
 | `Provide exactly one of workoutId or date` | `get_workout` got both arguments or neither. | Send one. |
 | `Exercise order values must be unique` / `Exercise and activity order values must be unique across the template` | A `create_template` tree reused an `order` value. | Renumber; see flow 4. |
+| `The supersets or circuits do not fit this workout` | `WORKOUT_EXECUTION_GROUPS_INVALID`: groups break a rule; `details.issues` lists each `{ code, groupIndex, memberIndex? }`. | Fix the named group against the rules in Supersets and circuits. |
+| `This template has supersets or circuits: send executionGroups with the replacement exercises, or [] to ungroup them` | `WORKOUT_EXECUTION_GROUPS_REQUIRED`: a grouped template's `exercises` were replaced without saying what happens to its groups. | Resend with the groups by position, or with `[]` if the user wants them removed. |
+| `This belongs to a superset or circuit; remove it from that group with update_execution_groups, then retry the delete` | `WORKOUT_EXECUTION_GROUP_MEMBER_REFERENCED`: the set or exercise is selected by group `details.groupId`. | Confirm with the user, ungroup or regroup with `update_execution_groups`, then retry the delete. |
+| `This change would split a superset or circuit or reorder its members; ungroup or regroup it with update_execution_groups first` | `WORKOUT_EXECUTION_GROUP_ORDER`: the move would separate group `details.groupId` or change its member order. | Move the whole group, or change the grouping first with `update_execution_groups`. |
 
 Prefer fewer calls to retries: one `get_recent_workouts` beats a walk of individual days.
 

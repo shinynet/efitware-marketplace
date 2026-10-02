@@ -2231,5 +2231,323 @@
         }
       ]
     }
+  },
+  "executionGroups": {
+    "_note": "EF-1552: grouped open_workout/open_template payloads as the application emits them; rest is the saved Activity after a set (an explicit 0 s rest, a rest after each round, two blocks in one slot).",
+    "openWorkout": {
+      "workout": {
+        "id": "555555555555555555555555",
+        "title": "Upper superset",
+        "date": "2026-10-09",
+        "status": "planned",
+        "revision": "workout:1:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "exercises": [
+          {
+            "id": "we-press",
+            "exerciseId": "888888888888888888888888",
+            "exerciseName": "Overhead press",
+            "modality": "resistance",
+            "order": 1,
+            "section": "main",
+            "sets": [
+              {
+                "id": "s-pw",
+                "category": "warmup",
+                "completed": false,
+                "plannedReps": {
+                  "min": 10,
+                  "max": 10
+                }
+              },
+              {
+                "id": "s-p1",
+                "category": "working",
+                "completed": false,
+                "plannedReps": {
+                  "min": 8,
+                  "max": 10
+                }
+              },
+              {
+                "id": "s-p2",
+                "category": "working",
+                "completed": false,
+                "plannedReps": {
+                  "min": 8,
+                  "max": 10
+                }
+              }
+            ],
+            "activities": [
+              {
+                "id": "a-p-zero",
+                "kind": "rest",
+                "title": "",
+                "durationTarget": 0,
+                "completed": false,
+                "order": 3
+              }
+            ]
+          },
+          {
+            "id": "we-row",
+            "exerciseId": "999999999999999999999999",
+            "exerciseName": "Seated row",
+            "modality": "resistance",
+            "order": 2,
+            "section": "main",
+            "sets": [
+              {
+                "id": "s-r1",
+                "category": "working",
+                "completed": false,
+                "plannedReps": {
+                  "min": 8,
+                  "max": 10
+                }
+              },
+              {
+                "id": "s-r2",
+                "category": "working",
+                "completed": false,
+                "plannedReps": {
+                  "min": 8,
+                  "max": 10
+                }
+              }
+            ],
+            "activities": [
+              {
+                "id": "a-r1",
+                "kind": "rest",
+                "title": "",
+                "durationTarget": 90,
+                "completed": false,
+                "order": 1
+              },
+              {
+                "id": "a-r2",
+                "kind": "rest",
+                "title": "",
+                "durationTarget": 90,
+                "completed": false,
+                "order": 2
+              },
+              {
+                "id": "a-r2-water",
+                "kind": "water_break",
+                "title": "",
+                "completed": false,
+                "order": 2
+              }
+            ]
+          }
+        ],
+        "activities": [
+          {
+            "id": "a-root-water",
+            "kind": "water_break",
+            "title": "",
+            "completed": false,
+            "order": 3
+          }
+        ],
+        "executionGroups": [
+          {
+            "id": "eg-upper",
+            "kind": "superset",
+            "members": [
+              {
+                "workoutExerciseId": "we-press",
+                "setIds": [
+                  "s-p1",
+                  "s-p2"
+                ]
+              },
+              {
+                "workoutExerciseId": "we-row",
+                "setIds": [
+                  "s-r1",
+                  "s-r2"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "exercises": [
+        {
+          "id": "888888888888888888888888",
+          "nameDe": "Schulterdrücken",
+          "tracksWeight": true,
+          "tracksReps": true
+        },
+        {
+          "id": "999999999999999999999999",
+          "nameDe": "Rudern sitzend",
+          "tracksWeight": true,
+          "tracksReps": true
+        }
+      ],
+      "presentation": {
+        "locale": "en",
+        "unitSystem": "imperial",
+        "theme": null,
+        "skin": null
+      }
+    },
+    "openTemplate": {
+      "view": "template",
+      "record": {
+        "id": "444444444444444444444444",
+        "name": "Upper superset",
+        "revision": "template:1:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "exercises": [
+          {
+            "id": "we-press",
+            "exerciseId": "888888888888888888888888",
+            "exerciseName": "Overhead press",
+            "modality": "resistance",
+            "order": 1,
+            "section": "main",
+            "sets": [
+              {
+                "id": "s-pw",
+                "category": "warmup",
+                "plannedReps": {
+                  "min": 10,
+                  "max": 10
+                }
+              },
+              {
+                "id": "s-p1",
+                "category": "working",
+                "plannedReps": {
+                  "min": 8,
+                  "max": 10
+                }
+              },
+              {
+                "id": "s-p2",
+                "category": "working",
+                "plannedReps": {
+                  "min": 8,
+                  "max": 10
+                }
+              }
+            ],
+            "activities": [
+              {
+                "id": "a-p-zero",
+                "kind": "rest",
+                "title": "",
+                "durationTarget": 0,
+                "order": 3
+              }
+            ]
+          },
+          {
+            "id": "we-row",
+            "exerciseId": "999999999999999999999999",
+            "exerciseName": "Seated row",
+            "modality": "resistance",
+            "order": 2,
+            "section": "main",
+            "sets": [
+              {
+                "id": "s-r1",
+                "category": "working",
+                "plannedReps": {
+                  "min": 8,
+                  "max": 10
+                }
+              },
+              {
+                "id": "s-r2",
+                "category": "working",
+                "plannedReps": {
+                  "min": 8,
+                  "max": 10
+                }
+              }
+            ],
+            "activities": [
+              {
+                "id": "a-r1",
+                "kind": "rest",
+                "title": "",
+                "durationTarget": 90,
+                "order": 1
+              },
+              {
+                "id": "a-r2",
+                "kind": "rest",
+                "title": "",
+                "durationTarget": 90,
+                "order": 2
+              },
+              {
+                "id": "a-r2-water",
+                "kind": "water_break",
+                "title": "",
+                "order": 2
+              }
+            ]
+          }
+        ],
+        "activities": [
+          {
+            "id": "a-root-water",
+            "kind": "water_break",
+            "title": "",
+            "order": 3
+          }
+        ],
+        "executionGroups": [
+          {
+            "id": "eg-upper",
+            "kind": "superset",
+            "members": [
+              {
+                "workoutExerciseId": "we-press",
+                "setIds": [
+                  "s-p1",
+                  "s-p2"
+                ]
+              },
+              {
+                "workoutExerciseId": "we-row",
+                "setIds": [
+                  "s-r1",
+                  "s-r2"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "related": {
+        "exercises": [
+          {
+            "id": "888888888888888888888888",
+            "nameDe": "Schulterdrücken",
+            "tracksWeight": true,
+            "tracksReps": true
+          },
+          {
+            "id": "999999999999999999999999",
+            "nameDe": "Rudern sitzend",
+            "tracksWeight": true,
+            "tracksReps": true
+          }
+        ]
+      },
+      "presentation": {
+        "locale": "en",
+        "unitSystem": "imperial",
+        "theme": null,
+        "skin": null
+      }
+    }
   }
 }

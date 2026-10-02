@@ -28,6 +28,8 @@ import WorkoutActivityCard from './WorkoutActivityCard.vue'
 import CompactCard from './CompactCard.vue'
 import CompactActions from './CompactActions.vue'
 import { appUrl, compactSummary } from './compactSummary'
+import ExecutionGroupBlock from './ExecutionGroupBlock.vue'
+import { groupEditPath, groupOpenedBy, presentExecutionGroup } from './executionGroups'
 import { createWorkoutConnection } from './workoutConnection'
 import wordmark from './theme/efitware-wordmark.svg?url'
 import wordmarkDark from './theme/efitware-wordmark-reversed.svg?url'
@@ -75,6 +77,17 @@ watchEffect(() => {
 })
 const dateLabel = computed(() => workout.value ? new Intl.DateTimeFormat(locale.value, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${workout.value.date}T12:00:00Z`)) : '')
 const sections = computed(() => workoutSections(workout.value?.exercises ?? [], workout.value?.activities ?? []))
+const exerciseName = (exercise: { exerciseId: string, exerciseName: string }) =>
+  locale.value === 'de' ? (view.value?.exercises.find(ex => ex.id === exercise.exerciseId)?.nameDe ?? exercise.exerciseName) : exercise.exerciseName
+/** Grouping changes happen in the application: open the workout's own page there. */
+const openGroupEditor = () => {
+  if (workout.value) connection.open(appUrl(groupEditPath({ kind: 'workout', id: workout.value.id, date: workout.value.date })))
+}
+/** The superset/circuit a member opens, shown once before that member (EF-1552). */
+const groupBefore = (exerciseInstanceId: string) => {
+  const group = groupOpenedBy(workout.value?.executionGroups, exerciseInstanceId)
+  return group && workout.value ? presentExecutionGroup(group, workout.value.exercises) : undefined
+}
 const errorText = computed(() => {
   if (error.value === 'MCP_UNDO_CONFLICT') return t('outcomeUi.undoConflict')
   if (error.value === 'MCP_REVISION_CONFLICT') return t(staleLabel.value)
@@ -194,6 +207,7 @@ onUnmounted(connection.close)
         :disabled="!canWrite"
         :create="connection.createFromTemplate"
         :follow-up="connection.sendFollowUp"
+        :open-app="path => connection.open(appUrl(path))"
       />
       <exercise-progress-view
         v-if="route?.view === 'exercise-progress'"
@@ -458,14 +472,20 @@ onUnmounted(connection.close)
               :disabled="!canWrite"
               @save="connection.mutate('update_workout_activity', { activityId: item.data.id, patch: { completed: $event } })"
             />
+            <execution-group-block
+              v-if="item.type === 'exercise' && groupBefore(item.data.id)"
+              :presented="groupBefore(item.data.id)!"
+              :name-of="exerciseName"
+              :open="openGroupEditor"
+            />
             <details
-              v-else
+              v-if="item.type === 'exercise'"
               class="exercise mb-3 rounded border border-surface-dark"
               open
             >
               <summary class="cursor-pointer px-4 py-4">
                 <h3 class="inline font-semibold">
-                  {{ locale === 'de' ? (view?.exercises.find(ex => ex.id === item.data.exerciseId)?.nameDe ?? item.data.exerciseName) : item.data.exerciseName }}
+                  {{ exerciseName(item.data) }}
                 </h3>
               </summary>
               <p

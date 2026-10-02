@@ -6,6 +6,7 @@ import { goalTrainingViewSchema, type GoalTrainingView } from './goalModel.ts'
 import { planningViewSchema, type PlanningView } from './planningModel.ts'
 import { z } from 'zod'
 import { activitySchema, exerciseSchema, presentationSchema, setSchema, trackingSchema, viewSchema } from './model.ts'
+import { executionGroupsSchema } from './executionGroups.ts'
 
 // Templates prescribe training; session actuals/completion are never required here.
 export const plannedSetSchema = setSchema.omit({ completed: true, weight: true, reps: true, duration: true, distance: true })
@@ -16,7 +17,8 @@ export const templateViewSchema = z.object({
   record: z.object({
     id: z.string().regex(/^[a-f0-9]{24}$/i), name: z.string(), description: z.string().optional(), tags: z.array(z.string()).optional(),
     revision: z.string().regex(/^template:1:[a-f0-9]{64}$/),
-    exercises: z.array(plannedExerciseSchema), activities: z.array(plannedActivitySchema).optional()
+    exercises: z.array(plannedExerciseSchema), activities: z.array(plannedActivitySchema).optional(),
+    executionGroups: executionGroupsSchema.optional()
   }),
   related: z.object({ exercises: z.array(trackingSchema.extend({ description: z.string().optional(), instructions: z.array(z.string()).optional(), instructionsDe: z.array(z.string()).optional() })) }),
   presentation: presentationSchema

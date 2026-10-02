@@ -366,6 +366,55 @@
               "order"
             ]
           }
+        },
+        "executionGroups": {
+          "maxItems": 20,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "superset",
+                  "circuit"
+                ]
+              },
+              "members": {
+                "minItems": 2,
+                "maxItems": 10,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "workoutExerciseId": {
+                      "type": "string"
+                    },
+                    "setIds": {
+                      "minItems": 1,
+                      "maxItems": 100,
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "workoutExerciseId",
+                    "setIds"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "members"
+            ]
+          }
         }
       },
       "required": [
