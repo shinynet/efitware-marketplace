@@ -8,9 +8,13 @@ import { resolveDisplayUnitSystem, formatMeasure } from './presentation'
 import { formatLoad } from './measurement'
 import { interleavedExerciseSequence } from './lib/sequenceUtils'
 import { workoutSections } from './lib/sections'
+import ExecutionGroupBlock from './ExecutionGroupBlock.vue'
+import { groupEditPath, groupOpenedBy, presentExecutionGroup } from './executionGroups'
 
-const { template, disabled, create, followUp, navigate } = defineProps<{
+const { template, disabled, create, followUp, navigate, openApp } = defineProps<{
   template: TemplateView, disabled: boolean,
+  /** Opens an application page: grouping edits the card cannot make (EF-1552). */
+  openApp: (path: string) => void,
   navigate: (target: { name: string, arguments: Record<string, unknown> }) => Promise<void>,
   create: (date: string) => Promise<boolean | undefined> | undefined,
   followUp: (prompt: string) => Promise<'accepted' | 'unavailable' | 'rejected' | 'uncertain'>
@@ -25,6 +29,13 @@ const instructions = (id: string) => {
   return (locale.value === 'de' ? exercise?.instructionsDe ?? exercise?.instructions : exercise?.instructions) ?? []
 }
 const number = (value: number) => new Intl.NumberFormat(locale.value).format(value)
+const exerciseName = (exercise: { exerciseId: string, exerciseName: string }) =>
+  locale.value === 'de' ? (exerciseDetails.value.get(exercise.exerciseId)?.nameDe ?? exercise.exerciseName) : exercise.exerciseName
+/** The superset/circuit a member opens, shown once before that member (EF-1552). */
+const groupBefore = (exerciseInstanceId: string) => {
+  const group = groupOpenedBy(template.record.executionGroups, exerciseInstanceId)
+  return group ? presentExecutionGroup(group, template.record.exercises) : undefined
+}
 // Reuse canonical ordering only; these derived flags are never rendered as logged results.
 const sections = computed(() => workoutSections(template.record.exercises.map(ex => ({ ...ex,
   sets: ex.sets.map(set => ({ ...set, completed: false })),
@@ -151,8 +162,14 @@ const sections = computed(() => workoutSections(template.record.exercises.map(ex
             {{ formatMeasure('duration', item.data.durationTarget, system, locale) }}
           </p>
         </article>
+        <execution-group-block
+          v-if="item.type === 'exercise' && groupBefore(item.data.id)"
+          :presented="groupBefore(item.data.id)!"
+          :name-of="exerciseName"
+          :open="() => openApp(groupEditPath({ kind: 'template', id: template.record.id }))"
+        />
         <details
-          v-else
+          v-if="item.type === 'exercise'"
           class="exercise mb-3 rounded border border-surface-dark"
           open
         >
@@ -164,7 +181,7 @@ const sections = computed(() => workoutSections(template.record.exercises.map(ex
                 class="text-left underline decoration-surface-dark underline-offset-4"
                 @click="navigate({ name: 'open_exercise', arguments: { exerciseId: item.data.exerciseId } })"
               >
-                {{ locale === 'de' ? (exerciseDetails.get(item.data.exerciseId)?.nameDe ?? item.data.exerciseName) : item.data.exerciseName }}
+                {{ exerciseName(item.data) }}
               </button>
             </h3>
           </summary>

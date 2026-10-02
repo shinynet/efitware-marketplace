@@ -9,6 +9,11 @@ import { compactMessages } from './compactMessages'
 export const messages = {
   en: {
     compact: compactMessages.en,
+    groupUi: {
+      superset: 'Superset', circuit: 'Circuit', rounds: '{n} round | {n} rounds', round: 'Round {number}', order: 'Exercise order',
+      turn: '{exercise} · set {number}', sequence: 'Round by round', editInApp: 'Change grouping in eFitware',
+      editNote: 'The grouping is shown as saved. Change it in the app or ask your AI.', activityWithDuration: '{name} · {duration}'
+    },
     outcomeUi: outcomeMessages.en,
     contextUi: contextMessages.en, contextVocabulary: contextVocabularyEn,
     ...goalMessages.en,
@@ -65,6 +70,11 @@ export const messages = {
   },
   de: {
     compact: compactMessages.de,
+    groupUi: {
+      superset: 'Supersatz', circuit: 'Zirkel', rounds: '{n} Runde | {n} Runden', round: 'Runde {number}', order: 'Übungsreihenfolge',
+      turn: '{exercise} · Satz {number}', sequence: 'Runde für Runde', editInApp: 'Gruppierung in eFitware ändern',
+      editNote: 'Die Gruppierung wird wie gespeichert angezeigt. Ändere sie in der App oder bitte deine KI darum.', activityWithDuration: '{name} · {duration}'
+    },
     outcomeUi: outcomeMessages.de,
     contextUi: contextMessages.de, contextVocabulary: contextVocabularyDe,
     ...goalMessages.de,

@@ -1115,6 +1115,16 @@
       ],
       "delivery": "implemented",
       "interaction": "display"
+    },
+    "update_execution_groups": {
+      "role": "action",
+      "views": [
+        "workout",
+        "template"
+      ],
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI performs this requested superset/circuit grouping edit using canonical tools and opens the resulting view; the card shows groups and links to the app for grouping changes."
     }
   },
   "appOnlyExclusions": [
