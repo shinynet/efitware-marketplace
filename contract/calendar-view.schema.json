@@ -95,6 +95,31 @@
                   },
                   "programName": {
                     "type": "string"
+                  },
+                  "programs": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "programId": {
+                          "type": "string",
+                          "pattern": "^[a-f0-9]{24}$"
+                        },
+                        "programName": {
+                          "type": "string"
+                        },
+                        "sessionCount": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 9007199254740991
+                        }
+                      },
+                      "required": [
+                        "programId",
+                        "sessionCount"
+                      ]
+                    }
                   }
                 },
                 "required": [

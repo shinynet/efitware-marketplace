@@ -2,7 +2,7 @@
 /** Read-only calendar selection; creating an occurrence is a separately labelled, explicit mutation. */
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { dayMarks, formatDay, rangeDays, sessionMark, shiftDay, type CalendarView } from './planningModel'
+import { dayMarks, dayProgramNames, formatDay, rangeDays, sessionMark, shiftDay, type CalendarView } from './planningModel'
 import CalendarMark from './CalendarMark.vue'
 import type { createWorkoutConnection } from './workoutConnection'
 const { calendar, disabled, navigate, create } = defineProps<{
@@ -16,6 +16,11 @@ const byDate = computed(() => new Map(calendar.record.days.map(day => [day.date,
 const select = (date: string) => navigate({ name: 'open_calendar', arguments: { from: calendar.record.from, to: calendar.record.to, date } }, true)
 const shift = (direction: number) => navigate({ name: 'open_calendar', arguments: { from: shiftDay(calendar.record.from, days.value.length * direction), to: shiftDay(calendar.record.to, days.value.length * direction), date: shiftDay(calendar.record.date, days.value.length * direction) } }, true)
 const n = (value: number) => new Intl.NumberFormat(locale.value).format(value)
+/** Every program the day draws on, compactly: "Program: A" or "Programs: A · B". */
+const programLine = (date: string) => {
+  const names = dayProgramNames(byDate.value.get(date)?.summary)
+  return names.length ? t('calendarPrograms', { names: names.join(' · ') }, names.length) : undefined
+}
 type AgendaItem = NonNullable<CalendarView['record']['agenda']>['items'][number]
 /** Visible label: missed and terminal rows name their presentation state; an untapped occurrence says it has no saved workout. */
 const itemLabel = (item: AgendaItem) => item.displayStatus === 'missed' ? t(item.scheduleId ? 'missedOccurrence' : 'missed') : t(item.scheduleId ? 'scheduledOccurrence' : item.displayStatus)
@@ -88,6 +93,11 @@ const time = (instant: string) => new Intl.DateTimeFormat(locale.value, { hour: 
             v-if="byDate.get(date)?.summary"
             class="mt-2 block text-sm"
           >{{ byDate.get(date)?.summary?.title }}</span>
+          <span
+            v-if="programLine(date)"
+            class="mt-1 block text-xs text-muted"
+            data-programs
+          >{{ programLine(date) }}</span>
         </button>
       </li>
     </ol>

@@ -117,5 +117,6 @@ describe('the grouped template card', () => {
     const { workout } = grouped.openWorkout
     expect(groupEditPath({ kind: 'workout', id: workout.id, date: workout.date })).toBe(summaryPath(workoutView))
     expect(groupEditPath({ kind: 'template', id: grouped.openTemplate.record.id })).toBe(summaryPath(templateView))
+    expect(groupEditPath({ kind: 'template', id: grouped.openTemplate.record.id })).toBe(`/saved-workouts/${grouped.openTemplate.record.id}`)
   })
 })

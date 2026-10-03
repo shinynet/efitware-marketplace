@@ -17,6 +17,8 @@ it('keeps the published skill inventory consistent with the required server surf
   expect(skill).toContain('A PR is an award, at most one per exercise per workout: Heaviest (`weight`, a new top weight) or Est. 1RM (`oneRm`')
   expect(skill).toContain('The first workout with an exercise sets the reference and earns none.')
   expect(skill).toContain('A stored `volume` marker, or a `oneRm` marker from a set over 12 reps, is not an award: never announce it.')
+  // EF-1587: a day's program credit comes from the full list, not the scalar fields.
+  expect(skill).toContain('credit a shared or manual-led day from `programs`')
 })
 
 it('preserves marketplace identity and sign-in policy', () => {

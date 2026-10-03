@@ -79,6 +79,18 @@ it('projects every fixture view into at most three facts with an app link, in bo
   }
 })
 
+it('links the library, exercise and saved-workout cards to the application\'s canonical pages (EF-1587)', () => {
+  const exercise = { id: 'e'.repeat(24), name: 'Goblet squat', modality: 'resistance', archived: false }
+  const options = { locale: 'en', system: 'metric' as const, ...translator('en') }
+  const library = parseTrainingView({ view: 'library', record: { query: { show: 'all', page: 1, limit: 20 } }, related: { exercises: { data: [exercise], meta: { page: 1, limit: 20, total: 1 } } }, presentation })
+  // /library is the application's workout Library; the exercise catalog is /exercises.
+  expect(compactSummary(library, options).path).toBe('/exercises')
+  const detail = parseTrainingView({ view: 'exercise', record: exercise, related: { customEquipment: [] }, presentation })
+  expect(compactSummary(detail, options).path).toBe(`/exercises/${exercise.id}`)
+  const template = fixtures.templateViews.find(fixture => fixture.valid)!.input as { record: { id: string } }
+  expect(compactSummary(parseTrainingView(template), options).path).toBe(`/saved-workouts/${template.record.id}`)
+})
+
 it('omits the bar chart below the minimum series length and keeps it bounded otherwise', () => {
   const metric = structuredClone(fixtures.bodyMetricViews[0]!)
   const short = compactSummary(parseTrainingView(metric), { locale: 'en', system: 'metric', ...translator('en') })
