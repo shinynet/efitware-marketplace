@@ -98,7 +98,7 @@ export const compactSummary = (view: TrainingView, options: Options): CompactSum
       const { record } = view
       const sets = record.exercises.reduce((sum, exercise) => sum + exercise.sets.length, 0)
       const activities = (record.activities?.length ?? 0) + record.exercises.reduce((sum, exercise) => sum + (exercise.activities?.length ?? 0), 0)
-      return { eyebrow: t('reusableTemplate'), title: record.name, facts: [fact(t('compact.exercises'), count(record.exercises.length)), fact(t('compact.sets'), count(sets)), fact(t('compact.activities'), count(activities))], path: `/templates/${record.id}` }
+      return { eyebrow: t('reusableTemplate'), title: record.name, facts: [fact(t('compact.exercises'), count(record.exercises.length)), fact(t('compact.sets'), count(sets)), fact(t('compact.activities'), count(activities))], path: `/saved-workouts/${record.id}` }
     }
     case 'program': {
       const { record, related } = view
@@ -199,7 +199,7 @@ export const compactSummary = (view: TrainingView, options: Options): CompactSum
         eyebrow: t('compact.library'), title: record.query.q ? t('compact.resultsFor', { query: record.query.q }) : t('compact.exerciseLibrary'),
         facts: [fact(t('compact.results'), count(related.exercises.meta.total)), fact(t('compact.modality'), record.query.modality ? t(`contextUi.${record.query.modality}`) : t('compact.all')), fact(t('compact.showing'), t(`contextUi.${record.query.show}`))],
         ...(first.length ? { detail: fact(t('compact.topMatches'), first.join(', ')) } : {}),
-        path: '/library'
+        path: '/exercises'
       }
     }
     case 'exercise': {
@@ -207,7 +207,7 @@ export const compactSummary = (view: TrainingView, options: Options): CompactSum
       return {
         eyebrow: dot(t('compact.exercise'), t(`contextUi.${record.modality}`)), title: locale === 'de' ? record.i18n?.de.name ?? record.name : record.name,
         facts: [fact(t('contextUi.equipment'), record.equipmentRequired?.length ? record.equipmentRequired.map(item => view.related.customEquipment.find(entry => entry.id === item)?.name ?? (options.te?.(`contextVocabulary.equipment.${item}`) ? t(`contextVocabulary.equipment.${item}`) : item)).join(', ') : t('compact.none')), fact(t('compact.kind'), t(record.isCustom ? 'compact.custom' : 'compact.catalog')), fact(t('compact.favorite'), t(record.isFavorite ? 'compact.yes' : 'compact.no'))],
-        path: `/library/exercises/${record.id}`
+        path: `/exercises/${record.id}`
       }
     }
     case 'context': {

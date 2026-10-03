@@ -30,12 +30,17 @@ export const scheduledOccurrenceDisplayStatus = z.enum(['planned', 'missed'])
 /** The day aggregate, in precedence order: the highest bucket present, never "every session". */
 export const calendarDayStatus = z.enum(['in_progress', 'missed', 'planned', 'completed', 'ended'])
 const count = z.number().int().nonnegative()
+/**
+ * One program's share of a day's sessions (application EF-1575): every contributing program once, in the day's
+ * session order. `programName` is omitted when the program no longer resolves.
+ */
+export const calendarDayProgram = z.object({ programId: id, programName: z.string().optional(), sessionCount: z.number().int().min(1) })
 export const calendarViewSchema = z.object({
   view: z.literal('calendar'),
   record: z.object({ from: day, to: day, date: day,
     days: z.array(z.object({ date: day, status: calendarDayStatus.nullable(),
       sessionCount: count, completedSessionCount: count, inProgressSessionCount: count, plannedSessionCount: count, missedSessionCount: count, endedSessionCount: count,
-      summary: z.object({ title: z.string(), status, programName: z.string().optional() }).optional() })),
+      summary: z.object({ title: z.string(), status, programName: z.string().optional(), programs: z.array(calendarDayProgram).min(1).optional() }).optional() })),
     agenda: z.object({ date: day, items: z.array(z.object({ id: z.string(), name: z.string(), status, displayStatus: calendarSessionDisplayStatus, time: z.string(), scheduleId: id.optional() })) }).nullable()
   }), related: z.object({}), presentation
 })
@@ -65,3 +70,11 @@ const bucket = { completed: 'completedSessionCount', in_progress: 'inProgressSes
 export const dayMarks = (day: CalendarDay | undefined): CalendarMarkKind[] => day ? calendarMarkKinds.flatMap(kind => Array.from({ length: day[bucket[kind]] }, () => kind)) : []
 /** The mark a single agenda row wears: skipped and abandoned sessions are the day's ended bucket. */
 export const sessionMark = (displayStatus: CalendarSessionDisplayStatus): CalendarMarkKind => displayStatus === 'skipped' || displayStatus === 'abandoned' ? 'ended' : displayStatus
+/**
+ * The programs a day's card names: every named entry of `programs` (a day two programs share names both, and a day a
+ * manual session leads still names its program), else the scalar `programName` an application before EF-1575 sends.
+ */
+export const dayProgramNames = (summary: CalendarDay['summary']): string[] => {
+  const named = summary?.programs?.flatMap(program => program.programName ? [program.programName] : []) ?? []
+  return named.length ? named : summary?.programName ? [summary.programName] : []
+}

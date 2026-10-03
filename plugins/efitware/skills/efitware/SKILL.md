@@ -68,7 +68,7 @@ For library browsing, use `open_library` only after the user-facing search is re
 | `get_programs` | Programs with up to 50 member schedule summaries each. Optional `page`, `limit`, active/archived `status`; follow `meta` and each `schedulesMeta`. |
 | `get_user_profile` | Training profile, health constraints, Training Spaces, preferences and an opaque profile `revision`. No arguments. |
 | `get_active_session` | Most recently started active session across all dates, including overnight; `{ data: session or null }`. |
-| `get_calendar` | `from`, `to`: inclusive calendar dates, at most 366 days; optional `date` inside that range selects an agenda. |
+| `get_calendar` | `from`, `to`: inclusive calendar dates, at most 366 days; optional `date` inside that range selects an agenda. A day summary's `programs` lists every program with sessions that day, each with its own `sessionCount`; `programId` and `programName` speak for one program only, so credit a shared or manual-led day from `programs`. |
 | `get_action_receipts` | Your external MCP change receipts from the last 30 days. `page`, `limit` (1–50, default 20); returns `data` plus `meta`. |
 | `get_template` | One complete template and its content revision; `templateId`. |
 | `get_schedule` | One schedule, recurrence, memberships, next occurrence and revision; `scheduleId`, local `today`. |

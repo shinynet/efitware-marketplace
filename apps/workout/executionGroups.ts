@@ -84,4 +84,4 @@ export const groupOpenedBy = (groups: readonly ExecutionGroup[] | undefined, exe
  * its grouping action opens the same page the card header links to.
  */
 export const groupEditPath = (record: { kind: 'template', id: string } | { kind: 'workout', id: string, date: string }): string =>
-  record.kind === 'template' ? `/templates/${record.id}` : `/workouts/${record.date}/${record.id}`
+  record.kind === 'template' ? `/saved-workouts/${record.id}` : `/workouts/${record.date}/${record.id}`

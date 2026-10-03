@@ -620,10 +620,10 @@
   ],
   "getCalendarResponse": {
     "name": "missed-and-ended-days",
-    "note": "One get_calendar response (EF-1474). today is the account's calendar day; open_calendar wraps the same response as { view: 'calendar', record: { from, to, date, ...response }, related: {}, presentation }. Every day satisfies sessionCount = completed + inProgress + planned + missed + ended.",
+    "note": "One get_calendar response (EF-1474). today is the account's calendar day; open_calendar wraps the same response as { view: 'calendar', record: { from, to, date, ...response }, related: {}, presentation }. Every day satisfies sessionCount = completed + inProgress + planned + missed + ended. Every program-backed day's summary carries programs (application EF-1575, marketplace 0.1.25): each contributing program once, in session order, with its own sessionCount; the counts sum to programSessionCount.",
     "today": "2026-09-12",
     "from": "2026-09-07",
-    "to": "2026-09-13",
+    "to": "2026-09-20",
     "date": "2026-09-09",
     "dayRoles": {
       "2026-09-07": "trained by hand: an untapped occurrence satisfied by an unplanned completed workout, counted once",
@@ -631,7 +631,9 @@
       "2026-09-09": "mixed past day: a completed scheduled workout and a second schedule's untapped occurrence",
       "2026-09-10": "skipped only",
       "2026-09-11": "abandoned only",
-      "2026-09-12": "planned: today's untapped occurrence"
+      "2026-09-12": "planned: today's untapped occurrence",
+      "2026-09-13": "shared: two programs' untapped occurrences on a future day; programs credits each program once",
+      "2026-09-14": "manual-led: a one-off planned workout leads a program's untapped occurrence, so the summary has no programId and programs names the program"
     },
     "response": {
       "days": [
@@ -664,7 +666,14 @@
             "status": "planned",
             "programId": "6a0000000000000000000001",
             "programSessionCount": 1,
-            "programName": "Winter strength"
+            "programName": "Winter strength",
+            "programs": [
+              {
+                "programId": "6a0000000000000000000001",
+                "programName": "Winter strength",
+                "sessionCount": 1
+              }
+            ]
           }
         },
         {
@@ -682,7 +691,14 @@
             "durationSeconds": 3300,
             "programId": "6a0000000000000000000001",
             "programSessionCount": 1,
-            "programName": "Winter strength"
+            "programName": "Winter strength",
+            "programs": [
+              {
+                "programId": "6a0000000000000000000001",
+                "programName": "Winter strength",
+                "sessionCount": 1
+              }
+            ]
           }
         },
         {
@@ -713,7 +729,14 @@
             "status": "abandoned",
             "programId": "6a0000000000000000000001",
             "programSessionCount": 1,
-            "programName": "Winter strength"
+            "programName": "Winter strength",
+            "programs": [
+              {
+                "programId": "6a0000000000000000000001",
+                "programName": "Winter strength",
+                "sessionCount": 1
+              }
+            ]
           }
         },
         {
@@ -730,7 +753,66 @@
             "status": "planned",
             "programId": "6a0000000000000000000001",
             "programSessionCount": 1,
-            "programName": "Winter strength"
+            "programName": "Winter strength",
+            "programs": [
+              {
+                "programId": "6a0000000000000000000001",
+                "programName": "Winter strength",
+                "sessionCount": 1
+              }
+            ]
+          }
+        },
+        {
+          "date": "2026-09-13",
+          "status": "planned",
+          "sessionCount": 2,
+          "completedSessionCount": 0,
+          "inProgressSessionCount": 0,
+          "plannedSessionCount": 2,
+          "missedSessionCount": 0,
+          "endedSessionCount": 0,
+          "summary": {
+            "title": "Upper body A",
+            "status": "planned",
+            "programId": "6a0000000000000000000001",
+            "programSessionCount": 2,
+            "programName": "Winter strength",
+            "programs": [
+              {
+                "programId": "6a0000000000000000000001",
+                "programName": "Winter strength",
+                "sessionCount": 1
+              },
+              {
+                "programId": "6a0000000000000000000004",
+                "programName": "Engine block",
+                "sessionCount": 1
+              }
+            ]
+          }
+        },
+        {
+          "date": "2026-09-14",
+          "status": "planned",
+          "sessionCount": 2,
+          "completedSessionCount": 0,
+          "inProgressSessionCount": 0,
+          "plannedSessionCount": 2,
+          "missedSessionCount": 0,
+          "endedSessionCount": 0,
+          "summary": {
+            "title": "Travel session",
+            "status": "planned",
+            "programSessionCount": 1,
+            "programName": "Winter strength",
+            "programs": [
+              {
+                "programId": "6a0000000000000000000001",
+                "programName": "Winter strength",
+                "sessionCount": 1
+              }
+            ]
           }
         }
       ],

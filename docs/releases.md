@@ -6,6 +6,19 @@ The application owns its product DTOs, MCP tools, authentication, permissions an
 
 `pnpm build` bundles Vue, fonts, brand assets and theme tokens into `dist/card/workout.html`, then generates the open draft-07 input schema. The product validates its raw tool output against that schema using Ajv without stripping extra fields, applying defaults or coercing types. The product DTO remains authoritative.
 
+## Calendar day programs and canonical page links (0.1.25)
+
+Card, schema and skill change (EF-1587, application EF-1575 and EF-1556).
+
+- **Schema.** A calendar day's `summary` admits `programs`: every program with sessions on the day, once each in the day's session order, `{ programId, programName?, sessionCount }`, at least one entry, each `sessionCount` at least 1. `programName` is omitted when the program no longer resolves. The list is present exactly when `programSessionCount` is, and its counts sum to it. The field is optional, so an application that still omits it validates. `contract/calendar-view.schema.json` is regenerated. The scalar `programId` and `programName` speak for one program only: a day two programs share, or one a manual session leads, needs the list.
+- **Card.** A calendar day names its programs under the session title: "Program: Winter strength" or "Programs: Winter strength · Engine block" (German "Programm" / "Programme"). Unresolved entries are left out. Without `programs`, the card falls back to the scalar `programName`.
+- **Links.** The application's `/library` becomes the workout Library (EF-1556), so the card links its canonical pages: the exercise library card opens `/exercises`, an exercise card `/exercises/<id>`, and a template card and its "Change grouping in eFitware" action `/saved-workouts/<id>`. The application keeps the retired `/library`, `/library/exercises/<id>` and `/templates/<id>` card destinations (EF-1504) until it pins this release.
+- **Skill.** The `get_calendar` row says to credit a shared or manual-led day from `programs`.
+
+`contract/compat-fixtures.json` `getCalendarResponse` adds `programs` to every program-backed day, extends the range to 2026-09-20, and adds a day two programs share (2026-09-13) and a manual-led day whose only program credit is `programs` (2026-09-14). The six existing day roles are unchanged. `contract/calendar.test.ts` checks that the counts sum to `programSessionCount`, that the schema refuses an empty or malformed list, and that the view names both programs on the shared day in English and German and falls back to the scalar name. No tool inventory change, so `minimumAppCommit` is unchanged.
+
+This release builds on 0.1.24. The application pins it in EF-1587, the change that stops removing `programs` from its MCP calendar responses. That change also moves its duplicated calendar fixture, so the pin and the strip removal land together. This is a staged prerelease: catalog promotion and `channels.json` follow only after that application deployment is READY in production.
+
 ## Supersets and circuits (0.1.24)
 
 Tool inventory, card, schema and skill change (application EF-1552, TECH-A1). Workouts and templates can carry persisted `executionGroups`: a `superset` (exactly two exercises) or `circuit` (2–10) over the record's own exercise instance and set ids, `{ id, kind, members: [{ workoutExerciseId, setIds }] }`. Round N runs each member's Nth selected set in member order; a member's other sets run before round 1. Rest is not part of a group: it is the ordinary rest Activity after the set it follows.

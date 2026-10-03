@@ -7,7 +7,7 @@ import { renderToString } from 'vue/server-renderer'
 import { createI18n } from 'vue-i18n'
 import fixtures from './compat-fixtures.json'
 import CalendarView from '../apps/workout/CalendarView.vue'
-import { calendarViewSchema, dayMarks, sessionMark, type CalendarView as CalendarViewData } from '../apps/workout/planningModel'
+import { calendarViewSchema, dayMarks, dayProgramNames, sessionMark, type CalendarView as CalendarViewData } from '../apps/workout/planningModel'
 import { viewSchema } from '../apps/workout/model'
 import { compactSummary } from '../apps/workout/compactSummary'
 import { parseTrainingView } from '../apps/workout/templateModel'
@@ -37,9 +37,10 @@ describe('calendar presentation contract (EF-1474)', () => {
   it('covers every required day and keeps the bucket invariant on each', () => {
     expect(Object.keys(fixture.dayRoles)).toEqual(fixture.response.days.map(day => day.date))
     expect(fixture.response.days.map(day => [day.date, day.status])).toEqual([
-      ['2026-09-07', 'completed'], ['2026-09-08', 'missed'], ['2026-09-09', 'missed'], ['2026-09-10', 'ended'], ['2026-09-11', 'ended'], ['2026-09-12', 'planned']
+      ['2026-09-07', 'completed'], ['2026-09-08', 'missed'], ['2026-09-09', 'missed'], ['2026-09-10', 'ended'], ['2026-09-11', 'ended'], ['2026-09-12', 'planned'],
+      ['2026-09-13', 'planned'], ['2026-09-14', 'planned']
     ])
-    expect(fixture.response.days.map(day => day.summary.status)).toEqual(['completed', 'planned', 'completed', 'skipped', 'abandoned', 'planned'])
+    expect(fixture.response.days.map(day => day.summary.status)).toEqual(['completed', 'planned', 'completed', 'skipped', 'abandoned', 'planned', 'planned', 'planned'])
     for (const day of fixture.response.days) expect(buckets.reduce((sum, key) => sum + day[key], 0), day.date).toBe(day.sessionCount)
     const mixed = fixture.response.days.find(day => day.date === '2026-09-09')!
     expect([mixed.completedSessionCount, mixed.missedSessionCount]).toEqual([1, 1])
@@ -81,6 +82,45 @@ describe('calendar presentation contract (EF-1474)', () => {
   })
 })
 
+describe('calendar day programs (EF-1587)', () => {
+  type Summary = { programId?: string, programSessionCount?: number, programName?: string, programs?: Array<{ programId: string, programName?: string, sessionCount: number }> }
+  const summaryOf = (date: string) => fixture.response.days.find(day => day.date === date)!.summary as Summary
+  const withPrograms = (programs: unknown) => wrap({ ...fixture.response, days: [{ ...fixture.response.days[0]!, summary: { ...summaryOf('2026-09-13'), programs } }] })
+
+  it('lists each program once on every program-backed day, summing to programSessionCount', () => {
+    for (const day of fixture.response.days) {
+      const summary = day.summary as Summary
+      if (summary.programSessionCount === undefined) expect(summary.programs, day.date).toBeUndefined()
+      else expect(summary.programs!.reduce((sum, program) => sum + program.sessionCount, 0), day.date).toBe(summary.programSessionCount)
+    }
+    expect(summaryOf('2026-09-13').programs!.map(program => program.programName)).toEqual(['Winter strength', 'Engine block'])
+    // A manual session leads: the scalar programId speaks only for the primary, so only programs carries the id.
+    expect(summaryOf('2026-09-14').programId).toBeUndefined()
+    expect(summaryOf('2026-09-14').programs).toEqual([{ programId: '6a0000000000000000000001', programName: 'Winter strength', sessionCount: 1 }])
+  })
+
+  it('admits the program list and refuses an empty or malformed one', () => {
+    expect(validate(withPrograms([{ programId: 'a'.repeat(24), sessionCount: 1 }])), JSON.stringify(validate.errors)).toBe(true)
+    expect(validate(withPrograms([]))).toBe(false)
+    expect(validate(withPrograms([{ programId: 'a'.repeat(24), programName: 'A', sessionCount: 0 }]))).toBe(false)
+    expect(validate(withPrograms([{ programId: 'a'.repeat(24), programName: 'A', sessionCount: 1.5 }]))).toBe(false)
+    expect(validate(withPrograms([{ programName: 'A', sessionCount: 1 }]))).toBe(false)
+    expect(calendarViewSchema.safeParse(withPrograms([])).success).toBe(false)
+    // Kept through the card's own parse, so the view can name every program.
+    expect(calendarViewSchema.parse(wrap(fixture.response)).record.days.find(day => day.date === '2026-09-13')!.summary!.programs).toHaveLength(2)
+  })
+
+  it('names every program, skips an unresolved one and falls back to the scalar name', () => {
+    expect(dayProgramNames(summaryOf('2026-09-13') as never)).toEqual(['Winter strength', 'Engine block'])
+    expect(dayProgramNames(summaryOf('2026-09-14') as never)).toEqual(['Winter strength'])
+    expect(dayProgramNames({ title: 'A', status: 'planned', programName: 'Winter strength', programs: [{ programId: 'a'.repeat(24), sessionCount: 1 }, { programId: 'b'.repeat(24), programName: 'Engine block', sessionCount: 1 }] })).toEqual(['Engine block'])
+    // An application before EF-1575 sends only the scalar name.
+    expect(dayProgramNames({ title: 'A', status: 'planned', programName: 'Winter strength' })).toEqual(['Winter strength'])
+    expect(dayProgramNames({ title: 'A', status: 'planned' })).toEqual([])
+    expect(dayProgramNames(undefined)).toEqual([])
+  })
+})
+
 const render = async (view: unknown, locale: 'en' | 'de' = 'en') => {
   const calendar = calendarViewSchema.parse(view) as CalendarViewData
   const app = createSSRApp(CalendarView, { calendar, disabled: false, navigate: () => undefined, create: () => undefined })
@@ -92,6 +132,12 @@ const marksOn = (html: string, date: string) => {
   const cell = html.split(/<li[\s>]/).find(part => part.includes(`datetime="${date}" class="block font-semibold"`))
   if (!cell) throw new Error(`No cell for ${date}`)
   return [...cell.matchAll(/<span[^>]*data-mark="(\w+)"[^>]*>/g)].map(([tag, kind]) => ({ kind, role: /role="img"/.test(tag) ? 'img' : undefined, label: /aria-label="([^"]*)"/.exec(tag)?.[1] }))
+}
+/** The day button's program line, if any. */
+const programsOn = (html: string, date: string) => {
+  const cell = html.split(/<li[\s>]/).find(part => part.includes(`datetime="${date}" class="block font-semibold"`))
+  if (!cell) throw new Error(`No cell for ${date}`)
+  return /<span[^>]*data-programs[^>]*>([^<]*)<\/span>/.exec(cell)?.[1]
 }
 /** Agenda rows: display status, visible label, notes and action buttons. */
 const agendaRows = (html: string) => html.split('id="calendar-agenda-title"')[1]!.split(/<li[\s>]/).slice(1).map(row => ({
@@ -112,8 +158,11 @@ describe('CalendarView rendering (EF-1474)', () => {
     expect(marksOn(html, '2026-09-09')).toEqual([done, missed])
     expect(marksOn(html, '2026-09-10')).toEqual([ended])
     expect(marksOn(html, '2026-09-11')).toEqual([ended])
-    expect(marksOn(html, '2026-09-12')).toEqual([{ kind: 'planned', role: 'img', label: 'Planned' }])
-    expect(marksOn(html, '2026-09-13')).toEqual([])
+    const planned = { kind: 'planned', role: 'img', label: 'Planned' }
+    expect(marksOn(html, '2026-09-12')).toEqual([planned])
+    expect(marksOn(html, '2026-09-13')).toEqual([planned, planned])
+    expect(marksOn(html, '2026-09-14')).toEqual([planned, planned])
+    expect(marksOn(html, '2026-09-15')).toEqual([])
     const rows = agendaRows(html)
     expect(rows.map(row => [row.displayStatus, row.mark])).toEqual([['completed', 'completed'], ['missed', 'missed']])
     expect(rows[0]!.text).toContain('Completed · 6:05')
@@ -145,6 +194,23 @@ describe('CalendarView rendering (EF-1474)', () => {
     const [ex1, ey1, ex2, ey2] = shapes.ended!.line!
     expect(shapes.ended!.ring && ex1 !== ex2 && ey1 === ey2).toBe(true)
     expect(marksOn(html, '2026-09-09').map(mark => mark.label)).toEqual(['Done', 'In progress', 'Planned', 'Missed', 'Ended (skipped or abandoned)'])
+  })
+
+  it('names every program a day draws on, and the scalar program without the list', async () => {
+    const html = await render(wrap(fixture.response))
+    expect(programsOn(html, '2026-09-13')).toBe('Programs: Winter strength · Engine block')
+    expect(programsOn(html, '2026-09-14')).toBe('Program: Winter strength')
+    expect(programsOn(html, '2026-09-08')).toBe('Program: Winter strength')
+    expect(programsOn(html, '2026-09-07')).toBeUndefined()
+    // An application before EF-1575 sends only the scalar fields.
+    const scalarOnly = structuredClone(fixture.response)
+    for (const day of scalarOnly.days) delete (day.summary as { programs?: unknown }).programs
+    const legacy = await render(wrap(scalarOnly))
+    expect(programsOn(legacy, '2026-09-13')).toBe('Program: Winter strength')
+    expect(programsOn(legacy, '2026-09-07')).toBeUndefined()
+    const de = await render(wrap(fixture.response), 'de')
+    expect(programsOn(de, '2026-09-13')).toBe('Programme: Winter strength · Engine block')
+    expect(programsOn(de, '2026-09-14')).toBe('Programm: Winter strength')
   })
 
   it('renders every agenda state with its label and action', async () => {
@@ -201,7 +267,7 @@ describe('compact calendar card (EF-1474)', () => {
 
   it('counts sessions without claiming every session was completed, and names a missed first item', () => {
     const summary = compactSummary(parseTrainingView(wrap(fixture.response)), { locale: 'en', system: 'metric', ...translator('en') })
-    expect(summary.facts).toEqual([{ label: 'Sessions', value: '7' }, { label: 'Completed', value: '2' }, { label: 'Days trained', value: '2' }])
+    expect(summary.facts).toEqual([{ label: 'Sessions', value: '11' }, { label: 'Completed', value: '2' }, { label: 'Days trained', value: '2' }])
     expect(summary.detail).toEqual({ label: 'On this day', value: 'Lower body B · Completed' })
     const missedFirst = { ...fixture.response, agenda: { ...fixture.response.agenda, items: [...fixture.response.agenda.items].reverse() } }
     expect(compactSummary(parseTrainingView(wrap(missedFirst)), { locale: 'en', system: 'metric', ...translator('en') }).detail?.value).toBe('Evening mobility · Missed')
