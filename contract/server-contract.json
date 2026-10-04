@@ -72,6 +72,7 @@
     "get_user_profile",
     "get_workout",
     "get_workout_decisions",
+    "get_workout_library_item",
     "get_workout_reflections",
     "log_set",
     "log_sets",
@@ -93,12 +94,16 @@
     "open_status",
     "open_template",
     "open_workout",
+    "open_workout_library",
     "open_workout_review",
+    "preview_workout_library_item",
     "publish_goal_plan",
     "record_body_metric",
     "reorder_workout",
     "save_week_plan",
+    "save_workout_library_workout",
     "search_exercise_library",
+    "search_workout_library",
     "set_goal_plan_status",
     "set_workout_commentary",
     "start_workout",
@@ -120,5 +125,5 @@
     "update_workout_activity",
     "update_workout_exercise"
   ],
-  "minimumAppCommit": "6011251a07f1b96d58ab44cc0b503da8019509f3"
+  "minimumAppCommit": "cbfb53cbc88ef94d15448885ffaa0ec72bcbe78d"
 }

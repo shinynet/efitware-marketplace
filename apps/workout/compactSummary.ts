@@ -6,6 +6,8 @@ import { formatMeasure } from './presentation'
 import { accountBodyMetricUnit, accountLoadUnit, bodyMetricLabelKey, bodyMetricPageKey, formatBodyMetric, formatLoad, formatTotal, seriesUnit, sumLoads, type Total } from './measurement'
 import { summarizeRecurrence } from './recurrencePresentation'
 import { workoutSections } from './lib/sections'
+import { workoutLibraryPath } from './workoutLibraryModel'
+import { fitLabel, fitLines, minutesLabel, spaceLabel, vocabularyLabel, type LibraryTranslator } from './workoutLibraryPresentation'
 
 /** Translate with optional interpolation values; mirrors vue-i18n's `t`. */
 export type Translate = (key: string, values?: Record<string, string | number>) => string
@@ -200,6 +202,27 @@ export const compactSummary = (view: TrainingView, options: Options): CompactSum
         facts: [fact(t('compact.results'), count(related.exercises.meta.total)), fact(t('compact.modality'), record.query.modality ? t(`contextUi.${record.query.modality}`) : t('compact.all')), fact(t('compact.showing'), t(`contextUi.${record.query.show}`))],
         ...(first.length ? { detail: fact(t('compact.topMatches'), first.join(', ')) } : {}),
         path: '/exercises'
+      }
+    }
+    case 'workout-library': {
+      const { record } = view
+      // the card's translator is vue-i18n's, so plural forms resolve at runtime
+      const library: LibraryTranslator = { t: t as LibraryTranslator['t'], te: options.te ?? (() => false), locale }
+      if (record.mode === 'browse') {
+        const first = record.data.slice(0, 3).map(item => item.title)
+        return {
+          eyebrow: t('workoutLibraryUi.eyebrow'), title: t('workoutLibraryUi.browseTitle'),
+          facts: [fact(t('workoutLibraryUi.results'), count(record.meta.total)), fact(t('workoutLibraryUi.space'), spaceLabel(library, record.trainingSpace)), fact(t('compact.showing'), record.query.format ? vocabularyLabel(library, 'format', record.query.format) : t('compact.all'))],
+          ...(first.length ? { detail: fact(t('workoutLibraryUi.topMatches'), first.join(', ')) } : {}),
+          path: workoutLibraryPath(record)
+        }
+      }
+      const line = record.fit.state === 'needs-space' ? t('workoutLibraryUi.needsSpace', { space: spaceLabel(library, record.trainingSpace) }) : fitLines(library, record.fit)[0]
+      return {
+        eyebrow: t('workoutLibraryUi.itemEyebrow', { format: vocabularyLabel(library, 'format', record.format) }), title: record.title,
+        facts: [fact(t('workoutLibraryUi.space'), spaceLabel(library, record.trainingSpace)), fact(t('workoutLibraryUi.fit'), fitLabel(library, record.fit)), fact(t('workoutLibraryUi.length'), minutesLabel(library, record.sessionMinutes))],
+        ...(line ? { detail: fact(fitLabel(library, record.fit), clip(line)) } : {}),
+        path: workoutLibraryPath(record)
       }
     }
     case 'exercise': {

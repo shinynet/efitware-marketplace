@@ -21,6 +21,9 @@ button.secondary { border: 1px solid var(--color-surface-dark); background: var(
 button.secondary:hover { background: var(--color-surface); }
 button.link { min-height: 0; padding: 0; border: 0; background: none; color: var(--color-muted); font-size: .75rem; text-decoration: underline; text-underline-offset: 3px; }
 button.link:hover { color: var(--color-ink); }
+/* A title that opens its record: the heading's own type, a 44px target and no button chrome. */
+button.title-link { padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; text-decoration: underline; text-decoration-color: var(--color-surface-dark); text-underline-offset: 4px; }
+button.title-link:hover { text-decoration-color: var(--color-ink); }
 button:disabled, fieldset:disabled { opacity: .65; }
 button:disabled { cursor: default; }
 input { border: 1px solid var(--color-muted); background: var(--color-bg); color: var(--color-ink); padding: .5rem; }

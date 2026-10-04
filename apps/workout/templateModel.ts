@@ -4,6 +4,7 @@ import { focusedProgressViewSchema, type FocusedProgressView } from './focusedPr
 import { progressViewSchema, type ProgressView } from './progressModel.ts'
 import { goalTrainingViewSchema, type GoalTrainingView } from './goalModel.ts'
 import { planningViewSchema, type PlanningView } from './planningModel.ts'
+import { workoutLibraryViewSchema, type WorkoutLibraryView } from './workoutLibraryModel.ts'
 import { z } from 'zod'
 import { activitySchema, exerciseSchema, presentationSchema, setSchema, trackingSchema, viewSchema } from './model.ts'
 import { executionGroupsSchema } from './executionGroups.ts'
@@ -24,12 +25,14 @@ export const templateViewSchema = z.object({
   presentation: presentationSchema
 })
 export type TemplateView = z.infer<typeof templateViewSchema>
-export type TrainingView = OutcomeView | ContextTrainingView | FocusedProgressView | ProgressView | GoalTrainingView | PlanningView | TemplateView | { view: 'workout', record: z.infer<typeof viewSchema> }
+export type TrainingView = OutcomeView | ContextTrainingView | WorkoutLibraryView | FocusedProgressView | ProgressView | GoalTrainingView | PlanningView | TemplateView | { view: 'workout', record: z.infer<typeof viewSchema> }
 export const parseTrainingView = (input: unknown): TrainingView => {
   const outcome = outcomeViewSchema.safeParse(input)
   if (outcome.success) return outcome.data
   const context = contextTrainingViewSchema.safeParse(input)
   if (context.success) return context.data
+  const workoutLibrary = workoutLibraryViewSchema.safeParse(input)
+  if (workoutLibrary.success) return workoutLibrary.data
   const focused = focusedProgressViewSchema.safeParse(input)
   if (focused.success) return focused.data
   const progress = progressViewSchema.safeParse(input)

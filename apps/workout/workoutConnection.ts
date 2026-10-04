@@ -1,6 +1,7 @@
 import { computed, ref, shallowRef } from 'vue'
 import { App, type McpUiHostContext } from '@modelcontextprotocol/ext-apps'
 import { parseTrainingView, type TrainingView } from './templateModel'
+import { workoutLibraryArguments } from './workoutLibraryModel'
 
 interface PendingAction { name: string, arguments: Record<string, unknown> }
 const intentKey = () => `mcp-app-${Array.from(crypto.getRandomValues(new Uint8Array(16)), byte => byte.toString(16).padStart(2, '0')).join('')}`
@@ -11,6 +12,7 @@ const targetForView = (view: TrainingView): PendingAction => {
   if (view.view === 'workout-review') return { name: 'open_workout_review', arguments: { workoutId: view.record.id, page: view.related.decisions.meta.page, limit: view.related.decisions.meta.limit } }
   if (view.view === 'share') return { name: 'open_share', arguments: { request: { ...view.related.request } } }
   if (view.view === 'library') return { name: 'open_library', arguments: { ...view.record.query } }
+  if (view.view === 'workout-library') return { name: 'open_workout_library', arguments: workoutLibraryArguments(view.record) }
   if (view.view === 'exercise') return { name: 'open_exercise', arguments: { exerciseId: view.record.id } }
   if (view.view === 'context') return { name: 'open_context', arguments: { section: view.related.section, page: view.related.memories.meta.page, limit: view.related.memories.meta.limit } }
   if (view.view === 'memory') return { name: 'open_memory', arguments: { memoryId: view.record.id } }
@@ -32,6 +34,9 @@ const modelContext = (view: TrainingView): Record<string, unknown> => {
   if (view.view === 'workout-review') return { view: view.view, workoutId: view.record.id, revision: view.related.reflections.revision, status: view.record.status }
   if (view.view === 'share') return { view: view.view, request: view.related.request, caption: view.record.caption, published: false }
   if (view.view === 'library') return { view: view.view, query: view.record.query, total: view.related.exercises.meta.total }
+  if (view.view === 'workout-library') return view.record.mode === 'browse'
+    ? { view: view.view, mode: 'browse', trainingSpaceId: view.record.trainingSpace.id, query: view.record.query, itemIds: view.record.data.map(item => item.id), total: view.record.meta.total }
+    : { view: view.view, mode: 'item', trainingSpaceId: view.record.trainingSpace.id, itemId: view.record.id, version: view.record.version, fit: view.record.fit.state }
   if (view.view === 'exercise') return { view: view.view, exerciseId: view.record.id, isFavorite: view.record.isFavorite, isHidden: view.record.isHidden }
   if (view.view === 'context') return { view: view.view, section: view.related.section, page: view.related.memories.meta.page }
   if (view.view === 'memory') return { view: view.view, memoryId: view.record.id, revision: view.record.revision }

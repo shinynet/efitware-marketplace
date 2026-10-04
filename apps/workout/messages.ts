@@ -6,6 +6,9 @@ import { progressMessages } from './progressMessages'
 import { goalMessages } from './goalMessages'
 import recurrenceMessages from './recurrenceMessages.json'
 import { compactMessages } from './compactMessages'
+import { workoutLibraryMessages } from './workoutLibraryMessages'
+import workoutLibraryVocabularyEn from './workoutLibraryVocabulary.en.json'
+import workoutLibraryVocabularyDe from './workoutLibraryVocabulary.de.json'
 export const messages = {
   en: {
     compact: compactMessages.en,
@@ -16,6 +19,7 @@ export const messages = {
     },
     outcomeUi: outcomeMessages.en,
     contextUi: contextMessages.en, contextVocabulary: contextVocabularyEn,
+    workoutLibraryUi: workoutLibraryMessages.en, workoutLibraryVocabulary: workoutLibraryVocabularyEn,
     ...goalMessages.en,
     progressUi: progressMessages.en,
     viewTrainingWeek: 'View my training week', supportsGoal: 'Supports your goal: {name}',
@@ -77,6 +81,7 @@ export const messages = {
     },
     outcomeUi: outcomeMessages.de,
     contextUi: contextMessages.de, contextVocabulary: contextVocabularyDe,
+    workoutLibraryUi: workoutLibraryMessages.de, workoutLibraryVocabulary: workoutLibraryVocabularyDe,
     ...goalMessages.de,
     progressUi: progressMessages.de,
     viewTrainingWeek: 'Meine Trainingswoche ansehen', supportsGoal: 'Unterstützt dein Ziel: {name}',

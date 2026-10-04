@@ -202,6 +202,24 @@
       "sourceSha256": "8b2329457f3e3f0ec9e874f5f14548f5ea99949cee87246d57edbb45b9538568",
       "sha256": "4b248e5f3ba19a158f895919211c831bd32d09a36944418b7319ae8bb9ed1f8e",
       "transformation": "Projection of equipment, trainingGoals, trainingInterests and limitations translations."
+    },
+    {
+      "path": "apps/workout/workoutLibraryVocabulary.en.json",
+      "source": "i18n/features/workout-library/en.json",
+      "repository": "shinynet/efitware-app",
+      "commit": "2600d2247542502e51d6a0e8fb7a6c4636dd749f",
+      "sourceSha256": "1d0431f75ff37f0759f4c075db161bdc5add1746116f5e6b3b50701d043a79b8",
+      "sha256": "63a97e66d8483250ddfed6a06990bb4bb28ad591c3e3826de24282374e4eeec0",
+      "transformation": "Projection of workoutLibrary format, focus, style, purpose, experience and fit (exact, adaptable, unavailable) translations."
+    },
+    {
+      "path": "apps/workout/workoutLibraryVocabulary.de.json",
+      "source": "i18n/features/workout-library/de.json",
+      "repository": "shinynet/efitware-app",
+      "commit": "2600d2247542502e51d6a0e8fb7a6c4636dd749f",
+      "sourceSha256": "26cfb2e15580ea62cd4e59da4b2a09b37fc59cc547e61071a3666f893d5d6b0b",
+      "sha256": "d8c59e53f945cb73abda26896b226c23bf2a0a6b3117d236fc7e51d0d8da66f6",
+      "transformation": "Projection of workoutLibrary format, focus, style, purpose, experience and fit (exact, adaptable, unavailable) translations."
     }
   ]
 }

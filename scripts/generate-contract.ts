@@ -7,6 +7,7 @@ import { programViewSchema, scheduleViewSchema, calendarViewSchema } from '../ap
 import { mkdir, writeFile, readFile } from 'node:fs/promises'
 import { z } from 'zod'
 import { templateViewSchema } from '../apps/workout/templateModel.ts'
+import { workoutLibraryViewSchema } from '../apps/workout/workoutLibraryModel.ts'
 import { viewSchema } from '../apps/workout/model.ts'
 
 // The product DTO may contain fields the card does not consume.
@@ -18,4 +19,4 @@ await writeFile(new URL('../contract/template-view.schema.json', import.meta.url
 const html = await readFile(new URL('../dist/card/workout.html', import.meta.url))
 if (html.byteLength > 1_500_000) throw new Error(`MCP App exceeds 1,500,000 bytes: ${html.byteLength}`)
 
-for (const [name, schema] of Object.entries({ 'status': statusViewSchema, 'integration': integrationViewSchema, 'receipts': receiptsViewSchema, 'workout-review': reviewViewSchema, 'share': shareViewSchema, library: libraryViewSchema, exercise: exerciseViewSchema, context: contextViewSchema, memory: memoryViewSchema, 'exercise-progress': exerciseProgressViewSchema, 'body-metric': bodyMetricViewSchema, progress: progressViewSchema, goal: goalViewSchema, 'goal-plan': goalPlanViewSchema, program: programViewSchema, schedule: scheduleViewSchema, calendar: calendarViewSchema })) await writeFile(new URL(`../contract/${name}-view.schema.json`, import.meta.url), `${JSON.stringify(z.toJSONSchema(schema, { io: 'input', target: 'draft-07' }), null, 2)}\n`)
+for (const [name, schema] of Object.entries({ 'status': statusViewSchema, 'integration': integrationViewSchema, 'receipts': receiptsViewSchema, 'workout-review': reviewViewSchema, 'share': shareViewSchema, library: libraryViewSchema, exercise: exerciseViewSchema, context: contextViewSchema, memory: memoryViewSchema, 'exercise-progress': exerciseProgressViewSchema, 'body-metric': bodyMetricViewSchema, progress: progressViewSchema, goal: goalViewSchema, 'goal-plan': goalPlanViewSchema, program: programViewSchema, schedule: scheduleViewSchema, calendar: calendarViewSchema, 'workout-library': workoutLibraryViewSchema })) await writeFile(new URL(`../contract/${name}-view.schema.json`, import.meta.url), `${JSON.stringify(z.toJSONSchema(schema, { io: 'input', target: 'draft-07' }), null, 2)}\n`)

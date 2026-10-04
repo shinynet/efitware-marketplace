@@ -1,0 +1,38 @@
+{
+  "format": {
+    "workout": "Workout",
+    "program": "Program"
+  },
+  "focus": {
+    "full-body": "Full body",
+    "upper-body": "Upper body",
+    "lower-body": "Lower body",
+    "arms": "Arms",
+    "core": "Core",
+    "glutes": "Glutes",
+    "posterior-chain": "Posterior chain"
+  },
+  "style": {
+    "strength": "Strength",
+    "hypertrophy": "Muscle growth",
+    "conditioning": "Conditioning",
+    "mobility": "Mobility"
+  },
+  "purpose": {
+    "general-fitness": "General fitness",
+    "build-strength": "Build strength",
+    "build-muscle": "Build muscle",
+    "weight-management": "Weight management",
+    "return-to-training": "Return to training",
+    "sport-support": "Sport support"
+  },
+  "experience": {
+    "beginner": "Beginner",
+    "intermediate": "Intermediate"
+  },
+  "fit": {
+    "exact": "Exact fit",
+    "adaptable": "Adaptable",
+    "unavailable": "Unavailable"
+  }
+}
