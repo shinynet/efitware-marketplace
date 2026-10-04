@@ -1013,6 +1013,162 @@
                                 "slots"
                               ]
                             }
+                          },
+                          "blocks": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                },
+                                "label": {
+                                  "type": "string"
+                                },
+                                "weeks": {
+                                  "type": "integer",
+                                  "exclusiveMinimum": 0,
+                                  "maximum": 9007199254740991
+                                },
+                                "startWeek": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 9007199254740991
+                                },
+                                "rotation": {
+                                  "minItems": 1,
+                                  "type": "array",
+                                  "items": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "sessionId": {
+                                          "type": "string",
+                                          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                        },
+                                        "name": {
+                                          "type": "string"
+                                        },
+                                        "estimatedMinutes": {
+                                          "type": "number",
+                                          "exclusiveMinimum": 0
+                                        },
+                                        "slots": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "slotId": {
+                                                "type": "string",
+                                                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                              },
+                                              "exerciseId": {
+                                                "type": "string",
+                                                "pattern": "^[a-f0-9]{24}$"
+                                              },
+                                              "name": {
+                                                "type": "string"
+                                              },
+                                              "prescription": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "order": {
+                                                    "type": "number"
+                                                  },
+                                                  "section": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "warmup",
+                                                      "main",
+                                                      "cooldown"
+                                                    ]
+                                                  },
+                                                  "sets": {
+                                                    "type": "array",
+                                                    "items": {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "category": {
+                                                          "type": "string"
+                                                        },
+                                                        "plannedReps": {
+                                                          "type": "object",
+                                                          "properties": {
+                                                            "min": {
+                                                              "type": "number"
+                                                            },
+                                                            "max": {
+                                                              "type": "number"
+                                                            }
+                                                          },
+                                                          "required": [
+                                                            "min",
+                                                            "max"
+                                                          ]
+                                                        },
+                                                        "plannedDuration": {
+                                                          "type": "number",
+                                                          "minimum": 0
+                                                        },
+                                                        "plannedDistance": {
+                                                          "type": "number",
+                                                          "minimum": 0
+                                                        },
+                                                        "rirTarget": {
+                                                          "type": "number",
+                                                          "minimum": 0
+                                                        },
+                                                        "plannedRpe": {
+                                                          "type": "number",
+                                                          "minimum": 0
+                                                        },
+                                                        "side": {
+                                                          "type": "string",
+                                                          "enum": [
+                                                            "left",
+                                                            "right",
+                                                            "both"
+                                                          ]
+                                                        }
+                                                      },
+                                                      "required": [
+                                                        "category"
+                                                      ]
+                                                    }
+                                                  }
+                                                },
+                                                "required": [
+                                                  "order",
+                                                  "sets"
+                                                ]
+                                              }
+                                            },
+                                            "required": [
+                                              "slotId",
+                                              "prescription"
+                                            ]
+                                          }
+                                        }
+                                      },
+                                      "required": [
+                                        "sessionId",
+                                        "name",
+                                        "estimatedMinutes",
+                                        "slots"
+                                      ]
+                                    }
+                                  }
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "weeks",
+                                "startWeek",
+                                "rotation"
+                              ]
+                            }
                           }
                         },
                         "required": [

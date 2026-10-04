@@ -59,11 +59,24 @@ const librarySession = z.object({
   sessionId: authoredId, name: z.string(), estimatedMinutes: z.number().positive(),
   slots: z.array(z.object({ ...slotExercise, prescription: z.object({ order: z.number(), section: z.enum(['warmup', 'main', 'cooldown']).optional(), sets: z.array(plannedSet) }) }))
 })
+/**
+ * One visible block of a Program variant (app EF-1603): weeks `startWeek + 1`
+ * to `startWeek + weeks`, repeating `[Week A]` or alternating `[Week A, Week B]`.
+ * `label` is absent on a variant's only block. Optional and additive:
+ * `sessions` stays the variant's first week, so a reader without blocks
+ * still validates.
+ */
+export const libraryBlockSchema = z.object({
+  id: authoredId, label: z.string().optional(),
+  weeks: z.number().int().positive(), startWeek: z.number().int().nonnegative(),
+  rotation: z.array(z.array(librarySession)).min(1)
+})
+export const libraryVariantSchema = z.object({ id: authoredId, daysPerWeek: z.number().int(), sessions: z.array(librarySession), blocks: z.array(libraryBlockSchema).optional() })
 export const libraryItemDetailSchema = libraryItemSchema.extend({
   description: z.string(), suitability: z.string(), trainingSpace: librarySpaceSchema,
   content: z.discriminatedUnion('format', [
     z.object({ format: z.literal('workout'), session: librarySession }),
-    z.object({ format: z.literal('program'), variants: z.array(z.object({ id: authoredId, daysPerWeek: z.number().int(), sessions: z.array(librarySession) })) })
+    z.object({ format: z.literal('program'), variants: z.array(libraryVariantSchema) })
   ]),
   exercises: z.array(z.object({ id: objectId, name: z.string(), modality: z.string(), equipmentRequired: z.array(z.string()) }))
 })
@@ -87,6 +100,8 @@ export type LibraryBrowseRecord = Extract<WorkoutLibraryView['record'], { mode: 
 export type LibraryItemRecord = Extract<WorkoutLibraryView['record'], { mode: 'item' }>
 export type LibraryItem = z.infer<typeof libraryItemSchema>
 export type LibraryFit = z.infer<typeof libraryFitSchema>
+export type LibrarySession = z.infer<typeof librarySession>
+export type LibraryBlock = z.infer<typeof libraryBlockSchema>
 
 /**
  * Where the card's header link opens the application: `/library` (with the

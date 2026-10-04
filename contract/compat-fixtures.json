@@ -4880,6 +4880,2409 @@
         "skin": "calm",
         "timeZone": "UTC"
       }
+    },
+    "itemBlockedProgram": {
+      "view": "workout-library",
+      "record": {
+        "mode": "item",
+        "id": "test-blocked-program",
+        "version": 1,
+        "format": "program",
+        "title": "Base and Build Test Program",
+        "summary": "Test content: two blocks of alternating bodyweight weeks.",
+        "tags": {
+          "focus": [
+            "full-body"
+          ],
+          "style": [
+            "strength"
+          ],
+          "purpose": [
+            "build-strength"
+          ],
+          "experience": [
+            "beginner"
+          ]
+        },
+        "sessionMinutes": {
+          "min": 20,
+          "max": 20
+        },
+        "supportedDays": [
+          2
+        ],
+        "defaultWeeks": 8,
+        "defaultVariantId": "two-days",
+        "fit": {
+          "state": "exact",
+          "variantIds": [
+            "two-days"
+          ]
+        },
+        "programWeek": {
+          "weekStart": "2026-10-05",
+          "capacity": 4,
+          "variantId": "two-days",
+          "defaultDates": [
+            {
+              "variantId": "two-days",
+              "dates": [
+                "2026-10-05",
+                "2026-10-08"
+              ]
+            }
+          ]
+        },
+        "appPath": "/library/test-blocked-program",
+        "description": "A test program for checking blocks and alternating weeks. Weeks 1 to 4 are Base and weeks 5 to 8 are Build. In each block, Week A and Week B alternate, and Build adds a set to each exercise.",
+        "suitability": "For automated tests only. It is never served outside a test environment.",
+        "trainingSpace": {
+          "id": "ts-4441fa17-d9e0-4ef5-a3bb-a2115fe53a13",
+          "name": "Default",
+          "isDefault": true,
+          "equipment": "confirmed"
+        },
+        "content": {
+          "format": "program",
+          "variants": [
+            {
+              "id": "two-days",
+              "daysPerWeek": 2,
+              "sessions": [
+                {
+                  "sessionId": "base-a",
+                  "name": "Base · Day A: Lunge and Push-Up",
+                  "estimatedMinutes": 20,
+                  "slots": [
+                    {
+                      "slotId": "knee-hugs",
+                      "exerciseId": "6a720aae0ab13c4e53918c9a",
+                      "name": "Walking Knee Hugs",
+                      "prescription": {
+                        "order": 1,
+                        "section": "warmup",
+                        "sets": [
+                          {
+                            "category": "warmup",
+                            "plannedDuration": 60
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "reverse-lunge",
+                      "exerciseId": "6abfc6c701297015bcff482c",
+                      "name": "Bodyweight Reverse Lunge",
+                      "prescription": {
+                        "order": 2,
+                        "sets": [
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 60,
+                            "order": 1
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 60,
+                            "order": 2
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "diamond-push-up",
+                      "exerciseId": "6a720aae0ab13c4e53918c9f",
+                      "name": "Diamond Push-Up",
+                      "prescription": {
+                        "order": 3,
+                        "sets": [
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 60,
+                            "order": 1
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 60,
+                            "order": 2
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "activities": [],
+                  "executionGroups": []
+                },
+                {
+                  "sessionId": "base-b",
+                  "name": "Base · Day B: Side Lunge and Pike",
+                  "estimatedMinutes": 20,
+                  "slots": [
+                    {
+                      "slotId": "knee-hugs",
+                      "exerciseId": "6a720aae0ab13c4e53918c9a",
+                      "name": "Walking Knee Hugs",
+                      "prescription": {
+                        "order": 1,
+                        "section": "warmup",
+                        "sets": [
+                          {
+                            "category": "warmup",
+                            "plannedDuration": 60
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "lateral-lunge",
+                      "exerciseId": "6ac2650153e6260facf41606",
+                      "name": "Lateral Lunge",
+                      "prescription": {
+                        "order": 2,
+                        "sets": [
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 60,
+                            "order": 1
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 60,
+                            "order": 2
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "pike-push-up",
+                      "exerciseId": "6a720aae0ab13c4e53918c9e",
+                      "name": "Pike Push-Up",
+                      "prescription": {
+                        "order": 3,
+                        "sets": [
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 8
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 8
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 8
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 60,
+                            "order": 1
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 60,
+                            "order": 2
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "activities": [],
+                  "executionGroups": []
+                }
+              ],
+              "blocks": [
+                {
+                  "id": "base",
+                  "label": "Base",
+                  "weeks": 4,
+                  "startWeek": 0,
+                  "rotation": [
+                    [
+                      {
+                        "sessionId": "base-a",
+                        "name": "Base · Day A: Lunge and Push-Up",
+                        "estimatedMinutes": 20,
+                        "slots": [
+                          {
+                            "slotId": "knee-hugs",
+                            "exerciseId": "6a720aae0ab13c4e53918c9a",
+                            "name": "Walking Knee Hugs",
+                            "prescription": {
+                              "order": 1,
+                              "section": "warmup",
+                              "sets": [
+                                {
+                                  "category": "warmup",
+                                  "plannedDuration": 60
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "reverse-lunge",
+                            "exerciseId": "6abfc6c701297015bcff482c",
+                            "name": "Bodyweight Reverse Lunge",
+                            "prescription": {
+                              "order": 2,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 10,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 10,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 10,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                }
+                              ],
+                              "activities": [
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 1
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 2
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "diamond-push-up",
+                            "exerciseId": "6a720aae0ab13c4e53918c9f",
+                            "name": "Diamond Push-Up",
+                            "prescription": {
+                              "order": 3,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 10
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 10
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 10
+                                  },
+                                  "rirTarget": 2
+                                }
+                              ],
+                              "activities": [
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 1
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 2
+                                }
+                              ]
+                            }
+                          }
+                        ],
+                        "activities": [],
+                        "executionGroups": []
+                      },
+                      {
+                        "sessionId": "base-b",
+                        "name": "Base · Day B: Side Lunge and Pike",
+                        "estimatedMinutes": 20,
+                        "slots": [
+                          {
+                            "slotId": "knee-hugs",
+                            "exerciseId": "6a720aae0ab13c4e53918c9a",
+                            "name": "Walking Knee Hugs",
+                            "prescription": {
+                              "order": 1,
+                              "section": "warmup",
+                              "sets": [
+                                {
+                                  "category": "warmup",
+                                  "plannedDuration": 60
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "lateral-lunge",
+                            "exerciseId": "6ac2650153e6260facf41606",
+                            "name": "Lateral Lunge",
+                            "prescription": {
+                              "order": 2,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 8,
+                                    "max": 10
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 8,
+                                    "max": 10
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 8,
+                                    "max": 10
+                                  },
+                                  "rirTarget": 2
+                                }
+                              ],
+                              "activities": [
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 1
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 2
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "pike-push-up",
+                            "exerciseId": "6a720aae0ab13c4e53918c9e",
+                            "name": "Pike Push-Up",
+                            "prescription": {
+                              "order": 3,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 8
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 8
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 8
+                                  },
+                                  "rirTarget": 2
+                                }
+                              ],
+                              "activities": [
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 1
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 2
+                                }
+                              ]
+                            }
+                          }
+                        ],
+                        "activities": [],
+                        "executionGroups": []
+                      }
+                    ],
+                    [
+                      {
+                        "sessionId": "base-c",
+                        "name": "Base · Day C: Bridge and Hollow Hold",
+                        "estimatedMinutes": 20,
+                        "slots": [
+                          {
+                            "slotId": "knee-hugs",
+                            "exerciseId": "6a720aae0ab13c4e53918c9a",
+                            "name": "Walking Knee Hugs",
+                            "prescription": {
+                              "order": 1,
+                              "section": "warmup",
+                              "sets": [
+                                {
+                                  "category": "warmup",
+                                  "plannedDuration": 60
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "single-leg-bridge",
+                            "exerciseId": "6a720aae0ab13c4e53918ca7",
+                            "name": "Single-Leg Glute Bridge",
+                            "prescription": {
+                              "order": 2,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 8,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 8,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 8,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                }
+                              ],
+                              "activities": [
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 45,
+                                  "order": 1
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 45,
+                                  "order": 2
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "hollow-hold",
+                            "exerciseId": "6a720aae0ab13c4e53918caa",
+                            "name": "Hollow Body Hold",
+                            "prescription": {
+                              "order": 3,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedDuration": 30
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedDuration": 30
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedDuration": 30
+                                }
+                              ]
+                            }
+                          }
+                        ],
+                        "activities": [],
+                        "executionGroups": []
+                      },
+                      {
+                        "sessionId": "base-d",
+                        "name": "Base · Day D: Lunge and Pike",
+                        "estimatedMinutes": 20,
+                        "slots": [
+                          {
+                            "slotId": "knee-hugs",
+                            "exerciseId": "6a720aae0ab13c4e53918c9a",
+                            "name": "Walking Knee Hugs",
+                            "prescription": {
+                              "order": 1,
+                              "section": "warmup",
+                              "sets": [
+                                {
+                                  "category": "warmup",
+                                  "plannedDuration": 60
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "reverse-lunge",
+                            "exerciseId": "6abfc6c701297015bcff482c",
+                            "name": "Bodyweight Reverse Lunge",
+                            "prescription": {
+                              "order": 2,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 10,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 10,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 10,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                }
+                              ],
+                              "activities": [
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 1
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 2
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "pike-push-up",
+                            "exerciseId": "6a720aae0ab13c4e53918c9e",
+                            "name": "Pike Push-Up",
+                            "prescription": {
+                              "order": 3,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 8
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 8
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 8
+                                  },
+                                  "rirTarget": 2
+                                }
+                              ],
+                              "activities": [
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 1
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 2
+                                }
+                              ]
+                            }
+                          }
+                        ],
+                        "activities": [],
+                        "executionGroups": []
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "id": "build",
+                  "label": "Build",
+                  "weeks": 4,
+                  "startWeek": 4,
+                  "rotation": [
+                    [
+                      {
+                        "sessionId": "build-a",
+                        "name": "Build · Day A: Lunge and Push-Up",
+                        "estimatedMinutes": 20,
+                        "slots": [
+                          {
+                            "slotId": "knee-hugs",
+                            "exerciseId": "6a720aae0ab13c4e53918c9a",
+                            "name": "Walking Knee Hugs",
+                            "prescription": {
+                              "order": 1,
+                              "section": "warmup",
+                              "sets": [
+                                {
+                                  "category": "warmup",
+                                  "plannedDuration": 60
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "reverse-lunge",
+                            "exerciseId": "6abfc6c701297015bcff482c",
+                            "name": "Bodyweight Reverse Lunge",
+                            "prescription": {
+                              "order": 2,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 10,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 10,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 10,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 10,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                }
+                              ],
+                              "activities": [
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 1
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 2
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 3
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "diamond-push-up",
+                            "exerciseId": "6a720aae0ab13c4e53918c9f",
+                            "name": "Diamond Push-Up",
+                            "prescription": {
+                              "order": 3,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 10
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 10
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 10
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 10
+                                  },
+                                  "rirTarget": 2
+                                }
+                              ],
+                              "activities": [
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 1
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 2
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 3
+                                }
+                              ]
+                            }
+                          }
+                        ],
+                        "activities": [],
+                        "executionGroups": []
+                      },
+                      {
+                        "sessionId": "build-b",
+                        "name": "Build · Day B: Side Lunge and Pike",
+                        "estimatedMinutes": 20,
+                        "slots": [
+                          {
+                            "slotId": "knee-hugs",
+                            "exerciseId": "6a720aae0ab13c4e53918c9a",
+                            "name": "Walking Knee Hugs",
+                            "prescription": {
+                              "order": 1,
+                              "section": "warmup",
+                              "sets": [
+                                {
+                                  "category": "warmup",
+                                  "plannedDuration": 60
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "lateral-lunge",
+                            "exerciseId": "6ac2650153e6260facf41606",
+                            "name": "Lateral Lunge",
+                            "prescription": {
+                              "order": 2,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 8,
+                                    "max": 10
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 8,
+                                    "max": 10
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 8,
+                                    "max": 10
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 8,
+                                    "max": 10
+                                  },
+                                  "rirTarget": 2
+                                }
+                              ],
+                              "activities": [
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 1
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 2
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 3
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "pike-push-up",
+                            "exerciseId": "6a720aae0ab13c4e53918c9e",
+                            "name": "Pike Push-Up",
+                            "prescription": {
+                              "order": 3,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 8
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 8
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 8
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 8
+                                  },
+                                  "rirTarget": 2
+                                }
+                              ],
+                              "activities": [
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 1
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 2
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 3
+                                }
+                              ]
+                            }
+                          }
+                        ],
+                        "activities": [],
+                        "executionGroups": []
+                      }
+                    ],
+                    [
+                      {
+                        "sessionId": "build-c",
+                        "name": "Build · Day C: Bridge and Hollow Hold",
+                        "estimatedMinutes": 20,
+                        "slots": [
+                          {
+                            "slotId": "knee-hugs",
+                            "exerciseId": "6a720aae0ab13c4e53918c9a",
+                            "name": "Walking Knee Hugs",
+                            "prescription": {
+                              "order": 1,
+                              "section": "warmup",
+                              "sets": [
+                                {
+                                  "category": "warmup",
+                                  "plannedDuration": 60
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "single-leg-bridge",
+                            "exerciseId": "6a720aae0ab13c4e53918ca7",
+                            "name": "Single-Leg Glute Bridge",
+                            "prescription": {
+                              "order": 2,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 8,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 8,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 8,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 8,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                }
+                              ],
+                              "activities": [
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 45,
+                                  "order": 1
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 45,
+                                  "order": 2
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 45,
+                                  "order": 3
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "hollow-hold",
+                            "exerciseId": "6a720aae0ab13c4e53918caa",
+                            "name": "Hollow Body Hold",
+                            "prescription": {
+                              "order": 3,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedDuration": 30
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedDuration": 30
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedDuration": 30
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedDuration": 30
+                                }
+                              ]
+                            }
+                          }
+                        ],
+                        "activities": [],
+                        "executionGroups": []
+                      },
+                      {
+                        "sessionId": "build-d",
+                        "name": "Build · Day D: Lunge and Pike",
+                        "estimatedMinutes": 20,
+                        "slots": [
+                          {
+                            "slotId": "knee-hugs",
+                            "exerciseId": "6a720aae0ab13c4e53918c9a",
+                            "name": "Walking Knee Hugs",
+                            "prescription": {
+                              "order": 1,
+                              "section": "warmup",
+                              "sets": [
+                                {
+                                  "category": "warmup",
+                                  "plannedDuration": 60
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "reverse-lunge",
+                            "exerciseId": "6abfc6c701297015bcff482c",
+                            "name": "Bodyweight Reverse Lunge",
+                            "prescription": {
+                              "order": 2,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 10,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 10,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 10,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 10,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                }
+                              ],
+                              "activities": [
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 1
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 2
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 3
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "pike-push-up",
+                            "exerciseId": "6a720aae0ab13c4e53918c9e",
+                            "name": "Pike Push-Up",
+                            "prescription": {
+                              "order": 3,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 8
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 8
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 8
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 8
+                                  },
+                                  "rirTarget": 2
+                                }
+                              ],
+                              "activities": [
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 1
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 2
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 3
+                                }
+                              ]
+                            }
+                          }
+                        ],
+                        "activities": [],
+                        "executionGroups": []
+                      }
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "exercises": [
+          {
+            "id": "6a720aae0ab13c4e53918c9a",
+            "name": "Walking Knee Hugs",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6abfc6c701297015bcff482c",
+            "name": "Bodyweight Reverse Lunge",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6a720aae0ab13c4e53918c9f",
+            "name": "Diamond Push-Up",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac2650153e6260facf41606",
+            "name": "Lateral Lunge",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6a720aae0ab13c4e53918c9e",
+            "name": "Pike Push-Up",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6a720aae0ab13c4e53918ca7",
+            "name": "Single-Leg Glute Bridge",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6a720aae0ab13c4e53918caa",
+            "name": "Hollow Body Hold",
+            "modality": "mobility",
+            "equipmentRequired": []
+          }
+        ]
+      },
+      "related": {},
+      "presentation": {
+        "locale": "en",
+        "unitSystem": "metric",
+        "theme": "light",
+        "skin": "calm",
+        "timeZone": "UTC"
+      }
+    },
+    "itemOneBlockProgram": {
+      "view": "workout-library",
+      "record": {
+        "mode": "item",
+        "id": "test-alternating-program",
+        "version": 1,
+        "format": "program",
+        "title": "Testprogramm Woche A und B",
+        "summary": "Testinhalt: ein Block mit abwechselnden Wochen ohne Geräte.",
+        "tags": {
+          "focus": [
+            "full-body"
+          ],
+          "style": [
+            "strength"
+          ],
+          "purpose": [
+            "build-strength"
+          ],
+          "experience": [
+            "beginner"
+          ]
+        },
+        "sessionMinutes": {
+          "min": 20,
+          "max": 20
+        },
+        "supportedDays": [
+          2
+        ],
+        "defaultWeeks": 6,
+        "defaultVariantId": "two-days",
+        "fit": {
+          "state": "exact",
+          "variantIds": [
+            "two-days"
+          ]
+        },
+        "programWeek": {
+          "weekStart": "2026-10-05",
+          "capacity": 4,
+          "variantId": "two-days",
+          "defaultDates": [
+            {
+              "variantId": "two-days",
+              "dates": [
+                "2026-10-05",
+                "2026-10-08"
+              ]
+            }
+          ]
+        },
+        "appPath": "/library/test-alternating-program",
+        "description": "Ein Testprogramm mit einem einzigen Block: Woche A und Woche B wechseln sich sechs Wochen lang ab.",
+        "suitability": "Nur für automatische Tests.",
+        "trainingSpace": {
+          "id": "ts-4441fa17-d9e0-4ef5-a3bb-a2115fe53a13",
+          "name": "Default",
+          "isDefault": true,
+          "equipment": "confirmed"
+        },
+        "content": {
+          "format": "program",
+          "variants": [
+            {
+              "id": "two-days",
+              "daysPerWeek": 2,
+              "sessions": [
+                {
+                  "sessionId": "base-a",
+                  "name": "Basis · Tag A: Ausfallschritt und Liegestütz",
+                  "estimatedMinutes": 20,
+                  "slots": [
+                    {
+                      "slotId": "knee-hugs",
+                      "exerciseId": "6a720aae0ab13c4e53918c9a",
+                      "name": "Knieumarmungen im Gehen",
+                      "prescription": {
+                        "order": 1,
+                        "section": "warmup",
+                        "sets": [
+                          {
+                            "category": "warmup",
+                            "plannedDuration": 60
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "reverse-lunge",
+                      "exerciseId": "6abfc6c701297015bcff482c",
+                      "name": "Ausfallschritt nach hinten mit Körpergewicht",
+                      "prescription": {
+                        "order": 2,
+                        "sets": [
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 60,
+                            "order": 1
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 60,
+                            "order": 2
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "diamond-push-up",
+                      "exerciseId": "6a720aae0ab13c4e53918c9f",
+                      "name": "Diamant-Liegestütz",
+                      "prescription": {
+                        "order": 3,
+                        "sets": [
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 60,
+                            "order": 1
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 60,
+                            "order": 2
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "activities": [],
+                  "executionGroups": []
+                },
+                {
+                  "sessionId": "base-b",
+                  "name": "Basis · Tag B: Seitlicher Ausfallschritt und Pike",
+                  "estimatedMinutes": 20,
+                  "slots": [
+                    {
+                      "slotId": "knee-hugs",
+                      "exerciseId": "6a720aae0ab13c4e53918c9a",
+                      "name": "Knieumarmungen im Gehen",
+                      "prescription": {
+                        "order": 1,
+                        "section": "warmup",
+                        "sets": [
+                          {
+                            "category": "warmup",
+                            "plannedDuration": 60
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "lateral-lunge",
+                      "exerciseId": "6ac2650153e6260facf41606",
+                      "name": "Seitlicher Ausfallschritt",
+                      "prescription": {
+                        "order": 2,
+                        "sets": [
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 60,
+                            "order": 1
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 60,
+                            "order": 2
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "pike-push-up",
+                      "exerciseId": "6a720aae0ab13c4e53918c9e",
+                      "name": "Pike-Liegestütz",
+                      "prescription": {
+                        "order": 3,
+                        "sets": [
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 8
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 8
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 8
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 60,
+                            "order": 1
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 60,
+                            "order": 2
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "activities": [],
+                  "executionGroups": []
+                }
+              ],
+              "blocks": [
+                {
+                  "id": "main",
+                  "weeks": 6,
+                  "startWeek": 0,
+                  "rotation": [
+                    [
+                      {
+                        "sessionId": "base-a",
+                        "name": "Basis · Tag A: Ausfallschritt und Liegestütz",
+                        "estimatedMinutes": 20,
+                        "slots": [
+                          {
+                            "slotId": "knee-hugs",
+                            "exerciseId": "6a720aae0ab13c4e53918c9a",
+                            "name": "Knieumarmungen im Gehen",
+                            "prescription": {
+                              "order": 1,
+                              "section": "warmup",
+                              "sets": [
+                                {
+                                  "category": "warmup",
+                                  "plannedDuration": 60
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "reverse-lunge",
+                            "exerciseId": "6abfc6c701297015bcff482c",
+                            "name": "Ausfallschritt nach hinten mit Körpergewicht",
+                            "prescription": {
+                              "order": 2,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 10,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 10,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 10,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                }
+                              ],
+                              "activities": [
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 1
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 2
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "diamond-push-up",
+                            "exerciseId": "6a720aae0ab13c4e53918c9f",
+                            "name": "Diamant-Liegestütz",
+                            "prescription": {
+                              "order": 3,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 10
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 10
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 10
+                                  },
+                                  "rirTarget": 2
+                                }
+                              ],
+                              "activities": [
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 1
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 2
+                                }
+                              ]
+                            }
+                          }
+                        ],
+                        "activities": [],
+                        "executionGroups": []
+                      },
+                      {
+                        "sessionId": "base-b",
+                        "name": "Basis · Tag B: Seitlicher Ausfallschritt und Pike",
+                        "estimatedMinutes": 20,
+                        "slots": [
+                          {
+                            "slotId": "knee-hugs",
+                            "exerciseId": "6a720aae0ab13c4e53918c9a",
+                            "name": "Knieumarmungen im Gehen",
+                            "prescription": {
+                              "order": 1,
+                              "section": "warmup",
+                              "sets": [
+                                {
+                                  "category": "warmup",
+                                  "plannedDuration": 60
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "lateral-lunge",
+                            "exerciseId": "6ac2650153e6260facf41606",
+                            "name": "Seitlicher Ausfallschritt",
+                            "prescription": {
+                              "order": 2,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 8,
+                                    "max": 10
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 8,
+                                    "max": 10
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 8,
+                                    "max": 10
+                                  },
+                                  "rirTarget": 2
+                                }
+                              ],
+                              "activities": [
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 1
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 2
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "pike-push-up",
+                            "exerciseId": "6a720aae0ab13c4e53918c9e",
+                            "name": "Pike-Liegestütz",
+                            "prescription": {
+                              "order": 3,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 8
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 8
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 8
+                                  },
+                                  "rirTarget": 2
+                                }
+                              ],
+                              "activities": [
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 1
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 2
+                                }
+                              ]
+                            }
+                          }
+                        ],
+                        "activities": [],
+                        "executionGroups": []
+                      }
+                    ],
+                    [
+                      {
+                        "sessionId": "base-c",
+                        "name": "Basis · Tag C: Brücke und Hollow Hold",
+                        "estimatedMinutes": 20,
+                        "slots": [
+                          {
+                            "slotId": "knee-hugs",
+                            "exerciseId": "6a720aae0ab13c4e53918c9a",
+                            "name": "Knieumarmungen im Gehen",
+                            "prescription": {
+                              "order": 1,
+                              "section": "warmup",
+                              "sets": [
+                                {
+                                  "category": "warmup",
+                                  "plannedDuration": 60
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "single-leg-bridge",
+                            "exerciseId": "6a720aae0ab13c4e53918ca7",
+                            "name": "Einbeinige Beckenbrücke",
+                            "prescription": {
+                              "order": 2,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 8,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 8,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 8,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                }
+                              ],
+                              "activities": [
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 45,
+                                  "order": 1
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 45,
+                                  "order": 2
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "hollow-hold",
+                            "exerciseId": "6a720aae0ab13c4e53918caa",
+                            "name": "Hollow Body Hold",
+                            "prescription": {
+                              "order": 3,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedDuration": 30
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedDuration": 30
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedDuration": 30
+                                }
+                              ]
+                            }
+                          }
+                        ],
+                        "activities": [],
+                        "executionGroups": []
+                      },
+                      {
+                        "sessionId": "base-d",
+                        "name": "Basis · Tag D: Ausfallschritt und Pike",
+                        "estimatedMinutes": 20,
+                        "slots": [
+                          {
+                            "slotId": "knee-hugs",
+                            "exerciseId": "6a720aae0ab13c4e53918c9a",
+                            "name": "Knieumarmungen im Gehen",
+                            "prescription": {
+                              "order": 1,
+                              "section": "warmup",
+                              "sets": [
+                                {
+                                  "category": "warmup",
+                                  "plannedDuration": 60
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "reverse-lunge",
+                            "exerciseId": "6abfc6c701297015bcff482c",
+                            "name": "Ausfallschritt nach hinten mit Körpergewicht",
+                            "prescription": {
+                              "order": 2,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 10,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 10,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 10,
+                                    "max": 12
+                                  },
+                                  "rirTarget": 2
+                                }
+                              ],
+                              "activities": [
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 1
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 2
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "slotId": "pike-push-up",
+                            "exerciseId": "6a720aae0ab13c4e53918c9e",
+                            "name": "Pike-Liegestütz",
+                            "prescription": {
+                              "order": 3,
+                              "sets": [
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 8
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 8
+                                  },
+                                  "rirTarget": 2
+                                },
+                                {
+                                  "category": "working",
+                                  "plannedReps": {
+                                    "min": 5,
+                                    "max": 8
+                                  },
+                                  "rirTarget": 2
+                                }
+                              ],
+                              "activities": [
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 1
+                                },
+                                {
+                                  "kind": "rest",
+                                  "durationTarget": 60,
+                                  "order": 2
+                                }
+                              ]
+                            }
+                          }
+                        ],
+                        "activities": [],
+                        "executionGroups": []
+                      }
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "exercises": [
+          {
+            "id": "6a720aae0ab13c4e53918c9a",
+            "name": "Knieumarmungen im Gehen",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6abfc6c701297015bcff482c",
+            "name": "Ausfallschritt nach hinten mit Körpergewicht",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6a720aae0ab13c4e53918c9f",
+            "name": "Diamant-Liegestütz",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac2650153e6260facf41606",
+            "name": "Seitlicher Ausfallschritt",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6a720aae0ab13c4e53918c9e",
+            "name": "Pike-Liegestütz",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6a720aae0ab13c4e53918ca7",
+            "name": "Einbeinige Beckenbrücke",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6a720aae0ab13c4e53918caa",
+            "name": "Hollow Body Hold",
+            "modality": "mobility",
+            "equipmentRequired": []
+          }
+        ]
+      },
+      "related": {},
+      "presentation": {
+        "locale": "de",
+        "unitSystem": "metric",
+        "theme": "light",
+        "skin": "calm",
+        "timeZone": "UTC"
+      }
+    },
+    "itemYoga": {
+      "view": "workout-library",
+      "record": {
+        "mode": "item",
+        "id": "morning-yoga",
+        "version": 1,
+        "format": "workout",
+        "title": "Morning Yoga",
+        "summary": "A short yoga sequence to start the day.",
+        "tags": {
+          "focus": [
+            "full-body"
+          ],
+          "style": [
+            "yoga",
+            "mobility"
+          ],
+          "purpose": [
+            "general-fitness"
+          ],
+          "experience": [
+            "beginner",
+            "intermediate"
+          ]
+        },
+        "sessionMinutes": {
+          "min": 13,
+          "max": 13
+        },
+        "supportedDays": [],
+        "fit": {
+          "state": "exact",
+          "variantIds": []
+        },
+        "appPath": "/library/morning-yoga",
+        "description": "A minute of easy breathing in a cross-legged seat, child's pose and downward dog, a low lunge on each side, three slow rounds of sun salutation A, then warrior two and tree pose on each side. There is no countdown: hold each pose for about the time shown, and stay within a comfortable range.",
+        "suitability": "For any level, including people new to yoga. Floor space only; a mat helps.",
+        "trainingSpace": {
+          "id": "ts-4441fa17-d9e0-4ef5-a3bb-a2115fe53a13",
+          "name": "Default",
+          "isDefault": true,
+          "equipment": "confirmed"
+        },
+        "content": {
+          "format": "workout",
+          "session": {
+            "sessionId": "main",
+            "name": "Morning Yoga",
+            "estimatedMinutes": 13,
+            "slots": [
+              {
+                "slotId": "easy-seat",
+                "exerciseId": "6ac2b16022405413f85a33bb",
+                "name": "Easy Seat",
+                "prescription": {
+                  "order": 1,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedDuration": 60
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "childs-pose",
+                "exerciseId": "6ac2b16022405413f85a32d2",
+                "name": "Child's Pose",
+                "prescription": {
+                  "order": 2,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedDuration": 45
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "downward-dog",
+                "exerciseId": "6ac2b16022405413f85a32d1",
+                "name": "Downward Dog",
+                "prescription": {
+                  "order": 3,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedDuration": 45
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "low-lunge",
+                "exerciseId": "6ac2b16022405413f85a330e",
+                "name": "Low Lunge",
+                "prescription": {
+                  "order": 4,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedDuration": 30,
+                      "side": "left"
+                    },
+                    {
+                      "category": "working",
+                      "plannedDuration": 30,
+                      "side": "right"
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "sun-salutation-a",
+                "exerciseId": "6ac2b16022405413f85a32e7",
+                "name": "Sun Salutation A",
+                "prescription": {
+                  "order": 5,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedDuration": 60
+                    },
+                    {
+                      "category": "working",
+                      "plannedDuration": 60
+                    },
+                    {
+                      "category": "working",
+                      "plannedDuration": 60
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "warrior-two",
+                "exerciseId": "6ac2b16022405413f85a32f6",
+                "name": "Warrior Two",
+                "prescription": {
+                  "order": 6,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedDuration": 30,
+                      "side": "left"
+                    },
+                    {
+                      "category": "working",
+                      "plannedDuration": 30,
+                      "side": "right"
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "tree-pose",
+                "exerciseId": "6ac2b16022405413f85a32ff",
+                "name": "Tree Pose",
+                "prescription": {
+                  "order": 7,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedDuration": 30,
+                      "side": "left"
+                    },
+                    {
+                      "category": "working",
+                      "plannedDuration": 30,
+                      "side": "right"
+                    }
+                  ]
+                }
+              }
+            ],
+            "activities": [],
+            "executionGroups": []
+          }
+        },
+        "exercises": [
+          {
+            "id": "6ac2b16022405413f85a33bb",
+            "name": "Easy Seat",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac2b16022405413f85a32d2",
+            "name": "Child's Pose",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac2b16022405413f85a32d1",
+            "name": "Downward Dog",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac2b16022405413f85a330e",
+            "name": "Low Lunge",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac2b16022405413f85a32e7",
+            "name": "Sun Salutation A",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac2b16022405413f85a32f6",
+            "name": "Warrior Two",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac2b16022405413f85a32ff",
+            "name": "Tree Pose",
+            "modality": "mobility",
+            "equipmentRequired": []
+          }
+        ]
+      },
+      "related": {},
+      "presentation": {
+        "locale": "en",
+        "unitSystem": "metric",
+        "theme": "light",
+        "skin": "calm",
+        "timeZone": "UTC"
+      }
     }
   },
   "workoutLibraryVocabulary": [
@@ -4962,6 +7365,54 @@
         "build-strength"
       ],
       "text": "Kraft aufbauen"
+    },
+    {
+      "locale": "en",
+      "path": [
+        "style",
+        "yoga"
+      ],
+      "text": "Yoga"
+    },
+    {
+      "locale": "en",
+      "path": [
+        "style",
+        "pilates"
+      ],
+      "text": "Pilates"
+    },
+    {
+      "locale": "en",
+      "path": [
+        "style",
+        "calisthenics"
+      ],
+      "text": "Calisthenics"
+    },
+    {
+      "locale": "de",
+      "path": [
+        "style",
+        "yoga"
+      ],
+      "text": "Yoga"
+    },
+    {
+      "locale": "de",
+      "path": [
+        "style",
+        "pilates"
+      ],
+      "text": "Pilates"
+    },
+    {
+      "locale": "de",
+      "path": [
+        "style",
+        "calisthenics"
+      ],
+      "text": "Calisthenics"
     }
   ]
 }
