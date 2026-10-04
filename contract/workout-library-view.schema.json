@@ -358,6 +358,26 @@
                       }
                     ]
                   },
+                  "programWeek": {
+                    "type": "object",
+                    "properties": {
+                      "weekStart": {
+                        "type": "string"
+                      },
+                      "capacity": {
+                        "type": "integer",
+                        "minimum": -9007199254740991,
+                        "maximum": 9007199254740991
+                      },
+                      "variantId": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "weekStart",
+                      "capacity"
+                    ]
+                  },
                   "appPath": {
                     "type": "string",
                     "pattern": "^\\/library\\/[a-z0-9-]+$"
@@ -660,6 +680,26 @@
                     "exercises"
                   ]
                 }
+              ]
+            },
+            "programWeek": {
+              "type": "object",
+              "properties": {
+                "weekStart": {
+                  "type": "string"
+                },
+                "capacity": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "variantId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "weekStart",
+                "capacity"
               ]
             },
             "appPath": {

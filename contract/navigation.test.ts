@@ -1,5 +1,7 @@
 import { beforeEach, expect, it, vi } from 'vitest'
 import { createWorkoutConnection } from '../apps/workout/workoutConnection'
+import { workoutLibraryItemArguments, type LibraryBrowseRecord, type LibraryItem } from '../apps/workout/workoutLibraryModel'
+import fixtures from './compat-fixtures.json'
 
 const { bridge } = vi.hoisted(() => ({ bridge: {
   ontoolresult: undefined as undefined | ((result: { structuredContent?: unknown, isError?: boolean }) => void),
@@ -120,5 +122,51 @@ it('keeps a check-in intent through an uncertain write and clears readback uncer
     expect(connection.route.value).toMatchObject({ view: 'goal', record: { status: 'active' }, related: { checkInCount: 1 } })
     expect(bridge.updateModelContext).toHaveBeenLastCalledWith({ structuredContent: expect.objectContaining({ view: 'goal', recordId: goal.record.id, status: 'active', checkInCount: 1 }) })
     expect(bridge.callServerTool.mock.calls.filter(([tool]) => tool.name === 'create_goal_check_in')).toHaveLength(2)
+  } finally { connection.close() }
+})
+
+it('opens a Program in the browsed week and keeps that week through refresh and back', async () => {
+  // The selected week (2026-11-02) has room for three sessions; the default week (2026-10-05) for six.
+  const week = { weekStart: '2026-11-02', capacity: 3, defaultDates: [] }
+  const browse = structuredClone(fixtures.workoutLibrary.browse) as unknown as { record: { query: Record<string, unknown>, data: Array<Record<string, unknown>> } }
+  browse.record.query.weekStart = week.weekStart
+  const program = browse.record.data.find(item => item.id === 'beginner-strength-program')!
+  expect(program.programWeek).toMatchObject({ weekStart: '2026-10-05', capacity: 6 })
+  program.programWeek = week
+  const item = structuredClone(fixtures.workoutLibrary.itemProgramUnavailable) as unknown as { record: Record<string, unknown> }
+  item.record.programWeek = week
+  const connection = createWorkoutConnection()
+  await connection.start()
+  bridge.ontoolresult?.({ structuredContent: browse })
+  try {
+    // the card's result button sends exactly these arguments (WorkoutLibraryView `open`)
+    const route = connection.route.value as { record: LibraryBrowseRecord }
+    const target = route.record.data.find(entry => entry.id === 'beginner-strength-program') as LibraryItem
+    bridge.callServerTool.mockResolvedValueOnce({ structuredContent: item })
+    await connection.navigate({ name: 'open_workout_library', arguments: workoutLibraryItemArguments(route.record, target) })
+    expect(bridge.callServerTool.mock.calls[0]![0]).toEqual({ name: 'open_workout_library', arguments: { itemId: 'beginner-strength-program', weekStart: '2026-11-02' } })
+    expect(connection.route.value).toMatchObject({ view: 'workout-library', record: { mode: 'item', programWeek: { weekStart: '2026-11-02', capacity: 3 } } })
+
+    bridge.callServerTool.mockResolvedValueOnce({ structuredContent: item })
+    await connection.refresh()
+    expect(bridge.callServerTool.mock.calls[1]![0]).toEqual({ name: 'open_workout_library', arguments: { itemId: 'beginner-strength-program', weekStart: '2026-11-02' } })
+
+    bridge.callServerTool.mockResolvedValueOnce({ structuredContent: browse })
+    await connection.back()
+    expect(bridge.callServerTool.mock.calls[2]![0]).toEqual({ name: 'open_workout_library', arguments: { fit: 'all', page: 1, limit: 6, weekStart: '2026-11-02' } })
+    expect(connection.route.value).toMatchObject({ view: 'workout-library', record: { mode: 'browse', query: { weekStart: '2026-11-02' } } })
+  } finally { connection.close() }
+})
+
+it('refreshes a Library item the host opened in the week its Program fit names', async () => {
+  const item = structuredClone(fixtures.workoutLibrary.itemProgramUnavailable) as unknown as { record: Record<string, unknown> }
+  item.record.programWeek = { weekStart: '2026-11-02', capacity: 3, defaultDates: [] }
+  const connection = createWorkoutConnection()
+  await connection.start()
+  bridge.ontoolresult?.({ structuredContent: item })
+  try {
+    bridge.callServerTool.mockResolvedValueOnce({ structuredContent: item })
+    await connection.refresh()
+    expect(bridge.callServerTool.mock.calls[0]![0]).toEqual({ name: 'open_workout_library', arguments: { itemId: 'beginner-strength-program', weekStart: '2026-11-02' } })
   } finally { connection.close() }
 })

@@ -1,4 +1,4 @@
-import type { LibraryFit, LibraryItem, WorkoutLibraryView } from './workoutLibraryModel'
+import { prescriptionSummary, type LibraryFit, type LibraryItem, type PlannedSet, type SetGroup, type WorkoutLibraryView } from './workoutLibraryModel'
 
 /** The translator the card and its compact summary share (vue-i18n's `t`/`te`). */
 export interface LibraryTranslator {
@@ -52,4 +52,34 @@ export const fitLines = (translator: LibraryTranslator, fit: LibraryFit): string
     return [t('workoutLibraryUi.unavailableLimitations', { exercises: names.length ? list(locale, names) : t('workoutLibraryUi.anExercise').toLowerCase() })]
   }
   return [t(fit.reason === 'personal' ? 'workoutLibraryUi.unavailablePersonal' : 'workoutLibraryUi.unavailableCatalog')]
+}
+
+const groupLine = ({ t, te, locale }: LibraryTranslator, group: SetGroup, labelled: boolean): string => {
+  const count = integer(locale, group.count)
+  const number = (value: number) => new Intl.NumberFormat(locale).format(value)
+  const reps = group.reps && (group.reps.min === group.reps.max ? number(group.reps.max) : `${number(group.reps.min)}–${number(group.reps.max)}`)
+  const value = reps
+    ? t('workoutLibraryUi.setsReps', { sets: count, reps })
+    : group.seconds !== undefined ? t('workoutLibraryUi.setsSeconds', { sets: count, seconds: number(group.seconds) }) : t('workoutLibraryUi.sets', { n: count }, group.count)
+  const kind = labelled && group.category !== 'working'
+    ? te(`workoutLibraryUi.setKind.${group.category}`) ? t(`workoutLibraryUi.setKind.${group.category}`) : group.category
+    : undefined
+  return [value, kind, group.side && t(`workoutLibraryUi.setSide.${group.side}`)].filter(Boolean).join(' ')
+}
+
+/**
+ * A slot's sets in one line: "3 × 8–12 reps + 1 warm-up", "2 × 20 s each
+ * side", "6 × 30 s work · 5 × 60 s recovery + 1 warm-up + 1 cool-down".
+ * Every distinct prescription stays visible; nothing is merged that differs.
+ */
+export const prescriptionLine = (translator: LibraryTranslator, sets: PlannedSet[]): string => {
+  const { t, locale } = translator
+  const summary = prescriptionSummary(sets)
+  // a warm-up section's own sets are the summary: they carry a kind only beside a different one
+  const labelled = new Set(summary.groups.map(group => group.category)).size > 1 || summary.groups.some(group => group.category !== 'warmup' && group.category !== 'cooldown')
+  const extras = [
+    ...(summary.warmup ? [t('workoutLibraryUi.warmups', { n: integer(locale, summary.warmup) }, summary.warmup)] : []),
+    ...(summary.cooldown ? [t('workoutLibraryUi.cooldowns', { n: integer(locale, summary.cooldown) }, summary.cooldown)] : [])
+  ]
+  return [summary.groups.map(group => groupLine(translator, group, labelled)).join(' · '), ...extras].filter(Boolean).join(' ')
 }

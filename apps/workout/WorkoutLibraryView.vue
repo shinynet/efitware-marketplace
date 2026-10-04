@@ -2,9 +2,9 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import HostFollowUp from './HostFollowUp.vue'
-import type { LibraryFit, LibraryItemRecord, WorkoutLibraryView as LibraryCardView } from './workoutLibraryModel'
-import { prescriptionSummary, workoutLibraryArguments } from './workoutLibraryModel'
-import { fitLabel, fitLines, minutesLabel, spaceLabel, vocabularyLabel, type LibraryTranslator } from './workoutLibraryPresentation'
+import type { LibraryFit, LibraryItem, LibraryItemRecord, WorkoutLibraryView as LibraryCardView } from './workoutLibraryModel'
+import { workoutLibraryArguments, workoutLibraryItemArguments } from './workoutLibraryModel'
+import { fitLabel, fitLines, minutesLabel, prescriptionLine, spaceLabel, vocabularyLabel, type LibraryTranslator } from './workoutLibraryPresentation'
 import type { createWorkoutConnection } from './workoutConnection'
 
 /**
@@ -24,9 +24,8 @@ const record = computed(() => library.record)
 const space = computed(() => spaceLabel(translator.value, record.value.trainingSpace))
 const number = (value: number) => new Intl.NumberFormat(locale.value).format(value)
 const go = (patch: Record<string, unknown>, replace = false) => navigate({ name: 'open_workout_library', arguments: workoutLibraryArguments(record.value, patch) }, replace)
-const open = (itemId: string) => {
-  const { trainingSpace } = record.value
-  navigate({ name: 'open_workout_library', arguments: { itemId, ...(trainingSpace.isDefault ? {} : { trainingSpaceId: trainingSpace.id }) } })
+const open = (item: LibraryItem) => {
+  if (record.value.mode === 'browse') navigate({ name: 'open_workout_library', arguments: workoutLibraryItemArguments(record.value, item) })
 }
 const badgeClass = (fit: LibraryFit) => ({
   'exact': 'border-olive',
@@ -38,15 +37,6 @@ const sessionsOf = (item: LibraryItemRecord) => item.content.format === 'workout
   ? [{ heading: undefined as string | undefined, sessions: [item.content.session] }]
   : item.content.variants.map(variant => ({ heading: t('workoutLibraryUi.variant', { n: variant.daysPerWeek }, variant.daysPerWeek), sessions: variant.sessions }))
 const swappedSlots = computed(() => new Set(record.value.mode === 'item' && record.value.fit.state === 'adaptable' ? record.value.fit.swaps.map(swap => swap.slotId) : []))
-const setLine = (sets: Parameters<typeof prescriptionSummary>[0]) => {
-  const summary = prescriptionSummary(sets)
-  const count = number(summary.working)
-  const reps = summary.reps && (summary.reps.min === summary.reps.max ? number(summary.reps.max) : `${number(summary.reps.min)}–${number(summary.reps.max)}`)
-  const main = reps
-    ? t('workoutLibraryUi.setsReps', { sets: count, reps })
-    : summary.seconds !== undefined ? t('workoutLibraryUi.setsSeconds', { sets: count, seconds: number(summary.seconds) }) : t('workoutLibraryUi.sets', { n: count }, summary.working)
-  return summary.warmup ? `${main} ${t('workoutLibraryUi.warmups', { n: number(summary.warmup) }, summary.warmup)}` : main
-}
 const facts = (item: { format: string, sessionMinutes: { min: number, max: number }, supportedDays: number[], defaultWeeks?: number }, withFormat = true) => [
   ...(withFormat ? [vocabularyLabel(translator.value, 'format', item.format)] : []),
   minutesLabel(translator.value, item.sessionMinutes),
@@ -105,7 +95,7 @@ const facts = (item: { format: string, sessionMinutes: { min: number, max: numbe
             class="title-link"
             :aria-label="t('workoutLibraryUi.view', { title: item.title })"
             :disabled="busy"
-            @click="open(item.id)"
+            @click="open(item)"
           >
             {{ item.title }}
           </button>
@@ -243,7 +233,7 @@ const facts = (item: { format: string, sessionMinutes: { min: number, max: numbe
               v-if="swappedSlots.has(slot.slotId)"
               class="ml-2 text-xs text-gold-ink"
             >{{ t('workoutLibraryUi.swapped') }}</span></span>
-            <span class="ml-auto text-muted">{{ setLine(slot.prescription.sets) }}</span>
+            <span class="ml-auto text-muted">{{ prescriptionLine(translator, slot.prescription.sets) }}</span>
           </li>
         </ol>
       </section>

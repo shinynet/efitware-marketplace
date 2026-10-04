@@ -4745,6 +4745,141 @@
         "skin": "calm",
         "timeZone": "UTC"
       }
+    },
+    "itemShortConditioning": {
+      "view": "workout-library",
+      "record": {
+        "mode": "item",
+        "id": "short-conditioning",
+        "version": 1,
+        "format": "workout",
+        "title": "Short Conditioning",
+        "summary": "Six hard 30-second rowing intervals in about 15 minutes.",
+        "tags": {
+          "focus": [
+            "full-body"
+          ],
+          "style": [
+            "conditioning"
+          ],
+          "purpose": [
+            "general-fitness",
+            "weight-management"
+          ],
+          "experience": [
+            "beginner",
+            "intermediate"
+          ]
+        },
+        "sessionMinutes": {
+          "min": 15,
+          "max": 15
+        },
+        "supportedDays": [],
+        "fit": {
+          "state": "exact",
+          "variantIds": []
+        },
+        "appPath": "/library/short-conditioning",
+        "description": "A three-minute warm-up, six 30-second hard efforts with a minute of easy rowing between each, and a two-minute cool-down. Hard means a pace you could repeat six times, not an all-out sprint.",
+        "suitability": "For anyone who can row comfortably. You need a rowing machine.",
+        "trainingSpace": {
+          "id": "ts-a2c3dc3c-582c-45c6-bfaa-da252d106a4a",
+          "name": "Default",
+          "isDefault": true,
+          "equipment": "confirmed"
+        },
+        "content": {
+          "format": "workout",
+          "session": {
+            "sessionId": "main",
+            "name": "Short Conditioning",
+            "estimatedMinutes": 15,
+            "slots": [
+              {
+                "slotId": "row-intervals",
+                "exerciseId": "6ac21d094c342c17f74c3e1b",
+                "name": "Rowing Erg",
+                "prescription": {
+                  "order": 1,
+                  "sets": [
+                    {
+                      "category": "warmup",
+                      "plannedDuration": 180
+                    },
+                    {
+                      "category": "interval",
+                      "plannedDuration": 30
+                    },
+                    {
+                      "category": "recovery",
+                      "plannedDuration": 60
+                    },
+                    {
+                      "category": "interval",
+                      "plannedDuration": 30
+                    },
+                    {
+                      "category": "recovery",
+                      "plannedDuration": 60
+                    },
+                    {
+                      "category": "interval",
+                      "plannedDuration": 30
+                    },
+                    {
+                      "category": "recovery",
+                      "plannedDuration": 60
+                    },
+                    {
+                      "category": "interval",
+                      "plannedDuration": 30
+                    },
+                    {
+                      "category": "recovery",
+                      "plannedDuration": 60
+                    },
+                    {
+                      "category": "interval",
+                      "plannedDuration": 30
+                    },
+                    {
+                      "category": "recovery",
+                      "plannedDuration": 60
+                    },
+                    {
+                      "category": "interval",
+                      "plannedDuration": 30
+                    },
+                    {
+                      "category": "cooldown",
+                      "plannedDuration": 120
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "exercises": [
+          {
+            "id": "6ac21d094c342c17f74c3e1b",
+            "name": "Rowing Erg",
+            "modality": "cardio",
+            "equipmentRequired": [
+              "rower"
+            ]
+          }
+        ]
+      },
+      "related": {},
+      "presentation": {
+        "locale": "en",
+        "unitSystem": "metric",
+        "theme": "light",
+        "skin": "calm",
+        "timeZone": "UTC"
+      }
     }
   },
   "workoutLibraryVocabulary": [
