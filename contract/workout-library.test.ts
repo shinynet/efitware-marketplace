@@ -209,7 +209,13 @@ describe('compact card and links', () => {
     week.record.query.weekStart = '2026-11-02'
     const [workout, , program] = week.record.data
     expect(workoutLibraryItemArguments(week.record, program!)).toEqual({ itemId: 'beginner-strength-program', weekStart: '2026-11-02' })
-    expect(workoutLibraryItemArguments(week.record, workout!)).toEqual({ itemId: 'quick-full-body', weekStart: '2026-11-02' })
+    // a Workout never takes a week: the application answers 422
+    expect(workoutLibraryItemArguments(week.record, workout!)).toEqual({ itemId: 'quick-full-body' })
+    expect(workoutLibraryItemArguments(week.record, workout!)).not.toHaveProperty('weekStart')
+    const weekWorkout = structuredClone(payloads.itemAdaptable)
+    if (weekWorkout.record.mode !== 'item') throw new Error('fixture')
+    weekWorkout.record.programWeek = { weekStart: '2026-11-02', capacity: 3 }
+    expect(workoutLibraryArguments(weekWorkout.record)).toEqual({ itemId: 'strength-for-runners' })
     expect(workoutLibraryArguments(week.record)).toMatchObject({ weekStart: '2026-11-02' })
     expect(workoutLibraryPath(week.record)).toBe('/library')
     // without a browsed week, a Program opens in the week its fit was evaluated for

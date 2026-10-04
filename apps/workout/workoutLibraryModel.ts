@@ -113,18 +113,21 @@ export const workoutLibraryPath = (record: WorkoutLibraryView['record']): string
  */
 export const workoutLibraryArguments = (record: WorkoutLibraryView['record'], patch: Record<string, unknown> = {}): Record<string, unknown> => {
   const space = record.trainingSpace.isDefault ? {} : { trainingSpaceId: record.trainingSpace.id }
-  if (record.mode === 'item') return { itemId: record.id, ...space, ...(record.programWeek ? { weekStart: record.programWeek.weekStart } : {}), ...patch }
+  // the application refuses a week for a Workout, so only a Program keeps one
+  if (record.mode === 'item') return { itemId: record.id, ...space, ...(record.format === 'program' && record.programWeek ? { weekStart: record.programWeek.weekStart } : {}), ...patch }
   const { fit, page, limit, ...facets } = record.query
   return { ...facets, fit, page, limit, ...space, ...patch }
 }
 
 /**
- * Opening one result: the item reads in the space and week the results were
- * evaluated for (the browsed `weekStart`, else the week the item's Program
- * fit names), so its fit does not change on the way in.
+ * Opening one result: the item reads in the space the results were evaluated
+ * for and, for a Program, the same week (the browsed `weekStart`, else the
+ * week its fit names), so its fit does not change on the way in. A Workout
+ * never takes a week: the application refuses one.
  */
 export const workoutLibraryItemArguments = (record: LibraryBrowseRecord, item: LibraryItem): Record<string, unknown> => {
-  const weekStart = record.query.weekStart ?? item.programWeek?.weekStart
+  // the application refuses a week for a Workout, so only a Program carries one
+  const weekStart = item.format === 'program' ? record.query.weekStart ?? item.programWeek?.weekStart : undefined
   return { itemId: item.id, ...(record.trainingSpace.isDefault ? {} : { trainingSpaceId: record.trainingSpace.id }), ...(weekStart ? { weekStart } : {}) }
 }
 
