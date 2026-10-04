@@ -16,7 +16,10 @@
     "strength": "Strength",
     "hypertrophy": "Muscle growth",
     "conditioning": "Conditioning",
-    "mobility": "Mobility"
+    "mobility": "Mobility",
+    "yoga": "Yoga",
+    "pilates": "Pilates",
+    "calisthenics": "Calisthenics"
   },
   "purpose": {
     "general-fitness": "General fitness",

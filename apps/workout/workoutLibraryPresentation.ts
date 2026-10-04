@@ -21,6 +21,13 @@ export const fitLabel = ({ t }: LibraryTranslator, fit: LibraryFit): string =>
 export const vocabularyLabel = ({ t, te }: LibraryTranslator, group: string, value: string): string =>
   te(`workoutLibraryVocabulary.${group}.${value}`) ? t(`workoutLibraryVocabulary.${group}.${value}`) : value
 
+/** Focus then style, in authored order: an item's one-line character, listed as the application's Library card lists it (`compactList`). */
+export const tagLine = (translator: LibraryTranslator, tags: Pick<LibraryItem['tags'], 'focus' | 'style'>): string =>
+  new Intl.ListFormat(translator.locale, { type: 'unit', style: 'short' }).format([
+    ...tags.focus.map(value => vocabularyLabel(translator, 'focus', value)),
+    ...tags.style.map(value => vocabularyLabel(translator, 'style', value))
+  ])
+
 export const equipmentLabel = ({ t, te }: LibraryTranslator, slug: string): string =>
   te(`contextVocabulary.equipment.${slug}`) ? t(`contextVocabulary.equipment.${slug}`) : slug.replaceAll('_', ' ')
 
