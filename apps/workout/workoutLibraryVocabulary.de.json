@@ -1,0 +1,38 @@
+{
+  "format": {
+    "workout": "Workout",
+    "program": "Programm"
+  },
+  "focus": {
+    "full-body": "Ganzkörper",
+    "upper-body": "Oberkörper",
+    "lower-body": "Unterkörper",
+    "arms": "Arme",
+    "core": "Rumpf",
+    "glutes": "Gesäß",
+    "posterior-chain": "Hintere Kette"
+  },
+  "style": {
+    "strength": "Kraft",
+    "hypertrophy": "Muskelaufbau",
+    "conditioning": "Kondition",
+    "mobility": "Mobilität"
+  },
+  "purpose": {
+    "general-fitness": "Allgemeine Fitness",
+    "build-strength": "Kraft aufbauen",
+    "build-muscle": "Muskeln aufbauen",
+    "weight-management": "Gewicht halten",
+    "return-to-training": "Wiedereinstieg",
+    "sport-support": "Sport unterstützen"
+  },
+  "experience": {
+    "beginner": "Einsteiger",
+    "intermediate": "Fortgeschritten"
+  },
+  "fit": {
+    "exact": "Passt genau",
+    "adaptable": "Anpassbar",
+    "unavailable": "Nicht verfügbar"
+  }
+}

@@ -2631,5 +2631,2337 @@
         "skin": null
       }
     }
-  }
+  },
+  "workoutLibrary": {
+    "browse": {
+      "view": "workout-library",
+      "record": {
+        "mode": "browse",
+        "trainingSpace": {
+          "id": "ts-30a1fe99-0878-4ade-b894-832edc270bc0",
+          "name": "Default",
+          "isDefault": true,
+          "equipment": "confirmed"
+        },
+        "query": {
+          "fit": "all",
+          "page": 1,
+          "limit": 6
+        },
+        "data": [
+          {
+            "id": "quick-full-body",
+            "version": 1,
+            "format": "workout",
+            "title": "Quick Full Body",
+            "summary": "Squat, press, hinge and row in about 20 minutes.",
+            "tags": {
+              "focus": [
+                "full-body"
+              ],
+              "style": [
+                "strength"
+              ],
+              "purpose": [
+                "general-fitness"
+              ],
+              "experience": [
+                "beginner",
+                "intermediate"
+              ]
+            },
+            "sessionMinutes": {
+              "min": 20,
+              "max": 20
+            },
+            "supportedDays": [],
+            "fit": {
+              "state": "adaptable",
+              "variantIds": [],
+              "swaps": [
+                {
+                  "slotId": "row",
+                  "cause": "equipment",
+                  "missingEquipment": [
+                    "adjustable_bench"
+                  ]
+                }
+              ]
+            },
+            "appPath": "/library/quick-full-body"
+          },
+          {
+            "id": "beginner-fundamentals",
+            "version": 1,
+            "format": "workout",
+            "title": "Beginner Fundamentals",
+            "summary": "Practice the six basic strength movements with dumbbells.",
+            "tags": {
+              "focus": [
+                "full-body"
+              ],
+              "style": [
+                "strength"
+              ],
+              "purpose": [
+                "general-fitness",
+                "build-strength"
+              ],
+              "experience": [
+                "beginner"
+              ]
+            },
+            "sessionMinutes": {
+              "min": 40,
+              "max": 40
+            },
+            "supportedDays": [],
+            "fit": {
+              "state": "exact",
+              "variantIds": []
+            },
+            "appPath": "/library/beginner-fundamentals"
+          },
+          {
+            "id": "beginner-strength-program",
+            "version": 3,
+            "format": "program",
+            "title": "Beginner Strength",
+            "summary": "A fixed weekly barbell plan built on sets of five.",
+            "tags": {
+              "focus": [
+                "full-body"
+              ],
+              "style": [
+                "strength"
+              ],
+              "purpose": [
+                "build-strength"
+              ],
+              "experience": [
+                "beginner"
+              ]
+            },
+            "sessionMinutes": {
+              "min": 30,
+              "max": 40
+            },
+            "supportedDays": [
+              2,
+              3
+            ],
+            "defaultWeeks": 8,
+            "defaultVariantId": "two-days",
+            "fit": {
+              "state": "unavailable",
+              "reason": "equipment",
+              "slotIds": [
+                "lat-pulldown"
+              ],
+              "exercises": [
+                {
+                  "slotId": "lat-pulldown"
+                }
+              ],
+              "missingEquipment": [
+                "lat_pulldown"
+              ]
+            },
+            "programWeek": {
+              "weekStart": "2026-10-05",
+              "capacity": 6,
+              "defaultDates": []
+            },
+            "appPath": "/library/beginner-strength-program"
+          },
+          {
+            "id": "ten-minute-core",
+            "version": 1,
+            "format": "workout",
+            "title": "10 Minute Core",
+            "summary": "A three-round trunk circuit in about 10 minutes.",
+            "tags": {
+              "focus": [
+                "core"
+              ],
+              "style": [
+                "strength"
+              ],
+              "purpose": [
+                "general-fitness"
+              ],
+              "experience": [
+                "beginner",
+                "intermediate"
+              ]
+            },
+            "sessionMinutes": {
+              "min": 10,
+              "max": 10
+            },
+            "supportedDays": [],
+            "fit": {
+              "state": "exact",
+              "variantIds": []
+            },
+            "appPath": "/library/ten-minute-core"
+          },
+          {
+            "id": "build-muscle-program",
+            "version": 3,
+            "format": "program",
+            "title": "Build Muscle",
+            "summary": "A fixed weekly muscle-building plan for two, three or four days.",
+            "tags": {
+              "focus": [
+                "full-body"
+              ],
+              "style": [
+                "hypertrophy"
+              ],
+              "purpose": [
+                "build-muscle"
+              ],
+              "experience": [
+                "beginner",
+                "intermediate"
+              ]
+            },
+            "sessionMinutes": {
+              "min": 35,
+              "max": 45
+            },
+            "supportedDays": [
+              2,
+              3,
+              4
+            ],
+            "defaultWeeks": 8,
+            "defaultVariantId": "two-days",
+            "fit": {
+              "state": "unavailable",
+              "reason": "equipment",
+              "slotIds": [
+                "lat-pulldown"
+              ],
+              "exercises": [
+                {
+                  "slotId": "lat-pulldown"
+                }
+              ],
+              "missingEquipment": [
+                "lat_pulldown"
+              ]
+            },
+            "programWeek": {
+              "weekStart": "2026-10-05",
+              "capacity": 6,
+              "defaultDates": []
+            },
+            "appPath": "/library/build-muscle-program"
+          },
+          {
+            "id": "ten-minute-arms",
+            "version": 1,
+            "format": "workout",
+            "title": "10 Minute Arms",
+            "summary": "Two biceps and triceps supersets in about 10 minutes.",
+            "tags": {
+              "focus": [
+                "arms"
+              ],
+              "style": [
+                "hypertrophy"
+              ],
+              "purpose": [
+                "build-muscle"
+              ],
+              "experience": [
+                "beginner",
+                "intermediate"
+              ]
+            },
+            "sessionMinutes": {
+              "min": 10,
+              "max": 10
+            },
+            "supportedDays": [],
+            "fit": {
+              "state": "exact",
+              "variantIds": []
+            },
+            "appPath": "/library/ten-minute-arms"
+          }
+        ],
+        "meta": {
+          "total": 24,
+          "page": 1,
+          "limit": 6
+        }
+      },
+      "related": {},
+      "presentation": {
+        "locale": "en",
+        "unitSystem": "metric",
+        "theme": "light",
+        "skin": "calm",
+        "timeZone": "UTC"
+      }
+    },
+    "browseNeedsSpace": {
+      "view": "workout-library",
+      "record": {
+        "mode": "browse",
+        "trainingSpace": {
+          "id": "ts-142e51dc-ad57-4a68-9493-a60be8d28a4e",
+          "name": "Default",
+          "isDefault": true,
+          "equipment": "unconfigured"
+        },
+        "query": {
+          "fit": "fits",
+          "page": 1,
+          "limit": 3
+        },
+        "data": [
+          {
+            "id": "quick-full-body",
+            "version": 1,
+            "format": "workout",
+            "title": "Quick Full Body",
+            "summary": "Squat, press, hinge and row in about 20 minutes.",
+            "tags": {
+              "focus": [
+                "full-body"
+              ],
+              "style": [
+                "strength"
+              ],
+              "purpose": [
+                "general-fitness"
+              ],
+              "experience": [
+                "beginner",
+                "intermediate"
+              ]
+            },
+            "sessionMinutes": {
+              "min": 20,
+              "max": 20
+            },
+            "supportedDays": [],
+            "fit": {
+              "state": "needs-space"
+            },
+            "appPath": "/library/quick-full-body"
+          },
+          {
+            "id": "beginner-fundamentals",
+            "version": 1,
+            "format": "workout",
+            "title": "Beginner Fundamentals",
+            "summary": "Practice the six basic strength movements with dumbbells.",
+            "tags": {
+              "focus": [
+                "full-body"
+              ],
+              "style": [
+                "strength"
+              ],
+              "purpose": [
+                "general-fitness",
+                "build-strength"
+              ],
+              "experience": [
+                "beginner"
+              ]
+            },
+            "sessionMinutes": {
+              "min": 40,
+              "max": 40
+            },
+            "supportedDays": [],
+            "fit": {
+              "state": "needs-space"
+            },
+            "appPath": "/library/beginner-fundamentals"
+          },
+          {
+            "id": "beginner-strength-program",
+            "version": 3,
+            "format": "program",
+            "title": "Beginner Strength",
+            "summary": "A fixed weekly barbell plan built on sets of five.",
+            "tags": {
+              "focus": [
+                "full-body"
+              ],
+              "style": [
+                "strength"
+              ],
+              "purpose": [
+                "build-strength"
+              ],
+              "experience": [
+                "beginner"
+              ]
+            },
+            "sessionMinutes": {
+              "min": 30,
+              "max": 40
+            },
+            "supportedDays": [
+              2,
+              3
+            ],
+            "defaultWeeks": 8,
+            "defaultVariantId": "two-days",
+            "fit": {
+              "state": "needs-space"
+            },
+            "appPath": "/library/beginner-strength-program"
+          }
+        ],
+        "meta": {
+          "total": 24,
+          "page": 1,
+          "limit": 3
+        }
+      },
+      "related": {},
+      "presentation": {
+        "locale": "en",
+        "unitSystem": "metric",
+        "theme": "light",
+        "skin": "calm",
+        "timeZone": "UTC"
+      }
+    },
+    "itemAdaptable": {
+      "view": "workout-library",
+      "record": {
+        "mode": "item",
+        "id": "strength-for-runners",
+        "version": 1,
+        "format": "workout",
+        "title": "Strength for Runners",
+        "summary": "One strength session a week that fits around your running.",
+        "tags": {
+          "focus": [
+            "lower-body"
+          ],
+          "style": [
+            "strength"
+          ],
+          "purpose": [
+            "sport-support"
+          ],
+          "experience": [
+            "beginner",
+            "intermediate"
+          ]
+        },
+        "sessionMinutes": {
+          "min": 30,
+          "max": 30
+        },
+        "supportedDays": [],
+        "fit": {
+          "state": "adaptable",
+          "variantIds": [],
+          "swaps": [
+            {
+              "slotId": "split-squat",
+              "exerciseId": "6ac21d094c342c17f74c3cf9",
+              "name": "Bulgarian Split Squat",
+              "cause": "equipment",
+              "missingEquipment": [
+                "flat_bench"
+              ]
+            },
+            {
+              "slotId": "copenhagen-plank",
+              "exerciseId": "6ac21d094c342c17f74c3d35",
+              "name": "Copenhagen Plank",
+              "cause": "equipment",
+              "missingEquipment": [
+                "flat_bench"
+              ]
+            }
+          ]
+        },
+        "appPath": "/library/strength-for-runners",
+        "description": "Jump squats after an easy ramp-up set, then Bulgarian split squats, Romanian deadlifts, slow calf raises and Copenhagen planks for the inner thighs and sides of the trunk. Volume stays low so the session fits beside your running week.",
+        "suitability": "For runners with dumbbells and a bench. Copenhagen planks take some practice; keep the holds short.",
+        "trainingSpace": {
+          "id": "ts-a2c3dc3c-582c-45c6-bfaa-da252d106a4a",
+          "name": "Default",
+          "isDefault": true,
+          "equipment": "confirmed"
+        },
+        "content": {
+          "format": "workout",
+          "session": {
+            "sessionId": "main",
+            "name": "Strength for Runners",
+            "estimatedMinutes": 30,
+            "slots": [
+              {
+                "slotId": "leg-swings",
+                "exerciseId": "6ac21d094c342c17f74c3d94",
+                "name": "Leg Swings",
+                "prescription": {
+                  "order": 1,
+                  "section": "warmup",
+                  "sets": [
+                    {
+                      "category": "warmup",
+                      "plannedDuration": 30,
+                      "side": "left"
+                    },
+                    {
+                      "category": "warmup",
+                      "plannedDuration": 30,
+                      "side": "right"
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "jump-squat",
+                "exerciseId": "6ac21d094c342c17f74c3daa",
+                "name": "Jump Squat",
+                "prescription": {
+                  "order": 2,
+                  "sets": [
+                    {
+                      "category": "warmup",
+                      "plannedReps": {
+                        "min": 5,
+                        "max": 5
+                      }
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 4,
+                        "max": 5
+                      },
+                      "plannedRpe": 7
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 4,
+                        "max": 5
+                      },
+                      "plannedRpe": 7
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 4,
+                        "max": 5
+                      },
+                      "plannedRpe": 7
+                    }
+                  ],
+                  "activities": [
+                    {
+                      "kind": "rest",
+                      "durationTarget": 30,
+                      "order": 1
+                    },
+                    {
+                      "kind": "rest",
+                      "durationTarget": 60,
+                      "order": 2
+                    },
+                    {
+                      "kind": "rest",
+                      "durationTarget": 60,
+                      "order": 3
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "split-squat",
+                "exerciseId": "6ac21d094c342c17f74c3cf9",
+                "name": "Bulgarian Split Squat",
+                "prescription": {
+                  "order": 3,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 6,
+                        "max": 8
+                      },
+                      "rirTarget": 2
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 6,
+                        "max": 8
+                      },
+                      "rirTarget": 2
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 6,
+                        "max": 8
+                      },
+                      "rirTarget": 2
+                    }
+                  ],
+                  "activities": [
+                    {
+                      "kind": "rest",
+                      "durationTarget": 90,
+                      "order": 1
+                    },
+                    {
+                      "kind": "rest",
+                      "durationTarget": 90,
+                      "order": 2
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "romanian-deadlift",
+                "exerciseId": "6ac21d094c342c17f74c3dc9",
+                "name": "Dumbbell Romanian Deadlift",
+                "prescription": {
+                  "order": 4,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 6,
+                        "max": 8
+                      },
+                      "rirTarget": 2
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 6,
+                        "max": 8
+                      },
+                      "rirTarget": 2
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 6,
+                        "max": 8
+                      },
+                      "rirTarget": 2
+                    }
+                  ],
+                  "activities": [
+                    {
+                      "kind": "rest",
+                      "durationTarget": 90,
+                      "order": 1
+                    },
+                    {
+                      "kind": "rest",
+                      "durationTarget": 90,
+                      "order": 2
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "calf-raise",
+                "exerciseId": "6ac21d094c342c17f74c3cf5",
+                "name": "Standing Calf Raise",
+                "prescription": {
+                  "order": 5,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 10,
+                        "max": 15
+                      },
+                      "rirTarget": 1,
+                      "tempo": "2-1-1-1"
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 10,
+                        "max": 15
+                      },
+                      "rirTarget": 1,
+                      "tempo": "2-1-1-1"
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 10,
+                        "max": 15
+                      },
+                      "rirTarget": 1,
+                      "tempo": "2-1-1-1"
+                    }
+                  ],
+                  "activities": [
+                    {
+                      "kind": "rest",
+                      "durationTarget": 60,
+                      "order": 1
+                    },
+                    {
+                      "kind": "rest",
+                      "durationTarget": 60,
+                      "order": 2
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "copenhagen-plank",
+                "exerciseId": "6ac21d094c342c17f74c3d35",
+                "name": "Copenhagen Plank",
+                "prescription": {
+                  "order": 6,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedDuration": 20,
+                      "side": "left"
+                    },
+                    {
+                      "category": "working",
+                      "plannedDuration": 20,
+                      "side": "right"
+                    },
+                    {
+                      "category": "working",
+                      "plannedDuration": 20,
+                      "side": "left"
+                    },
+                    {
+                      "category": "working",
+                      "plannedDuration": 20,
+                      "side": "right"
+                    }
+                  ]
+                }
+              }
+            ],
+            "activities": [],
+            "executionGroups": []
+          }
+        },
+        "exercises": [
+          {
+            "id": "6ac21d094c342c17f74c3d94",
+            "name": "Leg Swings",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac21d094c342c17f74c3daa",
+            "name": "Jump Squat",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac21d094c342c17f74c3cf9",
+            "name": "Bulgarian Split Squat",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "dumbbells",
+              "flat_bench"
+            ]
+          },
+          {
+            "id": "6ac21d094c342c17f74c3dc9",
+            "name": "Dumbbell Romanian Deadlift",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "dumbbells"
+            ]
+          },
+          {
+            "id": "6ac21d094c342c17f74c3cf5",
+            "name": "Standing Calf Raise",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "dumbbells"
+            ]
+          },
+          {
+            "id": "6ac21d094c342c17f74c3d35",
+            "name": "Copenhagen Plank",
+            "modality": "mobility",
+            "equipmentRequired": [
+              "flat_bench"
+            ]
+          }
+        ]
+      },
+      "related": {},
+      "presentation": {
+        "locale": "en",
+        "unitSystem": "metric",
+        "theme": "light",
+        "skin": "calm",
+        "timeZone": "UTC"
+      }
+    },
+    "itemProgramUnavailable": {
+      "view": "workout-library",
+      "record": {
+        "mode": "item",
+        "id": "beginner-strength-program",
+        "version": 3,
+        "format": "program",
+        "title": "Kraft für Einsteiger",
+        "summary": "Ein fester Wochenplan mit der Langhantel, aufgebaut auf Fünfersätzen.",
+        "tags": {
+          "focus": [
+            "full-body"
+          ],
+          "style": [
+            "strength"
+          ],
+          "purpose": [
+            "build-strength"
+          ],
+          "experience": [
+            "beginner"
+          ]
+        },
+        "sessionMinutes": {
+          "min": 30,
+          "max": 40
+        },
+        "supportedDays": [
+          2,
+          3
+        ],
+        "defaultWeeks": 8,
+        "defaultVariantId": "two-days",
+        "fit": {
+          "state": "unavailable",
+          "reason": "equipment",
+          "slotIds": [
+            "lat-pulldown"
+          ],
+          "exercises": [
+            {
+              "slotId": "lat-pulldown",
+              "exerciseId": "6ac21d094c342c17f74c3ce8",
+              "name": "Latzug"
+            }
+          ],
+          "missingEquipment": [
+            "lat_pulldown"
+          ]
+        },
+        "programWeek": {
+          "weekStart": "2026-10-05",
+          "capacity": 6,
+          "defaultDates": []
+        },
+        "appPath": "/library/beginner-strength-program",
+        "description": "Kniebeuge, Bankdrücken, Kreuzheben und Schulterdrücken in Sätzen zu fünf Wiederholungen, mit Aufwärmsätzen, vollen Pausen sowie je einer Rücken- und Rumpfübung pro Tag. Die Woche wiederholt sich, und deine Gewichte werden aus dem geplant, was du tatsächlich protokollierst. Wähle zwei oder drei Tage pro Woche.",
+        "suitability": "Für Einsteiger in einem Studio mit Langhantel, Rack, Bank, Latzug, Kabelzug und einer Kurzhantel, idealerweise nach ein paar Übungseinheiten der Grundübungen.",
+        "trainingSpace": {
+          "id": "ts-4441fa17-d9e0-4ef5-a3bb-a2115fe53a13",
+          "name": "Default",
+          "isDefault": true,
+          "equipment": "confirmed"
+        },
+        "content": {
+          "format": "program",
+          "variants": [
+            {
+              "id": "two-days",
+              "daysPerWeek": 2,
+              "sessions": [
+                {
+                  "sessionId": "two-days-a",
+                  "name": "Tag A: Kniebeuge, Bankdrücken und Rudern",
+                  "estimatedMinutes": 40,
+                  "slots": [
+                    {
+                      "slotId": "back-squat",
+                      "exerciseId": "6ac21d094c342c17f74c3cbe",
+                      "name": "Langhantel-Kniebeuge",
+                      "prescription": {
+                        "order": 1,
+                        "sets": [
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 8
+                            }
+                          },
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            }
+                          },
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 3,
+                              "max": 3
+                            }
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 120,
+                            "order": 3
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 180,
+                            "order": 4
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 180,
+                            "order": 5
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "bench-press",
+                      "exerciseId": "6ac21d094c342c17f74c3cce",
+                      "name": "Bankdrücken",
+                      "prescription": {
+                        "order": 2,
+                        "sets": [
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 8
+                            }
+                          },
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            }
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 90,
+                            "order": 2
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 150,
+                            "order": 3
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 150,
+                            "order": 4
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "barbell-row",
+                      "exerciseId": "6ac21d094c342c17f74c3ce1",
+                      "name": "Langhantelrudern",
+                      "prescription": {
+                        "order": 3,
+                        "sets": [
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 6,
+                              "max": 8
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 6,
+                              "max": 8
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 6,
+                              "max": 8
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 120,
+                            "order": 1
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 120,
+                            "order": 2
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "romanian-deadlift",
+                      "exerciseId": "6ac21d094c342c17f74c3cc6",
+                      "name": "Rumänisches Kreuzheben",
+                      "prescription": {
+                        "order": 4,
+                        "sets": [
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 3
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 3
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 120,
+                            "order": 1
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "plank",
+                      "exerciseId": "6ac21d094c342c17f74c3d32",
+                      "name": "Plank",
+                      "prescription": {
+                        "order": 5,
+                        "sets": [
+                          {
+                            "category": "working",
+                            "plannedDuration": 30
+                          },
+                          {
+                            "category": "working",
+                            "plannedDuration": 30
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 45,
+                            "order": 1
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "activities": [],
+                  "executionGroups": []
+                },
+                {
+                  "sessionId": "two-days-b",
+                  "name": "Tag B: Kreuzheben, Drücken und Latziehen",
+                  "estimatedMinutes": 40,
+                  "slots": [
+                    {
+                      "slotId": "deadlift",
+                      "exerciseId": "6ac21d094c342c17f74c3cc4",
+                      "name": "Kreuzheben",
+                      "prescription": {
+                        "order": 1,
+                        "sets": [
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            }
+                          },
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 3,
+                              "max": 3
+                            }
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 120,
+                            "order": 2
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 180,
+                            "order": 3
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 180,
+                            "order": 4
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "overhead-press",
+                      "exerciseId": "6ac21d094c342c17f74c3cd8",
+                      "name": "Schulterdrücken",
+                      "prescription": {
+                        "order": 2,
+                        "sets": [
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            }
+                          },
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 3,
+                              "max": 3
+                            }
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 90,
+                            "order": 2
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 150,
+                            "order": 3
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 150,
+                            "order": 4
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "lat-pulldown",
+                      "exerciseId": "6ac21d094c342c17f74c3ce8",
+                      "name": "Latzug",
+                      "prescription": {
+                        "order": 3,
+                        "sets": [
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 90,
+                            "order": 1
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 90,
+                            "order": 2
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "goblet-squat",
+                      "exerciseId": "6ac21d094c342c17f74c3cc0",
+                      "name": "Goblet Squat",
+                      "prescription": {
+                        "order": 4,
+                        "sets": [
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rirTarget": 3
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rirTarget": 3
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 90,
+                            "order": 1
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "dead-bug",
+                      "exerciseId": "6ac21d094c342c17f74c3d08",
+                      "name": "Dead Bug",
+                      "prescription": {
+                        "order": 5,
+                        "sets": [
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 45,
+                            "order": 1
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "activities": [],
+                  "executionGroups": []
+                }
+              ]
+            },
+            {
+              "id": "three-days",
+              "daysPerWeek": 3,
+              "sessions": [
+                {
+                  "sessionId": "three-days-a",
+                  "name": "Tag A: Kniebeuge und Bankdrücken",
+                  "estimatedMinutes": 35,
+                  "slots": [
+                    {
+                      "slotId": "back-squat",
+                      "exerciseId": "6ac21d094c342c17f74c3cbe",
+                      "name": "Langhantel-Kniebeuge",
+                      "prescription": {
+                        "order": 1,
+                        "sets": [
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 8
+                            }
+                          },
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            }
+                          },
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 3,
+                              "max": 3
+                            }
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 120,
+                            "order": 3
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 180,
+                            "order": 4
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 180,
+                            "order": 5
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "bench-press",
+                      "exerciseId": "6ac21d094c342c17f74c3cce",
+                      "name": "Bankdrücken",
+                      "prescription": {
+                        "order": 2,
+                        "sets": [
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 8
+                            }
+                          },
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            }
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 90,
+                            "order": 2
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 150,
+                            "order": 3
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 150,
+                            "order": 4
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "barbell-row",
+                      "exerciseId": "6ac21d094c342c17f74c3ce1",
+                      "name": "Langhantelrudern",
+                      "prescription": {
+                        "order": 3,
+                        "sets": [
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 6,
+                              "max": 8
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 6,
+                              "max": 8
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 6,
+                              "max": 8
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 120,
+                            "order": 1
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 120,
+                            "order": 2
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "plank",
+                      "exerciseId": "6ac21d094c342c17f74c3d32",
+                      "name": "Plank",
+                      "prescription": {
+                        "order": 4,
+                        "sets": [
+                          {
+                            "category": "working",
+                            "plannedDuration": 30
+                          },
+                          {
+                            "category": "working",
+                            "plannedDuration": 30
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 45,
+                            "order": 1
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "activities": [],
+                  "executionGroups": []
+                },
+                {
+                  "sessionId": "three-days-b",
+                  "name": "Tag B: Kreuzheben und Drücken",
+                  "estimatedMinutes": 30,
+                  "slots": [
+                    {
+                      "slotId": "deadlift",
+                      "exerciseId": "6ac21d094c342c17f74c3cc4",
+                      "name": "Kreuzheben",
+                      "prescription": {
+                        "order": 1,
+                        "sets": [
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            }
+                          },
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 3,
+                              "max": 3
+                            }
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 120,
+                            "order": 2
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 180,
+                            "order": 3
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "overhead-press",
+                      "exerciseId": "6ac21d094c342c17f74c3cd8",
+                      "name": "Schulterdrücken",
+                      "prescription": {
+                        "order": 2,
+                        "sets": [
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            }
+                          },
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 3,
+                              "max": 3
+                            }
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 90,
+                            "order": 2
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 150,
+                            "order": 3
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 150,
+                            "order": 4
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "lat-pulldown",
+                      "exerciseId": "6ac21d094c342c17f74c3ce8",
+                      "name": "Latzug",
+                      "prescription": {
+                        "order": 3,
+                        "sets": [
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 90,
+                            "order": 1
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 90,
+                            "order": 2
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "dead-bug",
+                      "exerciseId": "6ac21d094c342c17f74c3d08",
+                      "name": "Dead Bug",
+                      "prescription": {
+                        "order": 4,
+                        "sets": [
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 45,
+                            "order": 1
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "activities": [],
+                  "executionGroups": []
+                },
+                {
+                  "sessionId": "three-days-c",
+                  "name": "Tag C: Kniebeuge, Bankdrücken und Latziehen",
+                  "estimatedMinutes": 35,
+                  "slots": [
+                    {
+                      "slotId": "back-squat",
+                      "exerciseId": "6ac21d094c342c17f74c3cbe",
+                      "name": "Langhantel-Kniebeuge",
+                      "prescription": {
+                        "order": 1,
+                        "sets": [
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 8
+                            }
+                          },
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            }
+                          },
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 3,
+                              "max": 3
+                            }
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 120,
+                            "order": 3
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 180,
+                            "order": 4
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 180,
+                            "order": 5
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "bench-press",
+                      "exerciseId": "6ac21d094c342c17f74c3cce",
+                      "name": "Bankdrücken",
+                      "prescription": {
+                        "order": 2,
+                        "sets": [
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 8
+                            }
+                          },
+                          {
+                            "category": "warmup",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            }
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 5,
+                              "max": 5
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 90,
+                            "order": 2
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 150,
+                            "order": 3
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 150,
+                            "order": 4
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "lat-pulldown",
+                      "exerciseId": "6ac21d094c342c17f74c3ce8",
+                      "name": "Latzug",
+                      "prescription": {
+                        "order": 3,
+                        "sets": [
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 90,
+                            "order": 1
+                          },
+                          {
+                            "kind": "rest",
+                            "durationTarget": 90,
+                            "order": 2
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "slotId": "pallof-press",
+                      "exerciseId": "6ac21d094c342c17f74c3d07",
+                      "name": "Pallof Press",
+                      "prescription": {
+                        "order": 4,
+                        "sets": [
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          },
+                          {
+                            "category": "working",
+                            "plannedReps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rirTarget": 2
+                          }
+                        ],
+                        "activities": [
+                          {
+                            "kind": "rest",
+                            "durationTarget": 45,
+                            "order": 1
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "activities": [],
+                  "executionGroups": []
+                }
+              ]
+            }
+          ]
+        },
+        "exercises": [
+          {
+            "id": "6ac21d094c342c17f74c3cbe",
+            "name": "Langhantel-Kniebeuge",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "barbell_plates",
+              "power_rack"
+            ]
+          },
+          {
+            "id": "6ac21d094c342c17f74c3cce",
+            "name": "Bankdrücken",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "barbell_plates",
+              "flat_bench"
+            ]
+          },
+          {
+            "id": "6ac21d094c342c17f74c3ce1",
+            "name": "Langhantelrudern",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "barbell_plates"
+            ]
+          },
+          {
+            "id": "6ac21d094c342c17f74c3cc6",
+            "name": "Rumänisches Kreuzheben",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "barbell_plates"
+            ]
+          },
+          {
+            "id": "6ac21d094c342c17f74c3d32",
+            "name": "Plank",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac21d094c342c17f74c3cc4",
+            "name": "Kreuzheben",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "barbell_plates"
+            ]
+          },
+          {
+            "id": "6ac21d094c342c17f74c3cd8",
+            "name": "Schulterdrücken",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "barbell_plates",
+              "power_rack"
+            ]
+          },
+          {
+            "id": "6ac21d094c342c17f74c3ce8",
+            "name": "Latzug",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "lat_pulldown"
+            ]
+          },
+          {
+            "id": "6ac21d094c342c17f74c3cc0",
+            "name": "Goblet Squat",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "dumbbells"
+            ]
+          },
+          {
+            "id": "6ac21d094c342c17f74c3d08",
+            "name": "Dead Bug",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac21d094c342c17f74c3d07",
+            "name": "Pallof Press",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "cable_trainer"
+            ]
+          }
+        ]
+      },
+      "related": {},
+      "presentation": {
+        "locale": "de",
+        "unitSystem": "metric",
+        "theme": "light",
+        "skin": "calm",
+        "timeZone": "UTC"
+      }
+    },
+    "itemShortConditioning": {
+      "view": "workout-library",
+      "record": {
+        "mode": "item",
+        "id": "short-conditioning",
+        "version": 1,
+        "format": "workout",
+        "title": "Short Conditioning",
+        "summary": "Six hard 30-second rowing intervals in about 15 minutes.",
+        "tags": {
+          "focus": [
+            "full-body"
+          ],
+          "style": [
+            "conditioning"
+          ],
+          "purpose": [
+            "general-fitness",
+            "weight-management"
+          ],
+          "experience": [
+            "beginner",
+            "intermediate"
+          ]
+        },
+        "sessionMinutes": {
+          "min": 15,
+          "max": 15
+        },
+        "supportedDays": [],
+        "fit": {
+          "state": "exact",
+          "variantIds": []
+        },
+        "appPath": "/library/short-conditioning",
+        "description": "A three-minute warm-up, six 30-second hard efforts with a minute of easy rowing between each, and a two-minute cool-down. Hard means a pace you could repeat six times, not an all-out sprint.",
+        "suitability": "For anyone who can row comfortably. You need a rowing machine.",
+        "trainingSpace": {
+          "id": "ts-a2c3dc3c-582c-45c6-bfaa-da252d106a4a",
+          "name": "Default",
+          "isDefault": true,
+          "equipment": "confirmed"
+        },
+        "content": {
+          "format": "workout",
+          "session": {
+            "sessionId": "main",
+            "name": "Short Conditioning",
+            "estimatedMinutes": 15,
+            "slots": [
+              {
+                "slotId": "row-intervals",
+                "exerciseId": "6ac21d094c342c17f74c3e1b",
+                "name": "Rowing Erg",
+                "prescription": {
+                  "order": 1,
+                  "sets": [
+                    {
+                      "category": "warmup",
+                      "plannedDuration": 180
+                    },
+                    {
+                      "category": "interval",
+                      "plannedDuration": 30
+                    },
+                    {
+                      "category": "recovery",
+                      "plannedDuration": 60
+                    },
+                    {
+                      "category": "interval",
+                      "plannedDuration": 30
+                    },
+                    {
+                      "category": "recovery",
+                      "plannedDuration": 60
+                    },
+                    {
+                      "category": "interval",
+                      "plannedDuration": 30
+                    },
+                    {
+                      "category": "recovery",
+                      "plannedDuration": 60
+                    },
+                    {
+                      "category": "interval",
+                      "plannedDuration": 30
+                    },
+                    {
+                      "category": "recovery",
+                      "plannedDuration": 60
+                    },
+                    {
+                      "category": "interval",
+                      "plannedDuration": 30
+                    },
+                    {
+                      "category": "recovery",
+                      "plannedDuration": 60
+                    },
+                    {
+                      "category": "interval",
+                      "plannedDuration": 30
+                    },
+                    {
+                      "category": "cooldown",
+                      "plannedDuration": 120
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "exercises": [
+          {
+            "id": "6ac21d094c342c17f74c3e1b",
+            "name": "Rowing Erg",
+            "modality": "cardio",
+            "equipmentRequired": [
+              "rower"
+            ]
+          }
+        ]
+      },
+      "related": {},
+      "presentation": {
+        "locale": "en",
+        "unitSystem": "metric",
+        "theme": "light",
+        "skin": "calm",
+        "timeZone": "UTC"
+      }
+    }
+  },
+  "workoutLibraryVocabulary": [
+    {
+      "locale": "en",
+      "path": [
+        "fit",
+        "exact"
+      ],
+      "text": "Exact fit"
+    },
+    {
+      "locale": "en",
+      "path": [
+        "fit",
+        "adaptable"
+      ],
+      "text": "Adaptable"
+    },
+    {
+      "locale": "en",
+      "path": [
+        "fit",
+        "unavailable"
+      ],
+      "text": "Unavailable"
+    },
+    {
+      "locale": "en",
+      "path": [
+        "format",
+        "program"
+      ],
+      "text": "Program"
+    },
+    {
+      "locale": "en",
+      "path": [
+        "purpose",
+        "build-strength"
+      ],
+      "text": "Build strength"
+    },
+    {
+      "locale": "de",
+      "path": [
+        "fit",
+        "exact"
+      ],
+      "text": "Passt genau"
+    },
+    {
+      "locale": "de",
+      "path": [
+        "fit",
+        "adaptable"
+      ],
+      "text": "Anpassbar"
+    },
+    {
+      "locale": "de",
+      "path": [
+        "fit",
+        "unavailable"
+      ],
+      "text": "Nicht verfügbar"
+    },
+    {
+      "locale": "de",
+      "path": [
+        "format",
+        "program"
+      ],
+      "text": "Programm"
+    },
+    {
+      "locale": "de",
+      "path": [
+        "purpose",
+        "build-strength"
+      ],
+      "text": "Kraft aufbauen"
+    }
+  ]
 }

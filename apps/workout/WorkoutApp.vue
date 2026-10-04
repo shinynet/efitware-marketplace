@@ -8,6 +8,7 @@ import WorkoutReviewView from './WorkoutReviewView.vue'
 import ShareView from './ShareView.vue'
 import HostFollowUp from './HostFollowUp.vue'
 import LibraryView from './LibraryView.vue'
+import WorkoutLibraryView from './WorkoutLibraryView.vue'
 import ExerciseDetailView from './ExerciseDetailView.vue'
 import ContextView from './ContextView.vue'
 import MemoryView from './MemoryView.vue'
@@ -54,7 +55,7 @@ const expanded = ref(false)
 const checkInDraft = ref('')
 // The compact card owns the draft while the goal view is unmounted; the goal view reports it once mounted.
 watch(checkInDraft, draft => { if (!expanded.value) setDirty('goal-check-in', !!draft.trim()) })
-const backLabel = computed(() => ({ open_status: 'outcomeUi.backStatus', open_integration: 'outcomeUi.backIntegration', open_receipts: 'outcomeUi.backReceipts', open_workout_review: 'outcomeUi.backReview', open_share: 'outcomeUi.backShare', open_library: 'contextUi.backLibrary', open_exercise: 'contextUi.backExercise', open_context: 'contextUi.backContext', open_memory: 'contextUi.backMemory', open_exercise_progress: 'progressUi.backExercise', open_body_metric: 'progressUi.backMetric', open_progress: 'progressUi.back', open_goal: 'backToGoal', open_goal_plan: 'backToGoalPlan', open_template: 'backToTemplate', open_program: 'backToProgram', open_schedule: 'backToSchedule', open_calendar: 'backToCalendar', open_workout: 'backToWorkout' })[backTarget.value?.name ?? 'open_workout'] ?? 'backToWorkout')
+const backLabel = computed(() => ({ open_status: 'outcomeUi.backStatus', open_integration: 'outcomeUi.backIntegration', open_receipts: 'outcomeUi.backReceipts', open_workout_review: 'outcomeUi.backReview', open_share: 'outcomeUi.backShare', open_library: 'contextUi.backLibrary', open_workout_library: 'workoutLibraryUi.back', open_exercise: 'contextUi.backExercise', open_context: 'contextUi.backContext', open_memory: 'contextUi.backMemory', open_exercise_progress: 'progressUi.backExercise', open_body_metric: 'progressUi.backMetric', open_progress: 'progressUi.back', open_goal: 'backToGoal', open_goal_plan: 'backToGoalPlan', open_template: 'backToTemplate', open_program: 'backToProgram', open_schedule: 'backToSchedule', open_calendar: 'backToCalendar', open_workout: 'backToWorkout' })[backTarget.value?.name ?? 'open_workout'] ?? 'backToWorkout')
 const refreshLabel = computed(() => workout.value ? 'refresh' : template.value ? 'templateRefresh' : 'recordRefresh')
 const staleLabel = computed(() => workout.value ? 'stale' : template.value ? 'templateStale' : 'recordStale')
 const system = computed(() => resolveDisplayUnitSystem(presentation.value?.unitSystem, locale.value))
@@ -255,6 +256,14 @@ onUnmounted(connection.close)
       />
       <LibraryView
         v-if="route?.view === 'library'"
+        :library="route"
+        :busy="busy"
+        :navigate="connection.navigate"
+        :send-follow-up="connection.sendFollowUp"
+      />
+      <WorkoutLibraryView
+        v-if="route?.view === 'workout-library'"
+        :key="route.record.mode === 'item' ? route.record.id : 'browse'"
         :library="route"
         :busy="busy"
         :navigate="connection.navigate"

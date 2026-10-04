@@ -114,6 +114,12 @@
       "resourceUri": "ui://efitware/app-v1.html",
       "schemaPath": "contract/workout-review-view.schema.json",
       "displayTool": "open_workout_review"
+    },
+    "workout-library": {
+      "delivery": "implemented",
+      "resourceUri": "ui://efitware/app-v1.html",
+      "schemaPath": "contract/workout-library-view.schema.json",
+      "displayTool": "open_workout_library"
     }
   },
   "tools": {
@@ -1125,6 +1131,48 @@
       "delivery": "implemented",
       "interaction": "host",
       "note": "The host AI performs this requested superset/circuit grouping edit using canonical tools and opens the resulting view; the card shows groups and links to the app for grouping changes."
+    },
+    "search_workout_library": {
+      "role": "supporting-read",
+      "views": [
+        "workout-library"
+      ],
+      "delivery": "implemented",
+      "interaction": "supporting-read"
+    },
+    "get_workout_library_item": {
+      "role": "supporting-read",
+      "views": [
+        "workout-library"
+      ],
+      "delivery": "implemented",
+      "interaction": "supporting-read"
+    },
+    "preview_workout_library_item": {
+      "role": "supporting-read",
+      "views": [
+        "workout-library"
+      ],
+      "delivery": "implemented",
+      "interaction": "supporting-read"
+    },
+    "open_workout_library": {
+      "role": "display",
+      "views": [
+        "workout-library"
+      ],
+      "delivery": "implemented",
+      "interaction": "display"
+    },
+    "save_workout_library_workout": {
+      "role": "action",
+      "views": [
+        "workout-library",
+        "template"
+      ],
+      "delivery": "implemented",
+      "interaction": "host",
+      "note": "The host AI previews the item, explains the fit and every swap, saves on request and opens the saved workout; the card has no save control."
     }
   },
   "appOnlyExclusions": [

@@ -1,0 +1,1169 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "view": {
+      "type": "string",
+      "const": "workout-library"
+    },
+    "record": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "type": "string",
+              "const": "browse"
+            },
+            "trainingSpace": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "isDefault": {
+                  "type": "boolean"
+                },
+                "equipment": {
+                  "type": "string",
+                  "enum": [
+                    "confirmed",
+                    "unconfigured"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "isDefault",
+                "equipment"
+              ]
+            },
+            "query": {
+              "type": "object",
+              "properties": {
+                "q": {
+                  "type": "string"
+                },
+                "format": {
+                  "type": "string",
+                  "enum": [
+                    "workout",
+                    "program"
+                  ]
+                },
+                "purpose": {
+                  "type": "string"
+                },
+                "focus": {
+                  "type": "string"
+                },
+                "style": {
+                  "type": "string"
+                },
+                "experience": {
+                  "type": "string"
+                },
+                "maxMinutes": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "daysPerWeek": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "weekStart": {
+                  "type": "string"
+                },
+                "fit": {
+                  "type": "string",
+                  "enum": [
+                    "fits",
+                    "exact",
+                    "all"
+                  ]
+                },
+                "page": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "limit": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "fit",
+                "page",
+                "limit"
+              ]
+            },
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                  },
+                  "version": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "format": {
+                    "type": "string",
+                    "enum": [
+                      "workout",
+                      "program"
+                    ]
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "summary": {
+                    "type": "string"
+                  },
+                  "tags": {
+                    "type": "object",
+                    "properties": {
+                      "focus": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "style": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "purpose": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "experience": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "focus",
+                      "style",
+                      "purpose",
+                      "experience"
+                    ]
+                  },
+                  "sessionMinutes": {
+                    "type": "object",
+                    "properties": {
+                      "min": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "max": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      }
+                    },
+                    "required": [
+                      "min",
+                      "max"
+                    ]
+                  },
+                  "supportedDays": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "defaultWeeks": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "fit": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "state": {
+                            "type": "string",
+                            "const": "needs-space"
+                          }
+                        },
+                        "required": [
+                          "state"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "state": {
+                            "type": "string",
+                            "const": "exact"
+                          },
+                          "variantIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                            }
+                          }
+                        },
+                        "required": [
+                          "state",
+                          "variantIds"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "state": {
+                            "type": "string",
+                            "const": "adaptable"
+                          },
+                          "variantIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                            }
+                          },
+                          "swaps": {
+                            "minItems": 1,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "slotId": {
+                                  "type": "string",
+                                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                },
+                                "exerciseId": {
+                                  "type": "string",
+                                  "pattern": "^[a-f0-9]{24}$"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "cause": {
+                                  "type": "string",
+                                  "enum": [
+                                    "equipment",
+                                    "limitations-or-hidden",
+                                    "personal"
+                                  ]
+                                },
+                                "missingEquipment": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "required": [
+                                "slotId",
+                                "cause",
+                                "missingEquipment"
+                              ]
+                            }
+                          }
+                        },
+                        "required": [
+                          "state",
+                          "variantIds",
+                          "swaps"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "state": {
+                            "type": "string",
+                            "const": "unavailable"
+                          },
+                          "reason": {
+                            "type": "string",
+                            "enum": [
+                              "equipment",
+                              "limitations",
+                              "days",
+                              "catalog",
+                              "personal"
+                            ]
+                          },
+                          "slotIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                            }
+                          },
+                          "exercises": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "slotId": {
+                                  "type": "string",
+                                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                },
+                                "exerciseId": {
+                                  "type": "string",
+                                  "pattern": "^[a-f0-9]{24}$"
+                                },
+                                "name": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "slotId"
+                              ]
+                            }
+                          },
+                          "missingEquipment": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "requiredDays": {
+                            "type": "integer",
+                            "exclusiveMinimum": 0,
+                            "maximum": 9007199254740991
+                          }
+                        },
+                        "required": [
+                          "state",
+                          "reason",
+                          "slotIds",
+                          "exercises"
+                        ]
+                      }
+                    ]
+                  },
+                  "programWeek": {
+                    "type": "object",
+                    "properties": {
+                      "weekStart": {
+                        "type": "string"
+                      },
+                      "capacity": {
+                        "type": "integer",
+                        "minimum": -9007199254740991,
+                        "maximum": 9007199254740991
+                      },
+                      "variantId": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "weekStart",
+                      "capacity"
+                    ]
+                  },
+                  "appPath": {
+                    "type": "string",
+                    "pattern": "^\\/library\\/[a-z0-9-]+$"
+                  }
+                },
+                "required": [
+                  "id",
+                  "version",
+                  "format",
+                  "title",
+                  "summary",
+                  "tags",
+                  "sessionMinutes",
+                  "supportedDays",
+                  "fit",
+                  "appPath"
+                ]
+              }
+            },
+            "meta": {
+              "type": "object",
+              "properties": {
+                "page": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "limit": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "total": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "page",
+                "limit",
+                "total"
+              ]
+            }
+          },
+          "required": [
+            "mode",
+            "trainingSpace",
+            "query",
+            "data",
+            "meta"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "version": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991
+            },
+            "format": {
+              "type": "string",
+              "enum": [
+                "workout",
+                "program"
+              ]
+            },
+            "title": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "object",
+              "properties": {
+                "focus": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "style": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "purpose": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "experience": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "focus",
+                "style",
+                "purpose",
+                "experience"
+              ]
+            },
+            "sessionMinutes": {
+              "type": "object",
+              "properties": {
+                "min": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "max": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                }
+              },
+              "required": [
+                "min",
+                "max"
+              ]
+            },
+            "supportedDays": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              }
+            },
+            "defaultWeeks": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991
+            },
+            "fit": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "state": {
+                      "type": "string",
+                      "const": "needs-space"
+                    }
+                  },
+                  "required": [
+                    "state"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "state": {
+                      "type": "string",
+                      "const": "exact"
+                    },
+                    "variantIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                      }
+                    }
+                  },
+                  "required": [
+                    "state",
+                    "variantIds"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "state": {
+                      "type": "string",
+                      "const": "adaptable"
+                    },
+                    "variantIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                      }
+                    },
+                    "swaps": {
+                      "minItems": 1,
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "slotId": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                          },
+                          "exerciseId": {
+                            "type": "string",
+                            "pattern": "^[a-f0-9]{24}$"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "cause": {
+                            "type": "string",
+                            "enum": [
+                              "equipment",
+                              "limitations-or-hidden",
+                              "personal"
+                            ]
+                          },
+                          "missingEquipment": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "slotId",
+                          "cause",
+                          "missingEquipment"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "state",
+                    "variantIds",
+                    "swaps"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "state": {
+                      "type": "string",
+                      "const": "unavailable"
+                    },
+                    "reason": {
+                      "type": "string",
+                      "enum": [
+                        "equipment",
+                        "limitations",
+                        "days",
+                        "catalog",
+                        "personal"
+                      ]
+                    },
+                    "slotIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                      }
+                    },
+                    "exercises": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "slotId": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                          },
+                          "exerciseId": {
+                            "type": "string",
+                            "pattern": "^[a-f0-9]{24}$"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "slotId"
+                        ]
+                      }
+                    },
+                    "missingEquipment": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "requiredDays": {
+                      "type": "integer",
+                      "exclusiveMinimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "state",
+                    "reason",
+                    "slotIds",
+                    "exercises"
+                  ]
+                }
+              ]
+            },
+            "programWeek": {
+              "type": "object",
+              "properties": {
+                "weekStart": {
+                  "type": "string"
+                },
+                "capacity": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "variantId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "weekStart",
+                "capacity"
+              ]
+            },
+            "appPath": {
+              "type": "string",
+              "pattern": "^\\/library\\/[a-z0-9-]+$"
+            },
+            "description": {
+              "type": "string"
+            },
+            "suitability": {
+              "type": "string"
+            },
+            "trainingSpace": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "isDefault": {
+                  "type": "boolean"
+                },
+                "equipment": {
+                  "type": "string",
+                  "enum": [
+                    "confirmed",
+                    "unconfigured"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "isDefault",
+                "equipment"
+              ]
+            },
+            "content": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "format": {
+                      "type": "string",
+                      "const": "workout"
+                    },
+                    "session": {
+                      "type": "object",
+                      "properties": {
+                        "sessionId": {
+                          "type": "string",
+                          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "estimatedMinutes": {
+                          "type": "number",
+                          "exclusiveMinimum": 0
+                        },
+                        "slots": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "slotId": {
+                                "type": "string",
+                                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                              },
+                              "exerciseId": {
+                                "type": "string",
+                                "pattern": "^[a-f0-9]{24}$"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "prescription": {
+                                "type": "object",
+                                "properties": {
+                                  "order": {
+                                    "type": "number"
+                                  },
+                                  "section": {
+                                    "type": "string",
+                                    "enum": [
+                                      "warmup",
+                                      "main",
+                                      "cooldown"
+                                    ]
+                                  },
+                                  "sets": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "category": {
+                                          "type": "string"
+                                        },
+                                        "plannedReps": {
+                                          "type": "object",
+                                          "properties": {
+                                            "min": {
+                                              "type": "number"
+                                            },
+                                            "max": {
+                                              "type": "number"
+                                            }
+                                          },
+                                          "required": [
+                                            "min",
+                                            "max"
+                                          ]
+                                        },
+                                        "plannedDuration": {
+                                          "type": "number",
+                                          "minimum": 0
+                                        },
+                                        "plannedDistance": {
+                                          "type": "number",
+                                          "minimum": 0
+                                        },
+                                        "rirTarget": {
+                                          "type": "number",
+                                          "minimum": 0
+                                        },
+                                        "plannedRpe": {
+                                          "type": "number",
+                                          "minimum": 0
+                                        },
+                                        "side": {
+                                          "type": "string",
+                                          "enum": [
+                                            "left",
+                                            "right",
+                                            "both"
+                                          ]
+                                        }
+                                      },
+                                      "required": [
+                                        "category"
+                                      ]
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "order",
+                                  "sets"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "slotId",
+                              "prescription"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "sessionId",
+                        "name",
+                        "estimatedMinutes",
+                        "slots"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "format",
+                    "session"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "format": {
+                      "type": "string",
+                      "const": "program"
+                    },
+                    "variants": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                          },
+                          "daysPerWeek": {
+                            "type": "integer",
+                            "minimum": -9007199254740991,
+                            "maximum": 9007199254740991
+                          },
+                          "sessions": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "sessionId": {
+                                  "type": "string",
+                                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "estimatedMinutes": {
+                                  "type": "number",
+                                  "exclusiveMinimum": 0
+                                },
+                                "slots": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "slotId": {
+                                        "type": "string",
+                                        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                                      },
+                                      "exerciseId": {
+                                        "type": "string",
+                                        "pattern": "^[a-f0-9]{24}$"
+                                      },
+                                      "name": {
+                                        "type": "string"
+                                      },
+                                      "prescription": {
+                                        "type": "object",
+                                        "properties": {
+                                          "order": {
+                                            "type": "number"
+                                          },
+                                          "section": {
+                                            "type": "string",
+                                            "enum": [
+                                              "warmup",
+                                              "main",
+                                              "cooldown"
+                                            ]
+                                          },
+                                          "sets": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "properties": {
+                                                "category": {
+                                                  "type": "string"
+                                                },
+                                                "plannedReps": {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "min": {
+                                                      "type": "number"
+                                                    },
+                                                    "max": {
+                                                      "type": "number"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "min",
+                                                    "max"
+                                                  ]
+                                                },
+                                                "plannedDuration": {
+                                                  "type": "number",
+                                                  "minimum": 0
+                                                },
+                                                "plannedDistance": {
+                                                  "type": "number",
+                                                  "minimum": 0
+                                                },
+                                                "rirTarget": {
+                                                  "type": "number",
+                                                  "minimum": 0
+                                                },
+                                                "plannedRpe": {
+                                                  "type": "number",
+                                                  "minimum": 0
+                                                },
+                                                "side": {
+                                                  "type": "string",
+                                                  "enum": [
+                                                    "left",
+                                                    "right",
+                                                    "both"
+                                                  ]
+                                                }
+                                              },
+                                              "required": [
+                                                "category"
+                                              ]
+                                            }
+                                          }
+                                        },
+                                        "required": [
+                                          "order",
+                                          "sets"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "slotId",
+                                      "prescription"
+                                    ]
+                                  }
+                                }
+                              },
+                              "required": [
+                                "sessionId",
+                                "name",
+                                "estimatedMinutes",
+                                "slots"
+                              ]
+                            }
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "daysPerWeek",
+                          "sessions"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "format",
+                    "variants"
+                  ]
+                }
+              ]
+            },
+            "exercises": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{24}$"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "modality": {
+                    "type": "string"
+                  },
+                  "equipmentRequired": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "modality",
+                  "equipmentRequired"
+                ]
+              }
+            },
+            "mode": {
+              "type": "string",
+              "const": "item"
+            }
+          },
+          "required": [
+            "id",
+            "version",
+            "format",
+            "title",
+            "summary",
+            "tags",
+            "sessionMinutes",
+            "supportedDays",
+            "fit",
+            "appPath",
+            "description",
+            "suitability",
+            "trainingSpace",
+            "content",
+            "exercises",
+            "mode"
+          ]
+        }
+      ]
+    },
+    "related": {
+      "type": "object",
+      "properties": {}
+    },
+    "presentation": {
+      "type": "object",
+      "properties": {
+        "locale": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unitSystem": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "metric",
+                "imperial"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "theme": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "system",
+                "light",
+                "dark"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "skin": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "calm",
+                "cyanotype",
+                "camellia"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "timeZone": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "locale",
+        "unitSystem",
+        "theme",
+        "skin",
+        "timeZone"
+      ]
+    }
+  },
+  "required": [
+    "view",
+    "record",
+    "related",
+    "presentation"
+  ]
+}
