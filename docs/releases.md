@@ -6,6 +6,18 @@ The application owns its product DTOs, MCP tools, authentication, permissions an
 
 `pnpm build` bundles Vue, fonts, brand assets and theme tokens into `dist/card/workout.html`, then generates the open draft-07 input schema. The product validates its raw tool output against that schema using Ajv without stripping extra fields, applying defaults or coercing types. The product DTO remains authoritative.
 
+## Library cover art (0.1.28)
+
+Card and schema change (EF-1631, application EF-1609, epic EF-1536). No tool inventory change, so `minimumAppCommit` is unchanged, and the manifest stays format 8.
+
+- **Schema.** A Library item, in browse results and in item mode, admits optional `cover: { thumbnail: { url, alt, width, height } }`: the item's 4:3 cover art as one JPEG on the media origin (480 × 360), with the manifest's alt text. The application leaves it out while an item has no art for its current version, so a payload without it validates as before. `contract/workout-library-view.schema.json` is regenerated.
+- **Card.** Each browse result is headed by its thumbnail (full result width on a phone, 160 px beside the text from `sm`), loaded lazily. The item view opens with it (full width on a phone, 240 px beside the title from `sm`), and the compact item card shows it at 96 px beside the title. Every image has its explicit width and height and the alt text inside a fixed 4:3 box, so nothing shifts as it loads. Without a `cover`, or when the image fails to load (a host that blocks the media origin included), the box stays a plain `surface-dark` placeholder hidden from assistive technology: a broken image is never drawn. The compact item card measures 304 px tall at 390 px wide with art and 282 px without, inside the 420 px budget.
+- **Host policy.** The card's resource metadata, including its CSP, is served by the application (`server/mcp/ui/workout.ts`), which declares `resourceDomains: []` today. The application adds its media origin there in the change that pins this release; until then a host that enforces the declared CSP refuses the image, and the card shows the placeholder.
+
+`contract/compat-fixtures.json` `workoutLibrary` adds `browseCovers` (the browse page as the application emits it with covers pinned: four items with art, and the two Programs whose content moved past their art without) and `itemCover` (Short Conditioning with its cover). Both pass the application's `search_workout_library` and `get_workout_library_item` read schemas. `contract/workout-library-covers.test.ts` (happy-dom) validates payloads with and without a cover, refuses a cover without a thumbnail, alt text or integer size, checks each browse result's image attributes and placeholder, the item view's cover above its title, the swap to the placeholder when an image fails to load, and the compact card's thumbnail.
+
+This release builds on 0.1.27. The application already emits `cover` (EF-1609), so it can pin this release at any time. This is a staged prerelease: catalog promotion and `channels.json` follow only after that application deployment is READY in production.
+
 ## Library Program blocks and specialty styles (0.1.27)
 
 Card, schema and skill change (application EF-1622 and EF-1623, epic EF-1536). No tool inventory change, so `minimumAppCommit` is unchanged, and the manifest stays format 8.

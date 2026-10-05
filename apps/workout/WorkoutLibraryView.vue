@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import HostFollowUp from './HostFollowUp.vue'
+import WorkoutLibraryCover from './WorkoutLibraryCover.vue'
 import WorkoutLibrarySession from './WorkoutLibrarySession.vue'
 import type { LibraryBlock, LibraryFit, LibraryItem, LibraryItemRecord, LibrarySession, WorkoutLibraryView as LibraryCardView } from './workoutLibraryModel'
 import { workoutLibraryArguments, workoutLibraryItemArguments } from './workoutLibraryModel'
@@ -107,44 +108,51 @@ const facts = (item: { format: string, sessionMinutes: { min: number, max: numbe
       <li
         v-for="item in record.data"
         :key="item.id"
-        class="rounded border border-surface-dark p-4"
+        class="rounded border border-surface-dark p-4 sm:grid sm:grid-cols-[10rem_minmax(0,1fr)] sm:items-start sm:gap-4"
       >
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <p class="text-xs text-muted">
-            {{ facts(item).join(' · ') }}
+        <WorkoutLibraryCover
+          :cover="item.cover"
+          lazy
+          class="mb-3 sm:mb-0"
+        />
+        <div>
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <p class="text-xs text-muted">
+              {{ facts(item).join(' · ') }}
+            </p>
+            <span
+              class="rounded-full border px-2 py-0.5 text-xs font-semibold"
+              :class="badgeClass(item.fit)"
+            >{{ fitLabel(translator, item.fit) }}</span>
+          </div>
+          <h2 class="my-2 font-serif text-xl">
+            <button
+              type="button"
+              class="title-link"
+              :aria-label="t('workoutLibraryUi.view', { title: item.title })"
+              :disabled="busy"
+              @click="open(item)"
+            >
+              {{ item.title }}
+            </button>
+          </h2>
+          <p class="text-sm">
+            {{ item.summary }}
           </p>
-          <span
-            class="rounded-full border px-2 py-0.5 text-xs font-semibold"
-            :class="badgeClass(item.fit)"
-          >{{ fitLabel(translator, item.fit) }}</span>
-        </div>
-        <h2 class="my-2 font-serif text-xl">
-          <button
-            type="button"
-            class="title-link"
-            :aria-label="t('workoutLibraryUi.view', { title: item.title })"
-            :disabled="busy"
-            @click="open(item)"
+          <p
+            v-if="tagLine(translator, item.tags)"
+            class="mt-2 text-xs text-muted"
           >
-            {{ item.title }}
-          </button>
-        </h2>
-        <p class="text-sm">
-          {{ item.summary }}
-        </p>
-        <p
-          v-if="tagLine(translator, item.tags)"
-          class="mt-2 text-xs text-muted"
-        >
-          {{ tagLine(translator, item.tags) }}
-        </p>
-        <p
-          v-for="line in fitLines(translator, item.fit)"
-          :key="line"
-          class="mt-2 text-sm text-muted"
-        >
-          {{ line }}
-        </p>
+            {{ tagLine(translator, item.tags) }}
+          </p>
+          <p
+            v-for="line in fitLines(translator, item.fit)"
+            :key="line"
+            class="mt-2 text-sm text-muted"
+          >
+            {{ line }}
+          </p>
+        </div>
       </li>
     </ul>
     <nav
@@ -178,24 +186,32 @@ const facts = (item: { format: string, sessionMinutes: { min: number, max: numbe
     class="pb-6"
     aria-labelledby="workout-library-item-heading"
   >
-    <p class="text-xs font-semibold uppercase tracking-wider text-gold-ink">
-      {{ t('workoutLibraryUi.itemEyebrow', { format: vocabularyLabel(translator, 'format', record.format) }) }}
-    </p>
-    <h1
-      id="workout-library-item-heading"
-      class="mt-2 font-serif text-3xl"
-    >
-      {{ record.title }}
-    </h1>
-    <p class="mt-1 text-sm text-muted">
-      {{ facts(record, false).join(' · ') }}
-    </p>
-    <p
-      v-if="tagLine(translator, record.tags)"
-      class="mt-1 text-sm text-muted"
-    >
-      {{ tagLine(translator, record.tags) }}
-    </p>
+    <div class="sm:flex sm:items-start sm:gap-5">
+      <WorkoutLibraryCover
+        :cover="record.cover"
+        class="mb-4 sm:order-last sm:mb-0 sm:w-60 sm:shrink-0"
+      />
+      <div class="min-w-0 sm:flex-1">
+        <p class="text-xs font-semibold uppercase tracking-wider text-gold-ink">
+          {{ t('workoutLibraryUi.itemEyebrow', { format: vocabularyLabel(translator, 'format', record.format) }) }}
+        </p>
+        <h1
+          id="workout-library-item-heading"
+          class="mt-2 font-serif text-3xl"
+        >
+          {{ record.title }}
+        </h1>
+        <p class="mt-1 text-sm text-muted">
+          {{ facts(record, false).join(' · ') }}
+        </p>
+        <p
+          v-if="tagLine(translator, record.tags)"
+          class="mt-1 text-sm text-muted"
+        >
+          {{ tagLine(translator, record.tags) }}
+        </p>
+      </div>
+    </div>
     <p class="mt-3">
       {{ record.description }}
     </p>

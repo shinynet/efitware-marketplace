@@ -6,7 +6,7 @@ import { formatMeasure } from './presentation'
 import { accountBodyMetricUnit, accountLoadUnit, bodyMetricLabelKey, bodyMetricPageKey, formatBodyMetric, formatLoad, formatTotal, seriesUnit, sumLoads, type Total } from './measurement'
 import { summarizeRecurrence } from './recurrencePresentation'
 import { workoutSections } from './lib/sections'
-import { workoutLibraryPath } from './workoutLibraryModel'
+import { workoutLibraryPath, type LibraryCover } from './workoutLibraryModel'
 import { fitLabel, fitLines, minutesLabel, spaceLabel, vocabularyLabel, type LibraryTranslator } from './workoutLibraryPresentation'
 
 /** Translate with optional interpolation values; mirrors vue-i18n's `t`. */
@@ -23,6 +23,8 @@ export interface CompactSummary {
   detail?: CompactFact
   /** Optional small bar chart of a bounded series. */
   bars?: CompactBars
+  /** A Library item's cover thumbnail, beside the title (app EF-1609). */
+  cover?: LibraryCover
   /** Path on app.efitware.com opened by the header link (absolute URLs pass through). */
   path: string
 }
@@ -222,6 +224,7 @@ export const compactSummary = (view: TrainingView, options: Options): CompactSum
         eyebrow: t('workoutLibraryUi.itemEyebrow', { format: vocabularyLabel(library, 'format', record.format) }), title: record.title,
         facts: [fact(t('workoutLibraryUi.space'), spaceLabel(library, record.trainingSpace)), fact(t('workoutLibraryUi.fit'), fitLabel(library, record.fit)), fact(t('workoutLibraryUi.length'), minutesLabel(library, record.sessionMinutes))],
         ...(line ? { detail: fact(fitLabel(library, record.fit), clip(line)) } : {}),
+        ...(record.cover ? { cover: record.cover } : {}),
         path: workoutLibraryPath(record)
       }
     }
