@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { CompactSummary } from './compactSummary'
+import WorkoutLibraryCover from './WorkoutLibraryCover.vue'
 const { summary } = defineProps<{ summary: CompactSummary }>()
 const bars = computed(() => {
   const values = summary.bars?.values ?? []
@@ -18,13 +19,20 @@ const bars = computed(() => {
     class="compact flex flex-col gap-3"
     :aria-label="summary.title"
   >
-    <div class="flex flex-col gap-1">
-      <p class="text-[11px] font-semibold uppercase tracking-[.12em] text-gold-ink">
-        {{ summary.eyebrow }}
-      </p>
-      <h1 class="font-serif text-2xl leading-tight">
-        {{ summary.title }}
-      </h1>
+    <div class="flex items-start gap-3">
+      <div class="flex min-w-0 flex-1 flex-col gap-1">
+        <p class="text-[11px] font-semibold uppercase tracking-[.12em] text-gold-ink">
+          {{ summary.eyebrow }}
+        </p>
+        <h1 class="font-serif text-2xl leading-tight">
+          {{ summary.title }}
+        </h1>
+      </div>
+      <WorkoutLibraryCover
+        v-if="summary.cover"
+        :cover="summary.cover"
+        class="w-24 shrink-0"
+      />
     </div>
     <dl class="grid grid-cols-3 gap-3 rounded bg-surface px-3.5 py-3">
       <div

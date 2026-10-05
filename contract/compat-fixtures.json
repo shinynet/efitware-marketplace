@@ -2908,6 +2908,313 @@
         "timeZone": "UTC"
       }
     },
+    "browseCovers": {
+      "view": "workout-library",
+      "record": {
+        "mode": "browse",
+        "trainingSpace": {
+          "id": "ts-30a1fe99-0878-4ade-b894-832edc270bc0",
+          "name": "Default",
+          "isDefault": true,
+          "equipment": "confirmed"
+        },
+        "query": {
+          "fit": "all",
+          "page": 1,
+          "limit": 6
+        },
+        "data": [
+          {
+            "id": "quick-full-body",
+            "version": 1,
+            "format": "workout",
+            "title": "Quick Full Body",
+            "summary": "Squat, press, hinge and row in about 20 minutes.",
+            "tags": {
+              "focus": [
+                "full-body"
+              ],
+              "style": [
+                "strength"
+              ],
+              "purpose": [
+                "general-fitness"
+              ],
+              "experience": [
+                "beginner",
+                "intermediate"
+              ]
+            },
+            "sessionMinutes": {
+              "min": 20,
+              "max": 20
+            },
+            "supportedDays": [],
+            "fit": {
+              "state": "adaptable",
+              "variantIds": [],
+              "swaps": [
+                {
+                  "slotId": "row",
+                  "cause": "equipment",
+                  "missingEquipment": [
+                    "adjustable_bench"
+                  ]
+                }
+              ]
+            },
+            "appPath": "/library/quick-full-body",
+            "cover": {
+              "thumbnail": {
+                "url": "https://media.efitware.com/library-covers/quick-full-body/v2/thumbnail-480.jpg",
+                "alt": "A woman standing tall with matching dumbbells beside her thighs after a hip hinge.",
+                "width": 480,
+                "height": 360
+              }
+            }
+          },
+          {
+            "id": "beginner-fundamentals",
+            "version": 1,
+            "format": "workout",
+            "title": "Beginner Fundamentals",
+            "summary": "Practice the six basic strength movements with dumbbells.",
+            "tags": {
+              "focus": [
+                "full-body"
+              ],
+              "style": [
+                "strength"
+              ],
+              "purpose": [
+                "general-fitness",
+                "build-strength"
+              ],
+              "experience": [
+                "beginner"
+              ]
+            },
+            "sessionMinutes": {
+              "min": 40,
+              "max": 40
+            },
+            "supportedDays": [],
+            "fit": {
+              "state": "exact",
+              "variantIds": []
+            },
+            "appPath": "/library/beginner-fundamentals",
+            "cover": {
+              "thumbnail": {
+                "url": "https://media.efitware.com/library-covers/beginner-fundamentals/v2/thumbnail-480.jpg",
+                "alt": "A woman holding one dumbbell at her chest before a goblet squat.",
+                "width": 480,
+                "height": 360
+              }
+            }
+          },
+          {
+            "id": "beginner-strength-program",
+            "version": 3,
+            "format": "program",
+            "title": "Beginner Strength",
+            "summary": "A fixed weekly barbell plan built on sets of five.",
+            "tags": {
+              "focus": [
+                "full-body"
+              ],
+              "style": [
+                "strength"
+              ],
+              "purpose": [
+                "build-strength"
+              ],
+              "experience": [
+                "beginner"
+              ]
+            },
+            "sessionMinutes": {
+              "min": 30,
+              "max": 40
+            },
+            "supportedDays": [
+              2,
+              3
+            ],
+            "defaultWeeks": 8,
+            "defaultVariantId": "two-days",
+            "fit": {
+              "state": "unavailable",
+              "reason": "equipment",
+              "slotIds": [
+                "lat-pulldown"
+              ],
+              "exercises": [
+                {
+                  "slotId": "lat-pulldown"
+                }
+              ],
+              "missingEquipment": [
+                "lat_pulldown"
+              ]
+            },
+            "programWeek": {
+              "weekStart": "2026-10-05",
+              "capacity": 6,
+              "defaultDates": []
+            },
+            "appPath": "/library/beginner-strength-program"
+          },
+          {
+            "id": "ten-minute-core",
+            "version": 1,
+            "format": "workout",
+            "title": "10 Minute Core",
+            "summary": "A three-round trunk circuit in about 10 minutes.",
+            "tags": {
+              "focus": [
+                "core"
+              ],
+              "style": [
+                "strength"
+              ],
+              "purpose": [
+                "general-fitness"
+              ],
+              "experience": [
+                "beginner",
+                "intermediate"
+              ]
+            },
+            "sessionMinutes": {
+              "min": 10,
+              "max": 10
+            },
+            "supportedDays": [],
+            "fit": {
+              "state": "exact",
+              "variantIds": []
+            },
+            "appPath": "/library/ten-minute-core",
+            "cover": {
+              "thumbnail": {
+                "url": "https://media.efitware.com/library-covers/ten-minute-core/v2/thumbnail-480.jpg",
+                "alt": "A man holding a forearm side plank with stacked legs and a straight torso.",
+                "width": 480,
+                "height": 360
+              }
+            }
+          },
+          {
+            "id": "build-muscle-program",
+            "version": 3,
+            "format": "program",
+            "title": "Build Muscle",
+            "summary": "A fixed weekly muscle-building plan for two, three or four days.",
+            "tags": {
+              "focus": [
+                "full-body"
+              ],
+              "style": [
+                "hypertrophy"
+              ],
+              "purpose": [
+                "build-muscle"
+              ],
+              "experience": [
+                "beginner",
+                "intermediate"
+              ]
+            },
+            "sessionMinutes": {
+              "min": 35,
+              "max": 45
+            },
+            "supportedDays": [
+              2,
+              3,
+              4
+            ],
+            "defaultWeeks": 8,
+            "defaultVariantId": "two-days",
+            "fit": {
+              "state": "unavailable",
+              "reason": "equipment",
+              "slotIds": [
+                "lat-pulldown"
+              ],
+              "exercises": [
+                {
+                  "slotId": "lat-pulldown"
+                }
+              ],
+              "missingEquipment": [
+                "lat_pulldown"
+              ]
+            },
+            "programWeek": {
+              "weekStart": "2026-10-05",
+              "capacity": 6,
+              "defaultDates": []
+            },
+            "appPath": "/library/build-muscle-program"
+          },
+          {
+            "id": "ten-minute-arms",
+            "version": 1,
+            "format": "workout",
+            "title": "10 Minute Arms",
+            "summary": "Two biceps and triceps supersets in about 10 minutes.",
+            "tags": {
+              "focus": [
+                "arms"
+              ],
+              "style": [
+                "hypertrophy"
+              ],
+              "purpose": [
+                "build-muscle"
+              ],
+              "experience": [
+                "beginner",
+                "intermediate"
+              ]
+            },
+            "sessionMinutes": {
+              "min": 10,
+              "max": 10
+            },
+            "supportedDays": [],
+            "fit": {
+              "state": "exact",
+              "variantIds": []
+            },
+            "appPath": "/library/ten-minute-arms",
+            "cover": {
+              "thumbnail": {
+                "url": "https://media.efitware.com/library-covers/ten-minute-arms/v2/thumbnail-480.jpg",
+                "alt": "A man curling one dumbbell toward his chest.",
+                "width": 480,
+                "height": 360
+              }
+            }
+          }
+        ],
+        "meta": {
+          "total": 24,
+          "page": 1,
+          "limit": 6
+        }
+      },
+      "related": {},
+      "presentation": {
+        "locale": "en",
+        "unitSystem": "metric",
+        "theme": "light",
+        "skin": "calm",
+        "timeZone": "UTC"
+      }
+    },
     "browseNeedsSpace": {
       "view": "workout-library",
       "record": {
@@ -4781,6 +5088,149 @@
           "variantIds": []
         },
         "appPath": "/library/short-conditioning",
+        "description": "A three-minute warm-up, six 30-second hard efforts with a minute of easy rowing between each, and a two-minute cool-down. Hard means a pace you could repeat six times, not an all-out sprint.",
+        "suitability": "For anyone who can row comfortably. You need a rowing machine.",
+        "trainingSpace": {
+          "id": "ts-a2c3dc3c-582c-45c6-bfaa-da252d106a4a",
+          "name": "Default",
+          "isDefault": true,
+          "equipment": "confirmed"
+        },
+        "content": {
+          "format": "workout",
+          "session": {
+            "sessionId": "main",
+            "name": "Short Conditioning",
+            "estimatedMinutes": 15,
+            "slots": [
+              {
+                "slotId": "row-intervals",
+                "exerciseId": "6ac21d094c342c17f74c3e1b",
+                "name": "Rowing Erg",
+                "prescription": {
+                  "order": 1,
+                  "sets": [
+                    {
+                      "category": "warmup",
+                      "plannedDuration": 180
+                    },
+                    {
+                      "category": "interval",
+                      "plannedDuration": 30
+                    },
+                    {
+                      "category": "recovery",
+                      "plannedDuration": 60
+                    },
+                    {
+                      "category": "interval",
+                      "plannedDuration": 30
+                    },
+                    {
+                      "category": "recovery",
+                      "plannedDuration": 60
+                    },
+                    {
+                      "category": "interval",
+                      "plannedDuration": 30
+                    },
+                    {
+                      "category": "recovery",
+                      "plannedDuration": 60
+                    },
+                    {
+                      "category": "interval",
+                      "plannedDuration": 30
+                    },
+                    {
+                      "category": "recovery",
+                      "plannedDuration": 60
+                    },
+                    {
+                      "category": "interval",
+                      "plannedDuration": 30
+                    },
+                    {
+                      "category": "recovery",
+                      "plannedDuration": 60
+                    },
+                    {
+                      "category": "interval",
+                      "plannedDuration": 30
+                    },
+                    {
+                      "category": "cooldown",
+                      "plannedDuration": 120
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "exercises": [
+          {
+            "id": "6ac21d094c342c17f74c3e1b",
+            "name": "Rowing Erg",
+            "modality": "cardio",
+            "equipmentRequired": [
+              "rower"
+            ]
+          }
+        ]
+      },
+      "related": {},
+      "presentation": {
+        "locale": "en",
+        "unitSystem": "metric",
+        "theme": "light",
+        "skin": "calm",
+        "timeZone": "UTC"
+      }
+    },
+    "itemCover": {
+      "view": "workout-library",
+      "record": {
+        "mode": "item",
+        "id": "short-conditioning",
+        "version": 1,
+        "format": "workout",
+        "title": "Short Conditioning",
+        "summary": "Six hard 30-second rowing intervals in about 15 minutes.",
+        "tags": {
+          "focus": [
+            "full-body"
+          ],
+          "style": [
+            "conditioning"
+          ],
+          "purpose": [
+            "general-fitness",
+            "weight-management"
+          ],
+          "experience": [
+            "beginner",
+            "intermediate"
+          ]
+        },
+        "sessionMinutes": {
+          "min": 15,
+          "max": 15
+        },
+        "supportedDays": [],
+        "fit": {
+          "state": "exact",
+          "variantIds": []
+        },
+        "appPath": "/library/short-conditioning",
+        "cover": {
+          "thumbnail": {
+            "url": "https://media.efitware.com/library-covers/short-conditioning/v2/thumbnail-480.jpg",
+            "alt": "A woman seated at the catch of a rowing stroke with her arms extended.",
+            "width": 480,
+            "height": 360
+          }
+        },
         "description": "A three-minute warm-up, six 30-second hard efforts with a minute of easy rowing between each, and a two-minute cool-down. Hard means a pace you could repeat six times, not an all-out sprint.",
         "suitability": "For anyone who can row comfortably. You need a rowing machine.",
         "trainingSpace": {

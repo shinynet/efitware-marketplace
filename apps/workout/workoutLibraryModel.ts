@@ -35,6 +35,14 @@ export const libraryFitSchema = z.discriminatedUnion('state', [
     missingEquipment: z.array(z.string()).optional(), requiredDays: z.number().int().positive().optional()
   })
 ])
+/**
+ * The item's cover art (app EF-1609): one 4:3 JPEG on the media origin
+ * (480 × 360) with the manifest's alt text. Absent while the item has no art
+ * for its current version, so the card draws no image area.
+ */
+export const libraryCoverSchema = z.object({
+  thumbnail: z.object({ url: z.string(), alt: z.string(), width: z.number().int().positive(), height: z.number().int().positive() })
+})
 export const libraryTagsSchema = z.object({
   focus: z.array(z.string()), style: z.array(z.string()), purpose: z.array(z.string()), experience: z.array(z.string())
 })
@@ -46,7 +54,8 @@ export const libraryItemSchema = z.object({
   fit: libraryFitSchema,
   /** A Program's fit was evaluated against this week's remaining capacity (the requested `weekStart`, else the current week). */
   programWeek: z.object({ weekStart: z.string(), capacity: z.number().int(), variantId: z.string().optional() }).optional(),
-  appPath: z.string().regex(/^\/library\/[a-z0-9-]+$/)
+  appPath: z.string().regex(/^\/library\/[a-z0-9-]+$/),
+  cover: libraryCoverSchema.optional()
 })
 const plannedSet = z.object({
   category: z.string(),
@@ -102,6 +111,7 @@ export type LibraryItem = z.infer<typeof libraryItemSchema>
 export type LibraryFit = z.infer<typeof libraryFitSchema>
 export type LibrarySession = z.infer<typeof librarySession>
 export type LibraryBlock = z.infer<typeof libraryBlockSchema>
+export type LibraryCover = z.infer<typeof libraryCoverSchema>
 
 /**
  * Where the card's header link opens the application: `/library` (with the

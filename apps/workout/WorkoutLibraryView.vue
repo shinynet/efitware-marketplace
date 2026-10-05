@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import HostFollowUp from './HostFollowUp.vue'
+import WorkoutLibraryCover from './WorkoutLibraryCover.vue'
 import WorkoutLibrarySession from './WorkoutLibrarySession.vue'
 import type { LibraryBlock, LibraryFit, LibraryItem, LibraryItemRecord, LibrarySession, WorkoutLibraryView as LibraryCardView } from './workoutLibraryModel'
 import { workoutLibraryArguments, workoutLibraryItemArguments } from './workoutLibraryModel'
@@ -25,6 +26,26 @@ const record = computed(() => library.record)
 const space = computed(() => spaceLabel(translator.value, record.value.trainingSpace))
 const number = (value: number) => new Intl.NumberFormat(locale.value).format(value)
 const go = (patch: Record<string, unknown>, replace = false) => navigate({ name: 'open_workout_library', arguments: workoutLibraryArguments(record.value, patch) }, replace)
+/**
+ * Paging replaces the results in place, so the reader would stay at the
+ * bottom of the old list (EF-1634). Once the new page has rendered, bring the
+ * top of the results (eyebrow and heading) into view in the card's own
+ * document (the host's page cannot be scrolled from here) and move focus to
+ * the heading, so keyboard and screen-reader users start at the new results.
+ * A refused or failed page change leaves the scroll and focus alone.
+ */
+const results = ref<HTMLElement>()
+const resultsHeading = ref<HTMLElement>()
+const turnPage = async (page: number) => {
+  await go({ page }, true)
+  await nextTick()
+  const current = record.value
+  const heading = resultsHeading.value
+  if (current.mode !== 'browse' || current.query.page !== page || !heading || !results.value) return
+  const reduced = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  results.value.scrollIntoView({ block: 'start', behavior: reduced ? 'auto' : 'smooth' })
+  heading.focus({ preventScroll: true })
+}
 const open = (item: LibraryItem) => {
   if (record.value.mode === 'browse') navigate({ name: 'open_workout_library', arguments: workoutLibraryItemArguments(record.value, item) })
 }
@@ -76,7 +97,8 @@ const facts = (item: { format: string, sessionMinutes: { min: number, max: numbe
 <template>
   <section
     v-if="record.mode === 'browse'"
-    class="pb-6"
+    ref="results"
+    class="scroll-mt-4 pb-6"
     aria-labelledby="workout-library-heading"
   >
     <p class="text-xs font-semibold uppercase tracking-wider text-gold-ink">
@@ -84,6 +106,8 @@ const facts = (item: { format: string, sessionMinutes: { min: number, max: numbe
     </p>
     <h1
       id="workout-library-heading"
+      ref="resultsHeading"
+      tabindex="-1"
       class="mt-2 font-serif text-3xl"
     >
       {{ t('workoutLibraryUi.browseTitle') }}
@@ -107,44 +131,51 @@ const facts = (item: { format: string, sessionMinutes: { min: number, max: numbe
       <li
         v-for="item in record.data"
         :key="item.id"
-        class="rounded border border-surface-dark p-4"
+        class="rounded border border-surface-dark p-4 sm:flex sm:items-start sm:gap-4"
       >
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <p class="text-xs text-muted">
-            {{ facts(item).join(' · ') }}
+        <WorkoutLibraryCover
+          :cover="item.cover"
+          lazy
+          class="mb-3 sm:mb-0 sm:w-40 sm:shrink-0"
+        />
+        <div class="min-w-0 sm:flex-1">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <p class="text-xs text-muted">
+              {{ facts(item).join(' · ') }}
+            </p>
+            <span
+              class="rounded-full border px-2 py-0.5 text-xs font-semibold"
+              :class="badgeClass(item.fit)"
+            >{{ fitLabel(translator, item.fit) }}</span>
+          </div>
+          <h2 class="my-2 font-serif text-xl">
+            <button
+              type="button"
+              class="title-link"
+              :aria-label="t('workoutLibraryUi.view', { title: item.title })"
+              :disabled="busy"
+              @click="open(item)"
+            >
+              {{ item.title }}
+            </button>
+          </h2>
+          <p class="text-sm">
+            {{ item.summary }}
           </p>
-          <span
-            class="rounded-full border px-2 py-0.5 text-xs font-semibold"
-            :class="badgeClass(item.fit)"
-          >{{ fitLabel(translator, item.fit) }}</span>
-        </div>
-        <h2 class="my-2 font-serif text-xl">
-          <button
-            type="button"
-            class="title-link"
-            :aria-label="t('workoutLibraryUi.view', { title: item.title })"
-            :disabled="busy"
-            @click="open(item)"
+          <p
+            v-if="tagLine(translator, item.tags)"
+            class="mt-2 text-xs text-muted"
           >
-            {{ item.title }}
-          </button>
-        </h2>
-        <p class="text-sm">
-          {{ item.summary }}
-        </p>
-        <p
-          v-if="tagLine(translator, item.tags)"
-          class="mt-2 text-xs text-muted"
-        >
-          {{ tagLine(translator, item.tags) }}
-        </p>
-        <p
-          v-for="line in fitLines(translator, item.fit)"
-          :key="line"
-          class="mt-2 text-sm text-muted"
-        >
-          {{ line }}
-        </p>
+            {{ tagLine(translator, item.tags) }}
+          </p>
+          <p
+            v-for="line in fitLines(translator, item.fit)"
+            :key="line"
+            class="mt-2 text-sm text-muted"
+          >
+            {{ line }}
+          </p>
+        </div>
       </li>
     </ul>
     <nav
@@ -158,7 +189,7 @@ const facts = (item: { format: string, sessionMinutes: { min: number, max: numbe
         type="button"
         class="secondary"
         :disabled="busy || record.query.page <= 1"
-        @click="go({ page: record.query.page - 1 }, true)"
+        @click="turnPage(record.query.page - 1)"
       >
         {{ t('workoutLibraryUi.previous') }}
       </button>
@@ -166,7 +197,7 @@ const facts = (item: { format: string, sessionMinutes: { min: number, max: numbe
         type="button"
         class="secondary"
         :disabled="busy || record.query.page * record.query.limit >= record.meta.total"
-        @click="go({ page: record.query.page + 1 }, true)"
+        @click="turnPage(record.query.page + 1)"
       >
         {{ t('workoutLibraryUi.next') }}
       </button>
@@ -178,24 +209,32 @@ const facts = (item: { format: string, sessionMinutes: { min: number, max: numbe
     class="pb-6"
     aria-labelledby="workout-library-item-heading"
   >
-    <p class="text-xs font-semibold uppercase tracking-wider text-gold-ink">
-      {{ t('workoutLibraryUi.itemEyebrow', { format: vocabularyLabel(translator, 'format', record.format) }) }}
-    </p>
-    <h1
-      id="workout-library-item-heading"
-      class="mt-2 font-serif text-3xl"
-    >
-      {{ record.title }}
-    </h1>
-    <p class="mt-1 text-sm text-muted">
-      {{ facts(record, false).join(' · ') }}
-    </p>
-    <p
-      v-if="tagLine(translator, record.tags)"
-      class="mt-1 text-sm text-muted"
-    >
-      {{ tagLine(translator, record.tags) }}
-    </p>
+    <div class="sm:flex sm:items-start sm:gap-5">
+      <WorkoutLibraryCover
+        :cover="record.cover"
+        class="mb-4 sm:order-last sm:mb-0 sm:w-60 sm:shrink-0"
+      />
+      <div class="min-w-0 sm:flex-1">
+        <p class="text-xs font-semibold uppercase tracking-wider text-gold-ink">
+          {{ t('workoutLibraryUi.itemEyebrow', { format: vocabularyLabel(translator, 'format', record.format) }) }}
+        </p>
+        <h1
+          id="workout-library-item-heading"
+          class="mt-2 font-serif text-3xl"
+        >
+          {{ record.title }}
+        </h1>
+        <p class="mt-1 text-sm text-muted">
+          {{ facts(record, false).join(' · ') }}
+        </p>
+        <p
+          v-if="tagLine(translator, record.tags)"
+          class="mt-1 text-sm text-muted"
+        >
+          {{ tagLine(translator, record.tags) }}
+        </p>
+      </div>
+    </div>
     <p class="mt-3">
       {{ record.description }}
     </p>
