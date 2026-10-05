@@ -73,36 +73,47 @@ describe('workout Library cover schema', () => {
 })
 
 describe('workout Library cover art', () => {
-  it('heads each browse result with its lazy thumbnail, and a plain placeholder where there is none', async () => {
+  it('heads each browse result with its lazy thumbnail, and renders no image area where there is none', async () => {
     const root = await mount(payloads.browseCovers)
     const results = [...root.querySelectorAll('li')]
     expect(results).toHaveLength(6)
     const covered = payloads.browseCovers.record.mode === 'browse' ? payloads.browseCovers.record.data.map(item => !!item.cover) : []
     expect(covered).toEqual([true, true, false, true, false, true])
     results.forEach((result, index) => {
-      const box = result.querySelector('[data-library-cover]')!
-      // the cover comes first in the result
-      expect(result.firstElementChild).toBe(box)
-      const image = box.querySelector('img')
+      const box = result.querySelector('[data-library-cover]')
       if (!covered[index]) {
-        expect(image).toBeNull()
-        expect(box.getAttribute('aria-hidden')).toBe('true')
+        expect(box).toBeNull()
+        expect(result.querySelector('img')).toBeNull()
         return
       }
+      // the cover comes first in the result
+      expect(result.firstElementChild).toBe(box)
+      const image = box!.querySelector('img')!
       const expected = thumbnail(payloads.browseCovers, index)
-      expect(image!.getAttribute('src')).toBe(expected.url)
-      expect(image!.getAttribute('alt')).toBe(expected.alt)
-      expect(image!.getAttribute('width')).toBe('480')
-      expect(image!.getAttribute('height')).toBe('360')
-      expect(image!.getAttribute('loading')).toBe('lazy')
-      expect(box.hasAttribute('aria-hidden')).toBe(false)
+      expect(image.getAttribute('src')).toBe(expected.url)
+      expect(image.getAttribute('alt')).toBe(expected.alt)
+      expect(image.getAttribute('width')).toBe('480')
+      expect(image.getAttribute('height')).toBe('360')
+      expect(image.getAttribute('loading')).toBe('lazy')
     })
   })
 
-  it('shows no image at all for a browse page without covers', async () => {
-    const root = await mount(payloads.browse)
-    expect(boxes(root)).toHaveLength(6)
-    expect(root.querySelector('img')).toBeNull()
+  it('renders no image element and no wrapper for a browse page or an item without covers', async () => {
+    for (const name of ['browse', 'itemShortConditioning', 'itemAdaptable', 'itemProgramUnavailable'] as const) {
+      const root = await mount(payloads[name])
+      expect(boxes(root), name).toHaveLength(0)
+      expect(root.querySelector('img'), name).toBeNull()
+      mounted!.unmount()
+      mounted = undefined
+    }
+  })
+
+  it('reads the same with art as without, apart from the alt text', async () => {
+    const without = await mount(payloads.browse)
+    const plain = without.textContent
+    mounted!.unmount()
+    const withArt = await mount(payloads.browseCovers)
+    expect(withArt.textContent).toBe(plain)
   })
 
   it('puts the cover at the top of the item view, loaded at once', async () => {
@@ -116,23 +127,25 @@ describe('workout Library cover art', () => {
     expect(image.getAttribute('loading')).toBe('eager')
   })
 
-  it('shows the placeholder on an item without a cover', async () => {
-    const root = await mount(payloads.itemShortConditioning)
-    expect(boxes(root)).toHaveLength(1)
-    expect(root.querySelector('img')).toBeNull()
-  })
-
-  it('replaces an image that fails to load with the placeholder, never a broken image', async () => {
+  it('removes a browse image that fails to load, leaving no space behind, and keeps the others', async () => {
     const root = await mount(payloads.browseCovers)
     const [first, second] = [...root.querySelectorAll('[data-library-cover] img')]
     first!.dispatchEvent(new Event('error'))
     await nextTick()
-    const box = root.querySelector('li [data-library-cover]')!
-    expect(box.querySelector('img')).toBeNull()
-    expect(box.getAttribute('aria-hidden')).toBe('true')
-    // the other results keep their art
+    const result = root.querySelector('li')!
+    expect(result.querySelector('[data-library-cover]')).toBeNull()
+    expect(result.querySelector('img')).toBeNull()
     expect(root.querySelectorAll('[data-library-cover] img')).toHaveLength(3)
     expect(root.contains(second!)).toBe(true)
+  })
+
+  it('removes the item cover that fails to load', async () => {
+    const root = await mount(payloads.itemCover)
+    root.querySelector('article img')!.dispatchEvent(new Event('error'))
+    await nextTick()
+    expect(boxes(root)).toHaveLength(0)
+    expect(root.querySelector('img')).toBeNull()
+    expect(root.querySelector('article h1')!.textContent).toContain('Short Conditioning')
   })
 })
 
@@ -148,7 +161,7 @@ describe('workout Library compact cover', () => {
     expect(summary(payloads.browseCovers).cover).toBeUndefined()
   })
 
-  it('draws a small thumbnail beside the title, and no box when there is no art', async () => {
+  it('draws a small thumbnail beside the title, and nothing when there is no art', async () => {
     let root = await mountWith(CompactCard, { summary: summary(payloads.itemCover) })
     const image = root.querySelector('[data-library-cover] img')!
     expect(image.getAttribute('alt')).toBe(thumbnail(payloads.itemCover).alt)
@@ -156,5 +169,14 @@ describe('workout Library compact cover', () => {
     mounted!.unmount()
     root = await mountWith(CompactCard, { summary: summary(payloads.itemShortConditioning) })
     expect(boxes(root)).toHaveLength(0)
+    expect(root.querySelector('img')).toBeNull()
+  })
+
+  it('removes the compact thumbnail that fails to load', async () => {
+    const root = await mountWith(CompactCard, { summary: summary(payloads.itemCover) })
+    root.querySelector('img')!.dispatchEvent(new Event('error'))
+    await nextTick()
+    expect(boxes(root)).toHaveLength(0)
+    expect(root.querySelector('img')).toBeNull()
   })
 })

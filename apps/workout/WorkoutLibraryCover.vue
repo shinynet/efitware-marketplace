@@ -3,10 +3,11 @@ import { ref, watch } from 'vue'
 import type { LibraryCover } from './workoutLibraryModel'
 
 /**
- * A Library item's 4:3 cover thumbnail (app EF-1609) in a fixed-aspect box,
- * so nothing shifts as it loads. Without a `cover`, or once the image fails
- * to load (a host that blocks the media origin included), the box stays a
- * plain placeholder: a broken image is never drawn.
+ * A Library item's 4:3 cover thumbnail (app EF-1609). Explicit width and
+ * height keep a loading image from shifting the layout. Without a `cover`,
+ * or once the image fails to load (a host that blocks the media origin
+ * included), nothing renders and no space is reserved: the result lays out
+ * as it did before covers, never as a broken or empty image.
  */
 const { cover = undefined, lazy = false } = defineProps<{ cover?: LibraryCover, lazy?: boolean }>()
 const failed = ref(false)
@@ -15,12 +16,11 @@ watch(() => cover?.thumbnail.url, () => { failed.value = false })
 
 <template>
   <div
+    v-if="cover && !failed"
     class="aspect-[4/3] overflow-hidden rounded bg-surface-dark"
-    :aria-hidden="cover && !failed ? undefined : 'true'"
     data-library-cover
   >
     <img
-      v-if="cover && !failed"
       :src="cover.thumbnail.url"
       :alt="cover.thumbnail.alt"
       :width="cover.thumbnail.width"

@@ -108,14 +108,14 @@ const facts = (item: { format: string, sessionMinutes: { min: number, max: numbe
       <li
         v-for="item in record.data"
         :key="item.id"
-        class="rounded border border-surface-dark p-4 sm:grid sm:grid-cols-[10rem_minmax(0,1fr)] sm:items-start sm:gap-4"
+        class="rounded border border-surface-dark p-4 sm:flex sm:items-start sm:gap-4"
       >
         <WorkoutLibraryCover
           :cover="item.cover"
           lazy
-          class="mb-3 sm:mb-0"
+          class="mb-3 sm:mb-0 sm:w-40 sm:shrink-0"
         />
-        <div>
+        <div class="min-w-0 sm:flex-1">
           <div class="flex flex-wrap items-center justify-between gap-2">
             <p class="text-xs text-muted">
               {{ facts(item).join(' · ') }}

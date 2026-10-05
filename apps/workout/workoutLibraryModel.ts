@@ -38,7 +38,7 @@ export const libraryFitSchema = z.discriminatedUnion('state', [
 /**
  * The item's cover art (app EF-1609): one 4:3 JPEG on the media origin
  * (480 × 360) with the manifest's alt text. Absent while the item has no art
- * for its current version, so the card shows its placeholder.
+ * for its current version, so the card draws no image area.
  */
 export const libraryCoverSchema = z.object({
   thumbnail: z.object({ url: z.string(), alt: z.string(), width: z.number().int().positive(), height: z.number().int().positive() })
