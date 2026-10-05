@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import HostFollowUp from './HostFollowUp.vue'
 import WorkoutLibraryCover from './WorkoutLibraryCover.vue'
@@ -26,6 +26,26 @@ const record = computed(() => library.record)
 const space = computed(() => spaceLabel(translator.value, record.value.trainingSpace))
 const number = (value: number) => new Intl.NumberFormat(locale.value).format(value)
 const go = (patch: Record<string, unknown>, replace = false) => navigate({ name: 'open_workout_library', arguments: workoutLibraryArguments(record.value, patch) }, replace)
+/**
+ * Paging replaces the results in place, so the reader would stay at the
+ * bottom of the old list (EF-1634). Once the new page has rendered, bring the
+ * top of the results (eyebrow and heading) into view in the card's own
+ * document (the host's page cannot be scrolled from here) and move focus to
+ * the heading, so keyboard and screen-reader users start at the new results.
+ * A refused or failed page change leaves the scroll and focus alone.
+ */
+const results = ref<HTMLElement>()
+const resultsHeading = ref<HTMLElement>()
+const turnPage = async (page: number) => {
+  await go({ page }, true)
+  await nextTick()
+  const current = record.value
+  const heading = resultsHeading.value
+  if (current.mode !== 'browse' || current.query.page !== page || !heading || !results.value) return
+  const reduced = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  results.value.scrollIntoView({ block: 'start', behavior: reduced ? 'auto' : 'smooth' })
+  heading.focus({ preventScroll: true })
+}
 const open = (item: LibraryItem) => {
   if (record.value.mode === 'browse') navigate({ name: 'open_workout_library', arguments: workoutLibraryItemArguments(record.value, item) })
 }
@@ -77,7 +97,8 @@ const facts = (item: { format: string, sessionMinutes: { min: number, max: numbe
 <template>
   <section
     v-if="record.mode === 'browse'"
-    class="pb-6"
+    ref="results"
+    class="scroll-mt-4 pb-6"
     aria-labelledby="workout-library-heading"
   >
     <p class="text-xs font-semibold uppercase tracking-wider text-gold-ink">
@@ -85,6 +106,8 @@ const facts = (item: { format: string, sessionMinutes: { min: number, max: numbe
     </p>
     <h1
       id="workout-library-heading"
+      ref="resultsHeading"
+      tabindex="-1"
       class="mt-2 font-serif text-3xl"
     >
       {{ t('workoutLibraryUi.browseTitle') }}
@@ -166,7 +189,7 @@ const facts = (item: { format: string, sessionMinutes: { min: number, max: numbe
         type="button"
         class="secondary"
         :disabled="busy || record.query.page <= 1"
-        @click="go({ page: record.query.page - 1 }, true)"
+        @click="turnPage(record.query.page - 1)"
       >
         {{ t('workoutLibraryUi.previous') }}
       </button>
@@ -174,7 +197,7 @@ const facts = (item: { format: string, sessionMinutes: { min: number, max: numbe
         type="button"
         class="secondary"
         :disabled="busy || record.query.page * record.query.limit >= record.meta.total"
-        @click="go({ page: record.query.page + 1 }, true)"
+        @click="turnPage(record.query.page + 1)"
       >
         {{ t('workoutLibraryUi.next') }}
       </button>
