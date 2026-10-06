@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { promoteRelease } from '../scripts/promote-release'
 
 const hash = (bytes: Uint8Array) => createHash('sha256').update(bytes).digest('hex')
-const fixture = (opts: { corrupt?: boolean, published?: boolean, changedAfter?: boolean } = {}) => {
+const fixture = (opts: { corrupt?: boolean, published?: boolean, changedAfter?: boolean, latestId?: number } = {}) => {
   const content = new TextEncoder().encode('reviewed skill archive')
   const manifest = new TextEncoder().encode(JSON.stringify({
     version: '0.1.31', commit: 'a'.repeat(40), serverContract: { minimumAppCommit: 'b'.repeat(40) },
@@ -22,6 +22,7 @@ const fixture = (opts: { corrupt?: boolean, published?: boolean, changedAfter?: 
     calls.push({ url, method, authorized: new Headers(init?.headers).has('Authorization'), ...(typeof init?.body === 'string' ? { body: JSON.parse(init.body) } : {}) })
     if (method === 'PATCH') return Response.json({ ...release, prerelease: false,
       assets: opts.changedAfter ? assets.map(asset => ({ ...asset, updated_at: 'changed' })) : assets })
+    if (url.endsWith('/releases/latest')) return Response.json({ ...release, id: opts.latestId ?? release.id })
     if (url.includes('api.github.com')) return Response.json(release)
     return new Response(url.endsWith('manifest.json') ? manifest : opts.corrupt ? new TextEncoder().encode('altered') : content)
   }
@@ -32,7 +33,7 @@ describe('immutable release metadata promotion', () => {
   it('verifies every byte before its metadata-only write and never sends the token to downloads', async () => {
     const { receipt, request, calls } = fixture()
     expect(await promoteRelease(receipt, 'test-token', request)).toMatchObject({ version: '0.1.31', prerelease: false, assets: 2 })
-    expect(calls.filter(call => call.method === 'PATCH')).toEqual([expect.objectContaining({ body: { prerelease: false, name: 'eFitware v0.1.31' } })])
+    expect(calls.filter(call => call.method === 'PATCH')).toEqual([expect.objectContaining({ body: { prerelease: false, name: 'eFitware v0.1.31', make_latest: 'true' } })])
     expect(calls.filter(call => !call.url.includes('api.github.com')).every(call => !call.authorized)).toBe(true)
   })
 
@@ -57,5 +58,10 @@ describe('immutable release metadata promotion', () => {
     const { receipt, request, calls } = fixture({ published: true })
     expect(await promoteRelease(receipt, 'test-token', request)).toMatchObject({ prerelease: false })
     expect(calls.some(call => call.method === 'PATCH')).toBe(false)
+  })
+
+  it('refuses to report complete promotion when GitHub still advertises another latest release', async () => {
+    const { receipt, request } = fixture({ latestId: 99 })
+    await expect(promoteRelease(receipt, 'test-token', request)).rejects.toThrow('not GitHub latest')
   })
 })
