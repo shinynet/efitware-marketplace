@@ -25,6 +25,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Verify immutable assets and publish release metadata
+        if: ${{ hashFiles('.github/release-promotion.json') != '' }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: node scripts/promote-release.ts
