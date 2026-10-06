@@ -1,6 +1,8 @@
 /** Copy for the workout Library card (EF-1607). Facet and fit labels come from the application's projected vocabulary. */
 export const workoutLibraryMessages = {
   en: {
+    timedFormats: 'Timed formats',
+    groupFormat: { amrap: 'AMRAP {cap}', emom: 'EMOM {length}', forTime: 'For time, {cap} cap', tabata: 'Tabata {rounds} × {work} s / {rest} s' },
     eyebrow: 'Workout Library',
     browseTitle: 'Workouts and programs',
     browseIntro: 'Written in advance by eFitware. Each one shows how it fits your training space “{space}”.',
@@ -58,6 +60,8 @@ export const workoutLibraryMessages = {
     topMatches: 'At the top'
   },
   de: {
+    timedFormats: 'Zeitformate',
+    groupFormat: { amrap: 'AMRAP {cap}', emom: 'EMOM {length}', forTime: 'Auf Zeit, Limit {cap}', tabata: 'Tabata {rounds} × {work} s / {rest} s' },
     eyebrow: 'Workout-Bibliothek',
     browseTitle: 'Workouts und Programme',
     browseIntro: 'Von eFitware im Voraus geschrieben. Jeder Eintrag zeigt, wie er zu deinem Trainingsort „{space}“ passt.',

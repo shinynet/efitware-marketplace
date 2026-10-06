@@ -19,7 +19,9 @@
     "mobility": "Mobility",
     "yoga": "Yoga",
     "pilates": "Pilates",
-    "calisthenics": "Calisthenics"
+    "calisthenics": "Calisthenics",
+    "functional": "Functional fitness",
+    "hiit": "HIIT"
   },
   "purpose": {
     "general-fitness": "General fitness",

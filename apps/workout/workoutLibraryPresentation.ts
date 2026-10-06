@@ -1,4 +1,4 @@
-import { prescriptionSummary, type LibraryFit, type LibraryItem, type PlannedSet, type SetGroup, type WorkoutLibraryView } from './workoutLibraryModel'
+import { prescriptionSummary, type LibraryFit, type LibraryItem, type LibrarySession, type PlannedSet, type SetGroup, type WorkoutLibraryView } from './workoutLibraryModel'
 
 /** The translator the card and its compact summary share (vue-i18n's `t`/`te`). */
 export interface LibraryTranslator {
@@ -89,4 +89,19 @@ export const prescriptionLine = (translator: LibraryTranslator, sets: PlannedSet
     ...(summary.cooldown ? [t('workoutLibraryUi.cooldowns', { n: integer(locale, summary.cooldown) }, summary.cooldown)] : [])
   ]
   return [summary.groups.map(group => groupLine(translator, group, labelled)).join(' · '), ...extras].filter(Boolean).join(' ')
+}
+
+/** A planned circuit's clock, with the same localized wording as the application. */
+export const timedFormatLabel = (translator: LibraryTranslator, format: NonNullable<NonNullable<LibrarySession['executionGroups']>[number]['format']>): string => {
+  const { t, locale } = translator
+  const count = (value: number) => integer(locale, value)
+  const duration = (seconds: number) => seconds % 60 === 0
+    ? t('workoutLibraryUi.minutes', { minutes: count(seconds / 60) })
+    : `${count(Math.floor(seconds / 60))}:${new Intl.NumberFormat(locale, { minimumIntegerDigits: 2, useGrouping: false }).format(seconds % 60)}`
+  switch (format.type) {
+    case 'amrap': return t('workoutLibraryUi.groupFormat.amrap', { cap: duration(format.capSeconds) })
+    case 'emom': return t('workoutLibraryUi.groupFormat.emom', { length: duration(format.minutes * 60) })
+    case 'for-time': return t('workoutLibraryUi.groupFormat.forTime', { cap: duration(format.capSeconds) })
+    case 'tabata': return t('workoutLibraryUi.groupFormat.tabata', { rounds: count(format.rounds), work: count(format.workSeconds), rest: count(format.restSeconds) })
+  }
 }
