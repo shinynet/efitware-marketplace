@@ -24,6 +24,8 @@ independently approved correction from PR #30; the published catalogs and
 The tool inventory and consumer schemas do not change.
 The existing Library styles, clocks and covers remain in the release.
 
+Immutable v0.1.30 is tagged at independently reviewed `b6ec572330c4183016c10781f1cca91c38c1fc6c`. Manifest SHA-256 is `4f968e169089fa80eedb4128e653b8a6059a32a267356cc384907a9252ed21cc`; card SHA-256 is `351538f5d92580bca5fdc3dd875ccc1bd7e47c6a32c33d5daed41a68212d9766`. Compatible app merge `1e61a90c1a2bd498dcd9cb348782a474823935e5` reached exact production READY in `dpl_7UkpdtxjoT7u8ceyNEYK86cQx9qy`, health 200. All four public versioned downloads match the reviewed asset bytes, and the minimum producer commit is preserved on app master. Release PR #31 merged without rewriting the tag, whose commit remains an ancestor of main. The published channel now advances to 0.1.30; GitHub release-metadata finalization and website mirror verification remain separate closeout checks.
+
 ## Library timed formats and styles (0.1.29)
 
 EF-1635 adds Functional fitness (`functional`) and HIIT (`hiit`) to the Library vocabulary in English and German. Each item session lists every timed circuit in authored order: AMRAP with its cap, EMOM with its duration, Tabata with rounds/work/rest, and For Time with its cap. Mixed strength/conditioning sessions retain every exercise prescription, and two Tabata groups remain two entries. This is a read-only description; it starts no clock and records no score. Cover metadata keeps the URL-only card projection; the current application supplies the optimized 480 × 360 WebP thumbnail, while responsive AVIF/WebP selection remains application-owned.
