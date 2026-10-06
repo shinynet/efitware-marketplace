@@ -93,7 +93,7 @@ const request = computed(() => t('progressUi.explain', { from: progress.record.r
             {{ t(`progressUi.metrics.${metric.key}`) }}
           </dt>
           <dd class="mt-2 font-serif text-2xl sm:text-3xl">
-            {{ typeof metric.value === 'object' ? total(metric.value) : metric.key === 'avgRpe' && metric.value === 0 ? t('progressUi.unavailable') : number(metric.value) }}
+            {{ typeof metric.value === 'object' ? total(metric.value) : number(metric.value) }}
           </dd>
           <dd class="mt-2 text-xs text-muted">
             {{ metric.delta === undefined ? t('progressUi.noComparison') : t('progressUi.previous', { value: delta(metric.delta, metric.deltaKind) }) }}

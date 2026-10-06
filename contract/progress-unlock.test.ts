@@ -94,3 +94,21 @@ describe('estimate unlock counts eligible progression days (EF-1483)', () => {
     expect(text).toContain('0 von 6 Tagen mit einem Satz von höchstens 12 Wiederholungen erfasst.')
   })
 })
+
+it.each(['en', 'de'] as const)('renders a recorded zero-RPE average as zero in %s', async locale => {
+  const original = progress(row())
+  const view = progressViewSchema.parse({
+    ...original,
+    record: { ...original.record, metrics: [{ key: 'avgRpe', kind: 'decimal', value: 0, unitKey: null, tone: 'steady', deltaKind: 'decimal' }] },
+    related: { ...original.related, section: 'overview' }
+  })
+  const text = await render(ProgressView, { progress: view }, locale)
+  expect(text).toContain(locale === 'en' ? 'Average effort (RPE) 0' : 'Durchschnittliche Anstrengung (RPE) 0')
+})
+
+it('leaves the average-effort card absent when the producer supplies no RPE metric', async () => {
+  const original = progress(row())
+  const view = progressViewSchema.parse({ ...original, related: { ...original.related, section: 'overview' } })
+  const text = await render(ProgressView, { progress: view })
+  expect(text).not.toContain('Average effort (RPE)')
+})

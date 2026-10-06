@@ -17,6 +17,26 @@ Skill-only behavior guidance for the application's Training Space equipment load
 
 Release gate: first verify the compatible EF-1580 application deployment is READY and all release prerequisites are satisfied. Then assign and stage a new immutable release with the compatible application commit recorded, pin it in the application, refresh its artifacts through the normal fetch command, and run the application's released-contract tests plus labelled-unit/shared-ID requests. Promote only after the application deployment serving that pin is READY. Never claim these steps passed from a local skill change or edit already-published assets. Skill clients must inspect the connected schema and decline an unsupported `loads` write on an older server.
 
+## Recorded average effort (0.1.30, EF-1543)
+
+The Progress view renders every supplied numeric headline, including a recorded
+average RPE of zero. RPE accepts zero in the product contract. An unavailable
+average is absent from the compatible application's metrics array, so the card
+has no average-effort tile until a sample exists. The existing locale-aware
+formatter handles the supplied value in English and German.
+
+This correction requires the EF-1543 application producer that omits unavailable
+averages, recorded as minimum application commit
+`7531e230ba379ba8ad2f9936b508114f0c0dba0d` in the server contract. A new immutable release and application pin deliver the paired behavior;
+independent review precedes staging, and catalog promotion follows the compatible
+application's exact READY production deployment. Version 0.1.30 contains the
+independently approved correction from PR #30; the published catalogs and
+`channels.json` stay on 0.1.29 during staging and application verification.
+The tool inventory and consumer schemas do not change.
+The existing Library styles, clocks and covers remain in the release.
+
+Immutable v0.1.30 is tagged at independently reviewed `b6ec572330c4183016c10781f1cca91c38c1fc6c`. Manifest SHA-256 is `4f968e169089fa80eedb4128e653b8a6059a32a267356cc384907a9252ed21cc`; card SHA-256 is `351538f5d92580bca5fdc3dd875ccc1bd7e47c6a32c33d5daed41a68212d9766`. Compatible app merge `1e61a90c1a2bd498dcd9cb348782a474823935e5` reached exact production READY in `dpl_7UkpdtxjoT7u8ceyNEYK86cQx9qy`, health 200. All four public versioned downloads match the reviewed asset bytes, and the minimum producer commit is preserved on app master. Release PR #31 merged without rewriting the tag, whose commit remains an ancestor of main. The published channel is 0.1.30. The owner approved a narrow GitHub CLI metadata exception on 2026-10-06; immutable release `404695960` now has `prerelease: false`. Connected GitHub app reads confirm all 27 asset identities, sizes, digests and URLs unchanged, and a fresh manifest download matches the staged SHA-256. Website PR #38 was independently approved at `9d0cbaa3051fc566db6c2a18515bb8e9a89162bc` (review `5431083533`) and merged as `f1db052bd78ebe743e8594c5878cebe76065da33`. The exact-commit Vercel deployment completed, and the public mirror serves this release. Two fresh literal HTTP/2 clones, an existing 0.1.29 clone upgrade, all three fsck checks and the focused public browser installation test passed; plugin versions and skill hash match the pin. Desktop-client authentication/rendering is a separate boundary.
+
 ## Library timed formats and styles (0.1.29)
 
 EF-1635 adds Functional fitness (`functional`) and HIIT (`hiit`) to the Library vocabulary in English and German. Each item session lists every timed circuit in authored order: AMRAP with its cap, EMOM with its duration, Tabata with rounds/work/rest, and For Time with its cap. Mixed strength/conditioning sessions retain every exercise prescription, and two Tabata groups remain two entries. This is a read-only description; it starts no clock and records no score. Cover metadata keeps the URL-only card projection; the current application supplies the optimized 480 × 360 WebP thumbnail, while responsive AVIF/WebP selection remains application-owned.
@@ -25,7 +45,7 @@ The format-8 consumer schema adds optional planned `executionGroups` with index-
 
 `contract/compat-fixtures.json.workoutLibraryTimedFormats` contains eight actual `open_workout_library` payloads (four items in English and German) captured over real SDK dispatch against a disposable migrated database and the merged application at `02ae5d2533a348c8f07a8fa475b13ebc089c7597`. The only authentication seam is a synthetic account. No production account or credentials are included. Independent contract tests validate and render those payloads, all four clocks, duplicate formats, an untimed/absent group list and malformed format bounds. Vocabulary provenance records the same application source. Verification includes 183 tests across 22 files, clean typecheck/lint, and 48 SDK-bridge browser cases (four items × English/German × light/dark × 320/390/1280 px), with no horizontal overflow or page errors.
 
-Immutable v0.1.29 is tagged at independently reviewed `d0bfbdec4a20df7f0c8f8a1b92b02bf41c76c300`. Manifest SHA-256 is `e274910a7ef8278dbf3a40d2c811bd720400deb3f83fb0fe80bd6e0ca938787e`. Compatible app commit `ab95f222634f3ac1c981036eb5abf18d16f4d768` reached production READY in `dpl_C81FoMX7vkjWjWcV4FTY3hFYTDcp`; its served revision, health 200 and all four versioned downloads were verified before catalog promotion. The tagged commit remains an ancestor of main. The website mirror and GitHub prerelease metadata are separate final publication checks. No tool inventory change; the server contract remains unchanged.
+Immutable v0.1.29 is tagged at independently reviewed `d0bfbdec4a20df7f0c8f8a1b92b02bf41c76c300`. Manifest SHA-256 is `e274910a7ef8278dbf3a40d2c811bd720400deb3f83fb0fe80bd6e0ca938787e`. Compatible app commit `ab95f222634f3ac1c981036eb5abf18d16f4d768` reached production READY in `dpl_C81FoMX7vkjWjWcV4FTY3hFYTDcp`; its served revision, health 200 and all four versioned downloads were verified before catalog promotion. The tagged commit remains an ancestor of main. Website PR #37 merged as `3d5695e1d45e451549553595a247efd200f01c17`; production public HTTP/2 clone/fsck and the focused browser mirror test passed. The owner approved a narrow metadata exception on 2026-10-06: immutable release `404188714` now has `prerelease: false`. Connected GitHub app reads confirm all 27 assets unchanged; a fresh manifest download matches the staged SHA-256. EF-1635 is Done. No tool inventory change; the server contract remains unchanged.
 
 ## Library cover art (0.1.28)
 
