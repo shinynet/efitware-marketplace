@@ -1,0 +1,11 @@
+{
+  "version": "0.1.31",
+  "commit": "c4a1dd36343d9224278519d00be705a74800f9f0",
+  "manifestSha256": "5d1a114f6e0a6aa6f84af8bca5bf41d5024fe4399dd8eb797ee44649bf24d779",
+  "minimumAppCommit": "6152ff0621c0810625ec91eb9cf77ec799b66be9",
+  "appDeployment": {
+    "source": "76c6c56684891fd78b3d7fc4971529ab9135daab",
+    "id": "dpl_2ebNswHrSxqGJMW3sWzBDSk1A7v8",
+    "state": "READY"
+  }
+}
