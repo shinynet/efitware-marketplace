@@ -180,8 +180,10 @@ The local equivalent is `pnpm release:build --output <new-directory> --strict` a
 1. Pin the staged tag and manifest hash in `efitware-app`'s `efitware-marketplace.lock.json`.
 2. Run the application's contract fixtures and real tool/resource checks for both SDK generations. Verify the deployed application provides every tool in `serverContract`, and its production deployment reaches READY.
 3. Merge the release branch into `main` using a merge commit or fast-forward. Never squash or rebase: the tagged commit must remain an ancestor of `main`. Update both catalogs, both plugin manifests and `channels.json` together, setting `published` to the verified version and `staged` to null.
-4. Clear the GitHub prerelease flag. Download the manifest again and compare its SHA-256 with the staged value. No release asset changes during promotion.
-5. Advance the website's pinned static mirror only after compatible application deployment. Verify plain HTTP cloning and existing-client upgrade through the same marketplace URL.
+4. Commit `.github/release-promotion.json` with the reviewed immutable source, manifest hash, minimum app commit and exact compatible READY application deployment. The `Promote verified immutable release` workflow verifies channel/plugin agreement, annotated-tag ancestry, the manifest and every asset's byte count/hash and GitHub identity before clearing the prerelease flag. It then proves those asset identities are unchanged. The receipt records deployment evidence obtained by the implementor; the workflow does not independently inspect private Vercel state. Re-read the currently served application before committing promotion.
+5. If hosted Actions cannot run, keep the release staged until an authorized operator runs the same reviewed publication procedure. Account billing and runner setup are separate operations. A local invocation of the promotion verifier is `node scripts/promote-release.ts` with the existing `GH_TOKEN` loaded only into the process environment; never put a credential on the command line or print it.
+6. Download the manifest again and compare its SHA-256 with the staged value. No release asset changes during promotion.
+7. Advance the website's pinned static mirror only after compatible application deployment. Verify plain HTTP cloning and existing-client upgrade through the same marketplace URL.
 
 ## Roll back
 

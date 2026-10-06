@@ -1,11 +1,5 @@
-This release is staged for application compatibility verification. Its files and tag are immutable; promotion changes only GitHub release metadata and the marketplace catalogs.
+Version 0.1.31 adds Training Space equipment-load guidance. Assistants preserve labelled kg/lb denominations, shared plate-set identities and unknown availability; future numerical prescriptions respect the connected server's current inventory contract. Workout performance measurements retain their normal account-unit behavior. No tool names or card bytes change.
 
-Do not promote the catalog until the application's pinned contract tests pass and its compatible production deployment reaches READY. The published channel remains on the previous version during verification.
+Requires minimum application commit `6152ff0621c0810625ec91eb9cf77ec799b66be9` (EF-1579), served READY in production by `dpl_HX6mQQLVH6q8XfuaUnFhpbv1ht4K`. The application must pin this exact staged release, pass released-contract and SDK checks, and reach READY again before catalog promotion. Public catalogs and channels remain on 0.1.30 during staging.
 
-Version 0.1.30 preserves recorded zero effort in the Progress card. It requires
-the compatible application producer that omits average RPE when no sample
-exists, minimum commit `7531e230ba379ba8ad2f9936b508114f0c0dba0d`.
-The application must deploy that producer together with this release's pin.
-Confirm the exact application deployment is READY and the minimum commit is
-reachable before promoting. Public catalogs and channels remain on 0.1.29
-throughout staging.
+The tag and complete release asset set are immutable. Promotion changes only GitHub release metadata and marketplace catalogs. Never replace a published asset or tag.
