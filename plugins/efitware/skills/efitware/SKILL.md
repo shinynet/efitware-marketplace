@@ -126,19 +126,19 @@ A fit's `reason` or swap `cause` reads `personal` when health and body data isn'
 | `update_program` | `programId`, `patch`: name, nullable description, active/archived status, or aiNote null. Renaming refreshes member display names. |
 | `delete_program` | Soft-delete one program and detach its schedules, workouts and goals, preserving those records. Receipt undo restores unchanged associations. |
 
-| `get_training_context` | Training profile, health, spaces, custom equipment, preferences and local today/timezone. No identity, billing or AI settings. |
+| `get_training_context` | Training profile, health, spaces with labelled `loads`, custom equipment, preferences and local today/timezone. No identity, billing or AI settings. |
 | `get_taxonomies` | Canonical equipment/muscle/movement slugs, profile vocabulary and body-metric bounds in the account's units. |
 | `get_exercise_vocabulary` | Available exercise-search facets. |
 | `get_exercise` | Detail and tracking flags for a visible library or owned custom exerciseId. |
-| `get_training_spaces` | Your spaces, inventories and default selection, as data. |
+| `get_training_spaces` | Your spaces, equipment inventories, labelled `loads` and default selection, as data. |
 | `get_custom_equipment` | Your custom equipment ids, names and interests, as data. |
 | `get_body_metrics` | One body-metric identifier with explicit inclusive from/to dates, up to 372 days; data/meta. Requires the connection's health-sharing permission. |
 | `record_body_metric` | Exact user-provided identifier, date and measurement object; records or corrects one day and recomputes the current mirror. Requires the connection's health-sharing permission. |
 | `delete_body_metric` | Deletes one key/date observation, preserving the rest of its history. Requires the connection's health-sharing permission. |
 | `update_preferences` | patch with locale, units, week start, theme, skin or share defaults. |
 | `update_health` | patch with limitations and/or healthNotes; existing stored consent is required for nonempty data. Requires the connection's health-sharing permission. |
-| `create_training_space` | Name and optional access, inventory, notes or default promotion. |
-| `update_training_space` | trainingSpaceId and patch; inventory replaces its full scope. |
+| `create_training_space` | Name and optional access, inventory, notes or default promotion. Does not accept `loads`; add weights to the saved space with `update_training_space`. |
+| `update_training_space` | trainingSpaceId and patch; inventory replaces its full scope. `patch.loads` replaces the complete `{ plateSets, equipment }` value; preserve all entries and shared sets that should remain. |
 | `delete_training_space` | Delete one trainingSpaceId; refuses your final space and promotes a replacement default. |
 | `create_custom_equipment` | Name, interests and optional trainingSpaceId assignment. |
 | `update_custom_equipment` | customEquipmentId and patch with name/interests. |
@@ -228,10 +228,11 @@ Everything else is absent. Do not plan around it, do not offer it, and never rep
 Successful reads include machine-readable `structuredContent` alongside the existing JSON text. Legacy array results remain arrays in text and are wrapped as `{ data: [...] }` in structured content; object results have the same shape in both. List output schemas describe identifiers, relationships and numeric units. Build host-owned charts and plan views from those records; creating or editing an artifact does not persist anything to eFitware. Save only through an authorized MCP mutation and verify by readback. Missing optional fields mean unavailable/not recorded, not zero; PR `weight`/`reps` can explicitly be null. Keep planned values separate from actuals.
 
 - **Measurements carry their unit; never convert one.** Every load (a set's `weight`/`plannedWeight`, PR and top-set weights) is a measurement object such as `{ "value": 187.5, "unit": "lb" }`, already in the account's unit on its grid (half pound or 0.25 kg). Totals and estimates (volume, estimated one-rep maximum) use the same shape in whole units. Repeat them as given ("187.5 lb"). Send every load the same way, in the unit the user said: an imperial user's "I lifted 85 kg" is `{ "value": 85, "unit": "kg" }`, and the server converts and snaps it. A bare number is refused. With no unit stated, use the account's (`unitSystem` in the context or `presentation`).
+- **Equipment inventory is the denomination exception.** Amounts inside Training Space `loads` are configuration labels, served and written as `{ value, unit: "kg" | "lb" }` exactly as labelled. A 20 kg plate still reads `{ "value": 20, "unit": "kg" }` for an imperial account. Preserve its unit and value when editing; do not convert or grid-snap inventory into the account unit. Mixed-unit sets are valid, and denomination values use multiples of 0.125 in their own unit. Performance measurements above keep their existing account-unit read convention.
 - **Body metrics use unit-free identifiers:** `weight` (kg or lb); `neck`, `shoulders`, `chest`, `waist`, `hips`, `biceps`, `forearms`, `thighs`, `calves` (cm or in); `body_fat` (percent); `resting_heart_rate` (bpm). Each value is a measurement object whose unit belongs to that metric, such as `{ "value": 32.5, "unit": "in" }`; a wrong-dimension unit is refused. Observations and chart points read `{ date, value: { value, unit } }`. Height stays `heightCm`; durations are seconds and distances metres.
 - **Dates** are calendar days, `YYYY-MM-DD`, and must be real days (`2026-02-30` is rejected). Timestamps in responses are ISO-8601 `Z` instants.
 - **`today` is yours to resolve.** `get_schedules` and `create_schedule` require a `today` argument: the user's **local** calendar day. The server does not guess it, and it is the reference for every next-occurrence computation. Resolve it from the user's time zone, not from UTC and not from your own host.
-- **Ids.** Workouts, templates, schedules, programs, and exercises are 24-character hex ids. Ids *inside* a workout are prefixed strings: exercise instances `we-…`, sets `s-…`, activities `a-…`. Training Spaces are `ts-…`.
+- **Ids.** Workouts, templates, schedules, programs, and exercises are 24-character hex ids. Ids *inside* a workout are prefixed strings: exercise instances `we-…`, sets `s-…`, activities `a-…`. Training Spaces are `ts-…`. New equipment plate sets use a client-generated `pls-<uuid>`; load entries reference that exact id as `plateSetId`.
 - **Envelopes differ per tool.** Do not assume one shape:
   - bare arrays — `get_recent_workouts`, `get_exercise_history`, `get_personal_records`
   - `{ data, meta }` pages — `search_exercise_library`, `get_templates`, `get_schedules`
@@ -243,13 +244,13 @@ Successful reads include machine-readable `structuredContent` alongside the exis
 
 ## Sequencing: read before write
 
-Discover database record ids through reads. Client-supplied new exercise/set/activity ids are the documented exception; generate stable prefixed ids for those additions and preserve them on retries.
+Discover database record ids through reads. Client-supplied new exercise/set/activity ids and equipment plate-set ids are the documented exceptions; generate stable prefixed ids for those additions and preserve them on retries.
 
 1. **Any exercise reference → `search_exercise_library` first.** Exercise ids are picked from its results, never invented and never remembered across accounts.
 2. **`log_set` → `get_workout` first.** You need four things from it: the workout `id`, the exercise instance's `we-…` id, the target set's `s-…` id, and that instance's `modality`. The set payload is validated against the modality and unknown fields are rejected outright.
 3. **`create_schedule` → `get_templates` first**, for `templateId`. A schedule always recurs over a template; there is no ad-hoc recurrence.
 4. **`create_workout` from a template → `get_templates` first; from a schedule → `get_schedules` first**, and the `date` must be a genuine occurrence of that schedule.
-5. **Before suggesting any load, rep count, duration, or distance → `get_exercise_history`**, and `get_personal_records` when the claim concerns a best. Suggest from what the user actually did.
+5. **Before suggesting any load, rep count, duration, or distance → `get_exercise_history`**, and `get_personal_records` when the claim concerns a best. Suggest from what the user actually did. For a load, also read the destination Training Space's `loads` with `get_training_spaces` or `get_training_context`; inventory constrains a suggestion but is never evidence of performance.
 
 ## Writes, retries, and idempotency
 
@@ -306,6 +307,25 @@ Start with `get_training_context` when planning depends on the user's availabili
 New context writes require an idempotencyKey. Read inventories before replacing them: equipment.items holds both canonical slugs and ceq- ids; leave the legacy equipment.custom array empty. Create missing personal equipment first, then assign it to a named space or reference it from an owned custom exercise. Search can use trainingSpaceId, availability=all/assumed, discovery=interests and locale. Interests only filter when explicitly requested.
 
 Never invent a body observation. Get body-metric bounds from `get_taxonomies`, then record an exact user-stated measurement object and date. Correcting an older date does not replace a newer current mirror. Individual measurement, context, equipment, exercise and favorite/hide receipts support guarded undo. Context undo refuses changed affected groups; unrelated account groups and native preferences survive. Exercise/equipment restoration checks live dependencies. A missing health consent must be accepted by the user once in the app; the MCP has no tool to accept it.
+
+### Equipment weights and limits
+
+Read `loads` on each space from `get_training_spaces` or `get_training_context.trainingSpaces` before changing weights or planning for that space. The profile result, `open_context` spaces result, mutation results and undo results carry the same labelled denominations. A space without recorded weights returns `{ plateSets: [], equipment: [] }`: availability is unknown, not zero and not proof that every weight exists. The server does not return computed load availability over MCP. Discover the current `update_training_space` schema before writing; if it does not expose `patch.loads`, explain that equipment-weight setup is not available on that server yet.
+
+To save requested weights, call `update_training_space` with its read `trainingSpaceId`, an `idempotencyKey` and `patch.loads` containing the **whole replacement** `{ plateSets, equipment }`. Read the current value first and retain unrelated entries and every still-referenced set. Omitting `loads` leaves it alone; sending both empty arrays intentionally clears all recorded weights. Removing one equipment entry means its weights are unknown again. `create_training_space` does not take `loads`: create first, then update the returned space. A weights-only update leaves equipment ownership and `access` unchanged. In a `selected` space, use only equipment already in its inventory; in an `unconfigured` space, recorded weights are exceptions to assumed equipment and do not configure the whole gym.
+
+Each entry has a read canonical or owned custom `equipmentId` and one of these forms, subject to the server's allowed kinds:
+
+- **Fixed weights:** `{ equipmentId, kind: "fixed", values: [{ value, unit }, ...] }` records the exact weights on hand. Do not fill gaps in a list or assume an increment the user did not state.
+- **Plate-loaded equipment:** `{ equipmentId, kind: "plate_loaded", plateSetId, base: { value, unit }, paired, implements }` links to one `plateSets` entry `{ id, name, sizes: [{ size: { value, unit }, count }] }`. For a new set, generate one unused `pls-<uuid>` and reference it from all equipment sharing those plates in the same request. Keep that id on retries and renames; link by `plateSetId`, never by the set's name. Replacing shared sizes affects every linked item, so name those affected items when explaining the change. `count` is physical pieces owned, `base` is the empty weight of one implement, `paired` means matching plates on its two sides, and `implements` is 1 or 2 loaded identically from the shared supply. Two handles do not duplicate the available pieces: two 10 lb plates with `implements: 2` and `paired: false` add 10 lb to each handle, not 20 lb. Retain only plate sets referenced by equipment; unreferenced sets are removed by the server.
+- **Stacks and adjustable settings:** `{ equipmentId, kind: "stack", max: { value, unit }, step?, lightest? }`. A maximum without **both** `step` and `lightest` is a limit only: say “up to 225 lb; settings below it are unknown.” Do not invent a step or start. An exact stack needs all three stated amounts, for example maximum 225 lb, step 10 lb and lightest 5 lb. The maximum is an available endpoint even when the step does not land on it. Preserve any known step or lightest without claiming exact availability until both are present.
+- **Bands:** `{ equipmentId, kind: "bands", levels: ["Light", "Medium", "Heavy"] }`, in the user's lightest-to-heaviest order. These are advisory labels, never numerical resistance, exact weight choices or progression limits.
+
+Use the destination's recorded availability when proposing future loads, while keeping the proposal grounded in compatible actual history. Machine, assisted-pull-up and custom-equipment labels are specific to the same exercise in the same space; they do not establish an equivalent load on another machine or at another gym. If an exercise depends on multiple load sources and a recorded limit cannot be assigned unambiguously, do not guess a number: ask which source it uses or give effort guidance. If availability is unknown, say so. A limit-only stack does not establish every setting below its maximum. Fixed and adjustable dumbbells can both satisfy a dumbbell exercise; aliases do not create an extra physical set. In a selected space, a listed provider without weights keeps that family's availability unknown. In an unconfigured space, explicit family entries override the assumed generic dumbbells. Combine the known providers without filling gaps: fixed 15/30 lb plus a second set limited to 20 lb permits a history-derived load at or below 20 lb or the known 30 lb, never 25 lb; the ceiling still does not confirm an exact setting below it.
+
+For future dumbbell, kettlebell and farmer's-handle prescriptions, use the weight of **one implement**. Read the exact exercise's instructions before recording actuals: historical pair-total handle records and custom copies retain their original convention. Never halve, reinterpret or rewrite those actuals or saved prescriptions to fit the new convention, and never use them as per-handle evidence. When the convention is unclear, ask before writing a number.
+
+After a successful update, use its result and read back the space to verify the complete inventory, labels and shared references. Explain any refusal without dropping entries or plates to make the request pass. Keep the receipt for a requested guarded undo; do not force an undo over later edits.
 
 ## Grounding rules
 

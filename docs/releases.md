@@ -6,6 +6,17 @@ The application owns its product DTOs, MCP tools, authentication, permissions an
 
 `pnpm build` bundles Vue, fonts, brand assets and theme tokens into `dist/card/workout.html`, then generates the open draft-07 input schema. The product validates its raw tool output against that schema using Ajv without stripping extra fields, applying defaults or coercing types. The product DTO remains authoritative.
 
+## Equipment weights and limits (unreleased, EF-1585)
+
+Skill-only behavior guidance for the application's Training Space equipment loads (EF-1580, epic EF-1579). No MCP tool is added, and the published card schema remains open to the new `loads` field. This work does not allocate a release number, change either plugin version, promote a catalog or change the application's pin. Resolve the next unused immutable version against current main, tags and concurrent releases before staging; do not reuse 0.1.29, already published by the EF-1635 parity work.
+
+- `get_training_spaces` and `get_training_context.trainingSpaces` expose labelled inventory denominations. Profile, context, mutation and undo results preserve the same shape. Inventory amounts are the exception to account-unit reads: a 20 kg plate remains 20 kg on an imperial account. Performance measurements retain their existing conversion and grid behavior.
+- `update_training_space.patch.loads` replaces the complete `{ plateSets, equipment }` value. Preserve unrelated entries and shared sets, create weights only after the space exists, keep client-generated `pls-<uuid>` identities stable and link with `plateSetId`. The skill explains physical piece counts, identical implements, shared-set effects, empty/unknown inventories and unchanged access on a weights-only update.
+- Maximum-only stacks are limits, while exact stacks require maximum, step and lightest. Fixed values keep their gaps and bands stay advisory. Inventory does not establish performance; ambiguous sources yield no guessed number. Future per-implement prescriptions preserve historical pair-total actuals and saved prescriptions.
+- `contract/context.test.ts` checks that the published context schema accepts mixed-unit denominations, shared plate-set references, all four load kinds and empty loads in either account unit without modifying any input. The existing plugin inventory and deterministic package tests cover the unchanged tool names and canonical skill delivery in all client bundles. These checks do not replace the application's input, persistence, unit or undo tests.
+
+Release gate: first verify the compatible EF-1580 application deployment is READY and all release prerequisites are satisfied. Then assign and stage a new immutable release with the compatible application commit recorded, pin it in the application, refresh its artifacts through the normal fetch command, and run the application's released-contract tests plus labelled-unit/shared-ID requests. Promote only after the application deployment serving that pin is READY. Never claim these steps passed from a local skill change or edit already-published assets. Skill clients must inspect the connected schema and decline an unsupported `loads` write on an older server.
+
 ## Recorded average effort (0.1.30, EF-1543)
 
 The Progress view renders every supplied numeric headline, including a recorded
