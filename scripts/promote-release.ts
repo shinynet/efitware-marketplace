@@ -54,8 +54,9 @@ export const promoteRelease = async (receipt: z.infer<typeof promotionReceiptSch
     const content = await download(entry.asset)
     if (content.length !== entry.bytes || hash(content) !== entry.sha256) throw new Error(`Staged file mismatch: ${entry.asset}`)
   }
-  const after = before.prerelease ? await call(`/releases/${before.id}`, { prerelease: false, name: `eFitware ${tag}` }) : before
+  const after = before.prerelease ? await call(`/releases/${before.id}`, { prerelease: false, name: `eFitware ${tag}`, make_latest: 'true' }) : before
   if (after.id !== before.id || after.tag_name !== tag || after.prerelease || identity(after.assets) !== identity(before.assets)) throw new Error('Release metadata promotion changed immutable assets')
+  if ((await call('/releases/latest')).id !== after.id) throw new Error('Published release is not GitHub latest')
   return { version: receipt.version, releaseId: after.id, prerelease: after.prerelease, assets: after.assets.length, manifestSha256: receipt.manifestSha256 }
 }
 
