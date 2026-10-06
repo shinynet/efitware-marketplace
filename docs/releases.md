@@ -6,6 +6,22 @@ The application owns its product DTOs, MCP tools, authentication, permissions an
 
 `pnpm build` bundles Vue, fonts, brand assets and theme tokens into `dist/card/workout.html`, then generates the open draft-07 input schema. The product validates its raw tool output against that schema using Ajv without stripping extra fields, applying defaults or coercing types. The product DTO remains authoritative.
 
+## Recorded average effort (EF-1543)
+
+The Progress view renders every supplied numeric headline, including a recorded
+average RPE of zero. RPE accepts zero in the product contract. An unavailable
+average is absent from the compatible application's metrics array, so the card
+has no average-effort tile until a sample exists. The existing locale-aware
+formatter handles the supplied value in English and German.
+
+This correction requires the EF-1543 application producer that omits unavailable
+averages, recorded as minimum application commit
+`7531e230ba379ba8ad2f9936b508114f0c0dba0d` in the server contract. A new immutable release and application pin deliver the paired behavior;
+independent review precedes staging, and catalog promotion follows the compatible
+application's exact READY production deployment. Version allocation remains a
+separate release step. The tool inventory and consumer schemas do not change.
+The existing Library styles, clocks and covers remain in the release.
+
 ## Library timed formats and styles (0.1.29)
 
 EF-1635 adds Functional fitness (`functional`) and HIIT (`hiit`) to the Library vocabulary in English and German. Each item session lists every timed circuit in authored order: AMRAP with its cap, EMOM with its duration, Tabata with rounds/work/rest, and For Time with its cap. Mixed strength/conditioning sessions retain every exercise prescription, and two Tabata groups remain two entries. This is a read-only description; it starts no clock and records no score. Cover metadata keeps the URL-only card projection; the current application supplies the optimized 480 × 360 WebP thumbnail, while responsive AVIF/WebP selection remains application-owned.
