@@ -6,6 +6,16 @@ The application owns its product DTOs, MCP tools, authentication, permissions an
 
 `pnpm build` bundles Vue, fonts, brand assets and theme tokens into `dist/card/workout.html`, then generates the open draft-07 input schema. The product validates its raw tool output against that schema using Ajv without stripping extra fields, applying defaults or coercing types. The product DTO remains authoritative.
 
+## Library timed formats and styles (0.1.29)
+
+EF-1635 adds Functional fitness (`functional`) and HIIT (`hiit`) to the Library vocabulary in English and German. Each item session lists every timed circuit in authored order: AMRAP with its cap, EMOM with its duration, Tabata with rounds/work/rest, and For Time with its cap. Mixed strength/conditioning sessions retain every exercise prescription, and two Tabata groups remain two entries. This is a read-only description; it starts no clock and records no score.
+
+The format-8 consumer schema adds optional planned `executionGroups` with index-based members and the application's bounded format union. Existing payloads without groups and ordinary untimed groups still validate and render as before. Objects remain open to additive fields; cross-reference and workout invariants belong to the application.
+
+`contract/compat-fixtures.json.workoutLibraryTimedFormats` contains eight actual `open_workout_library` payloads (four items in English and German) captured over real SDK dispatch against a disposable migrated database and the merged application at `02ae5d2533a348c8f07a8fa475b13ebc089c7597`. The only authentication seam is a synthetic account. No production account or credentials are included. Independent contract tests validate and render those payloads, all four clocks, duplicate formats, an untimed/absent group list and malformed format bounds. Vocabulary provenance records the same application source. Verification includes 183 tests across 22 files, clean typecheck/lint, and 48 SDK-bridge browser cases (four items × English/German × light/dark × 320/390/1280 px), with no horizontal overflow or page errors.
+
+Stage immutable release 0.1.29 from the independently reviewed commit. Pin it in the compatible application, verify that exact production deployment is READY, then promote the catalog and mirror its public metadata in efitware-www. A staged release is not catalog publication. No tool inventory change; the server contract remains unchanged.
+
 ## Library cover art (0.1.28)
 
 Card and schema change (EF-1631, application EF-1609, epic EF-1536). No tool inventory change, so `minimumAppCommit` is unchanged, and the manifest stays format 8.

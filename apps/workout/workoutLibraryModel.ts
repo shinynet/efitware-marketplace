@@ -64,9 +64,22 @@ const plannedSet = z.object({
   rirTarget: z.number().nonnegative().optional(), plannedRpe: z.number().nonnegative().optional(),
   side: z.enum(['left', 'right', 'both']).optional()
 })
+/** Independent planned-group projection of the application's EF-1621 contract. */
+const libraryGroupFormat = z.discriminatedUnion('type', [
+  z.object({ type: z.literal('amrap'), capSeconds: z.number().int().min(60).max(3600) }),
+  z.object({ type: z.literal('emom'), minutes: z.number().int().min(2).max(60) }),
+  z.object({ type: z.literal('for-time'), capSeconds: z.number().int().min(60).max(3600) }),
+  z.object({ type: z.literal('tabata'), workSeconds: z.number().int().min(5).max(300), restSeconds: z.number().int().min(0).max(300), rounds: z.number().int().min(1).max(40) })
+])
+const libraryExecutionGroup = z.object({
+  kind: z.enum(['superset', 'circuit']),
+  members: z.array(z.object({ exerciseIndex: z.number().int().nonnegative(), setIndexes: z.array(z.number().int().nonnegative()).min(1).max(100) })).min(1).max(10),
+  format: libraryGroupFormat.optional()
+})
 const librarySession = z.object({
   sessionId: authoredId, name: z.string(), estimatedMinutes: z.number().positive(),
-  slots: z.array(z.object({ ...slotExercise, prescription: z.object({ order: z.number(), section: z.enum(['warmup', 'main', 'cooldown']).optional(), sets: z.array(plannedSet) }) }))
+  slots: z.array(z.object({ ...slotExercise, prescription: z.object({ order: z.number(), section: z.enum(['warmup', 'main', 'cooldown']).optional(), sets: z.array(plannedSet) }) })),
+  executionGroups: z.array(libraryExecutionGroup).max(20).optional()
 })
 /**
  * One visible block of a Program variant (app EF-1603): weeks `startWeek + 1`

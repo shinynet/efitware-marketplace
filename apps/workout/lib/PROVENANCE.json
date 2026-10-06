@@ -207,18 +207,18 @@
       "path": "apps/workout/workoutLibraryVocabulary.en.json",
       "source": "i18n/features/workout-library/en.json",
       "repository": "shinynet/efitware-app",
-      "commit": "31e019af0a86f8ee33a8c773f9da64d7dd6ca65b",
-      "sourceSha256": "fc58d23c20a878914cc541cbb91817c3105eab5580bd176bb3d14efa37e32171",
-      "sha256": "6814dee3592a7b1790444e066637e0f3c93dd0a254cbf0d88dbd2915010b08b8",
+      "commit": "02ae5d2533a348c8f07a8fa475b13ebc089c7597",
+      "sourceSha256": "ff3c0cc1094760ed678e229b201f67d0e02ada063657b66f5a27241335ca2696",
+      "sha256": "c7b138f7893678cd6308024dbd91eaa3121b8587bd0404019d2959b7c2af8d94",
       "transformation": "Projection of workoutLibrary format, focus, style, purpose, experience and fit (exact, adaptable, unavailable) translations."
     },
     {
       "path": "apps/workout/workoutLibraryVocabulary.de.json",
       "source": "i18n/features/workout-library/de.json",
       "repository": "shinynet/efitware-app",
-      "commit": "31e019af0a86f8ee33a8c773f9da64d7dd6ca65b",
-      "sourceSha256": "03622dfebff443beadbea39629fefd21fcb27c3d70c59b7d7e6dd364fa462b41",
-      "sha256": "230676ad6fa54f94228c2799ac73a669dd05bfe79edf680b79fc8d95a775348f",
+      "commit": "02ae5d2533a348c8f07a8fa475b13ebc089c7597",
+      "sourceSha256": "6534d696cb19105b03aaa465dabb2003ae8a93fb4d0325fd61e41440b3c36ad7",
+      "sha256": "ddab97bb949ba664d9d04bdca3d276996132d443f14696901c11043788d2c0ff",
       "transformation": "Projection of workoutLibrary format, focus, style, purpose, experience and fit (exact, adaptable, unavailable) translations."
     }
   ]

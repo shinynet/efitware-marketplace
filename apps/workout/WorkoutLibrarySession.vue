@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { LibrarySession } from './workoutLibraryModel'
-import { minutesLabel, prescriptionLine, type LibraryTranslator } from './workoutLibraryPresentation'
+import { minutesLabel, prescriptionLine, timedFormatLabel, type LibraryTranslator } from './workoutLibraryPresentation'
 
 /** One Library session in the item view: its name, length and each exercise with its set summary. */
 const { session, translator, swappedSlots, headingLevel = 4 } = defineProps<{
@@ -11,6 +12,7 @@ const { session, translator, swappedSlots, headingLevel = 4 } = defineProps<{
   headingLevel?: 4 | 5
 }>()
 const { t } = useI18n()
+const timedFormats = computed(() => (session.executionGroups ?? []).flatMap(group => group.format ? [timedFormatLabel(translator, group.format)] : []))
 </script>
 
 <template>
@@ -24,6 +26,18 @@ const { t } = useI18n()
     <p class="text-xs text-muted">
       {{ minutesLabel(translator, { min: session.estimatedMinutes, max: session.estimatedMinutes }) }}
     </p>
+    <ul
+      v-if="timedFormats.length"
+      class="mt-2 space-y-1 text-sm text-muted"
+      :aria-label="t('workoutLibraryUi.timedFormats')"
+    >
+      <li
+        v-for="(label, index) in timedFormats"
+        :key="index"
+      >
+        {{ label }}
+      </li>
+    </ul>
     <ol class="mt-2 space-y-1 text-sm">
       <li
         v-for="slot in session.slots"

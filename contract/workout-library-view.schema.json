@@ -927,6 +927,143 @@
                               "prescription"
                             ]
                           }
+                        },
+                        "executionGroups": {
+                          "maxItems": 20,
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "kind": {
+                                "type": "string",
+                                "enum": [
+                                  "superset",
+                                  "circuit"
+                                ]
+                              },
+                              "members": {
+                                "minItems": 1,
+                                "maxItems": 10,
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "exerciseIndex": {
+                                      "type": "integer",
+                                      "minimum": 0,
+                                      "maximum": 9007199254740991
+                                    },
+                                    "setIndexes": {
+                                      "minItems": 1,
+                                      "maxItems": 100,
+                                      "type": "array",
+                                      "items": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 9007199254740991
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "exerciseIndex",
+                                    "setIndexes"
+                                  ]
+                                }
+                              },
+                              "format": {
+                                "oneOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "const": "amrap"
+                                      },
+                                      "capSeconds": {
+                                        "type": "integer",
+                                        "minimum": 60,
+                                        "maximum": 3600
+                                      }
+                                    },
+                                    "required": [
+                                      "type",
+                                      "capSeconds"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "const": "emom"
+                                      },
+                                      "minutes": {
+                                        "type": "integer",
+                                        "minimum": 2,
+                                        "maximum": 60
+                                      }
+                                    },
+                                    "required": [
+                                      "type",
+                                      "minutes"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "const": "for-time"
+                                      },
+                                      "capSeconds": {
+                                        "type": "integer",
+                                        "minimum": 60,
+                                        "maximum": 3600
+                                      }
+                                    },
+                                    "required": [
+                                      "type",
+                                      "capSeconds"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "const": "tabata"
+                                      },
+                                      "workSeconds": {
+                                        "type": "integer",
+                                        "minimum": 5,
+                                        "maximum": 300
+                                      },
+                                      "restSeconds": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 300
+                                      },
+                                      "rounds": {
+                                        "type": "integer",
+                                        "minimum": 1,
+                                        "maximum": 40
+                                      }
+                                    },
+                                    "required": [
+                                      "type",
+                                      "workSeconds",
+                                      "restSeconds",
+                                      "rounds"
+                                    ]
+                                  }
+                                ]
+                              }
+                            },
+                            "required": [
+                              "kind",
+                              "members"
+                            ]
+                          }
                         }
                       },
                       "required": [
@@ -1074,6 +1211,143 @@
                                       "prescription"
                                     ]
                                   }
+                                },
+                                "executionGroups": {
+                                  "maxItems": 20,
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "kind": {
+                                        "type": "string",
+                                        "enum": [
+                                          "superset",
+                                          "circuit"
+                                        ]
+                                      },
+                                      "members": {
+                                        "minItems": 1,
+                                        "maxItems": 10,
+                                        "type": "array",
+                                        "items": {
+                                          "type": "object",
+                                          "properties": {
+                                            "exerciseIndex": {
+                                              "type": "integer",
+                                              "minimum": 0,
+                                              "maximum": 9007199254740991
+                                            },
+                                            "setIndexes": {
+                                              "minItems": 1,
+                                              "maxItems": 100,
+                                              "type": "array",
+                                              "items": {
+                                                "type": "integer",
+                                                "minimum": 0,
+                                                "maximum": 9007199254740991
+                                              }
+                                            }
+                                          },
+                                          "required": [
+                                            "exerciseIndex",
+                                            "setIndexes"
+                                          ]
+                                        }
+                                      },
+                                      "format": {
+                                        "oneOf": [
+                                          {
+                                            "type": "object",
+                                            "properties": {
+                                              "type": {
+                                                "type": "string",
+                                                "const": "amrap"
+                                              },
+                                              "capSeconds": {
+                                                "type": "integer",
+                                                "minimum": 60,
+                                                "maximum": 3600
+                                              }
+                                            },
+                                            "required": [
+                                              "type",
+                                              "capSeconds"
+                                            ]
+                                          },
+                                          {
+                                            "type": "object",
+                                            "properties": {
+                                              "type": {
+                                                "type": "string",
+                                                "const": "emom"
+                                              },
+                                              "minutes": {
+                                                "type": "integer",
+                                                "minimum": 2,
+                                                "maximum": 60
+                                              }
+                                            },
+                                            "required": [
+                                              "type",
+                                              "minutes"
+                                            ]
+                                          },
+                                          {
+                                            "type": "object",
+                                            "properties": {
+                                              "type": {
+                                                "type": "string",
+                                                "const": "for-time"
+                                              },
+                                              "capSeconds": {
+                                                "type": "integer",
+                                                "minimum": 60,
+                                                "maximum": 3600
+                                              }
+                                            },
+                                            "required": [
+                                              "type",
+                                              "capSeconds"
+                                            ]
+                                          },
+                                          {
+                                            "type": "object",
+                                            "properties": {
+                                              "type": {
+                                                "type": "string",
+                                                "const": "tabata"
+                                              },
+                                              "workSeconds": {
+                                                "type": "integer",
+                                                "minimum": 5,
+                                                "maximum": 300
+                                              },
+                                              "restSeconds": {
+                                                "type": "integer",
+                                                "minimum": 0,
+                                                "maximum": 300
+                                              },
+                                              "rounds": {
+                                                "type": "integer",
+                                                "minimum": 1,
+                                                "maximum": 40
+                                              }
+                                            },
+                                            "required": [
+                                              "type",
+                                              "workSeconds",
+                                              "restSeconds",
+                                              "rounds"
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "kind",
+                                      "members"
+                                    ]
+                                  }
                                 }
                               },
                               "required": [
@@ -1218,6 +1492,143 @@
                                             "required": [
                                               "slotId",
                                               "prescription"
+                                            ]
+                                          }
+                                        },
+                                        "executionGroups": {
+                                          "maxItems": 20,
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "kind": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "superset",
+                                                  "circuit"
+                                                ]
+                                              },
+                                              "members": {
+                                                "minItems": 1,
+                                                "maxItems": 10,
+                                                "type": "array",
+                                                "items": {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "exerciseIndex": {
+                                                      "type": "integer",
+                                                      "minimum": 0,
+                                                      "maximum": 9007199254740991
+                                                    },
+                                                    "setIndexes": {
+                                                      "minItems": 1,
+                                                      "maxItems": 100,
+                                                      "type": "array",
+                                                      "items": {
+                                                        "type": "integer",
+                                                        "minimum": 0,
+                                                        "maximum": 9007199254740991
+                                                      }
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "exerciseIndex",
+                                                    "setIndexes"
+                                                  ]
+                                                }
+                                              },
+                                              "format": {
+                                                "oneOf": [
+                                                  {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "type": {
+                                                        "type": "string",
+                                                        "const": "amrap"
+                                                      },
+                                                      "capSeconds": {
+                                                        "type": "integer",
+                                                        "minimum": 60,
+                                                        "maximum": 3600
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "type",
+                                                      "capSeconds"
+                                                    ]
+                                                  },
+                                                  {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "type": {
+                                                        "type": "string",
+                                                        "const": "emom"
+                                                      },
+                                                      "minutes": {
+                                                        "type": "integer",
+                                                        "minimum": 2,
+                                                        "maximum": 60
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "type",
+                                                      "minutes"
+                                                    ]
+                                                  },
+                                                  {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "type": {
+                                                        "type": "string",
+                                                        "const": "for-time"
+                                                      },
+                                                      "capSeconds": {
+                                                        "type": "integer",
+                                                        "minimum": 60,
+                                                        "maximum": 3600
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "type",
+                                                      "capSeconds"
+                                                    ]
+                                                  },
+                                                  {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "type": {
+                                                        "type": "string",
+                                                        "const": "tabata"
+                                                      },
+                                                      "workSeconds": {
+                                                        "type": "integer",
+                                                        "minimum": 5,
+                                                        "maximum": 300
+                                                      },
+                                                      "restSeconds": {
+                                                        "type": "integer",
+                                                        "minimum": 0,
+                                                        "maximum": 300
+                                                      },
+                                                      "rounds": {
+                                                        "type": "integer",
+                                                        "minimum": 1,
+                                                        "maximum": 40
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "type",
+                                                      "workSeconds",
+                                                      "restSeconds",
+                                                      "rounds"
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            "required": [
+                                              "kind",
+                                              "members"
                                             ]
                                           }
                                         }

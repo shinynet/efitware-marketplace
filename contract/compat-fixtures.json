@@ -7863,6 +7863,2406 @@
         "calisthenics"
       ],
       "text": "Calisthenics"
+    },
+    {
+      "locale": "en",
+      "path": [
+        "style",
+        "functional"
+      ],
+      "text": "Functional fitness"
+    },
+    {
+      "locale": "en",
+      "path": [
+        "style",
+        "hiit"
+      ],
+      "text": "HIIT"
+    },
+    {
+      "locale": "de",
+      "path": [
+        "style",
+        "functional"
+      ],
+      "text": "Functional Fitness"
+    },
+    {
+      "locale": "de",
+      "path": [
+        "style",
+        "hiit"
+      ],
+      "text": "HIIT"
     }
-  ]
+  ],
+  "workoutLibraryTimedFormats": {
+    "dumbbell-amrap:en": {
+      "view": "workout-library",
+      "record": {
+        "mode": "item",
+        "id": "dumbbell-amrap",
+        "version": 1,
+        "format": "workout",
+        "title": "Dumbbell AMRAP",
+        "summary": "A dumbbell AMRAP of snatches, squats, push-ups and rows.",
+        "tags": {
+          "focus": [
+            "full-body"
+          ],
+          "style": [
+            "functional",
+            "conditioning",
+            "strength"
+          ],
+          "purpose": [
+            "weight-management",
+            "general-fitness"
+          ],
+          "experience": [
+            "intermediate"
+          ]
+        },
+        "sessionMinutes": {
+          "min": 23,
+          "max": 23
+        },
+        "supportedDays": [],
+        "fit": {
+          "state": "exact",
+          "variantIds": []
+        },
+        "appPath": "/library/dumbbell-amrap",
+        "description": "As many rounds as you can in 15 minutes of dumbbell snatches, goblet squats, push-ups and rows.",
+        "suitability": "For intermediate exercisers who can snatch a dumbbell with good form. You need a pair of dumbbells.",
+        "trainingSpace": {
+          "id": "ts-37e9e842-8b4b-4582-a68b-e66190c2cd27",
+          "name": "Default",
+          "isDefault": true,
+          "equipment": "confirmed"
+        },
+        "content": {
+          "format": "workout",
+          "session": {
+            "sessionId": "main",
+            "name": "Dumbbell AMRAP",
+            "estimatedMinutes": 23,
+            "slots": [
+              {
+                "slotId": "inchworm",
+                "exerciseId": "6ac43b40b00bfdb2c7263fe4",
+                "name": "Inchworm Walkout",
+                "prescription": {
+                  "order": 1,
+                  "section": "warmup",
+                  "sets": [
+                    {
+                      "category": "warmup",
+                      "plannedDuration": 60
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "leg-swings",
+                "exerciseId": "6ac43b40b00bfdb2c7263fe1",
+                "name": "Leg Swings",
+                "prescription": {
+                  "order": 2,
+                  "section": "warmup",
+                  "sets": [
+                    {
+                      "category": "warmup",
+                      "plannedDuration": 30,
+                      "side": "left"
+                    },
+                    {
+                      "category": "warmup",
+                      "plannedDuration": 30,
+                      "side": "right"
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "snatch",
+                "exerciseId": "6ac43b40b00bfdb2c7264087",
+                "name": "Dumbbell Snatch",
+                "prescription": {
+                  "order": 3,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 10,
+                        "max": 10
+                      },
+                      "plannedRpe": 7
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "goblet-squat",
+                "exerciseId": "6ac43b40b00bfdb2c7263f05",
+                "name": "Goblet Squat",
+                "prescription": {
+                  "order": 4,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 12,
+                        "max": 12
+                      },
+                      "plannedRpe": 7
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "push-up",
+                "exerciseId": "6ac43b40b00bfdb2c7263f1b",
+                "name": "Push-Up",
+                "prescription": {
+                  "order": 5,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 10,
+                        "max": 10
+                      },
+                      "plannedRpe": 7
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "row",
+                "exerciseId": "6ac43b40b00bfdb2c7263f2b",
+                "name": "Dumbbell Bent-Over Row",
+                "prescription": {
+                  "order": 6,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 12,
+                        "max": 12
+                      },
+                      "plannedRpe": 7
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "childs-pose",
+                "exerciseId": "6ac43b40b00bfdb2c7263f6a",
+                "name": "Child's Pose",
+                "prescription": {
+                  "order": 7,
+                  "section": "cooldown",
+                  "sets": [
+                    {
+                      "category": "cooldown",
+                      "plannedDuration": 60
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "quad-stretch",
+                "exerciseId": "6ac43b40b00bfdb2c7263f7b",
+                "name": "Standing Quad Stretch",
+                "prescription": {
+                  "order": 8,
+                  "section": "cooldown",
+                  "sets": [
+                    {
+                      "category": "cooldown",
+                      "plannedDuration": 30,
+                      "side": "left"
+                    },
+                    {
+                      "category": "cooldown",
+                      "plannedDuration": 30,
+                      "side": "right"
+                    }
+                  ]
+                }
+              }
+            ],
+            "activities": [],
+            "executionGroups": [
+              {
+                "kind": "circuit",
+                "members": [
+                  {
+                    "exerciseIndex": 2,
+                    "setIndexes": [
+                      0
+                    ]
+                  },
+                  {
+                    "exerciseIndex": 3,
+                    "setIndexes": [
+                      0
+                    ]
+                  },
+                  {
+                    "exerciseIndex": 4,
+                    "setIndexes": [
+                      0
+                    ]
+                  },
+                  {
+                    "exerciseIndex": 5,
+                    "setIndexes": [
+                      0
+                    ]
+                  }
+                ],
+                "format": {
+                  "type": "amrap",
+                  "capSeconds": 900
+                }
+              }
+            ]
+          }
+        },
+        "exercises": [
+          {
+            "id": "6ac43b40b00bfdb2c7263fe4",
+            "name": "Inchworm Walkout",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263fe1",
+            "name": "Leg Swings",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7264087",
+            "name": "Dumbbell Snatch",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "dumbbells"
+            ]
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f05",
+            "name": "Goblet Squat",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "dumbbells"
+            ]
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f1b",
+            "name": "Push-Up",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f2b",
+            "name": "Dumbbell Bent-Over Row",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "dumbbells"
+            ]
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f6a",
+            "name": "Child's Pose",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f7b",
+            "name": "Standing Quad Stretch",
+            "modality": "mobility",
+            "equipmentRequired": []
+          }
+        ]
+      },
+      "related": {},
+      "presentation": {
+        "locale": "en",
+        "unitSystem": "metric",
+        "theme": null,
+        "skin": null,
+        "timeZone": "UTC"
+      }
+    },
+    "bodyweight-emom:en": {
+      "view": "workout-library",
+      "record": {
+        "mode": "item",
+        "id": "bodyweight-emom",
+        "version": 1,
+        "format": "workout",
+        "title": "Bodyweight EMOM",
+        "summary": "A short beginner EMOM with no equipment.",
+        "tags": {
+          "focus": [
+            "full-body"
+          ],
+          "style": [
+            "hiit",
+            "conditioning"
+          ],
+          "purpose": [
+            "weight-management",
+            "general-fitness"
+          ],
+          "experience": [
+            "beginner"
+          ]
+        },
+        "sessionMinutes": {
+          "min": 13,
+          "max": 13
+        },
+        "supportedDays": [],
+        "fit": {
+          "state": "exact",
+          "variantIds": []
+        },
+        "appPath": "/library/bodyweight-emom",
+        "description": "Every minute for 8 minutes, do 10 squats or 8 knee push-ups, alternating, and rest for what is left of the minute.",
+        "suitability": "For beginners. Floor space only.",
+        "trainingSpace": {
+          "id": "ts-37e9e842-8b4b-4582-a68b-e66190c2cd27",
+          "name": "Default",
+          "isDefault": true,
+          "equipment": "confirmed"
+        },
+        "content": {
+          "format": "workout",
+          "session": {
+            "sessionId": "main",
+            "name": "Bodyweight EMOM",
+            "estimatedMinutes": 13,
+            "slots": [
+              {
+                "slotId": "knee-hugs",
+                "exerciseId": "6ac43b40b00bfdb2c7263fe5",
+                "name": "Walking Knee Hugs",
+                "prescription": {
+                  "order": 1,
+                  "section": "warmup",
+                  "sets": [
+                    {
+                      "category": "warmup",
+                      "plannedDuration": 60
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "squat",
+                "exerciseId": "6ac43b40b00bfdb2c7263f09",
+                "name": "Bodyweight Squat",
+                "prescription": {
+                  "order": 2,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 10,
+                        "max": 10
+                      },
+                      "plannedRpe": 6
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "knee-push-up",
+                "exerciseId": "6ac43b40b00bfdb2c7264078",
+                "name": "Knee Push-Up",
+                "prescription": {
+                  "order": 3,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 8,
+                        "max": 8
+                      },
+                      "plannedRpe": 6
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "childs-pose",
+                "exerciseId": "6ac43b40b00bfdb2c7263f6a",
+                "name": "Child's Pose",
+                "prescription": {
+                  "order": 4,
+                  "section": "cooldown",
+                  "sets": [
+                    {
+                      "category": "cooldown",
+                      "plannedDuration": 60
+                    }
+                  ]
+                }
+              }
+            ],
+            "activities": [],
+            "executionGroups": [
+              {
+                "kind": "circuit",
+                "members": [
+                  {
+                    "exerciseIndex": 1,
+                    "setIndexes": [
+                      0
+                    ]
+                  },
+                  {
+                    "exerciseIndex": 2,
+                    "setIndexes": [
+                      0
+                    ]
+                  }
+                ],
+                "format": {
+                  "type": "emom",
+                  "minutes": 8
+                }
+              }
+            ]
+          }
+        },
+        "exercises": [
+          {
+            "id": "6ac43b40b00bfdb2c7263fe5",
+            "name": "Walking Knee Hugs",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f09",
+            "name": "Bodyweight Squat",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7264078",
+            "name": "Knee Push-Up",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f6a",
+            "name": "Child's Pose",
+            "modality": "mobility",
+            "equipmentRequired": []
+          }
+        ]
+      },
+      "related": {},
+      "presentation": {
+        "locale": "en",
+        "unitSystem": "metric",
+        "theme": null,
+        "skin": null,
+        "timeZone": "UTC"
+      }
+    },
+    "bodyweight-tabata:en": {
+      "view": "workout-library",
+      "record": {
+        "mode": "item",
+        "id": "bodyweight-tabata",
+        "version": 1,
+        "format": "workout",
+        "title": "Bodyweight Tabata",
+        "summary": "Two hard Tabatas with no equipment.",
+        "tags": {
+          "focus": [
+            "full-body"
+          ],
+          "style": [
+            "hiit",
+            "conditioning"
+          ],
+          "purpose": [
+            "weight-management",
+            "general-fitness"
+          ],
+          "experience": [
+            "intermediate"
+          ]
+        },
+        "sessionMinutes": {
+          "min": 14,
+          "max": 14
+        },
+        "supportedDays": [],
+        "fit": {
+          "state": "exact",
+          "variantIds": []
+        },
+        "appPath": "/library/bodyweight-tabata",
+        "description": "Two Tabatas, each eight rounds of 20 seconds hard and 10 seconds rest, alternating two moves.",
+        "suitability": "For intermediate exercisers who already land jumps with control. Floor space only.",
+        "trainingSpace": {
+          "id": "ts-37e9e842-8b4b-4582-a68b-e66190c2cd27",
+          "name": "Default",
+          "isDefault": true,
+          "equipment": "confirmed"
+        },
+        "content": {
+          "format": "workout",
+          "session": {
+            "sessionId": "main",
+            "name": "Bodyweight Tabata",
+            "estimatedMinutes": 14,
+            "slots": [
+              {
+                "slotId": "hip-circles",
+                "exerciseId": "6ac43b40b00bfdb2c7263fe3",
+                "name": "Hip Circles",
+                "prescription": {
+                  "order": 1,
+                  "section": "warmup",
+                  "sets": [
+                    {
+                      "category": "warmup",
+                      "plannedDuration": 60
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "jump-squat",
+                "exerciseId": "6ac43b40b00bfdb2c7263ff7",
+                "name": "Jump Squat",
+                "prescription": {
+                  "order": 2,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedDuration": 20,
+                      "plannedRpe": 9
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "push-up",
+                "exerciseId": "6ac43b40b00bfdb2c7263f1b",
+                "name": "Push-Up",
+                "prescription": {
+                  "order": 3,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedDuration": 20,
+                      "plannedRpe": 9
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "burpee",
+                "exerciseId": "6ac43b40b00bfdb2c7263ff0",
+                "name": "Burpee",
+                "prescription": {
+                  "order": 4,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedDuration": 20,
+                      "plannedRpe": 9
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "mountain-climber",
+                "exerciseId": "6ac43b40b00bfdb2c7263ff1",
+                "name": "Mountain Climber",
+                "prescription": {
+                  "order": 5,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedDuration": 20,
+                      "plannedRpe": 9
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "childs-pose",
+                "exerciseId": "6ac43b40b00bfdb2c7263f6a",
+                "name": "Child's Pose",
+                "prescription": {
+                  "order": 6,
+                  "section": "cooldown",
+                  "sets": [
+                    {
+                      "category": "cooldown",
+                      "plannedDuration": 60
+                    }
+                  ]
+                }
+              }
+            ],
+            "activities": [],
+            "executionGroups": [
+              {
+                "kind": "circuit",
+                "members": [
+                  {
+                    "exerciseIndex": 1,
+                    "setIndexes": [
+                      0
+                    ]
+                  },
+                  {
+                    "exerciseIndex": 2,
+                    "setIndexes": [
+                      0
+                    ]
+                  }
+                ],
+                "format": {
+                  "type": "tabata",
+                  "workSeconds": 20,
+                  "restSeconds": 10,
+                  "rounds": 8
+                }
+              },
+              {
+                "kind": "circuit",
+                "members": [
+                  {
+                    "exerciseIndex": 3,
+                    "setIndexes": [
+                      0
+                    ]
+                  },
+                  {
+                    "exerciseIndex": 4,
+                    "setIndexes": [
+                      0
+                    ]
+                  }
+                ],
+                "format": {
+                  "type": "tabata",
+                  "workSeconds": 20,
+                  "restSeconds": 10,
+                  "rounds": 8
+                }
+              }
+            ]
+          }
+        },
+        "exercises": [
+          {
+            "id": "6ac43b40b00bfdb2c7263fe3",
+            "name": "Hip Circles",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263ff7",
+            "name": "Jump Squat",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f1b",
+            "name": "Push-Up",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263ff0",
+            "name": "Burpee",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263ff1",
+            "name": "Mountain Climber",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f6a",
+            "name": "Child's Pose",
+            "modality": "mobility",
+            "equipmentRequired": []
+          }
+        ]
+      },
+      "related": {},
+      "presentation": {
+        "locale": "en",
+        "unitSystem": "metric",
+        "theme": null,
+        "skin": null,
+        "timeZone": "UTC"
+      }
+    },
+    "dumbbell-strength-and-chipper:en": {
+      "view": "workout-library",
+      "record": {
+        "mode": "item",
+        "id": "dumbbell-strength-and-chipper",
+        "version": 1,
+        "format": "workout",
+        "title": "Dumbbell Strength and Chipper",
+        "summary": "Heavier dumbbell work, then one round for time, in about 49 minutes.",
+        "tags": {
+          "focus": [
+            "full-body"
+          ],
+          "style": [
+            "functional",
+            "conditioning",
+            "strength"
+          ],
+          "purpose": [
+            "weight-management",
+            "general-fitness"
+          ],
+          "experience": [
+            "intermediate"
+          ]
+        },
+        "sessionMinutes": {
+          "min": 49,
+          "max": 49
+        },
+        "supportedDays": [],
+        "fit": {
+          "state": "exact",
+          "variantIds": []
+        },
+        "appPath": "/library/dumbbell-strength-and-chipper",
+        "description": "Romanian deadlifts and floor presses for strength, then one round for time with an 18-minute cap.",
+        "suitability": "For intermediate exercisers who can clean and snatch a dumbbell with good form. You need a pair of dumbbells and room for a few walking lunge steps.",
+        "trainingSpace": {
+          "id": "ts-37e9e842-8b4b-4582-a68b-e66190c2cd27",
+          "name": "Default",
+          "isDefault": true,
+          "equipment": "confirmed"
+        },
+        "content": {
+          "format": "workout",
+          "session": {
+            "sessionId": "main",
+            "name": "Dumbbell Strength and Chipper",
+            "estimatedMinutes": 49,
+            "slots": [
+              {
+                "slotId": "inchworm",
+                "exerciseId": "6ac43b40b00bfdb2c7263fe4",
+                "name": "Inchworm Walkout",
+                "prescription": {
+                  "order": 1,
+                  "section": "warmup",
+                  "sets": [
+                    {
+                      "category": "warmup",
+                      "plannedDuration": 60
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "hip-circles",
+                "exerciseId": "6ac43b40b00bfdb2c7263fe3",
+                "name": "Hip Circles",
+                "prescription": {
+                  "order": 2,
+                  "section": "warmup",
+                  "sets": [
+                    {
+                      "category": "warmup",
+                      "plannedDuration": 60
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "romanian-deadlift",
+                "exerciseId": "6ac43b40b00bfdb2c7264017",
+                "name": "Dumbbell Romanian Deadlift",
+                "prescription": {
+                  "order": 3,
+                  "sets": [
+                    {
+                      "category": "warmup",
+                      "plannedReps": {
+                        "min": 8,
+                        "max": 8
+                      }
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 6,
+                        "max": 8
+                      },
+                      "rirTarget": 2
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 6,
+                        "max": 8
+                      },
+                      "rirTarget": 2
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 6,
+                        "max": 8
+                      },
+                      "rirTarget": 2
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 6,
+                        "max": 8
+                      },
+                      "rirTarget": 2
+                    }
+                  ],
+                  "activities": [
+                    {
+                      "kind": "rest",
+                      "durationTarget": 90,
+                      "order": 1
+                    },
+                    {
+                      "kind": "rest",
+                      "durationTarget": 120,
+                      "order": 2
+                    },
+                    {
+                      "kind": "rest",
+                      "durationTarget": 120,
+                      "order": 3
+                    },
+                    {
+                      "kind": "rest",
+                      "durationTarget": 120,
+                      "order": 4
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "floor-press",
+                "exerciseId": "6ac43b40b00bfdb2c7263f18",
+                "name": "Dumbbell Floor Press",
+                "prescription": {
+                  "order": 4,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 6,
+                        "max": 8
+                      },
+                      "rirTarget": 2
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 6,
+                        "max": 8
+                      },
+                      "rirTarget": 2
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 6,
+                        "max": 8
+                      },
+                      "rirTarget": 2
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 6,
+                        "max": 8
+                      },
+                      "rirTarget": 2
+                    }
+                  ],
+                  "activities": [
+                    {
+                      "kind": "rest",
+                      "durationTarget": 120,
+                      "order": 1
+                    },
+                    {
+                      "kind": "rest",
+                      "durationTarget": 120,
+                      "order": 2
+                    },
+                    {
+                      "kind": "rest",
+                      "durationTarget": 120,
+                      "order": 3
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "hang-clean",
+                "exerciseId": "6ac43b40b00bfdb2c7264088",
+                "name": "Dumbbell Hang Clean",
+                "prescription": {
+                  "order": 5,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 20,
+                        "max": 20
+                      },
+                      "plannedRpe": 7
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "walking-lunge",
+                "exerciseId": "6ac43b40b00bfdb2c7263f43",
+                "name": "Walking Lunge",
+                "prescription": {
+                  "order": 6,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 30,
+                        "max": 30
+                      },
+                      "plannedRpe": 7
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "push-up",
+                "exerciseId": "6ac43b40b00bfdb2c7263f1b",
+                "name": "Push-Up",
+                "prescription": {
+                  "order": 7,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 30,
+                        "max": 30
+                      },
+                      "plannedRpe": 7
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "snatch",
+                "exerciseId": "6ac43b40b00bfdb2c7264087",
+                "name": "Dumbbell Snatch",
+                "prescription": {
+                  "order": 8,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 20,
+                        "max": 20
+                      },
+                      "plannedRpe": 7
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "burpee",
+                "exerciseId": "6ac43b40b00bfdb2c7263ff0",
+                "name": "Burpee",
+                "prescription": {
+                  "order": 9,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 20,
+                        "max": 20
+                      },
+                      "plannedRpe": 7
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "childs-pose",
+                "exerciseId": "6ac43b40b00bfdb2c7263f6a",
+                "name": "Child's Pose",
+                "prescription": {
+                  "order": 10,
+                  "section": "cooldown",
+                  "sets": [
+                    {
+                      "category": "cooldown",
+                      "plannedDuration": 60
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "butterfly",
+                "exerciseId": "6ac43b40b00bfdb2c7263f77",
+                "name": "Butterfly Stretch",
+                "prescription": {
+                  "order": 11,
+                  "section": "cooldown",
+                  "sets": [
+                    {
+                      "category": "cooldown",
+                      "plannedDuration": 60
+                    }
+                  ]
+                }
+              }
+            ],
+            "activities": [],
+            "executionGroups": [
+              {
+                "kind": "circuit",
+                "members": [
+                  {
+                    "exerciseIndex": 4,
+                    "setIndexes": [
+                      0
+                    ]
+                  },
+                  {
+                    "exerciseIndex": 5,
+                    "setIndexes": [
+                      0
+                    ]
+                  },
+                  {
+                    "exerciseIndex": 6,
+                    "setIndexes": [
+                      0
+                    ]
+                  },
+                  {
+                    "exerciseIndex": 7,
+                    "setIndexes": [
+                      0
+                    ]
+                  },
+                  {
+                    "exerciseIndex": 8,
+                    "setIndexes": [
+                      0
+                    ]
+                  }
+                ],
+                "format": {
+                  "type": "for-time",
+                  "capSeconds": 1080
+                }
+              }
+            ]
+          }
+        },
+        "exercises": [
+          {
+            "id": "6ac43b40b00bfdb2c7263fe4",
+            "name": "Inchworm Walkout",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263fe3",
+            "name": "Hip Circles",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7264017",
+            "name": "Dumbbell Romanian Deadlift",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "dumbbells"
+            ]
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f18",
+            "name": "Dumbbell Floor Press",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "dumbbells"
+            ]
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7264088",
+            "name": "Dumbbell Hang Clean",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "dumbbells"
+            ]
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f43",
+            "name": "Walking Lunge",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "dumbbells"
+            ]
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f1b",
+            "name": "Push-Up",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7264087",
+            "name": "Dumbbell Snatch",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "dumbbells"
+            ]
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263ff0",
+            "name": "Burpee",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f6a",
+            "name": "Child's Pose",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f77",
+            "name": "Butterfly Stretch",
+            "modality": "mobility",
+            "equipmentRequired": []
+          }
+        ]
+      },
+      "related": {},
+      "presentation": {
+        "locale": "en",
+        "unitSystem": "metric",
+        "theme": null,
+        "skin": null,
+        "timeZone": "UTC"
+      }
+    },
+    "dumbbell-amrap:de": {
+      "view": "workout-library",
+      "record": {
+        "mode": "item",
+        "id": "dumbbell-amrap",
+        "version": 1,
+        "format": "workout",
+        "title": "Kurzhantel-AMRAP",
+        "summary": "Ein Kurzhantel-AMRAP aus Reißen, Kniebeugen, Liegestützen und Rudern.",
+        "tags": {
+          "focus": [
+            "full-body"
+          ],
+          "style": [
+            "functional",
+            "conditioning",
+            "strength"
+          ],
+          "purpose": [
+            "weight-management",
+            "general-fitness"
+          ],
+          "experience": [
+            "intermediate"
+          ]
+        },
+        "sessionMinutes": {
+          "min": 23,
+          "max": 23
+        },
+        "supportedDays": [],
+        "fit": {
+          "state": "exact",
+          "variantIds": []
+        },
+        "appPath": "/library/dumbbell-amrap",
+        "description": "So viele Runden wie möglich in 15 Minuten aus Kurzhantel-Reißen, Goblet Squats, Liegestützen und Rudern.",
+        "suitability": "Für Fortgeschrittene, die eine Kurzhantel sauber reißen können. Du brauchst ein Paar Kurzhanteln.",
+        "trainingSpace": {
+          "id": "ts-6619d50f-fb17-418b-9e7e-846ab1387795",
+          "name": "Default",
+          "isDefault": true,
+          "equipment": "confirmed"
+        },
+        "content": {
+          "format": "workout",
+          "session": {
+            "sessionId": "main",
+            "name": "Kurzhantel-AMRAP",
+            "estimatedMinutes": 23,
+            "slots": [
+              {
+                "slotId": "inchworm",
+                "exerciseId": "6ac43b40b00bfdb2c7263fe4",
+                "name": "Inchworm",
+                "prescription": {
+                  "order": 1,
+                  "section": "warmup",
+                  "sets": [
+                    {
+                      "category": "warmup",
+                      "plannedDuration": 60
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "leg-swings",
+                "exerciseId": "6ac43b40b00bfdb2c7263fe1",
+                "name": "Beinschwünge",
+                "prescription": {
+                  "order": 2,
+                  "section": "warmup",
+                  "sets": [
+                    {
+                      "category": "warmup",
+                      "plannedDuration": 30,
+                      "side": "left"
+                    },
+                    {
+                      "category": "warmup",
+                      "plannedDuration": 30,
+                      "side": "right"
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "snatch",
+                "exerciseId": "6ac43b40b00bfdb2c7264087",
+                "name": "Kurzhantel-Reißen",
+                "prescription": {
+                  "order": 3,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 10,
+                        "max": 10
+                      },
+                      "plannedRpe": 7
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "goblet-squat",
+                "exerciseId": "6ac43b40b00bfdb2c7263f05",
+                "name": "Goblet Squat",
+                "prescription": {
+                  "order": 4,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 12,
+                        "max": 12
+                      },
+                      "plannedRpe": 7
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "push-up",
+                "exerciseId": "6ac43b40b00bfdb2c7263f1b",
+                "name": "Liegestütz",
+                "prescription": {
+                  "order": 5,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 10,
+                        "max": 10
+                      },
+                      "plannedRpe": 7
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "row",
+                "exerciseId": "6ac43b40b00bfdb2c7263f2b",
+                "name": "Vorgebeugtes Rudern mit Kurzhanteln",
+                "prescription": {
+                  "order": 6,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 12,
+                        "max": 12
+                      },
+                      "plannedRpe": 7
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "childs-pose",
+                "exerciseId": "6ac43b40b00bfdb2c7263f6a",
+                "name": "Kindhaltung",
+                "prescription": {
+                  "order": 7,
+                  "section": "cooldown",
+                  "sets": [
+                    {
+                      "category": "cooldown",
+                      "plannedDuration": 60
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "quad-stretch",
+                "exerciseId": "6ac43b40b00bfdb2c7263f7b",
+                "name": "Quadrizepsdehnung im Stand",
+                "prescription": {
+                  "order": 8,
+                  "section": "cooldown",
+                  "sets": [
+                    {
+                      "category": "cooldown",
+                      "plannedDuration": 30,
+                      "side": "left"
+                    },
+                    {
+                      "category": "cooldown",
+                      "plannedDuration": 30,
+                      "side": "right"
+                    }
+                  ]
+                }
+              }
+            ],
+            "activities": [],
+            "executionGroups": [
+              {
+                "kind": "circuit",
+                "members": [
+                  {
+                    "exerciseIndex": 2,
+                    "setIndexes": [
+                      0
+                    ]
+                  },
+                  {
+                    "exerciseIndex": 3,
+                    "setIndexes": [
+                      0
+                    ]
+                  },
+                  {
+                    "exerciseIndex": 4,
+                    "setIndexes": [
+                      0
+                    ]
+                  },
+                  {
+                    "exerciseIndex": 5,
+                    "setIndexes": [
+                      0
+                    ]
+                  }
+                ],
+                "format": {
+                  "type": "amrap",
+                  "capSeconds": 900
+                }
+              }
+            ]
+          }
+        },
+        "exercises": [
+          {
+            "id": "6ac43b40b00bfdb2c7263fe4",
+            "name": "Inchworm",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263fe1",
+            "name": "Beinschwünge",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7264087",
+            "name": "Kurzhantel-Reißen",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "dumbbells"
+            ]
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f05",
+            "name": "Goblet Squat",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "dumbbells"
+            ]
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f1b",
+            "name": "Liegestütz",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f2b",
+            "name": "Vorgebeugtes Rudern mit Kurzhanteln",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "dumbbells"
+            ]
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f6a",
+            "name": "Kindhaltung",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f7b",
+            "name": "Quadrizepsdehnung im Stand",
+            "modality": "mobility",
+            "equipmentRequired": []
+          }
+        ]
+      },
+      "related": {},
+      "presentation": {
+        "locale": "de",
+        "unitSystem": "metric",
+        "theme": null,
+        "skin": null,
+        "timeZone": "UTC"
+      }
+    },
+    "bodyweight-emom:de": {
+      "view": "workout-library",
+      "record": {
+        "mode": "item",
+        "id": "bodyweight-emom",
+        "version": 1,
+        "format": "workout",
+        "title": "EMOM mit Körpergewicht",
+        "summary": "Ein kurzes EMOM für Einsteiger, ohne Geräte.",
+        "tags": {
+          "focus": [
+            "full-body"
+          ],
+          "style": [
+            "hiit",
+            "conditioning"
+          ],
+          "purpose": [
+            "weight-management",
+            "general-fitness"
+          ],
+          "experience": [
+            "beginner"
+          ]
+        },
+        "sessionMinutes": {
+          "min": 13,
+          "max": 13
+        },
+        "supportedDays": [],
+        "fit": {
+          "state": "exact",
+          "variantIds": []
+        },
+        "appPath": "/library/bodyweight-emom",
+        "description": "Jede Minute 8 Minuten lang abwechselnd 10 Kniebeugen oder 8 Liegestütze auf den Knien, dann Pause für den Rest der Minute.",
+        "suitability": "Für Einsteiger. Nur Platz auf dem Boden nötig.",
+        "trainingSpace": {
+          "id": "ts-6619d50f-fb17-418b-9e7e-846ab1387795",
+          "name": "Default",
+          "isDefault": true,
+          "equipment": "confirmed"
+        },
+        "content": {
+          "format": "workout",
+          "session": {
+            "sessionId": "main",
+            "name": "EMOM mit Körpergewicht",
+            "estimatedMinutes": 13,
+            "slots": [
+              {
+                "slotId": "knee-hugs",
+                "exerciseId": "6ac43b40b00bfdb2c7263fe5",
+                "name": "Knieumarmungen im Gehen",
+                "prescription": {
+                  "order": 1,
+                  "section": "warmup",
+                  "sets": [
+                    {
+                      "category": "warmup",
+                      "plannedDuration": 60
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "squat",
+                "exerciseId": "6ac43b40b00bfdb2c7263f09",
+                "name": "Kniebeuge mit Körpergewicht",
+                "prescription": {
+                  "order": 2,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 10,
+                        "max": 10
+                      },
+                      "plannedRpe": 6
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "knee-push-up",
+                "exerciseId": "6ac43b40b00bfdb2c7264078",
+                "name": "Liegestütz auf den Knien",
+                "prescription": {
+                  "order": 3,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 8,
+                        "max": 8
+                      },
+                      "plannedRpe": 6
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "childs-pose",
+                "exerciseId": "6ac43b40b00bfdb2c7263f6a",
+                "name": "Kindhaltung",
+                "prescription": {
+                  "order": 4,
+                  "section": "cooldown",
+                  "sets": [
+                    {
+                      "category": "cooldown",
+                      "plannedDuration": 60
+                    }
+                  ]
+                }
+              }
+            ],
+            "activities": [],
+            "executionGroups": [
+              {
+                "kind": "circuit",
+                "members": [
+                  {
+                    "exerciseIndex": 1,
+                    "setIndexes": [
+                      0
+                    ]
+                  },
+                  {
+                    "exerciseIndex": 2,
+                    "setIndexes": [
+                      0
+                    ]
+                  }
+                ],
+                "format": {
+                  "type": "emom",
+                  "minutes": 8
+                }
+              }
+            ]
+          }
+        },
+        "exercises": [
+          {
+            "id": "6ac43b40b00bfdb2c7263fe5",
+            "name": "Knieumarmungen im Gehen",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f09",
+            "name": "Kniebeuge mit Körpergewicht",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7264078",
+            "name": "Liegestütz auf den Knien",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f6a",
+            "name": "Kindhaltung",
+            "modality": "mobility",
+            "equipmentRequired": []
+          }
+        ]
+      },
+      "related": {},
+      "presentation": {
+        "locale": "de",
+        "unitSystem": "metric",
+        "theme": null,
+        "skin": null,
+        "timeZone": "UTC"
+      }
+    },
+    "bodyweight-tabata:de": {
+      "view": "workout-library",
+      "record": {
+        "mode": "item",
+        "id": "bodyweight-tabata",
+        "version": 1,
+        "format": "workout",
+        "title": "Tabata mit Körpergewicht",
+        "summary": "Zwei harte Tabatas ohne Geräte.",
+        "tags": {
+          "focus": [
+            "full-body"
+          ],
+          "style": [
+            "hiit",
+            "conditioning"
+          ],
+          "purpose": [
+            "weight-management",
+            "general-fitness"
+          ],
+          "experience": [
+            "intermediate"
+          ]
+        },
+        "sessionMinutes": {
+          "min": 14,
+          "max": 14
+        },
+        "supportedDays": [],
+        "fit": {
+          "state": "exact",
+          "variantIds": []
+        },
+        "appPath": "/library/bodyweight-tabata",
+        "description": "Zwei Tabatas mit je acht Runden aus 20 Sekunden hart und 10 Sekunden Pause, abwechselnd zwei Übungen.",
+        "suitability": "Für Fortgeschrittene, die Sprünge schon kontrolliert landen. Nur Platz auf dem Boden nötig.",
+        "trainingSpace": {
+          "id": "ts-6619d50f-fb17-418b-9e7e-846ab1387795",
+          "name": "Default",
+          "isDefault": true,
+          "equipment": "confirmed"
+        },
+        "content": {
+          "format": "workout",
+          "session": {
+            "sessionId": "main",
+            "name": "Tabata mit Körpergewicht",
+            "estimatedMinutes": 14,
+            "slots": [
+              {
+                "slotId": "hip-circles",
+                "exerciseId": "6ac43b40b00bfdb2c7263fe3",
+                "name": "Hüftkreisen",
+                "prescription": {
+                  "order": 1,
+                  "section": "warmup",
+                  "sets": [
+                    {
+                      "category": "warmup",
+                      "plannedDuration": 60
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "jump-squat",
+                "exerciseId": "6ac43b40b00bfdb2c7263ff7",
+                "name": "Sprungkniebeuge",
+                "prescription": {
+                  "order": 2,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedDuration": 20,
+                      "plannedRpe": 9
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "push-up",
+                "exerciseId": "6ac43b40b00bfdb2c7263f1b",
+                "name": "Liegestütz",
+                "prescription": {
+                  "order": 3,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedDuration": 20,
+                      "plannedRpe": 9
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "burpee",
+                "exerciseId": "6ac43b40b00bfdb2c7263ff0",
+                "name": "Burpee",
+                "prescription": {
+                  "order": 4,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedDuration": 20,
+                      "plannedRpe": 9
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "mountain-climber",
+                "exerciseId": "6ac43b40b00bfdb2c7263ff1",
+                "name": "Mountain Climber",
+                "prescription": {
+                  "order": 5,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedDuration": 20,
+                      "plannedRpe": 9
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "childs-pose",
+                "exerciseId": "6ac43b40b00bfdb2c7263f6a",
+                "name": "Kindhaltung",
+                "prescription": {
+                  "order": 6,
+                  "section": "cooldown",
+                  "sets": [
+                    {
+                      "category": "cooldown",
+                      "plannedDuration": 60
+                    }
+                  ]
+                }
+              }
+            ],
+            "activities": [],
+            "executionGroups": [
+              {
+                "kind": "circuit",
+                "members": [
+                  {
+                    "exerciseIndex": 1,
+                    "setIndexes": [
+                      0
+                    ]
+                  },
+                  {
+                    "exerciseIndex": 2,
+                    "setIndexes": [
+                      0
+                    ]
+                  }
+                ],
+                "format": {
+                  "type": "tabata",
+                  "workSeconds": 20,
+                  "restSeconds": 10,
+                  "rounds": 8
+                }
+              },
+              {
+                "kind": "circuit",
+                "members": [
+                  {
+                    "exerciseIndex": 3,
+                    "setIndexes": [
+                      0
+                    ]
+                  },
+                  {
+                    "exerciseIndex": 4,
+                    "setIndexes": [
+                      0
+                    ]
+                  }
+                ],
+                "format": {
+                  "type": "tabata",
+                  "workSeconds": 20,
+                  "restSeconds": 10,
+                  "rounds": 8
+                }
+              }
+            ]
+          }
+        },
+        "exercises": [
+          {
+            "id": "6ac43b40b00bfdb2c7263fe3",
+            "name": "Hüftkreisen",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263ff7",
+            "name": "Sprungkniebeuge",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f1b",
+            "name": "Liegestütz",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263ff0",
+            "name": "Burpee",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263ff1",
+            "name": "Mountain Climber",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f6a",
+            "name": "Kindhaltung",
+            "modality": "mobility",
+            "equipmentRequired": []
+          }
+        ]
+      },
+      "related": {},
+      "presentation": {
+        "locale": "de",
+        "unitSystem": "metric",
+        "theme": null,
+        "skin": null,
+        "timeZone": "UTC"
+      }
+    },
+    "dumbbell-strength-and-chipper:de": {
+      "view": "workout-library",
+      "record": {
+        "mode": "item",
+        "id": "dumbbell-strength-and-chipper",
+        "version": 1,
+        "format": "workout",
+        "title": "Kurzhantel-Kraft und Chipper",
+        "summary": "Schwerere Kurzhantelarbeit, dann eine Runde auf Zeit, in etwa 49 Minuten.",
+        "tags": {
+          "focus": [
+            "full-body"
+          ],
+          "style": [
+            "functional",
+            "conditioning",
+            "strength"
+          ],
+          "purpose": [
+            "weight-management",
+            "general-fitness"
+          ],
+          "experience": [
+            "intermediate"
+          ]
+        },
+        "sessionMinutes": {
+          "min": 49,
+          "max": 49
+        },
+        "supportedDays": [],
+        "fit": {
+          "state": "exact",
+          "variantIds": []
+        },
+        "appPath": "/library/dumbbell-strength-and-chipper",
+        "description": "Rumänisches Kreuzheben und Bodendrücken für die Kraft, dann eine Runde auf Zeit mit einem Limit von 18 Minuten.",
+        "suitability": "Für Fortgeschrittene, die eine Kurzhantel sauber umsetzen und reißen können. Du brauchst ein Paar Kurzhanteln und Platz für ein paar Schritte mit gehenden Ausfallschritten.",
+        "trainingSpace": {
+          "id": "ts-6619d50f-fb17-418b-9e7e-846ab1387795",
+          "name": "Default",
+          "isDefault": true,
+          "equipment": "confirmed"
+        },
+        "content": {
+          "format": "workout",
+          "session": {
+            "sessionId": "main",
+            "name": "Kurzhantel-Kraft und Chipper",
+            "estimatedMinutes": 49,
+            "slots": [
+              {
+                "slotId": "inchworm",
+                "exerciseId": "6ac43b40b00bfdb2c7263fe4",
+                "name": "Inchworm",
+                "prescription": {
+                  "order": 1,
+                  "section": "warmup",
+                  "sets": [
+                    {
+                      "category": "warmup",
+                      "plannedDuration": 60
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "hip-circles",
+                "exerciseId": "6ac43b40b00bfdb2c7263fe3",
+                "name": "Hüftkreisen",
+                "prescription": {
+                  "order": 2,
+                  "section": "warmup",
+                  "sets": [
+                    {
+                      "category": "warmup",
+                      "plannedDuration": 60
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "romanian-deadlift",
+                "exerciseId": "6ac43b40b00bfdb2c7264017",
+                "name": "Rumänisches Kreuzheben mit Kurzhanteln",
+                "prescription": {
+                  "order": 3,
+                  "sets": [
+                    {
+                      "category": "warmup",
+                      "plannedReps": {
+                        "min": 8,
+                        "max": 8
+                      }
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 6,
+                        "max": 8
+                      },
+                      "rirTarget": 2
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 6,
+                        "max": 8
+                      },
+                      "rirTarget": 2
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 6,
+                        "max": 8
+                      },
+                      "rirTarget": 2
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 6,
+                        "max": 8
+                      },
+                      "rirTarget": 2
+                    }
+                  ],
+                  "activities": [
+                    {
+                      "kind": "rest",
+                      "durationTarget": 90,
+                      "order": 1
+                    },
+                    {
+                      "kind": "rest",
+                      "durationTarget": 120,
+                      "order": 2
+                    },
+                    {
+                      "kind": "rest",
+                      "durationTarget": 120,
+                      "order": 3
+                    },
+                    {
+                      "kind": "rest",
+                      "durationTarget": 120,
+                      "order": 4
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "floor-press",
+                "exerciseId": "6ac43b40b00bfdb2c7263f18",
+                "name": "Bodendrücken mit Kurzhanteln",
+                "prescription": {
+                  "order": 4,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 6,
+                        "max": 8
+                      },
+                      "rirTarget": 2
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 6,
+                        "max": 8
+                      },
+                      "rirTarget": 2
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 6,
+                        "max": 8
+                      },
+                      "rirTarget": 2
+                    },
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 6,
+                        "max": 8
+                      },
+                      "rirTarget": 2
+                    }
+                  ],
+                  "activities": [
+                    {
+                      "kind": "rest",
+                      "durationTarget": 120,
+                      "order": 1
+                    },
+                    {
+                      "kind": "rest",
+                      "durationTarget": 120,
+                      "order": 2
+                    },
+                    {
+                      "kind": "rest",
+                      "durationTarget": 120,
+                      "order": 3
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "hang-clean",
+                "exerciseId": "6ac43b40b00bfdb2c7264088",
+                "name": "Kurzhantel-Umsetzen aus dem Hang",
+                "prescription": {
+                  "order": 5,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 20,
+                        "max": 20
+                      },
+                      "plannedRpe": 7
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "walking-lunge",
+                "exerciseId": "6ac43b40b00bfdb2c7263f43",
+                "name": "Ausfallschritte im Gehen",
+                "prescription": {
+                  "order": 6,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 30,
+                        "max": 30
+                      },
+                      "plannedRpe": 7
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "push-up",
+                "exerciseId": "6ac43b40b00bfdb2c7263f1b",
+                "name": "Liegestütz",
+                "prescription": {
+                  "order": 7,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 30,
+                        "max": 30
+                      },
+                      "plannedRpe": 7
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "snatch",
+                "exerciseId": "6ac43b40b00bfdb2c7264087",
+                "name": "Kurzhantel-Reißen",
+                "prescription": {
+                  "order": 8,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 20,
+                        "max": 20
+                      },
+                      "plannedRpe": 7
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "burpee",
+                "exerciseId": "6ac43b40b00bfdb2c7263ff0",
+                "name": "Burpee",
+                "prescription": {
+                  "order": 9,
+                  "sets": [
+                    {
+                      "category": "working",
+                      "plannedReps": {
+                        "min": 20,
+                        "max": 20
+                      },
+                      "plannedRpe": 7
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "childs-pose",
+                "exerciseId": "6ac43b40b00bfdb2c7263f6a",
+                "name": "Kindhaltung",
+                "prescription": {
+                  "order": 10,
+                  "section": "cooldown",
+                  "sets": [
+                    {
+                      "category": "cooldown",
+                      "plannedDuration": 60
+                    }
+                  ]
+                }
+              },
+              {
+                "slotId": "butterfly",
+                "exerciseId": "6ac43b40b00bfdb2c7263f77",
+                "name": "Schmetterling",
+                "prescription": {
+                  "order": 11,
+                  "section": "cooldown",
+                  "sets": [
+                    {
+                      "category": "cooldown",
+                      "plannedDuration": 60
+                    }
+                  ]
+                }
+              }
+            ],
+            "activities": [],
+            "executionGroups": [
+              {
+                "kind": "circuit",
+                "members": [
+                  {
+                    "exerciseIndex": 4,
+                    "setIndexes": [
+                      0
+                    ]
+                  },
+                  {
+                    "exerciseIndex": 5,
+                    "setIndexes": [
+                      0
+                    ]
+                  },
+                  {
+                    "exerciseIndex": 6,
+                    "setIndexes": [
+                      0
+                    ]
+                  },
+                  {
+                    "exerciseIndex": 7,
+                    "setIndexes": [
+                      0
+                    ]
+                  },
+                  {
+                    "exerciseIndex": 8,
+                    "setIndexes": [
+                      0
+                    ]
+                  }
+                ],
+                "format": {
+                  "type": "for-time",
+                  "capSeconds": 1080
+                }
+              }
+            ]
+          }
+        },
+        "exercises": [
+          {
+            "id": "6ac43b40b00bfdb2c7263fe4",
+            "name": "Inchworm",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263fe3",
+            "name": "Hüftkreisen",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7264017",
+            "name": "Rumänisches Kreuzheben mit Kurzhanteln",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "dumbbells"
+            ]
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f18",
+            "name": "Bodendrücken mit Kurzhanteln",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "dumbbells"
+            ]
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7264088",
+            "name": "Kurzhantel-Umsetzen aus dem Hang",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "dumbbells"
+            ]
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f43",
+            "name": "Ausfallschritte im Gehen",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "dumbbells"
+            ]
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f1b",
+            "name": "Liegestütz",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7264087",
+            "name": "Kurzhantel-Reißen",
+            "modality": "resistance",
+            "equipmentRequired": [
+              "dumbbells"
+            ]
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263ff0",
+            "name": "Burpee",
+            "modality": "resistance",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f6a",
+            "name": "Kindhaltung",
+            "modality": "mobility",
+            "equipmentRequired": []
+          },
+          {
+            "id": "6ac43b40b00bfdb2c7263f77",
+            "name": "Schmetterling",
+            "modality": "mobility",
+            "equipmentRequired": []
+          }
+        ]
+      },
+      "related": {},
+      "presentation": {
+        "locale": "de",
+        "unitSystem": "metric",
+        "theme": null,
+        "skin": null,
+        "timeZone": "UTC"
+      }
+    }
+  }
 }
