@@ -6,7 +6,7 @@ The application owns its product DTOs, MCP tools, authentication, permissions an
 
 `pnpm build` bundles Vue, fonts, brand assets and theme tokens into `dist/card/workout.html`, then generates the open draft-07 input schema. The product validates its raw tool output against that schema using Ajv without stripping extra fields, applying defaults or coercing types. The product DTO remains authoritative.
 
-## Recorded average effort (EF-1543)
+## Recorded average effort (0.1.30, EF-1543)
 
 The Progress view renders every supplied numeric headline, including a recorded
 average RPE of zero. RPE accepts zero in the product contract. An unavailable
@@ -18,8 +18,10 @@ This correction requires the EF-1543 application producer that omits unavailable
 averages, recorded as minimum application commit
 `7531e230ba379ba8ad2f9936b508114f0c0dba0d` in the server contract. A new immutable release and application pin deliver the paired behavior;
 independent review precedes staging, and catalog promotion follows the compatible
-application's exact READY production deployment. Version allocation remains a
-separate release step. The tool inventory and consumer schemas do not change.
+application's exact READY production deployment. Version 0.1.30 contains the
+independently approved correction from PR #30; the published catalogs and
+`channels.json` stay on 0.1.29 during staging and application verification.
+The tool inventory and consumer schemas do not change.
 The existing Library styles, clocks and covers remain in the release.
 
 ## Library timed formats and styles (0.1.29)
