@@ -6,13 +6,13 @@ The application owns its product DTOs, MCP tools, authentication, permissions an
 
 `pnpm build` bundles Vue, fonts, brand assets and theme tokens into `dist/card/workout.html`, then generates the open draft-07 input schema. The product validates its raw tool output against that schema using Ajv without stripping extra fields, applying defaults or coercing types. The product DTO remains authoritative.
 
-## Added weight on strength (EF-1674)
+## Added weight on strength (0.1.32, EF-1674)
 
 The next immutable release teaches the same added-load contract as the compatible application: nonempty `addedLoadOptions` identifies an added exercise; its set weight is total extra load, while an absent, null or zero amount means body weight. Source absence permits automatic planning, `bodyweight` explicitly keeps it at body weight, and an offered catalog id selects gear. PATCH null resumes automatic planning. Only gear listed at the destination supports a positive suggestion; logged extra load remains independent of ownership or a source choice. Ankle weights count both ankles before conversion and snapping. Without gear, progress uses repetitions rather than a guessed weight or estimated 1RM.
 
 The coaching skill adds the semantics table, per-place source rules and strength `log_set` examples. English and German context vocabulary adds dip belts, weighted packs and ankle weights; provenance identifies the exact source and retained projection. The context contract test renders these actual consumer labels in both locales and account unit systems. No tool is added, and this release does not add the later rep-record type or cardio added-load writing.
 
-Release preparation waits for EF-1673 to be merged and served READY. Set `serverContract.minimumAppCommit` to that actual compatible B3+B4+B5 merge before packaging, review and staging; then use the ordinary immutable stage → application pin → exact production READY → promotion sequence below. Catalogs continue advertising 0.1.31 during preparation.
+The compatible B3+B4+B5 application merge `ba66b158e28e15d5c9611b3fd7d9ad6459d6f3e4` is served READY by `dpl_D5mJqwdAu7gBZJ7iE855suUsW3D6` and is pinned as `serverContract.minimumAppCommit`; then use the ordinary immutable stage → application pin → exact production READY → promotion sequence below. Catalogs continue advertising 0.1.31 during preparation.
 
 ## Equipment weights and limits (0.1.31, EF-1585)
 
