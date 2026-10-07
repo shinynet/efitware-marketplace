@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { computed, onUnmounted, reactive, ref, watch } from 'vue'
+import { computed, onUnmounted, reactive, ref, useId, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { Tracking, ViewSet } from './model'
 import { displayMeasure, formatMeasure, inputLoadUnit, parseInput, sentValue, storageValue, type ActualField } from './presentation'
-import { formatLoad, intlUnitOf, type Load } from './measurement'
+import { intlUnitOf, type Load } from './measurement'
 import type { UnitSystem } from './lib/units'
+import { presentedPrAwards } from './progressModel'
+import { progressLoad } from './addedLoadPresentation'
+import PrAward from './PrAward.vue'
 
 const { set, number, tracking = undefined, system, disabled, save } = defineProps<{
   set: ViewSet
@@ -17,12 +20,16 @@ const { set, number, tracking = undefined, system, disabled, save } = defineProp
 const emit = defineEmits<{ dirty: [value: boolean] }>()
 const { t, locale } = useI18n()
 const invalid = ref(false)
+const weightHintId = useId()
+const awards = computed(() => set.completed ? presentedPrAwards(set.prs, tracking?.loadShape) : [])
+const added = computed(() => tracking?.loadShape === 'added' || (tracking?.loadShape === undefined && awards.value.some(award => award.type === 'reps')))
+const loadShape = computed(() => tracking?.loadShape ?? (added.value ? 'added' : undefined))
 const draft = reactive<Partial<Record<ActualField, { text: string, unit?: string, locale: string }>>>({})
 watch(() => Object.values(draft).some(value => value !== undefined), value => emit('dirty', value), { immediate: true })
 onUnmounted(() => emit('dirty', false))
 const fields = computed(() => (['weight', 'reps', 'duration', 'distance'] as const).filter((field) => {
   const flag = { weight: 'tracksWeight', reps: 'tracksReps', duration: 'tracksTime', distance: 'tracksDistance' } as const
-  return tracking?.[flag[field]] || set[field] !== undefined
+  return (field === 'weight' && added.value) || tracking?.[flag[field]] || set[field] !== undefined
 }))
 const numberText = (value: number) => new Intl.NumberFormat(locale.value, { useGrouping: false, maximumFractionDigits: 2 }).format(value)
 const display = (field: ActualField) => field === 'weight' ? { value: set.weight?.value ?? 0, unit: intlUnitOf(inputLoadUnit(set, system)) } : displayMeasure(field, set[field] ?? 0, system)
@@ -39,7 +46,7 @@ const fieldLabel = (field: ActualField) => {
   const unit = draft[field]?.unit ?? display(field).unit
   if (!unit) return t(field)
   const label = new Intl.NumberFormat(locale.value, { style: 'unit', unit, unitDisplay: 'short' }).formatToParts(0).find(part => part.type === 'unit')?.value ?? unit
-  return t({ weight: 'unitsWeight', duration: 'unitsDuration', distance: 'unitsDistance', reps: 'reps' }[field], { unit: label })
+  return t(field === 'weight' && added.value ? 'unitsAddedWeight' : { weight: 'unitsWeight', duration: 'unitsDuration', distance: 'unitsDistance', reps: 'reps' }[field], { unit: label })
 }
 const target = computed(() => {
   const parts: string[] = []
@@ -51,8 +58,9 @@ const target = computed(() => {
     const key = { weight: 'plannedWeight', duration: 'plannedDuration', distance: 'plannedDistance' } as const
     const value = set[key[field]]
     if (value === undefined) continue
-    parts.push(typeof value === 'number' ? formatMeasure(field, value, system, locale.value) : formatLoad(value, locale.value))
+    parts.push(typeof value === 'number' ? formatMeasure(field, value, system, locale.value) : progressLoad(value, loadShape.value, locale.value, t))
   }
+  if (added.value && set.plannedWeight === undefined && (set.plannedReps || set.plannedDuration !== undefined || set.plannedDistance !== undefined)) parts.push(t('progressUi.bodyWeight'))
   return new Intl.ListFormat(locale.value, { style: 'short', type: 'unit' }).format(parts) || t('noTarget')
 })
 // A readback also acknowledges a save retried outside this row. Other drafts survive.
@@ -113,7 +121,26 @@ const submit = async (completed: boolean) => {
     >
       {{ t('unsaved') }}
     </p>
-    <div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+    <ul
+      v-if="awards.length"
+      class="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-sm"
+    >
+      <li
+        v-for="award in awards"
+        :key="award.type"
+      >
+        <pr-award
+          :kind="award.type"
+          :load-shape="loadShape"
+          :weight="award.weight"
+          :reps="award.reps"
+        />
+      </li>
+    </ul>
+    <div
+      class="mt-3 grid gap-3"
+      :class="added ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-2 sm:grid-cols-4'"
+    >
       <label
         v-for="field in fields"
         :key="field"
@@ -124,12 +151,18 @@ const submit = async (completed: boolean) => {
           :value="valueText(field)"
           :aria-label="`${t('set', { number })} — ${fieldLabel(field)}`"
           :aria-invalid="invalid || undefined"
+          :aria-describedby="field === 'weight' && added ? weightHintId : undefined"
           inputmode="decimal"
           autocomplete="off"
           :placeholder="t('blank')"
           class="mt-1 w-full"
           @input="edit(field, ($event.target as HTMLInputElement).value)"
         >
+        <span
+          v-if="field === 'weight' && added"
+          :id="weightHintId"
+          class="mt-1 block"
+        >{{ t('addedWeightHint') }}</span>
       </label>
     </div>
     <p

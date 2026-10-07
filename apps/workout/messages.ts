@@ -69,7 +69,7 @@ export const messages = {
     lost: 'The save could not be confirmed. Retry sends the exact same request, without duplicating it.',
     readFailed: 'Could not reload the workout. Your last save may already be recorded. Reload before continuing.',
     unavailable: 'This client has not provided the connection needed for this workout view.',
-    unitsWeight: 'Weight ({unit})', unitsDuration: 'Duration ({unit})', unitsDistance: 'Distance ({unit})',
+    unitsAddedWeight: 'Total added weight ({unit})', addedWeightHint: 'Leave empty for body weight only.', unitsWeight: 'Weight ({unit})', unitsDuration: 'Duration ({unit})', unitsDistance: 'Distance ({unit})',
     activity: 'Activity', restKind: 'Rest', water_break: 'Water break', stretching: 'Stretching', custom: 'Activity'
   },
   de: {
@@ -131,7 +131,7 @@ export const messages = {
     lost: 'Das Speichern konnte nicht bestätigt werden. Ein erneuter Versuch sendet dieselbe Anfrage, ohne sie zu duplizieren.',
     readFailed: 'Das Training konnte nicht neu geladen werden. Die letzte Änderung ist möglicherweise bereits gespeichert. Lade es vor dem Fortfahren neu.',
     unavailable: 'Dieser Client stellt die erforderliche Verbindung für diese Trainingsansicht nicht bereit.',
-    unitsWeight: 'Gewicht ({unit})', unitsDuration: 'Dauer ({unit})', unitsDistance: 'Distanz ({unit})',
+    unitsAddedWeight: 'Gesamtes Zusatzgewicht ({unit})', addedWeightHint: 'Leer lassen für nur Körpergewicht.', unitsWeight: 'Gewicht ({unit})', unitsDuration: 'Dauer ({unit})', unitsDistance: 'Distanz ({unit})',
     activity: 'Aktivität', restKind: 'Pause', water_break: 'Trinkpause', stretching: 'Dehnen', custom: 'Aktivität'
   }
 }

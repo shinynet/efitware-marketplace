@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { ExerciseProgressView } from './focusedProgressModel'
-import { presentedPrAward, unlockProgressDays } from './progressModel'
+import { presentedPrAwards, unlockProgressDays } from './progressModel'
 import type { createWorkoutConnection } from './workoutConnection'
 import { formatDay } from './planningModel'
 import { resolveDisplayUnitSystem, formatMeasure } from './presentation'
@@ -10,11 +10,15 @@ import { accountLoadUnit, chartPoints, formatLoad, formatTotal, seriesUnit, type
 import ProgressChart from './ProgressChart.vue'
 import HostFollowUp from './HostFollowUp.vue'
 import PrAward from './PrAward.vue'
+import RepRecords from './RepRecords.vue'
+import { exerciseProgressLoadShape, hasExternalEstimate, progressLoad } from './addedLoadPresentation'
 const { exercise, disabled, navigate, followUp } = defineProps<{ exercise: ExerciseProgressView, disabled: boolean, navigate: ReturnType<typeof createWorkoutConnection>['navigate'], followUp: ReturnType<typeof createWorkoutConnection>['sendFollowUp'] }>()
 const { t, locale } = useI18n()
 const title = computed(() => exercise.record.i18n?.[locale.value]?.name ?? exercise.record.name)
 const window = computed(() => exercise.related.progression.metadata)
-const curve = computed(() => exercise.related.progression.data[0])
+const curve = computed(() => exercise.related.progression.data.find(entry => entry.id === exercise.record.id))
+const shape = computed(() => exerciseProgressLoadShape(exercise))
+const added = computed(() => shape.value === 'added')
 const system = computed(() => resolveDisplayUnitSystem(exercise.presentation.unitSystem, locale.value))
 const number = (value: number) => new Intl.NumberFormat(locale.value, { maximumFractionDigits: 1 }).format(value)
 // Loads and estimates render as given, never converted (measurement.ts); the account unit only labels an empty series.
@@ -29,8 +33,9 @@ const request = computed(() => t('progressUi.exerciseExplain', { exerciseId: exe
 // A records row shows the award its markers present. A row whose markers present none (a legacy volume marker,
 // a oneRm marker from a set over 12 reps) is not a personal record and is not shown (EF-1468, EF-1469).
 const records = computed(() => exercise.related.records.flatMap(record => {
-  const award = presentedPrAward(record.prs)
-  return award ? [{ record, award }] : []
+  const awards = presentedPrAwards(record.prs, record.loadShape ?? shape.value)
+  const loadShape = record.loadShape ?? (awards.some(award => award.type === 'reps') ? 'added' : shape.value)
+  return awards.length ? [{ record, awards, loadShape }] : []
 }))
 // The server's page decides pagination; only the empty state reads the rows that are shown.
 const rows = computed(() => exercise.related.collection === 'history' ? exercise.related.history : exercise.related.records)
@@ -92,20 +97,25 @@ const shown = computed(() => exercise.related.collection === 'history' ? exercis
           </dd>
         </div>
         <div
-          v-if="exercise.related.stats.topSet"
+          v-if="exercise.related.stats.topSet && (!added || exercise.related.stats.topSet.weight.value > 0)"
           class="col-span-2"
         >
           <dt class="text-sm text-muted">
-            {{ t('progressUi.heaviestSet') }}
+            {{ t(added ? 'progressUi.heaviestAdded' : 'progressUi.heaviestSet') }}
           </dt><dd class="mt-1 text-xl">
-            {{ number(exercise.related.stats.topSet.reps) }} × {{ load(exercise.related.stats.topSet.weight) }}
+            <template v-if="added">
+              {{ progressLoad(exercise.related.stats.topSet.weight, shape, locale, t) }}
+            </template><template v-else>
+              {{ number(exercise.related.stats.topSet.reps) }} × {{ load(exercise.related.stats.topSet.weight) }}
+            </template>
           </dd><dd class="mt-1 text-xs">
             <time :datetime="exercise.related.stats.topSet.date">{{ formatDay(exercise.related.stats.topSet.date, locale) }}</time>
           </dd>
         </div>
       </dl>
+      <rep-records :records="exercise.related.stats.repRecords ?? []" />
     </section>
-    <template v-if="curve?.unlocked">
+    <template v-if="hasExternalEstimate(shape) && curve?.unlocked">
       <progress-chart
         :title="t('progressUi.estimated')"
         :points="chartPoints(curve.series)"
@@ -116,7 +126,7 @@ const shown = computed(() => exercise.related.collection === 'history' ? exercis
       </p>
     </template>
     <p
-      v-else-if="exercise.related.stats.progressionEligible !== false && exercise.record.modality === 'resistance'"
+      v-else-if="hasExternalEstimate(shape) && exercise.related.stats.progressionEligible !== false && exercise.record.modality === 'resistance'"
       class="my-5 text-sm text-muted"
     >
       {{ t(curve?.eligibleProgressionDays === undefined ? 'progressUi.locked' : 'progressUi.lockedEligible', { count: number(curve ? unlockProgressDays(curve) : 0), required: number(exercise.related.stats.unlockAt) }) }}
@@ -177,7 +187,7 @@ const shown = computed(() => exercise.related.collection === 'history' ? exercis
               {{ t('progressUi.set', { value: number(index + 1) }) }} · {{ t(`setCategory.${set.category}`) }}
             </p>
             <p class="mt-1 text-lg">
-              <span v-if="set.weight !== undefined && set.weight !== null">{{ load(set.weight) }} · </span>
+              <span v-if="set.weight !== undefined && set.weight !== null">{{ progressLoad(set.weight, shape, locale, t) }} · </span>
               <span v-if="set.reps !== undefined && set.reps !== null">{{ t('progressUi.reps', { value: number(set.reps) }) }}</span>
               <span v-if="set.duration !== undefined && set.duration !== null">{{ formatMeasure('duration', set.duration, system, locale) }} </span>
               <span v-if="set.distance !== undefined && set.distance !== null">{{ formatMeasure('distance', set.distance, system, locale) }}</span>
@@ -199,7 +209,7 @@ const shown = computed(() => exercise.related.collection === 'history' ? exercis
       class="space-y-3"
     >
       <li
-        v-for="{ record, award } in records"
+        v-for="{ record, awards, loadShape } in records"
         :key="`${record.workoutId}:${record.instanceId}:${record.setId}`"
         class="rounded border border-surface-dark p-4"
       >
@@ -208,11 +218,16 @@ const shown = computed(() => exercise.related.collection === 'history' ? exercis
           class="block text-sm text-muted"
         >{{ formatDay(record.date, locale) }}</time>
         <p class="mt-2 text-xl">
-          {{ record.reps === null ? t('progressUi.unavailable') : t('progressUi.reps', { value: number(record.reps) }) }} · {{ record.weight === null ? t('progressUi.unavailable') : load(record.weight) }}
+          {{ record.reps === null ? t('progressUi.unavailable') : t('progressUi.reps', { value: number(record.reps) }) }} · {{ progressLoad(record.weight, loadShape, locale, t) }}
         </p>
-        <p class="mt-1 text-sm">
+        <p
+          v-for="award in awards"
+          :key="award.type"
+          class="mt-1 text-sm"
+        >
           <pr-award
             :kind="award.type"
+            :load-shape="loadShape"
             :estimate="record.estimatedOneRm"
             :weight="award.weight"
             :reps="award.reps"
