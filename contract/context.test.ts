@@ -1,10 +1,15 @@
 import { readFileSync } from 'node:fs'
 import { Ajv } from 'ajv'
 import { expect, it } from 'vitest'
+import { createSSRApp } from 'vue'
+import { renderToString } from 'vue/server-renderer'
+import { createI18n } from 'vue-i18n'
 import fixtures from './compat-fixtures.json'
 import en from '../apps/workout/contextVocabulary.en.json'
 import de from '../apps/workout/contextVocabulary.de.json'
-import { memoryViewSchema } from '../apps/workout/contextModel'
+import { contextViewSchema, memoryViewSchema } from '../apps/workout/contextModel'
+import ContextSpaces from '../apps/workout/ContextSpaces.vue'
+import { messages } from '../apps/workout/messages'
 it('keeps the published context vocabulary and exact memory revision projection compatible', () => {
   for (const fixture of fixtures.contextVocabulary) {
     const vocabulary = (fixture.locale === 'de' ? de : en) as Record<string, Record<string, string>>
@@ -15,7 +20,7 @@ it('keeps the published context vocabulary and exact memory revision projection 
   expect(memoryViewSchema.safeParse({ ...input, record: { ...input.record, revision: undefined } }).success).toBe(false)
 })
 
-it('accepts labelled equipment inventory in the released context schema without changing it', () => {
+it('accepts labelled equipment inventory and renders offered added-weight gear in both locales', async () => {
   const schema = JSON.parse(readFileSync(new URL('./context-view.schema.json', import.meta.url), 'utf8'))
   const validate = new Ajv({ removeAdditional: false, useDefaults: false, coerceTypes: false }).compile(schema)
   const plateSetId = 'pls-7b6e1189-869b-4e2b-86e5-b91441386ae6'
@@ -53,5 +58,15 @@ it('accepts labelled equipment inventory in the released context schema without 
     const before = structuredClone(input)
     expect(validate(input), JSON.stringify(validate.errors)).toBe(true)
     expect(input).toEqual(before)
+    for (const locale of ['en', 'de'] as const) {
+      const context = contextViewSchema.parse(input)
+      context.record.trainingSpaces[0]!.equipment.items = ['dip_belt', 'ruck_pack', 'ankle_weights']
+      const app = createSSRApp(ContextSpaces, { context, canWrite: false, makeDefault: () => undefined, sendFollowUp: async () => 'unsupported' as const })
+      app.use(createI18n({ legacy: false, locale, fallbackLocale: 'en', messages }))
+      const html = await renderToString(app)
+      const expected = locale === 'en' ? ['Dip belt', 'Weighted pack', 'Ankle weights'] : ['Dip-Gürtel', 'Gewichtsrucksack', 'Knöchelgewichte']
+      for (const label of expected) expect(html).toContain(label)
+      for (const id of context.record.trainingSpaces[0]!.equipment.items) expect(html).not.toContain(`>${id}<`)
+    }
   }
 })

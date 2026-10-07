@@ -189,19 +189,19 @@
       "path": "apps/workout/contextVocabulary.en.json",
       "source": "i18n/locales/en.json",
       "repository": "shinynet/efitware-app",
-      "commit": "9512bb35433820922b3b56274dc2148e0ab87af5",
-      "sourceSha256": "938c3f8b18deaec9db192f576e89dce91089c6432660598cb181a93906a492cc",
-      "sha256": "a673096e64d9a46b9a394515351c30f8d209950431fb55cc7ab8c306f58f6d9e",
-      "transformation": "Projection of equipment, trainingGoals, trainingInterests and limitations translations."
+      "commit": "6d167afac0a9919e307941962b1abda164af87fe",
+      "sourceSha256": "62a3e8d67a405b25c83663063a1bf55d2576ec03ec119f963671c95818440d45",
+      "sha256": "12ed46517813eaf267c692aca8464ef175c421bec1e63974e33ca7b8dbcfca7c",
+      "transformation": "Retained context vocabulary projection; EF-1674 adds only dip_belt, ruck_pack and ankle_weights equipment translations from this source. Other projected labels retain their existing reviewed values."
     },
     {
       "path": "apps/workout/contextVocabulary.de.json",
       "source": "i18n/locales/de.json",
       "repository": "shinynet/efitware-app",
-      "commit": "9512bb35433820922b3b56274dc2148e0ab87af5",
-      "sourceSha256": "8b2329457f3e3f0ec9e874f5f14548f5ea99949cee87246d57edbb45b9538568",
-      "sha256": "4b248e5f3ba19a158f895919211c831bd32d09a36944418b7319ae8bb9ed1f8e",
-      "transformation": "Projection of equipment, trainingGoals, trainingInterests and limitations translations."
+      "commit": "6d167afac0a9919e307941962b1abda164af87fe",
+      "sourceSha256": "b3cf9bcae6b9a7bd1dc6a14e57b43890385c9232e690119ccf9515daaff7eb05",
+      "sha256": "c48b3967ac7b38edbbcb7938fa8ee3f7fa0af47a7b9326b49adf3a6129d5cf04",
+      "transformation": "Retained context vocabulary projection; EF-1674 adds only dip_belt, ruck_pack and ankle_weights equipment translations from this source. Other projected labels retain their existing reviewed values."
     },
     {
       "path": "apps/workout/workoutLibraryVocabulary.en.json",
