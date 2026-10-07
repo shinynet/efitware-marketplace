@@ -220,6 +220,15 @@
       "sourceSha256": "6534d696cb19105b03aaa465dabb2003ae8a93fb4d0325fd61e41440b3c36ad7",
       "sha256": "ddab97bb949ba664d9d04bdca3d276996132d443f14696901c11043788d2c0ff",
       "transformation": "Projection of workoutLibrary format, focus, style, purpose, experience and fit (exact, adaptable, unavailable) translations."
+    },
+    {
+      "path": "apps/workout/progressModel.ts",
+      "source": "shared/utils/personalRecords.ts",
+      "repository": "shinynet/efitware-app",
+      "commit": "9c4cbcde2fb7281c3fe3ef5cd5d0f868983cfd47",
+      "sourceSha256": "6b3b0c0e0edcda4774fdc54b8918d2bb23847a7bf31a5a74820c914dbad3182d",
+      "sha256": "ee5887bd406e561ffe443282789cfaee0b07d9762eeb6f012e4603eb4ad5189b",
+      "transformation": "Independently adapted plural stored-award presentation semantics to public account-unit measurement objects; consumer schemas and chart geometry remain marketplace owned."
     }
   ]
 }

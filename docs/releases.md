@@ -14,6 +14,14 @@ The coaching skill adds the semantics table, per-place source rules and strength
 
 Release preparation waits for EF-1673 to be merged and served READY. Set `serverContract.minimumAppCommit` to that actual compatible B3+B4+B5 merge before packaging, review and staging; then use the ordinary immutable stage → application pin → exact production READY → promotion sequence below. Catalogs continue advertising 0.1.31 during preparation.
 
+## Added-load records (EF-1677, prepared)
+
+This separate immutable release follows the promoted EF-1674 strength-guidance release and the served READY records-validator migration, EF-1683. It accepts the stored `reps` award and retains both added-weight and rep awards on the same set. Positive added loads read as total extra load; zero reads as body weight. Added exercises never show an estimated external-load maximum, unlock countdown or estimate chart. Ordinary lifting retains Heaviest over Est. 1RM. The same dated recent earned rep awards appear in all-time exercise figures and the selected Progress range, supplied by the app as account-unit measurements rather than calculated by the client.
+
+The public consumer has one optional load-shape contract, read from the live exercise tracking or stats/progression context. Only when context is absent can a valid rep marker identify added-load meaning. Recent awards group by saved workout and exercise, retain each performance, and offer one Open workout action; focused records keep both awards on their single source row. One common award component presents the same meaning in a workout row.
+
+The helper's deliberate adaptation records its source and transformed hash in `apps/workout/lib/PROVENANCE.json`. Consumer schema and presentation tests cover zero, positive and dual awards, both unit systems/locales, ordinary priority, malformed markers and estimate suppression. Regenerate schemas with `pnpm build`. This is preparation: no release asset is staged or promoted and catalogs still advertise 0.1.31. Pin the actual compatible producer commit before packaging; then stage, independently review, pin in the app, verify exact production READY and promote before EF-1676 enables the writer. The writer and subsequent operator refresh sweep remain application-owned.
+
 ## Equipment weights and limits (0.1.31, EF-1585)
 
 Version 0.1.31 delivers skill guidance for the application's Training Space equipment loads (EF-1580, epic EF-1579). No MCP tool is added, and card bytes remain identical to 0.1.30. Immutable tag `v0.1.31` retains reviewed source `c4a1dd36343d9224278519d00be705a74800f9f0` and manifest SHA-256 `5d1a114f6e0a6aa6f84af8bca5bf41d5024fe4399dd8eb797ee44649bf24d779`. Promotion never rebuilds or replaces these assets.
