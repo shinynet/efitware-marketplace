@@ -6,6 +6,14 @@ The application owns its product DTOs, MCP tools, authentication, permissions an
 
 `pnpm build` bundles Vue, fonts, brand assets and theme tokens into `dist/card/workout.html`, then generates the open draft-07 input schema. The product validates its raw tool output against that schema using Ajv without stripping extra fields, applying defaults or coercing types. The product DTO remains authoritative.
 
+## Added weight on strength (0.1.32, EF-1674)
+
+The next immutable release teaches the same added-load contract as the compatible application: nonempty `addedLoadOptions` identifies an added exercise; its set weight is total extra load, while an absent, null or zero amount means body weight. Source absence permits automatic planning, `bodyweight` explicitly keeps it at body weight, and an offered catalog id selects gear. PATCH null resumes automatic planning. Only gear listed at the destination supports a positive suggestion; logged extra load remains independent of ownership or a source choice. Ankle weights count both ankles before conversion and snapping. Without gear, progress uses repetitions rather than a guessed weight or estimated 1RM.
+
+The coaching skill adds the semantics table, per-place source rules and strength `log_set` examples. English and German context vocabulary adds dip belts, weighted packs and ankle weights; provenance identifies the exact source and retained projection. The context contract test renders these actual consumer labels in both locales and account unit systems. No tool is added, and this release does not add the later rep-record type or cardio added-load writing.
+
+The minimum producer is B3+B4+B5 merge `ba66b158e28e15d5c9611b3fd7d9ad6459d6f3e4`. Immutable tag `v0.1.32` preserves independently reviewed source `8991194d3bc4ebb62b8d54da0991fe9408b50ee1`; manifest SHA-256 is `18a0285e2056eb80aa766f8af9d66fe0b3510a47fa3a41201ef264d35598e169`. Claude approved app pin PR #1331 at `e785ada5bb3fc0130c7d37875ad9f55b9c9639c0`; its merge `da5f0b97e0b514f56e0b3387ba602ed2440ffa9e` is served READY by `dpl_HgqAbx7ix2uAyicWQ8bBu61au7fj`. All four served downloads match the staged immutable bytes. The promotion receipt and catalogs advertise 0.1.32 together. After this promotion commit is independently approved and merged, the authorized release-only verifier publishes metadata and proves every asset identity unchanged; the public website mirror follows its own review and verified deployment.
+
 ## Equipment weights and limits (0.1.31, EF-1585)
 
 Version 0.1.31 delivers skill guidance for the application's Training Space equipment loads (EF-1580, epic EF-1579). No MCP tool is added, and card bytes remain identical to 0.1.30. Immutable tag `v0.1.31` retains reviewed source `c4a1dd36343d9224278519d00be705a74800f9f0` and manifest SHA-256 `5d1a114f6e0a6aa6f84af8bca5bf41d5024fe4399dd8eb797ee44649bf24d779`. Promotion never rebuilds or replaces these assets.
