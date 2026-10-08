@@ -6,8 +6,12 @@ import { executionGroupsSchema } from './executionGroups.ts'
 // Loads are measurement objects in the account's unit (measurement.ts); a bare number is refused.
 const measure = z.number().finite().nonnegative().optional()
 const load = loadSchema.optional()
+/** The catalogue load meaning; added loads exclude body mass. */
+export const loadShapeSchema = z.enum(['external', 'added', 'none'])
+export type LoadShape = z.infer<typeof loadShapeSchema>
+
 /** A personal-record marker on a completed set: its `weight` is the set's load. */
-export const prSchema = z.object({ type: z.enum(['weight', 'oneRm', 'volume']), weight: loadSchema, reps: z.number().optional(), first: z.boolean().optional() })
+export const prSchema = z.object({ type: z.enum(['weight', 'oneRm', 'volume', 'reps']), weight: loadSchema, reps: z.number().optional(), first: z.boolean().optional() })
 export const setSchema = z.object({
   id: z.string(), category: z.enum(['warmup', 'working', 'dropset', 'backoff', 'topset', 'amrap', 'interval', 'recovery', 'cooldown']), completed: z.boolean(), comments: z.string().optional(),
   weight: load, reps: measure, duration: measure, distance: measure,
@@ -35,7 +39,7 @@ export const workoutSchema = z.object({
   executionGroups: executionGroupsSchema.optional()
 })
 export const trackingSchema = z.object({
-  id: z.string(), unavailable: z.boolean().optional(), nameDe: z.string().optional(),
+  id: z.string(), loadShape: loadShapeSchema.optional(), unavailable: z.boolean().optional(), nameDe: z.string().optional(),
   tracksWeight: z.boolean().optional(), tracksReps: z.boolean().optional(),
   tracksTime: z.boolean().optional(), tracksDistance: z.boolean().optional()
 })

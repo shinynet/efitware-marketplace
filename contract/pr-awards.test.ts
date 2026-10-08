@@ -8,7 +8,7 @@ import { createI18n } from 'vue-i18n'
 import fixtures from './compat-fixtures.json'
 import ProgressView from '../apps/workout/ProgressView.vue'
 import ExerciseProgressView from '../apps/workout/ExerciseProgressView.vue'
-import { presentedPrAward, progressViewSchema } from '../apps/workout/progressModel'
+import { presentedPrAwards, progressViewSchema } from '../apps/workout/progressModel'
 import { exerciseProgressViewSchema } from '../apps/workout/focusedProgressModel'
 import { messages } from '../apps/workout/messages'
 
@@ -115,17 +115,29 @@ describe('personal-record award kinds (EF-1469)', () => {
 
   it('reads a set\'s markers the way the application presents them', () => {
     const load = { value: 100, unit: 'kg' }
-    expect(presentedPrAward([{ type: 'weight', weight: load, reps: 6 }])?.type).toBe('weight')
-    expect(presentedPrAward([{ type: 'oneRm', weight: load, reps: 6 }, { type: 'weight', weight: load, reps: 6 }])?.type).toBe('weight')
-    expect(presentedPrAward([{ type: 'oneRm', weight: load, reps: 12 }])?.type).toBe('oneRm')
-    expect(presentedPrAward([{ type: 'volume', weight: load, reps: 6 }])).toBeUndefined()
-    expect(presentedPrAward([{ type: 'volume', weight: load, reps: 6, first: true }])).toBeUndefined()
-    expect(presentedPrAward([{ type: 'oneRm', weight: load, reps: 15 }])).toBeUndefined()
-    expect(presentedPrAward([{ type: 'oneRm', weight: load }])).toBeUndefined()
-    expect(presentedPrAward([{ type: 'weight', weight: load }, { type: 'oneRm', weight: load, reps: 8 }])?.type).toBe('oneRm')
-    expect(presentedPrAward([{ type: 'volume', weight: load, reps: 6 }, { type: 'oneRm', weight: load, reps: 8 }])?.type).toBe('oneRm')
-    expect(presentedPrAward([])).toBeUndefined()
-    expect(presentedPrAward(undefined)).toBeUndefined()
+    expect(presentedPrAwards([{ type: 'weight', weight: load, reps: 6 }])[0]?.type).toBe('weight')
+    expect(presentedPrAwards([{ type: 'oneRm', weight: load, reps: 6 }, { type: 'weight', weight: load, reps: 6 }])[0]?.type).toBe('weight')
+    expect(presentedPrAwards([{ type: 'oneRm', weight: load, reps: 12 }])[0]?.type).toBe('oneRm')
+    expect(presentedPrAwards([{ type: 'volume', weight: load, reps: 6 }])).toEqual([])
+    expect(presentedPrAwards([{ type: 'volume', weight: load, reps: 6, first: true }])).toEqual([])
+    expect(presentedPrAwards([{ type: 'oneRm', weight: load, reps: 15 }])).toEqual([])
+    expect(presentedPrAwards([{ type: 'oneRm', weight: load }])).toEqual([])
+    expect(presentedPrAwards([{ type: 'weight', weight: load }, { type: 'oneRm', weight: load, reps: 8 }])[0]?.type).toBe('oneRm')
+    expect(presentedPrAwards([{ type: 'volume', weight: load, reps: 6 }, { type: 'oneRm', weight: load, reps: 8 }])[0]?.type).toBe('oneRm')
+    expect(presentedPrAwards([])).toEqual([])
+    expect(presentedPrAwards(undefined)).toEqual([])
+    const bodyWeight = { type: 'reps', weight: { value: 0, unit: 'kg' }, reps: 12 }
+    const addedWeight = { type: 'weight', weight: load, reps: 9 }
+    const addedReps = { type: 'reps', weight: load, reps: 9 }
+    expect(presentedPrAwards([bodyWeight], 'added')).toEqual([bodyWeight])
+    expect(presentedPrAwards([addedWeight, addedReps], 'added')).toEqual([addedWeight, addedReps])
+    expect(presentedPrAwards([addedWeight, addedReps])).toEqual([addedWeight, addedReps])
+    expect(presentedPrAwards([addedWeight, addedReps], 'external')).toEqual([addedWeight])
+    for (const invalid of [0, -1, NaN, Infinity]) expect(presentedPrAwards([{ ...addedWeight, reps: invalid }], 'added')).toEqual([])
+    expect(presentedPrAwards([{ type: 'oneRm', weight: load, reps: 9 }], 'added')).toEqual([])
+    expect(presentedPrAwards([{ type: 'weight', weight: { value: 0, unit: 'kg' }, reps: 9 }], 'added')).toEqual([])
+    for (const invalid of [-1, NaN, Infinity]) expect(presentedPrAwards([{ ...bodyWeight, weight: { value: invalid, unit: 'kg' } }], 'added')).toEqual([])
+
   })
 
   it('ProgressView names both kinds and states the estimate with the set it came from', async () => {
@@ -133,7 +145,7 @@ describe('personal-record award kinds (EF-1469)', () => {
     expect(text).toContain('Barbell Bench Press Heaviest 187.5 lb · 6 reps')
     expect(text).toContain('Back Squat Est. 1RM ~215 lb · from 170 lb × 8')
     expect(text).not.toContain('170 lb · 8 reps')
-    expect(text).toContain('Latest six in this window. Each is one award: at most one per exercise per workout.')
+    expect(text).toContain('Latest six awards in this window, grouped by exercise and workout.')
     expect(text).toContain('Personal record awards')
     expect(text).not.toContain('record markers')
   })
@@ -224,7 +236,7 @@ describe('personal-record award kinds (EF-1469)', () => {
     const progress = await showProgress(awards.getProgressRecentPrs.recentPrs, 'de')
     expect(progress).toContain('Höchstgewicht 187,5 lb · 6 Wdh.')
     expect(progress).toContain('Gesch. 1RM ~215 lb · aus 170 lb × 8')
-    expect(progress).toContain('Die letzten sechs in diesem Zeitraum. Jeder Eintrag ist eine Auszeichnung: höchstens eine pro Übung und Einheit.')
+    expect(progress).toContain('Die letzten sechs Auszeichnungen in diesem Zeitraum, nach Übung und Training gruppiert.')
     expect(progress).toContain('Auszeichnungen für persönliche Rekorde')
     const records = await showRecords(awards.getPersonalRecords.data, 'de')
     expect(records).toContain('Höchstgewicht')
@@ -233,9 +245,9 @@ describe('personal-record award kinds (EF-1469)', () => {
 
   it('carries the same award labels in both locales and no volume label', () => {
     for (const locale of ['en', 'de'] as const) {
-      expect(Object.keys(messages[locale].progressUi.prType)).toEqual(['weight', 'oneRm'])
+      expect(Object.keys(messages[locale].progressUi.prType)).toEqual(['weight', 'oneRm', 'reps'])
     }
-    expect(messages.en.progressUi.prType).toEqual({ weight: 'Heaviest', oneRm: 'Est. 1RM' })
-    expect(messages.de.progressUi.prType).toEqual({ weight: 'Höchstgewicht', oneRm: 'Gesch. 1RM' })
+    expect(messages.en.progressUi.prType).toEqual({ weight: 'Heaviest', oneRm: 'Est. 1RM', reps: 'Rep record' })
+    expect(messages.de.progressUi.prType).toEqual({ weight: 'Höchstgewicht', oneRm: 'Gesch. 1RM', reps: 'Wiederholungsrekord' })
   })
 })

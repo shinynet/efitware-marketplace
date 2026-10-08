@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { presentedPrAward, unlockProgressDays, type ProgressView } from './progressModel'
+import { unlockProgressDays, type ProgressView } from './progressModel'
 import type { createWorkoutConnection } from './workoutConnection'
 import { formatDay } from './planningModel'
 import { resolveDisplayUnitSystem, formatMeasure } from './presentation'
@@ -11,6 +11,9 @@ import ProgressBalance from './ProgressBalance.vue'
 import ProgressMeasurements from './ProgressMeasurements.vue'
 import HostFollowUp from './HostFollowUp.vue'
 import PrAward from './PrAward.vue'
+import RepRecords from './RepRecords.vue'
+import { hasExternalEstimate, progressLoad } from './addedLoadPresentation'
+import { recentRecordGroups } from './recentRecordGroups'
 const { progress, disabled, navigate, followUp } = defineProps<{ progress: ProgressView, disabled: boolean, navigate: ReturnType<typeof createWorkoutConnection>['navigate'], followUp: ReturnType<typeof createWorkoutConnection>['sendFollowUp'] }>()
 const { t, locale } = useI18n()
 const ranges = ['4w', '8w', '12w', '1y'] as const
@@ -29,7 +32,7 @@ const weeklyVolume = computed(() => progress.record.weeklyVolume.map(week => ({ 
 const delta = (value: number, kind: string) => new Intl.NumberFormat(locale.value, { maximumFractionDigits: 1, signDisplay: 'exceptZero', ...(kind === 'percent' ? { style: 'percent' } as const : {}) }).format(value)
 const day = (date: string) => navigate({ name: 'open_calendar', arguments: { from: date, to: date, date } })
 // A recent PR names its award kind; an application older than EF-1468 sends no kind, and a row shows none (EF-1468).
-const recentPrs = computed(() => progress.record.recentPrs.map(pr => ({ pr, award: pr.type ? presentedPrAward([{ type: pr.type, reps: pr.reps }]) : undefined })))
+const recentPrs = computed(() => recentRecordGroups(progress.record.recentPrs))
 const request = computed(() => t('progressUi.explain', { from: progress.record.rangeStart, to: progress.record.asOf, range: t(`progressUi.ranges.${progress.record.range}`) }))
 </script>
 <template>
@@ -148,47 +151,54 @@ const request = computed(() => t('progressUi.explain', { from: progress.record.r
           {{ t('progressUi.recentCap') }}
         </p>
         <p
-          v-if="!progress.record.recentPrs.length"
+          v-if="!recentPrs.length"
           class="py-4 text-sm text-muted"
         >
           {{ t('progressUi.noPrs') }}
         </p>
         <ul class="space-y-3">
           <li
-            v-for="{ pr, award } in recentPrs"
-            :key="pr.id"
+            v-for="{ key, source, items } in recentPrs"
+            :key="key"
             class="rounded border border-surface-dark p-4"
           >
             <h3 class="font-semibold">
-              {{ pr.i18n?.[locale]?.name ?? pr.exerciseName }}
+              {{ source.i18n?.[locale]?.name ?? source.exerciseName }}
             </h3>
-            <p
-              v-if="award?.type === 'oneRm' && pr.estimatedOneRm"
+            <div
+              v-for="{ pr, awards } in items"
+              :key="pr.id"
               class="mt-2 text-lg"
             >
-              <pr-award
-                kind="oneRm"
-                :estimate="pr.estimatedOneRm"
-                :weight="pr.weight"
-                :reps="pr.reps"
-              />
-            </p>
-            <p
-              v-else
-              class="mt-2 text-lg"
-            >
-              <template v-if="award">
-                <pr-award :kind="award.type" />{{ ' ' }}
-              </template><span v-if="pr.weight !== undefined">{{ load(pr.weight) }} · </span><span v-if="pr.reps !== undefined">{{ t('progressUi.reps', { value: number(pr.reps) }) }}</span><span v-if="pr.durationSeconds !== undefined">{{ formatMeasure('duration', pr.durationSeconds, (resolveDisplayUnitSystem(progress.presentation.unitSystem, locale)), locale) }}</span>
-            </p>
-            <time
-              :datetime="pr.date"
-              class="mt-1 block text-sm text-muted"
-            >{{ formatDay(pr.date, locale) }}</time>
+              <template v-if="awards.length">
+                <p
+                  v-for="award in awards"
+                  :key="award.type"
+                >
+                  <pr-award
+                    :kind="award.type"
+                    :load-shape="pr.loadShape"
+                    :estimate="pr.estimatedOneRm"
+                    :weight="award.weight"
+                    :reps="award.reps"
+                  />
+                  <template v-if="award.type === 'weight' || (award.type === 'oneRm' && !pr.estimatedOneRm)">
+                    {{ ' ' }}<span v-if="pr.weight !== undefined">{{ progressLoad(pr.weight, pr.loadShape, locale, t) }} · </span><span v-if="pr.reps !== undefined">{{ t('progressUi.reps', { value: number(pr.reps) }) }}</span>
+                  </template>
+                </p>
+              </template>
+              <p v-else>
+                <span v-if="pr.weight !== undefined">{{ progressLoad(pr.weight, pr.loadShape, locale, t) }} · </span><span v-if="pr.reps !== undefined">{{ t('progressUi.reps', { value: number(pr.reps) }) }}</span><span v-if="pr.durationSeconds !== undefined">{{ formatMeasure('duration', pr.durationSeconds, (resolveDisplayUnitSystem(progress.presentation.unitSystem, locale)), locale) }}</span>
+              </p>
+              <time
+                :datetime="pr.date"
+                class="mt-1 block text-sm text-muted"
+              >{{ formatDay(pr.date, locale) }}</time>
+            </div>
             <button
               class="secondary mt-3"
               :disabled
-              @click="navigate({ name: 'open_workout', arguments: { workoutId: pr.workoutId } })"
+              @click="navigate({ name: 'open_workout', arguments: { workoutId: source.workoutId } })"
             >
               {{ t('viewWorkout') }}
             </button>
@@ -207,7 +217,10 @@ const request = computed(() => t('progressUi.explain', { from: progress.record.r
       >
         {{ t('progressUi.strength') }}
       </h2>
-      <p class="mt-2 text-sm text-muted">
+      <p
+        v-if="progress.related.progression.data.some(entry => hasExternalEstimate(entry.loadShape))"
+        class="mt-2 text-sm text-muted"
+      >
         {{ t('progressUi.estimateNote') }}
       </p>
       <progress-balance :progress />
@@ -225,9 +238,25 @@ const request = computed(() => t('progressUi.explain', { from: progress.record.r
         <h3 class="text-lg font-semibold">
           {{ exercise.i18n?.[locale]?.name ?? exercise.name }}
         </h3>
-        <p class="mt-2 text-sm">
+        <p
+          v-if="exercise.loadShape === 'added' && exercise.bestSetWeight.value > 0"
+          class="mt-2 text-sm"
+        >
+          {{ t('progressUi.heaviestAdded') }}: {{ progressLoad(exercise.bestSetWeight, exercise.loadShape, locale, t) }}
+        </p>
+        <p
+          v-else-if="exercise.loadShape !== 'added'"
+          class="mt-2 text-sm"
+        >
           {{ t('progressUi.topSet', { reps: number(exercise.bestSetReps), weight: load(exercise.bestSetWeight) }) }}
         </p>
+        <p
+          v-if="exercise.loadShape === 'added'"
+          class="mt-2 text-sm text-muted"
+        >
+          {{ t('progressUi.sessionCount', { value: number(exercise.sessionDates.length) }) }}
+        </p>
+        <rep-records :records="exercise.repRecords ?? []" />
         <button
           class="secondary mt-3"
           :disabled
@@ -236,7 +265,7 @@ const request = computed(() => t('progressUi.explain', { from: progress.record.r
           {{ t('progressUi.viewExercise') }}
         </button>
         <progress-chart
-          v-if="exercise.unlocked"
+          v-if="hasExternalEstimate(exercise.loadShape) && exercise.unlocked"
           :title="t('progressUi.estimated')"
           :points="chartPoints(exercise.series)"
           :format="totalIn(exercise.series)"
@@ -245,7 +274,7 @@ const request = computed(() => t('progressUi.explain', { from: progress.record.r
           @select="day"
         />
         <p
-          v-else
+          v-else-if="hasExternalEstimate(exercise.loadShape)"
           class="mt-3 text-sm text-muted"
         >
           {{ t(exercise.eligibleProgressionDays === undefined ? 'progressUi.locked' : 'progressUi.lockedEligible', { count: number(unlockProgressDays(exercise)), required: number(progress.record.unlockSessions) }) }}

@@ -5,6 +5,7 @@ import type { UnitSystem } from './lib/units'
 import { formatMeasure } from './presentation'
 import { accountBodyMetricUnit, accountLoadUnit, bodyMetricLabelKey, bodyMetricPageKey, formatBodyMetric, formatLoad, formatTotal, seriesUnit, sumLoads, type Total } from './measurement'
 import { summarizeRecurrence } from './recurrencePresentation'
+import { exerciseProgressLoadShape, hasExternalEstimate, progressLoad } from './addedLoadPresentation'
 import { workoutSections } from './lib/sections'
 import { workoutLibraryPath, type LibraryCover } from './workoutLibraryModel'
 import { fitLabel, fitLines, minutesLabel, spaceLabel, vocabularyLabel, type LibraryTranslator } from './workoutLibraryPresentation'
@@ -170,11 +171,13 @@ export const compactSummary = (view: TrainingView, options: Options): CompactSum
     }
     case 'exercise-progress': {
       const { record, related } = view
-      const series = related.progression.data.find(entry => entry.id === record.id)?.series ?? []
+      const shape = exerciseProgressLoadShape(view)
+      const added = shape === 'added'
+      const series = hasExternalEstimate(shape) ? related.progression.data.find(entry => entry.id === record.id)?.series ?? [] : []
       const top = related.stats.topSet
       return {
         eyebrow: t('compact.exerciseProgress'), title: locale === 'de' ? record.i18n?.de?.name ?? record.name : record.name,
-        facts: [fact(t('compact.sessions'), count(related.stats.sessions)), fact(t('compact.records'), count(related.stats.prCount)), fact(t('compact.topSet'), top ? `${formatLoad(top.weight, locale)} × ${count(top.reps)}` : t('compact.none'))],
+        facts: [fact(t('compact.sessions'), count(related.stats.sessions)), fact(t('compact.records'), count(related.stats.prCount)), ...(added ? top && top.weight.value > 0 ? [fact(t('progressUi.heaviestAdded'), progressLoad(top.weight, shape, locale, t))] : [] : [fact(t('compact.topSet'), top ? `${formatLoad(top.weight, locale)} × ${count(top.reps)}` : t('compact.none'))])],
         ...(series.length >= MIN_BARS ? { bars: { label: t('progressUi.estimated'), values: series.map(point => point.value.value), start: monthDay(series[0]!.date, locale), end: monthDay(series.at(-1)!.date, locale) } } : {}),
         path: `/progress/exercises/${record.id}`
       }

@@ -189,7 +189,8 @@
                             "enum": [
                               "weight",
                               "oneRm",
-                              "volume"
+                              "volume",
+                              "reps"
                             ]
                           },
                           "weight": {
@@ -434,6 +435,14 @@
             "properties": {
               "id": {
                 "type": "string"
+              },
+              "loadShape": {
+                "type": "string",
+                "enum": [
+                  "external",
+                  "added",
+                  "none"
+                ]
               },
               "unavailable": {
                 "type": "boolean"
