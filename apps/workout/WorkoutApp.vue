@@ -517,6 +517,7 @@ onUnmounted(connection.close)
                   <workout-set-row
                     v-if="entry.type === 'set'"
                     :set="entry.set"
+                    :modality="item.data.modality"
                     :number="item.data.sets.findIndex(set => set.id === entry.set.id) + 1"
                     :system
                     :tracking="view?.exercises.find(ex => ex.id === item.data.exerciseId)"

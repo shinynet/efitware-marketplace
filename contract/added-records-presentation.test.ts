@@ -140,7 +140,7 @@ describe('added-load record presentation (EF-1677)', () => {
       workout: { ...raw.workout, exercises: [{ ...raw.workout.exercises[0], sets: [{ id: 'added-set', category: 'working', completed: true, weight: { value, unit }, reps: 8, plannedReps: { min: 8, max: 8 }, prs: [{ type: 'weight', reps: 8, weight: { value, unit } }, { type: 'reps', reps: 8, weight: { value, unit } }, { type: 'oneRm', reps: 8, weight: { value, unit } }] }] }] },
       exercises: [{ ...raw.exercises[0], loadShape: 'added', tracksWeight: false }]
     })
-    const html = await render(WorkoutSetRow, { set: view.workout.exercises[0]!.sets[0], number: 1, tracking: view.exercises[0], system: 'metric', save: () => undefined }, locale)
+    const html = await render(WorkoutSetRow, { set: view.workout.exercises[0]!.sets[0], modality: 'resistance', number: 1, tracking: view.exercises[0], system: 'metric', save: () => undefined }, locale)
     const visible = text(html)
     expect(visible).toContain(translator(locale)('progressUi.heaviestAdded'))
     expect(visible).toContain(translator(locale)('progressUi.repRecord'))

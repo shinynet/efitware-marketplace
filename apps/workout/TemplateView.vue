@@ -5,7 +5,7 @@ import HostFollowUp from './HostFollowUp.vue'
 import { useI18n } from 'vue-i18n'
 import type { TemplateView } from './templateModel'
 import { resolveDisplayUnitSystem, formatMeasure } from './presentation'
-import { formatLoad } from './measurement'
+import { prescriptionLoad } from './addedLoadPresentation'
 import { interleavedExerciseSequence } from './lib/sequenceUtils'
 import { workoutSections } from './lib/sections'
 import ExecutionGroupBlock from './ExecutionGroupBlock.vue'
@@ -225,10 +225,10 @@ const sections = computed(() => workoutSections(template.record.exercises.map(ex
                   {{ t('repTarget', { value: entry.set.plannedReps.min === entry.set.plannedReps.max ? number(entry.set.plannedReps.min) : t('range', { min: number(entry.set.plannedReps.min), max: number(entry.set.plannedReps.max) }) }) }}
                 </p>
                 <p
-                  v-if="entry.set.plannedWeight !== undefined"
+                  v-if="prescriptionLoad(entry.set.plannedWeight, item.data.modality, undefined, locale, t)"
                   class="mt-1 text-sm"
                 >
-                  {{ formatLoad(entry.set.plannedWeight, locale) }}
+                  {{ prescriptionLoad(entry.set.plannedWeight, item.data.modality, undefined, locale, t) }}
                 </p>
                 <p
                   v-if="entry.set.plannedDuration !== undefined"
