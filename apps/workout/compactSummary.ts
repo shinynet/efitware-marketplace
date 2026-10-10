@@ -5,7 +5,7 @@ import type { UnitSystem } from './lib/units'
 import { formatMeasure } from './presentation'
 import { accountBodyMetricUnit, accountLoadUnit, bodyMetricLabelKey, bodyMetricPageKey, formatBodyMetric, formatLoad, formatTotal, seriesUnit, sumLoads, type Total } from './measurement'
 import { summarizeRecurrence } from './recurrencePresentation'
-import { exerciseProgressLoadShape, hasExternalEstimate, progressLoad } from './addedLoadPresentation'
+import { exerciseProgressLoadShape, hasExternalEstimate, prescriptionLoad, progressLoad } from './addedLoadPresentation'
 import { workoutSections } from './lib/sections'
 import { workoutLibraryPath, type LibraryCover } from './workoutLibraryModel'
 import { fitLabel, fitLines, minutesLabel, spaceLabel, vocabularyLabel, type LibraryTranslator } from './workoutLibraryPresentation'
@@ -63,9 +63,10 @@ export const completedVolume = (exercises: ViewExercise[]): Total | undefined =>
   const entries = exercises.flatMap(exercise => exercise.sets).flatMap(set => set.completed && set.weight && set.weight.value > 0 && set.reps ? [{ load: set.weight, reps: set.reps }] : [])
   return entries.length ? sumLoads(entries) : undefined
 }
-const setTarget = (set: ViewSet, { locale, system, t }: Options) => {
+const setTarget = (set: ViewSet, modality: ViewExercise['modality'], { locale, system, t }: Options) => {
   const parts: string[] = []
-  if (set.plannedWeight !== undefined) parts.push(formatLoad(set.plannedWeight, locale))
+  const load = prescriptionLoad(set.plannedWeight, modality, undefined, locale, t)
+  if (load) parts.push(load)
   if (set.plannedReps) parts.push(t('repTarget', { value: set.plannedReps.min === set.plannedReps.max ? number(set.plannedReps.min, locale, 0) : t('range', { min: number(set.plannedReps.min, locale, 0), max: number(set.plannedReps.max, locale, 0) }) }))
   if (set.plannedDuration !== undefined) parts.push(formatMeasure('duration', set.plannedDuration, system, locale))
   if (set.plannedDistance !== undefined) parts.push(formatMeasure('distance', set.plannedDistance, system, locale))
@@ -95,7 +96,7 @@ export const compactSummary = (view: TrainingView, options: Options): CompactSum
       return {
         eyebrow: dot(t('compact.workout'), shortDay(workout.date, locale)), title: workout.title,
         facts: [fact(t('compact.setsDone'), t('compact.ofTotal', { done: count(done), total: count(sets.length) })), volume ? fact(t('compact.volume'), formatTotal(volume, locale)) : fact(t('compact.exercises'), count(workout.exercises.length)), fact(t('compact.status'), t(workout.status))],
-        ...(next ? { detail: fact(t('compact.nextSet'), dot(name(next.exercise), setTarget(next.set, options))) } : {}),
+        ...(next ? { detail: fact(t('compact.nextSet'), dot(name(next.exercise), setTarget(next.set, next.exercise.modality, options))) } : {}),
         path: `/workouts/${workout.date}/${workout.id}`
       }
     }

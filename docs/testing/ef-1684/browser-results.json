@@ -1,0 +1,221 @@
+{
+  "cases": [
+    {
+      "locale": "en",
+      "unit": "lb",
+      "theme": "light",
+      "width": 320,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "en",
+      "unit": "lb",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "en",
+      "unit": "lb",
+      "theme": "light",
+      "width": 1280,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "en",
+      "unit": "lb",
+      "theme": "dark",
+      "width": 320,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "en",
+      "unit": "lb",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "en",
+      "unit": "lb",
+      "theme": "dark",
+      "width": 1280,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "en",
+      "unit": "kg",
+      "theme": "light",
+      "width": 320,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "en",
+      "unit": "kg",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "en",
+      "unit": "kg",
+      "theme": "light",
+      "width": 1280,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "en",
+      "unit": "kg",
+      "theme": "dark",
+      "width": 320,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "en",
+      "unit": "kg",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "en",
+      "unit": "kg",
+      "theme": "dark",
+      "width": 1280,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "de",
+      "unit": "lb",
+      "theme": "light",
+      "width": 320,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "de",
+      "unit": "lb",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "de",
+      "unit": "lb",
+      "theme": "light",
+      "width": 1280,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "de",
+      "unit": "lb",
+      "theme": "dark",
+      "width": 320,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "de",
+      "unit": "lb",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "de",
+      "unit": "lb",
+      "theme": "dark",
+      "width": 1280,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "de",
+      "unit": "kg",
+      "theme": "light",
+      "width": 320,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "de",
+      "unit": "kg",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "de",
+      "unit": "kg",
+      "theme": "light",
+      "width": 1280,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "de",
+      "unit": "kg",
+      "theme": "dark",
+      "width": 320,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "de",
+      "unit": "kg",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    },
+    {
+      "locale": "de",
+      "unit": "kg",
+      "theme": "dark",
+      "width": 1280,
+      "overflow": false,
+      "errors": 0,
+      "externalRequests": 0
+    }
+  ],
+  "explicitHigherEdit": true
+}

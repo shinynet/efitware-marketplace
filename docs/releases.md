@@ -14,6 +14,14 @@ The coaching skill adds the semantics table, per-place source rules and strength
 
 The minimum producer is B3+B4+B5 merge `ba66b158e28e15d5c9611b3fd7d9ad6459d6f3e4`. Immutable tag `v0.1.32` preserves independently reviewed source `8991194d3bc4ebb62b8d54da0991fe9408b50ee1`; manifest SHA-256 is `18a0285e2056eb80aa766f8af9d66fe0b3510a47fa3a41201ef264d35598e169`. Claude approved app pin PR #1331 at `e785ada5bb3fc0130c7d37875ad9f55b9c9639c0`; its merge `da5f0b97e0b514f56e0b3387ba602ed2440ffa9e` is served READY by `dpl_HgqAbx7ix2uAyicWQ8bBu61au7fj`. All four served downloads match the staged immutable bytes. The promotion receipt and catalogs advertise 0.1.32 together. After this promotion commit is independently approved and merged, the authorized release-only verifier publishes metadata and proves every asset identity unchanged; the public website mirror follows its own review and verified deployment.
 
+## Cardio added weight (0.1.34, EF-1684)
+
+This separate release follows the deployed cardio Coach/MCP contract, minimum producer `d090b55dc33b578b615c986e43e8d2e75d2ba0ba`. The skill documents total extra load on supported cardio intervals and template sets, listed gear at the destination, the newest usable actual interval of the same exercise, a reachable ceiling at or below that actual, and the explicit-user-edit exception. Rucking prescriptions require a supported positive load; reported actuals remain free. Cardio has no automatic added-load progression or added-load records.
+
+The workout card receives modality from the existing workout exercise. Cardio uses **Added** and “Leave empty for none”; strength keeps its body-weight language. Positive cardio targets read as extra load in the row, compact next-set summary and template. Zero/absent targets stay quiet. Existing measurement objects retain their supplied unit; explicit higher edits and null clearing use the unchanged `log_sets` mutation.
+
+No tool inventory or wire-schema field is added. Both plugin manifests advance together while catalogs remain on published 0.1.33 until immutable staging, the reviewed app pin, compatible production READY and promotion. Release and deployed/client qualification evidence will be recorded here as those gates finish.
+
 ## Added-load records (0.1.33, EF-1677)
 
 This separate immutable release follows the promoted EF-1674 strength-guidance release and the served READY records-validator migration, EF-1683. It accepts the stored `reps` award and retains both added-weight and rep awards on the same set. Positive added loads read as total extra load; zero reads as body weight. Added exercises never show an estimated external-load maximum, unlock countdown or estimate chart. Ordinary lifting retains Heaviest over Est. 1RM. The same dated recent earned rep awards appear in all-time exercise figures and the selected Progress range, supplied by the app as account-unit measurements rather than calculated by the client.

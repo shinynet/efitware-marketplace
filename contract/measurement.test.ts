@@ -50,7 +50,7 @@ const render = async (component: Component, props: Record<string, unknown>, loca
 }
 const rowProps = (view: typeof contract.openWorkout.imperial, index: number) => {
   const parsed = viewSchema.parse(view)
-  return { set: parsed.workout.exercises[0]!.sets[index]!, number: index + 1, tracking: parsed.exercises[0], system: parsed.presentation.unitSystem, save: () => undefined }
+  return { set: parsed.workout.exercises[0]!.sets[index]!, modality: parsed.workout.exercises[0]!.modality, number: index + 1, tracking: parsed.exercises[0], system: parsed.presentation.unitSystem, save: () => undefined }
 }
 /** Minimal `t` over the real message tree, as in compact.test.ts. */
 const translator = (locale: 'en' | 'de') => (key: string, values: Record<string, string | number> = {}) =>

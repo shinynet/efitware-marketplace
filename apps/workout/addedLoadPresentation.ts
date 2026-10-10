@@ -1,4 +1,4 @@
-import type { LoadShape } from './model'
+import type { LoadShape, ViewExercise } from './model'
 import type { ExerciseProgressView } from './focusedProgressModel'
 import type { Translate } from './compactSummary'
 import { formatLoad, type Measurement } from './measurement'
@@ -14,6 +14,12 @@ export const progressLoad = (weight: Measurement | null | undefined, shape: Load
   if (weight == null) return t('progressUi.unavailable')
   if (shape !== 'added') return formatLoad(weight, locale)
   return weight.value === 0 ? t('progressUi.bodyWeight') : t('progressUi.positiveAdded', { weight: formatLoad(weight, locale) })
+}
+
+/** Cardio prescriptions show positive extra load and keep a zero/absent load quiet. */
+export const prescriptionLoad = (weight: Measurement | undefined, modality: ViewExercise['modality'], shape: LoadShape | undefined, locale: string, t: Translate): string | undefined => {
+  if (weight === undefined || (modality === 'cardio' && weight.value === 0)) return undefined
+  return progressLoad(weight, modality === 'cardio' ? 'added' : shape, locale, t)
 }
 
 /** Known body-weight work has no estimated external-implement maximum. */

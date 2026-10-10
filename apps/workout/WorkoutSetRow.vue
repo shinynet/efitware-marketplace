@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { computed, onUnmounted, reactive, ref, useId, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { Tracking, ViewSet } from './model'
+import type { Tracking, ViewExercise, ViewSet } from './model'
 import { displayMeasure, formatMeasure, inputLoadUnit, parseInput, sentValue, storageValue, type ActualField } from './presentation'
 import { intlUnitOf, type Load } from './measurement'
 import type { UnitSystem } from './lib/units'
 import { presentedPrAwards } from './progressModel'
-import { progressLoad } from './addedLoadPresentation'
+import { prescriptionLoad } from './addedLoadPresentation'
 import PrAward from './PrAward.vue'
 
-const { set, number, tracking = undefined, system, disabled, save } = defineProps<{
+const { set, number, modality, tracking = undefined, system, disabled, save } = defineProps<{
   set: ViewSet
   number: number
+  modality: ViewExercise['modality']
   tracking?: Tracking
   system: UnitSystem
   disabled: boolean
@@ -22,7 +23,9 @@ const { t, locale } = useI18n()
 const invalid = ref(false)
 const weightHintId = useId()
 const awards = computed(() => set.completed ? presentedPrAwards(set.prs, tracking?.loadShape) : [])
-const added = computed(() => tracking?.loadShape === 'added' || (tracking?.loadShape === undefined && awards.value.some(award => award.type === 'reps')))
+const added = computed(() => tracking?.loadShape === 'added'
+  || (modality === 'cardio' && (set.weight !== undefined || set.plannedWeight !== undefined))
+  || (tracking?.loadShape === undefined && awards.value.some(award => award.type === 'reps')))
 const loadShape = computed(() => tracking?.loadShape ?? (added.value ? 'added' : undefined))
 const draft = reactive<Partial<Record<ActualField, { text: string, unit?: string, locale: string }>>>({})
 watch(() => Object.values(draft).some(value => value !== undefined), value => emit('dirty', value), { immediate: true })
@@ -46,7 +49,8 @@ const fieldLabel = (field: ActualField) => {
   const unit = draft[field]?.unit ?? display(field).unit
   if (!unit) return t(field)
   const label = new Intl.NumberFormat(locale.value, { style: 'unit', unit, unitDisplay: 'short' }).formatToParts(0).find(part => part.type === 'unit')?.value ?? unit
-  return t(field === 'weight' && added.value ? 'unitsAddedWeight' : { weight: 'unitsWeight', duration: 'unitsDuration', distance: 'unitsDistance', reps: 'reps' }[field], { unit: label })
+  const key = field === 'weight' && added.value ? modality === 'cardio' ? 'unitsCardioAdded' : 'unitsAddedWeight' : { weight: 'unitsWeight', duration: 'unitsDuration', distance: 'unitsDistance', reps: 'reps' }[field]
+  return t(key, { unit: label })
 }
 const target = computed(() => {
   const parts: string[] = []
@@ -58,9 +62,10 @@ const target = computed(() => {
     const key = { weight: 'plannedWeight', duration: 'plannedDuration', distance: 'plannedDistance' } as const
     const value = set[key[field]]
     if (value === undefined) continue
-    parts.push(typeof value === 'number' ? formatMeasure(field, value, system, locale.value) : progressLoad(value, loadShape.value, locale.value, t))
+    const label = typeof value === 'number' ? formatMeasure(field, value, system, locale.value) : prescriptionLoad(value, modality, loadShape.value, locale.value, t)
+    if (label) parts.push(label)
   }
-  if (added.value && set.plannedWeight === undefined && (set.plannedReps || set.plannedDuration !== undefined || set.plannedDistance !== undefined)) parts.push(t('progressUi.bodyWeight'))
+  if (added.value && modality !== 'cardio' && set.plannedWeight === undefined && (set.plannedReps || set.plannedDuration !== undefined || set.plannedDistance !== undefined)) parts.push(t('progressUi.bodyWeight'))
   return new Intl.ListFormat(locale.value, { style: 'short', type: 'unit' }).format(parts) || t('noTarget')
 })
 // A readback also acknowledges a save retried outside this row. Other drafts survive.
@@ -162,7 +167,7 @@ const submit = async (completed: boolean) => {
           v-if="field === 'weight' && added"
           :id="weightHintId"
           class="mt-1 block"
-        >{{ t('addedWeightHint') }}</span>
+        >{{ t(modality === 'cardio' ? 'cardioAddedWeightHint' : 'addedWeightHint') }}</span>
       </label>
     </div>
     <p
