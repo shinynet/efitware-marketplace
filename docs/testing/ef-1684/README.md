@@ -16,6 +16,6 @@ All **24 Chromium cases** pass: 320/390/1280 px × light/dark × English/German 
 
 Eight 390 px screenshots are beside this record; `browser-results.json` lists the full matrix. The temporary local host and isolated browser were stopped after success. Initial harness attempts had a malformed mocked initialization response and accidentally collapsed the already-open exercise; neither is claimed as product failure or passing evidence.
 
-## Remaining release gates
+## Release completion
 
-Independent review precedes annotated immutable tagging and complete prerelease staging. EF-1684 also owns the app pin and both-generation real TCP/resource/tool qualification, exact compatible app READY, catalog/promotion receipt, release metadata verification and website mirror. None is inferred from these local checks. The published channel remains 0.1.33 until those gates pass.
+The immutable 0.1.34 release, both real SDK app bridges, reviewed app pin, exact compatible serving READY, independently approved promotion and metadata-only publication are complete. The public channel now advertises 0.1.34. [Release history](../../releases.md) records the immutable source, manifest, app and website merges and serving deployments. All 27 asset identities match the staged receipt after publication. Website production passed two fresh literal HTTP/2 clones and a fast-forward upgrade from 0.1.33, including full fsck, both plugin identities and the skill hash. Actual external Desktop activation or authentication continuity remains outside these evidence claims.
