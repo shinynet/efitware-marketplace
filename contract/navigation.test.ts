@@ -23,6 +23,42 @@ const open = async () => {
   return connection
 }
 
+it.each(['workout', 'goalplan', 'commentary'] as const)('keeps the opaque v2 %s token and original write intent through a lost response', async (kind) => {
+  const revision = `${kind}:2:${'f'.repeat(64)}`
+  const planFixture = fixtures.goalViews.find(item => item.view === 'goal-plan' && item.valid)!
+  const initial = kind === 'workout'
+    ? { ...workout, workout: { ...workout.workout, revision } }
+    : kind === 'goalplan'
+      ? { ...structuredClone(planFixture.input), record: { ...planFixture.input.record, managementMode: 'manual', createdBy: 'user', revision } }
+      : {
+          view: 'workout-review', record: { id: workout.workout.id, title: 'Training', date: '2026-10-12', status: 'completed' },
+          related: {
+            reflections: { workoutId: workout.workout.id, coach: null, external: { content: 'Controlled tempo', createdAt: '2026-10-12T00:00:00Z', updatedAt: '2026-10-12T00:00:00Z', externalMcp: { clientId: 'fixture-client' } }, revision },
+            decisions: { data: [], meta: { page: 1, limit: 20, total: 0 } }
+          }, presentation: { ...presentation, timeZone: 'UTC' }
+        }
+  const connection = createWorkoutConnection()
+  await connection.start()
+  bridge.ontoolresult?.({ structuredContent: initial })
+  try {
+    expect(connection.error.value).toBe('')
+    bridge.callServerTool.mockRejectedValueOnce(new Error('lost response'))
+    if (kind === 'workout') await connection.mutate('log_sets', { updates: [] })
+    else if (kind === 'goalplan') await connection.updateGoalPlan({ status: 'paused' })
+    else await connection.saveCommentary('Kept a controlled tempo')
+    const intent = structuredClone(bridge.callServerTool.mock.calls[0]![0])
+    expect(intent.arguments).toMatchObject({ expectedRevision: revision, idempotencyKey: expect.any(String) })
+    expect(connection.pending.value).toEqual(intent)
+    expect(connection.saved.value).toBe(false)
+    bridge.callServerTool.mockResolvedValueOnce({ structuredContent: {} }).mockResolvedValueOnce({ structuredContent: initial })
+    await connection.retry()
+    expect(bridge.callServerTool.mock.calls[1]![0]).toEqual(intent)
+    expect(connection.pending.value).toBeUndefined()
+    expect(connection.saved.value).toBe(true)
+    expect(bridge.connect).toHaveBeenCalledTimes(1)
+  } finally { connection.close() }
+})
+
 it('opens a template without writes and creates one dated workout in the same bridge', async () => {
   const connection = await open()
   try {

@@ -6,6 +6,14 @@ The application owns its product DTOs, MCP tools, authentication, permissions an
 
 `pnpm build` bundles Vue, fonts, brand assets and theme tokens into `dist/card/workout.html`, then generates the open draft-07 input schema. The product validates its raw tool output against that schema using Ajv without stripping extra fields, applying defaults or coercing types. The product DTO remains authoritative.
 
+## Opaque revision compatibility (0.1.35)
+
+The workout, goal-plan and commentary consumers accept version 2 revision tokens alongside version 1. Tokens remain opaque: the card passes the exact supplied string as `expectedRevision`, and an uncertain write retries the original payload and idempotency key. Other resource revision contracts are unchanged. The release adds no tools or fields and remains compatible with the existing version 1 producer, so its minimum application commit is unchanged.
+
+The schema fixtures cover both supported versions and reject malformed or unsupported versions. Bridge tests exercise a lost response for each affected mutation and verify that its revision and original intent survive the retry.
+
+Annotated tag `v0.1.35` preserves independently approved source `330fba99f068943016c6529196d867ecf034d0df`; immutable prerelease `411046678` has 27 assets and manifest SHA-256 `6ff5960430ddc8cc2e2cb37bb08059099f8f3131de9ca965846452124b47b507`. The compatible application merge `e1141899a876b0eea5e5d73db6d46c5374e4818d` is serving exact production READY in `dpl_AGEMzsScYYKdZQU48QK1KoRuv5qt`. All four served downloads match the staged bytes. The reviewed promotion receipt advances the catalog to 0.1.35; after approval and merge, the metadata-only verifier publishes the latest marker and proves all immutable asset identities unchanged. The public website mirror follows its own verified deployment.
+
 ## Added weight on strength (0.1.32, EF-1674)
 
 The next immutable release teaches the same added-load contract as the compatible application: nonempty `addedLoadOptions` identifies an added exercise; its set weight is total extra load, while an absent, null or zero amount means body weight. Source absence permits automatic planning, `bodyweight` explicitly keeps it at body weight, and an offered catalog id selects gear. PATCH null resumes automatic planning. Only gear listed at the destination supports a positive suggestion; logged extra load remains independent of ownership or a source choice. Ankle weights count both ankles before conversion and snapping. Without gear, progress uses repetitions rather than a guessed weight or estimated 1RM.

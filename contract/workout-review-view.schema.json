@@ -114,7 +114,7 @@
               "anyOf": [
                 {
                   "type": "string",
-                  "pattern": "^commentary:1:[a-f0-9]{64}$"
+                  "pattern": "^commentary:[12]:[a-f0-9]{64}$"
                 },
                 {
                   "type": "null"
