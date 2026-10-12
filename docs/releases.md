@@ -10,7 +10,9 @@ The application owns its product DTOs, MCP tools, authentication, permissions an
 
 The workout, goal-plan and commentary consumers accept version 2 revision tokens alongside version 1. Tokens remain opaque: the card passes the exact supplied string as `expectedRevision`, and an uncertain write retries the original payload and idempotency key. Other resource revision contracts are unchanged. The release adds no tools or fields and remains compatible with the existing version 1 producer, so its minimum application commit is unchanged.
 
-The schema fixtures cover both supported versions and reject malformed or unsupported versions. Bridge tests exercise a lost response for each affected mutation and verify that its revision and original intent survive the retry. This is a staged release; the application must pin its immutable assets and reach compatible production READY before catalog promotion.
+The schema fixtures cover both supported versions and reject malformed or unsupported versions. Bridge tests exercise a lost response for each affected mutation and verify that its revision and original intent survive the retry.
+
+Annotated tag `v0.1.35` preserves independently approved source `330fba99f068943016c6529196d867ecf034d0df`; immutable prerelease `411046678` has 27 assets and manifest SHA-256 `6ff5960430ddc8cc2e2cb37bb08059099f8f3131de9ca965846452124b47b507`. The compatible application merge `e1141899a876b0eea5e5d73db6d46c5374e4818d` is serving exact production READY in `dpl_AGEMzsScYYKdZQU48QK1KoRuv5qt`. All four served downloads match the staged bytes. The reviewed promotion receipt advances the catalog to 0.1.35; after approval and merge, the metadata-only verifier publishes the latest marker and proves all immutable asset identities unchanged. The public website mirror follows its own verified deployment.
 
 ## Added weight on strength (0.1.32, EF-1674)
 

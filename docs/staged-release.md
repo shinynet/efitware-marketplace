@@ -1,4 +1,6 @@
-Version 0.1.35 is prepared for independent review. It accepts opaque version 2 workout, goal-plan and commentary revisions while retaining version 1 compatibility. No immutable tag or staged asset set has been published yet. After review, record the annotated tag, source commit and manifest SHA-256 here. Keep the published channel on 0.1.34 until the compatible application pin is serving READY in production.
+Version 0.1.35 is staged as immutable prerelease 411046678 with 27 assets. Annotated tag v0.1.35 preserves independently approved source 330fba99f068943016c6529196d867ecf034d0df. Manifest SHA-256: 6ff5960430ddc8cc2e2cb37bb08059099f8f3131de9ca965846452124b47b507. Two source builds produced the same card bytes, matching the staged asset.
+
+The compatible application pin is serving exact production READY at e1141899a876b0eea5e5d73db6d46c5374e4818d in dpl_AGEMzsScYYKdZQU48QK1KoRuv5qt; all four served downloads match the immutable release. This reviewed promotion receipt advances the published catalog to 0.1.35. Merge preserves the tag ancestry; the publication workflow then changes release metadata only and proves all asset identities unchanged. The website mirror follows the promoted release. This is not a claim of external Desktop activation.
 
 Version 0.1.34 remains published as immutable release 408656900. All 27 staged asset identities and bytes remain unchanged. Manifest SHA-256: 0eb493cfd7df147177b087a0e1cf842a65327c36b458da6923f7ee3deb15e26b.
 
