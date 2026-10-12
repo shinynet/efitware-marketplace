@@ -1,3 +1,5 @@
-Version 0.1.34 is published as immutable release 408656900. All 27 staged asset identities and bytes remain unchanged. Manifest SHA-256: 0eb493cfd7df147177b087a0e1cf842a65327c36b458da6923f7ee3deb15e26b.
+Version 0.1.35 is prepared for independent review. It accepts opaque version 2 workout, goal-plan and commentary revisions while retaining version 1 compatibility. No immutable tag or staged asset set has been published yet. After review, record the annotated tag, source commit and manifest SHA-256 here. Keep the published channel on 0.1.34 until the compatible application pin is serving READY in production.
+
+Version 0.1.34 remains published as immutable release 408656900. All 27 staged asset identities and bytes remain unchanged. Manifest SHA-256: 0eb493cfd7df147177b087a0e1cf842a65327c36b458da6923f7ee3deb15e26b.
 
 The independently reviewed application pin reached exact production READY before promotion. Promotion PR #36 merged as 5f39c9a059f2387df7268ad742e7fed33b217e89, preserving source 545a83d36c1c801fd8459e930c85e156df99f00a and annotated tag v0.1.34. The metadata-only verifier published the latest marker without replacing an asset. Website PR #44 reached exact production READY; two fresh HTTP/2 installs and an upgrade from 0.1.33 verify its public mirror. See docs/releases.md for the complete source and deployment receipt.

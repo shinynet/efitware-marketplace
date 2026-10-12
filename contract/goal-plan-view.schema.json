@@ -42,7 +42,7 @@
         },
         "revision": {
           "type": "string",
-          "pattern": "^goalplan:1:[a-f0-9]{64}$"
+          "pattern": "^goalplan:[12]:[a-f0-9]{64}$"
         }
       },
       "required": [

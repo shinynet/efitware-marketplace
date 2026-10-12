@@ -31,7 +31,7 @@
         },
         "revision": {
           "type": "string",
-          "pattern": "^workout:1:[a-f0-9]{64}$"
+          "pattern": "^workout:[12]:[a-f0-9]{64}$"
         },
         "exercises": {
           "type": "array",

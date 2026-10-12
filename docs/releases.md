@@ -6,6 +6,12 @@ The application owns its product DTOs, MCP tools, authentication, permissions an
 
 `pnpm build` bundles Vue, fonts, brand assets and theme tokens into `dist/card/workout.html`, then generates the open draft-07 input schema. The product validates its raw tool output against that schema using Ajv without stripping extra fields, applying defaults or coercing types. The product DTO remains authoritative.
 
+## Opaque revision compatibility (0.1.35)
+
+The workout, goal-plan and commentary consumers accept version 2 revision tokens alongside version 1. Tokens remain opaque: the card passes the exact supplied string as `expectedRevision`, and an uncertain write retries the original payload and idempotency key. Other resource revision contracts are unchanged. The release adds no tools or fields and remains compatible with the existing version 1 producer, so its minimum application commit is unchanged.
+
+The schema fixtures cover both supported versions and reject malformed or unsupported versions. Bridge tests exercise a lost response for each affected mutation and verify that its revision and original intent survive the retry. This is a staged release; the application must pin its immutable assets and reach compatible production READY before catalog promotion.
+
 ## Added weight on strength (0.1.32, EF-1674)
 
 The next immutable release teaches the same added-load contract as the compatible application: nonempty `addedLoadOptions` identifies an added exercise; its set weight is total extra load, while an absent, null or zero amount means body weight. Source absence permits automatic planning, `bodyweight` explicitly keeps it at body weight, and an offered catalog id selects gear. PATCH null resumes automatic planning. Only gear listed at the destination supports a positive suggestion; logged extra load remains independent of ownership or a source choice. Ankle weights count both ankles before conversion and snapping. Without gear, progress uses repetitions rather than a guessed weight or estimated 1RM.
