@@ -6,6 +6,12 @@ The application owns its product DTOs, MCP tools, authentication, permissions an
 
 `pnpm build` bundles Vue, fonts, brand assets and theme tokens into `dist/card/workout.html`, then generates the open draft-07 input schema. The product validates its raw tool output against that schema using Ajv without stripping extra fields, applying defaults or coercing types. The product DTO remains authoritative.
 
+## Ordinary memories and protected Undo (0.1.36, EF-1790/1759)
+
+The skill preserves ordinary user-directed memories with health sharing off. New recognized or writer-labelled health facts receive an honest refusal and a separate authorized health-notes append handoff; no automatic transfer, split, partial save or success claim occurs. Body values retain their metric owner. Protected legacy reads, changes, cap evictions and Undo require the calling client's current sharing. The instructions describe exact after-image append Undo conflicts and the explicit limits of English recognition.
+
+This release changes instructions and plugin versions; the card and output schemas remain unchanged. Stage immutable assets only after independent review. Promote catalogs only after the compatible application pin is serving exact READY. Source and deployment receipts are recorded at release closeout.
+
 ## Opaque revision compatibility (0.1.35)
 
 The workout, goal-plan and commentary consumers accept version 2 revision tokens alongside version 1. Tokens remain opaque: the card passes the exact supplied string as `expectedRevision`, and an uncertain write retries the original payload and idempotency key. Other resource revision contracts are unchanged. The release adds no tools or fields and remains compatible with the existing version 1 producer, so its minimum application commit is unchanged.
