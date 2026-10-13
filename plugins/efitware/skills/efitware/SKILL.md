@@ -527,3 +527,9 @@ Use `open_status` for account/onboarding/consent, integration metadata or unexpi
 For a requested share preview, call `open_share` with the canonical source request, locale, unitSystem and explicit privacy options. The card displays already-localized content and can change inclusion options or copy its caption. Nothing is posted, uploaded or sent; do not claim a downloadable image was created. Use full progress tools for analysis because share charts are bounded previews.
 
 Finish by opening the requested outcome once. Supporting reads and intermediate mutations do not open cards. In an MCP Apps host, accompany the card with concise interpretation rather than repeating it as a table. A CLI can consume the same structured result and provide an accessible textual summary.
+
+### Selective training narrative visibility
+
+With health sharing off, stored training explanations and notes retain ordinary sentences while recognized protected sentences are replaced by `[health detail withheld]`. Do not treat that marker as original prose or infer the hidden detail. The server preserves only the exact field version this authenticated client submitted itself; record authorship, copies and later edits do not confer that exemption. Sharing-enabled clients receive originals. Detection is bounded and English-only and can miss unusual wording or other languages. Ordinary notes, memories and user-directed sharing remain available.
+
+Prefer targeted edits. A whole-field replacement must contain the complete user-directed replacement text; never echo withheld markers as the original note or fabricate missing sentences. Revisions are opaque: read them from the server and echo them unchanged, never calculate or inspect their digest. An explicit submission of recognized protected prose creates a new field version and a real change receipt even if its text matches a previously hidden value; ordinary identical writes retain their no-op behavior.

@@ -8,7 +8,7 @@ const goal = z.object({ id, name: z.string(), status: z.enum(['active', 'achieve
 const checkIn = z.object({ id, goalId: id, date: day, value: z.string().optional(), note: z.string().optional() })
 const planStatus = z.enum(['active', 'paused', 'completed', 'archived'])
 const management = z.enum(['coach', 'manual'])
-export const goalViewSchema = z.object({ view: z.literal('goal'), record: goal.extend({ revision: z.string().regex(/^goal:1:[a-f0-9]{64}$/) }), related: z.object({
+export const goalViewSchema = z.object({ view: z.literal('goal'), record: goal.extend({ revision: z.string().regex(/^goal:[12]:[a-f0-9]{64}$/) }), related: z.object({
   programs: z.array(z.object({ id, name: z.string(), description: z.string().optional(), status: z.enum(['active', 'archived']) })),
   checkInCount: z.number().int().nonnegative(), latestCheckIn: checkIn.optional(), coachPlan: z.object({ id, status: planStatus, managementMode: management.optional() }).optional(),
   checkIns: z.object({ data: z.array(checkIn), meta }), today: day

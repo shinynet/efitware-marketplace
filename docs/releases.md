@@ -6,6 +6,10 @@ The application owns its product DTOs, MCP tools, authentication, permissions an
 
 `pnpm build` bundles Vue, fonts, brand assets and theme tokens into `dist/card/workout.html`, then generates the open draft-07 input schema. The product validates its raw tool output against that schema using Ajv without stripping extra fields, applying defaults or coercing types. The product DTO remains authoritative.
 
+## Selective narrative projection (0.1.37, EF-1746)
+
+The template, program, schedule and goal readers accept both legacy and version-2 opaque revisions. The skill describes sentence-level withholding, exact submitted-field authorship and targeted editing without copying withheld markers into storage. Ordinary notes and memories remain available; detection limits remain explicit. Independently approved source `e404a51c2eaef1577aa369b47803a5874cea0cb3` is preserved by annotated tag `v0.1.37`; immutable release `411656595` has 27 assets and manifest SHA-256 `b7ec924325252d2b01516f4f8b24ae3e25a32d5230ac866d7a6f456c24c5136e`. App PR #1417 was approved at `f075c9f7721db5828c726a706bed340a840c7103`; merge `ada04f8939be579ab234a509b414d72339eb05f4` is serving exact production READY in `dpl_A9y1RZtPMKYHgG5q4SihPahSALmP`. All four application downloads match the immutable bytes. The reviewed promotion receipt advances the catalog; merge preserves the tagged source, then the metadata-only publication workflow verifies every asset identity. The website mirror follows its own approved deployment. No external Desktop activation is claimed.
+
 ## Ordinary memories and protected Undo (0.1.36, EF-1790/1759)
 
 The skill preserves ordinary user-directed memories with health sharing off. New recognized or writer-labelled health facts receive an honest refusal and a separate authorized health-notes append handoff; no automatic transfer, split, partial save or success claim occurs. Body values retain their metric owner. Protected legacy reads, changes, cap evictions and Undo require the calling client's current sharing. The instructions describe exact after-image append Undo conflicts and the explicit limits of English recognition.

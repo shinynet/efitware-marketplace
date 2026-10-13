@@ -28,7 +28,7 @@
         },
         "revision": {
           "type": "string",
-          "pattern": "^program:1:[a-f0-9]{64}$"
+          "pattern": "^program:[12]:[a-f0-9]{64}$"
         }
       },
       "required": [

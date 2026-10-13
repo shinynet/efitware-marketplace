@@ -27,7 +27,7 @@
         },
         "revision": {
           "type": "string",
-          "pattern": "^template:1:[a-f0-9]{64}$"
+          "pattern": "^template:[12]:[a-f0-9]{64}$"
         },
         "exercises": {
           "type": "array",

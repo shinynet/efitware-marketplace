@@ -5,6 +5,28 @@ import { z } from 'zod'
 import { expect, it } from 'vitest'
 import { templateViewSchema, parseTrainingView } from '../apps/workout/templateModel'
 import { viewSchema } from '../apps/workout/model'
+import { goalViewSchema } from '../apps/workout/goalModel'
+import { programViewSchema, scheduleViewSchema } from '../apps/workout/planningModel'
+
+it.each([1, 2])('accepts opaque revision version %i across the four narrative resource cards', (version) => {
+  const id = 'a'.repeat(24), day = '2026-10-13'
+  const presentation = { locale: 'en', unitSystem: 'metric', theme: null, skin: null, timeZone: 'UTC' }
+  const meta = { total: 0, page: 1, limit: 10 }
+  const views = [
+    { schema: templateViewSchema, input: { view: 'template', record: { id, name: 'Training', revision: `template:${version}:${'a'.repeat(64)}`, exercises: [] }, related: { exercises: [] }, presentation } },
+    { schema: goalViewSchema, input: { view: 'goal', record: { id, name: 'Consistency', status: 'active', programIds: [], revision: `goal:${version}:${'a'.repeat(64)}` }, related: { programs: [], checkInCount: 0, checkIns: { data: [], meta }, today: day }, presentation } },
+    { schema: programViewSchema, input: { view: 'program', record: { id, name: 'Block', status: 'active', revision: `program:${version}:${'a'.repeat(64)}` }, related: { schedules: [], schedulesMeta: meta, attachedWorkouts: [], attachedWorkoutsMeta: meta, recentWorkouts: [], recentWorkoutsMeta: meta, workoutCount: 0, today: day, page: 1, limit: 10, collection: 'schedules' }, presentation } },
+    { schema: scheduleViewSchema, input: { view: 'schedule', record: { id, name: 'Mondays', templateId: id, recurrence: 'FREQ=WEEKLY;BYDAY=MO', startDate: day, endDate: '2026-12-31', enabled: true, revision: `schedule:${version}:${'a'.repeat(64)}` }, related: { today: day }, presentation } }
+  ]
+  for (const { schema, input } of views) {
+    const before = structuredClone(input)
+    const validate = new Ajv({ removeAdditional: false, useDefaults: false, coerceTypes: false }).compile(z.toJSONSchema(schema, { io: 'input', target: 'draft-07' }))
+    expect(validate(input), JSON.stringify(validate.errors)).toBe(true)
+    expect(input).toEqual(before)
+    expect(() => parseTrainingView(input)).not.toThrow()
+    expect(validate({ ...input, record: { ...input.record, revision: input.record.revision.replace(`:${version}:`, ':3:') } })).toBe(false)
+  }
+})
 
 it('publishes the open draft-07 input projection without modifying product data', () => {
   const schema = z.toJSONSchema(viewSchema, { io: 'input', target: 'draft-07' })
