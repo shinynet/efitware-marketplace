@@ -6,6 +6,12 @@ The application owns its product DTOs, MCP tools, authentication, permissions an
 
 `pnpm build` bundles Vue, fonts, brand assets and theme tokens into `dist/card/workout.html`, then generates the open draft-07 input schema. The product validates its raw tool output against that schema using Ajv without stripping extra fields, applying defaults or coercing types. The product DTO remains authoritative.
 
+## Ordinary memories and protected Undo (0.1.36, EF-1790/1759)
+
+The skill preserves ordinary user-directed memories with health sharing off. New recognized or writer-labelled health facts receive an honest refusal and a separate authorized health-notes append handoff; no automatic transfer, split, partial save or success claim occurs. Body values retain their metric owner. Protected legacy reads, changes, cap evictions and Undo require the calling client's current sharing. The instructions describe exact after-image append Undo conflicts and the explicit limits of English recognition.
+
+This release changes instructions and plugin versions; the card and output schemas remain unchanged. Independently approved source `6d5dad87b1d4e1a810c3e22e090f48566630a40c` is preserved by annotated tag `v0.1.36`; immutable prerelease `411451599` has 27 assets and manifest SHA-256 `66e9672e3e757d2cc6e2294811e863d2993c1def758dfc133be7a2638637f0b4`. App PR #1415 was independently approved at `7df1239ccc6fa5d2c85f5c51b18a3e4c4ca98c0e`; merge `4c6eb1ebcbf128aed213330910bade15f7f2302c` is serving exact READY in `dpl_61UZkC4MHjgcvP6tse89KEHuU7zM`. All four served application downloads match the immutable bytes. The reviewed promotion receipt advances catalogs without replacing assets; merge preserves the tagged source, then the metadata-only publication workflow verifies every asset identity. The website mirror follows its own approved deployment. No external Desktop activation is claimed.
+
 ## Opaque revision compatibility (0.1.35)
 
 The workout, goal-plan and commentary consumers accept version 2 revision tokens alongside version 1. Tokens remain opaque: the card passes the exact supplied string as `expectedRevision`, and an uncertain write retries the original payload and idempotency key. Other resource revision contracts are unchanged. The release adds no tools or fields and remains compatible with the existing version 1 producer, so its minimum application commit is unchanged.
