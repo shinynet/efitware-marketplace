@@ -50,7 +50,7 @@
         },
         "revision": {
           "type": "string",
-          "pattern": "^schedule:1:[a-f0-9]{64}$"
+          "pattern": "^schedule:[12]:[a-f0-9]{64}$"
         }
       },
       "required": [

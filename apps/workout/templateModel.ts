@@ -17,7 +17,7 @@ export const templateViewSchema = z.object({
   view: z.literal('template'),
   record: z.object({
     id: z.string().regex(/^[a-f0-9]{24}$/i), name: z.string(), description: z.string().optional(), tags: z.array(z.string()).optional(),
-    revision: z.string().regex(/^template:1:[a-f0-9]{64}$/),
+    revision: z.string().regex(/^template:[12]:[a-f0-9]{64}$/),
     exercises: z.array(plannedExerciseSchema), activities: z.array(plannedActivitySchema).optional(),
     executionGroups: executionGroupsSchema.optional()
   }),

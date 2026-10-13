@@ -44,7 +44,7 @@
         },
         "revision": {
           "type": "string",
-          "pattern": "^goal:1:[a-f0-9]{64}$"
+          "pattern": "^goal:[12]:[a-f0-9]{64}$"
         }
       },
       "required": [

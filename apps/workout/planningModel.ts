@@ -3,7 +3,7 @@ import { presentationSchema } from './model.ts'
 
 const id = z.string().regex(/^[a-f0-9]{24}$/i)
 const day = z.string().regex(/^\d{4}-\d{2}-\d{2}$/)
-const revision = (type: string) => z.string().regex(new RegExp(`^${type}:1:[a-f0-9]{64}$`))
+const revision = (type: string) => z.string().regex(new RegExp(`^${type}:[12]:[a-f0-9]{64}$`))
 const meta = z.object({ total: z.number().int().nonnegative(), page: z.number().int().positive(), limit: z.number().int().positive() })
 const presentation = presentationSchema.extend({ timeZone: z.string() })
 const status = z.enum(['planned', 'in_progress', 'completed', 'skipped', 'abandoned'])
