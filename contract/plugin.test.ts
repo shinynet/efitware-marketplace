@@ -26,6 +26,8 @@ it('keeps the published skill inventory consistent with the required server surf
   // EF-1895: only logging (or an explicit start) starts a planned session.
   expect(skill).toContain('Only logging starts a planned session')
   expect(skill).not.toContain('Content edits automatically start a planned session')
+  expect(skill).not.toContain('The first `log_set` against a `planned` workout flips it')
+  expect(skill).toContain('one that only changes planned targets or notes leaves it planned')
   // EF-1870 / EF-1874: the long day and the stated max heart rate are profile fields.
   expect(skill).toContain('`longSession` — one long day, `{ weekday, maxMinutes }` or `null`')
   expect(skill).toContain('`maxHeartRate` — the maximum heart rate the user states')
