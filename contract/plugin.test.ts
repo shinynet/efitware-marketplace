@@ -23,6 +23,15 @@ it('keeps the published skill inventory consistent with the required server surf
   expect(skill).toContain('A stored `volume` marker or ineligible estimate is not an award: never announce it.')
   // EF-1587: a day's program credit comes from the full list, not the scalar fields.
   expect(skill).toContain('credit a shared or manual-led day from `programs`')
+  // EF-1895: only logging (or an explicit start) starts a planned session.
+  expect(skill).toContain('Only logging starts a planned session')
+  expect(skill).not.toContain('Content edits automatically start a planned session')
+  expect(skill).not.toContain('The first `log_set` against a `planned` workout flips it')
+  expect(skill).toContain('one that only changes planned targets or notes leaves it planned')
+  expect(skill).not.toContain('The first `log_set` moves it from `planned` to `in_progress` on its own.')
+  // EF-1870 / EF-1874: the long day and the stated max heart rate are profile fields.
+  expect(skill).toContain('`longSession` — one long day, `{ weekday, maxMinutes }` or `null`')
+  expect(skill).toContain('`maxHeartRate` — the maximum heart rate the user states')
   // EF-1889: goal target dates are calendar markers, never sessions or counts.
   expect(skill).toContain("`goalDays` lists the user's active goals whose target date falls in the range")
   expect(skill).toContain('it is `[]` when there are none. Goal days are markers only: never count one as a session')
