@@ -620,7 +620,7 @@
   ],
   "getCalendarResponse": {
     "name": "missed-and-ended-days",
-    "note": "One get_calendar response (EF-1474). today is the account's calendar day; open_calendar wraps the same response as { view: 'calendar', record: { from, to, date, ...response }, related: {}, presentation }. Every day satisfies sessionCount = completed + inProgress + planned + missed + ended. Every program-backed day's summary carries programs (application EF-1575, marketplace 0.1.25): each contributing program once, in session order, with its own sessionCount; the counts sum to programSessionCount.",
+    "note": "One get_calendar response (EF-1474). today is the account's calendar day; open_calendar wraps the same response as { view: 'calendar', record: { from, to, date, ...response }, related: {}, presentation }. Every day satisfies sessionCount = completed + inProgress + planned + missed + ended. Every program-backed day's summary carries programs (application EF-1575, marketplace 0.1.25): each contributing program once, in session order, with its own sessionCount; the counts sum to programSessionCount. goalDays (application EF-1889, marketplace 0.1.38) lists the user's active goals whose target date falls in the range, ordered by date, then name, then goalId; they are markers only and change no day's sessions, counts or agenda.",
     "today": "2026-09-12",
     "from": "2026-09-07",
     "to": "2026-09-20",
@@ -837,7 +837,14 @@
             "scheduleId": "5f0000000000000000000002"
           }
         ]
-      }
+      },
+      "goalDays": [
+        {
+          "goalId": "6c0000000000000000000001",
+          "name": "Run 5 km under 25 minutes",
+          "date": "2026-09-09"
+        }
+      ]
     }
   },
   "measurementContract": {

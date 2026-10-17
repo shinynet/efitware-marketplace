@@ -1,8 +1,9 @@
+// @vitest-environment happy-dom
 import { readFileSync } from 'node:fs'
 import { Ajv } from 'ajv'
 import { z } from 'zod'
-import { describe, expect, it } from 'vitest'
-import { createSSRApp } from 'vue'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { createApp, createSSRApp, nextTick, type App } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { createI18n } from 'vue-i18n'
 import fixtures from './compat-fixtures.json'
@@ -12,6 +13,16 @@ import { viewSchema } from '../apps/workout/model'
 import { compactSummary } from '../apps/workout/compactSummary'
 import { parseTrainingView } from '../apps/workout/templateModel'
 import { messages } from '../apps/workout/messages'
+import WorkoutApp from '../apps/workout/WorkoutApp.vue'
+
+const { bridge } = vi.hoisted(() => ({ bridge: {
+  ontoolresult: undefined as undefined | ((result: { structuredContent?: unknown, isError?: boolean }) => void),
+  connect: vi.fn(async () => {}), close: vi.fn(async () => {}),
+  getHostCapabilities: vi.fn(() => ({ serverTools: {}, message: { text: {} } })),
+  getHostContext: vi.fn(() => ({ locale: 'en', theme: 'light' })),
+  callServerTool: vi.fn(), updateModelContext: vi.fn(async () => {}), sendMessage: vi.fn(), openLink: vi.fn(async () => ({}))
+} }))
+vi.mock('@modelcontextprotocol/ext-apps', () => ({ App: class { constructor() { return bridge } } }))
 
 const fixture = fixtures.getCalendarResponse
 const presentation = { locale: 'en', unitSystem: 'metric', theme: null, skin: null, timeZone: 'UTC' }
@@ -19,11 +30,18 @@ const presentation = { locale: 'en', unitSystem: 'metric', theme: null, skin: nu
 const wrap = (response: unknown, date = fixture.date) => ({ view: 'calendar', record: { from: fixture.from, to: fixture.to, date, ...(response as object) }, related: {}, presentation })
 const projection = z.toJSONSchema(calendarViewSchema, { io: 'input', target: 'draft-07' })
 const validate = new Ajv({ removeAdditional: false, useDefaults: false, coerceTypes: false }).compile(projection)
+/** The representative response with its goal days replaced, or removed when `undefined` (an application before EF-1889). */
+const responseWith = (goalDays: unknown) => {
+  const response: Record<string, unknown> = structuredClone(fixture.response)
+  if (goalDays === undefined) delete response.goalDays
+  else response.goalDays = goalDays
+  return response as typeof fixture.response
+}
 const buckets = ['completedSessionCount', 'inProgressSessionCount', 'plannedSessionCount', 'missedSessionCount', 'endedSessionCount'] as const
 
 describe('calendar presentation contract (EF-1474)', () => {
   it('publishes the committed calendar projection', () => {
-    expect(JSON.parse(readFileSync(new URL('./calendar-view.schema.json', import.meta.url), 'utf8'))).toEqual(projection)
+    expect(JSON.parse(readFileSync('contract/calendar-view.schema.json', 'utf8'))).toEqual(projection)
   })
 
   it('accepts the representative get_calendar response in both consumer schemas without changing it', () => {
@@ -139,8 +157,8 @@ const programsOn = (html: string, date: string) => {
   if (!cell) throw new Error(`No cell for ${date}`)
   return /<span[^>]*data-programs[^>]*>([^<]*)<\/span>/.exec(cell)?.[1]
 }
-/** Agenda rows: display status, visible label, notes and action buttons. */
-const agendaRows = (html: string) => html.split('id="calendar-agenda-title"')[1]!.split(/<li[\s>]/).slice(1).map(row => ({
+/** Agenda rows: display status, visible label, notes and action buttons. Goal rows are read by `goalRows`. */
+const agendaRows = (html: string) => html.split('id="calendar-agenda-title"')[1]!.split(/<li[\s>]/).slice(1).filter(row => !row.includes('data-goal-day')).map(row => ({
   displayStatus: /data-display-status="(\w+)"/.exec(row)?.[1],
   mark: /data-mark="(\w+)"[^>]*aria-hidden="true"/.exec(row)?.[1],
   text: row.slice(row.indexOf('>') + 1).replace(/<!--.*?-->/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(),
@@ -254,24 +272,203 @@ describe('CalendarView rendering (EF-1474)', () => {
   })
 })
 
-describe('compact calendar card (EF-1474)', () => {
-  const translator = (locale: 'en' | 'de') => {
-    const lookup = (key: string) => key.split('.').reduce<unknown>((node, part) => (node && typeof node === 'object' ? (node as Record<string, unknown>)[part] : undefined), messages[locale])
-    const t = (key: string, values: Record<string, string | number> = {}) => {
-      const text = lookup(key)
-      if (typeof text !== 'string') throw new Error(`Missing ${locale} message: ${key}`)
-      return text.replace(/\{(\w+)\}/g, (_, name: string) => String(values[name] ?? `{${name}}`))
-    }
-    return { t, te: (key: string) => typeof lookup(key) === 'string' }
+const compactTranslator = (locale: 'en' | 'de') => {
+  const lookup = (key: string) => key.split('.').reduce<unknown>((node, part) => (node && typeof node === 'object' ? (node as Record<string, unknown>)[part] : undefined), messages[locale])
+  const t = (key: string, values: Record<string, string | number> = {}) => {
+    const text = lookup(key)
+    if (typeof text !== 'string') throw new Error(`Missing ${locale} message: ${key}`)
+    return text.replace(/\{(\w+)\}/g, (_, name: string) => String(values[name] ?? `{${name}}`))
   }
+  return { t, te: (key: string) => typeof lookup(key) === 'string' }
+}
+
+describe('compact calendar card (EF-1474)', () => {
+  const translator = compactTranslator
 
   it('counts sessions without claiming every session was completed, and names a missed first item', () => {
-    const summary = compactSummary(parseTrainingView(wrap(fixture.response)), { locale: 'en', system: 'metric', ...translator('en') })
+    const withoutGoals = responseWith(undefined)
+    const summary = compactSummary(parseTrainingView(wrap(withoutGoals)), { locale: 'en', system: 'metric', ...translator('en') })
     expect(summary.facts).toEqual([{ label: 'Sessions', value: '11' }, { label: 'Completed', value: '2' }, { label: 'Days trained', value: '2' }])
     expect(summary.detail).toEqual({ label: 'On this day', value: 'Lower body B · Completed' })
-    const missedFirst = { ...fixture.response, agenda: { ...fixture.response.agenda, items: [...fixture.response.agenda.items].reverse() } }
+    const missedFirst = { ...withoutGoals, agenda: { ...fixture.response.agenda, items: [...fixture.response.agenda.items].reverse() } }
     expect(compactSummary(parseTrainingView(wrap(missedFirst)), { locale: 'en', system: 'metric', ...translator('en') }).detail?.value).toBe('Evening mobility · Missed')
     expect(compactSummary(parseTrainingView(wrap(missedFirst)), { locale: 'de', system: 'metric', ...translator('de') }).detail?.value).toBe('Evening mobility · Verpasst')
     expect(JSON.stringify(messages)).not.toMatch(/all sessions (were )?complete/i)
+  })
+})
+
+describe('calendar goal days (EF-1889)', () => {
+  const [run] = fixture.response.goalDays
+  const squat = { goalId: '6c0000000000000000000002', name: 'Squat 140 kg for a single at the spring regional powerlifting meet', date: '2026-09-09' }
+  /** A date inside the range that has no entry in `days`: only its goal makes it worth a flag. */
+  const bench = { goalId: '6c0000000000000000000003', name: 'Bench 100 kg', date: '2026-09-16' }
+  const several = [run!, squat, bench]
+  const noGoals = responseWith(undefined)
+  const cellOf = (html: string, date: string) => {
+    const cell = html.split(/<li[\s>]/).find(part => part.includes(`datetime="${date}" class="block font-semibold"`))
+    if (!cell) throw new Error(`No cell for ${date}`)
+    return cell
+  }
+  /** The day button's goal flags with their accessible names. */
+  const flagsOn = (html: string, date: string) => [...cellOf(html, date).matchAll(/<span[^>]*data-goal-flag[^>]*>/g)].map(([tag]) => ({ role: /role="img"/.test(tag) ? 'img' : undefined, label: /aria-label="([^"]*)"/.exec(tag)?.[1] }))
+  const countsOn = (html: string, date: string) => /<span class="mt-1 block text-sm text-muted">([^<]*)<\/span>/.exec(cellOf(html, date))?.[1]
+  /** The selected day's goal rows: visible text and the goal link's visible and accessible names. */
+  const goalRows = (html: string) => html.split('id="calendar-agenda-title"')[1]!.split(/<li[\s>]/).slice(1).filter(row => row.includes('data-goal-day')).map(row => ({
+    text: row.slice(row.indexOf('>') + 1, row.indexOf('<button')).replace(/<!--.*?-->/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(),
+    button: /<button[^>]*aria-label="([^"]*)"[^>]*>([^<]*)/.exec(row)?.slice(1).map(text => text.trim())
+  }))
+  const selecting = (date: string, response = responseWith(several)) => wrap({ ...response, agenda: { date, items: [] } }, date)
+  const empty = 'Nothing scheduled for this day.'
+
+  it('admits absent, empty and populated goal days in both consumer schemas', () => {
+    for (const goalDays of [undefined, [], fixture.response.goalDays, several]) {
+      const view = wrap(responseWith(goalDays))
+      expect(validate(view), JSON.stringify(validate.errors)).toBe(true)
+      expect(calendarViewSchema.safeParse(view).success).toBe(true)
+    }
+    expect(fixture.response.goalDays).toEqual([{ goalId: '6c0000000000000000000001', name: 'Run 5 km under 25 minutes', date: fixture.date }])
+  })
+
+  it('refuses malformed goal days', () => {
+    const malformed: unknown[] = [
+      null, {}, 'goal', [null], [{ ...run, goalId: 'goal-1' }], [{ ...run, goalId: undefined }], [{ ...run, name: undefined }], [{ ...run, name: 7 }],
+      [{ ...run, date: '2026-9-9' }], [{ ...run, date: '2026-09-09T00:00:00.000Z' }], [{ ...run, date: undefined }]
+    ]
+    for (const goalDays of malformed) {
+      const view = wrap(responseWith(goalDays))
+      expect(validate(view), JSON.stringify(goalDays)).toBe(false)
+      expect(calendarViewSchema.safeParse(view).success, JSON.stringify(goalDays)).toBe(false)
+    }
+  })
+
+  it('caps nothing: more than 50 goal days validate and survive the card parse', () => {
+    const many = Array.from({ length: 60 }, (_, index) => ({ goalId: (index + 1).toString(16).padStart(24, '0'), name: `Goal ${index + 1}`, date: fixture.date }))
+    const view = wrap(responseWith(many))
+    expect(validate(view), JSON.stringify(validate.errors)).toBe(true)
+    expect(calendarViewSchema.parse(view).record.goalDays).toEqual(many)
+  })
+
+  it('keeps goal days through the card parse and leaves the published schema open', () => {
+    expect(calendarViewSchema.parse(wrap(responseWith(several))).record.goalDays).toEqual(several)
+    const parsed = parseTrainingView(wrap(fixture.response))
+    expect(parsed.view === 'calendar' && parsed.record.goalDays).toEqual(fixture.response.goalDays)
+    const record: { required: string[], properties: Record<string, unknown> } = JSON.parse(readFileSync('contract/calendar-view.schema.json', 'utf8')).properties.record
+    expect(Object.keys(record.properties)).toContain('goalDays')
+    expect(record.required).not.toContain('goalDays')
+    // Producer fields the card does not read still validate: the wire schema never closes an object.
+    expect(validate(wrap({ ...responseWith([{ ...run, status: 'active' }]), futureField: true })), JSON.stringify(validate.errors)).toBe(true)
+  })
+
+  it('flags each goal date once, naming its goals, and leaves marks, counts and agenda unchanged', async () => {
+    const html = await render(wrap(responseWith(several)))
+    const before = await render(wrap(noGoals))
+    expect(flagsOn(html, '2026-09-09')).toEqual([{ role: 'img', label: 'Goal target date on Wed, Sep 9, 2026: Run 5 km under 25 minutes and Squat 140 kg for a single at the spring regional powerlifting meet' }])
+    expect(flagsOn(html, '2026-09-16')).toEqual([{ role: 'img', label: 'Goal target date on Wed, Sep 16, 2026: Bench 100 kg' }])
+    for (const date of ['2026-09-07', '2026-09-08', '2026-09-10', '2026-09-14', '2026-09-15']) expect(flagsOn(html, date), date).toEqual([])
+    for (let date = fixture.from; date <= fixture.to; date = new Date(Date.parse(`${date}T12:00:00Z`) + 86_400_000).toISOString().slice(0, 10)) {
+      expect(marksOn(html, date), date).toEqual(marksOn(before, date))
+      expect(countsOn(html, date), date).toEqual(countsOn(before, date))
+      expect(flagsOn(before, date), date).toEqual([])
+    }
+    // A goal-only date keeps an empty session line rather than inventing one.
+    expect(marksOn(html, '2026-09-16')).toEqual([])
+    expect(countsOn(html, '2026-09-16')).toBe('0 complete · 0 sessions')
+    expect(agendaRows(html)).toEqual(agendaRows(before))
+    // The flag is a pole and pennant, never a session mark's circle.
+    const flag = cellOf(html, '2026-09-09').split('data-goal-flag')[1]!.split('</svg>')[0]!
+    expect(flag).not.toContain('<circle')
+    expect(flag).toContain('<path d="M4.25 2.25 L11.5 4.5 L4.25 6.75 Z" fill="currentColor"')
+    expect(cellOf(html, '2026-09-09').split('data-goal-flag')[0]).toMatch(/class="[^"]*text-terracotta[^"]*"[^>]*$/)
+  })
+
+  it('lists only the selected day\'s goals, above its workouts', async () => {
+    const html = await render(wrap(responseWith(several)))
+    expect(goalRows(html)).toEqual([
+      { text: 'Run 5 km under 25 minutes Target date', button: ['Open goal in eFitware: Run 5 km under 25 minutes', 'Open goal'] },
+      { text: 'Squat 140 kg for a single at the spring regional powerlifting meet Target date', button: ['Open goal in eFitware: Squat 140 kg for a single at the spring regional powerlifting meet', 'Open goal'] }
+    ])
+    const agenda = html.split('id="calendar-agenda-title"')[1]!
+    expect(agenda.indexOf('data-goal-day')).toBeLessThan(agenda.indexOf('Lower body B'))
+    expect(agendaRows(html).map(row => row.displayStatus)).toEqual(['completed', 'missed'])
+    expect(agenda).not.toContain(empty)
+    const other = await render(selecting('2026-09-16'))
+    expect(goalRows(other).map(row => row.text)).toEqual(['Bench 100 kg Target date'])
+  })
+
+  it('shows the empty-agenda message only when the day has neither goals nor workouts', async () => {
+    const goalOnly = await render(selecting('2026-09-16'))
+    expect(goalRows(goalOnly)).toHaveLength(1)
+    expect(goalOnly).not.toContain(empty)
+    expect(await render(selecting('2026-09-15'))).toContain(empty)
+    expect(goalRows(await render(selecting('2026-09-15')))).toEqual([])
+    expect(await render(selecting('2026-09-16', responseWith([])))).toContain(empty)
+    expect(await render(selecting('2026-09-16', noGoals))).toContain(empty)
+    expect(await render(wrap(fixture.response))).not.toContain(empty)
+  })
+
+  it('renders the German goal labels', async () => {
+    const html = await render(wrap(responseWith(several)), 'de')
+    expect(flagsOn(html, '2026-09-09')).toEqual([{ role: 'img', label: 'Zieldatum am Mi., 9. Sept. 2026: Run 5 km under 25 minutes und Squat 140 kg for a single at the spring regional powerlifting meet' }])
+    expect(flagsOn(html, '2026-09-16')).toEqual([{ role: 'img', label: 'Zieldatum am Mi., 16. Sept. 2026: Bench 100 kg' }])
+    expect(goalRows(html)[0]).toEqual({ text: 'Run 5 km under 25 minutes Zieldatum', button: ['Ziel öffnen in eFitware: Run 5 km under 25 minutes', 'Ziel öffnen'] })
+  })
+
+  it('leads the compact card with the selected day\'s goals and otherwise keeps the first workout', () => {
+    const options = (locale: 'en' | 'de') => ({ locale, system: 'metric' as const, ...compactTranslator(locale) })
+    const summary = (response: unknown, locale: 'en' | 'de' = 'en', date = fixture.date) => compactSummary(parseTrainingView(wrap(response, date)), options(locale))
+    expect(summary(fixture.response).detail).toEqual({ label: 'Target date', value: 'Run 5 km under 25 minutes' })
+    expect(summary(responseWith(several)).detail).toEqual({ label: 'Target date', value: 'Run 5 km under 25 minutes and Squat 140 kg for a single at the spring regional powerlifting meet' })
+    expect(summary(responseWith(several), 'de').detail).toEqual({ label: 'Zieldatum', value: 'Run 5 km under 25 minutes und Squat 140 kg for a single at the spring regional powerlifting meet' })
+    expect(summary(responseWith(several)).facts).toEqual(summary(noGoals).facts)
+    expect(summary(responseWith([bench])).detail).toEqual({ label: 'On this day', value: 'Lower body B · Completed' })
+    expect(summary(responseWith([])).detail).toEqual({ label: 'On this day', value: 'Lower body B · Completed' })
+    expect(compactSummary(parseTrainingView(selecting('2026-09-16')), options('en')).detail).toEqual({ label: 'Target date', value: 'Bench 100 kg' })
+  })
+
+  describe('goal links', () => {
+    let mounted: App | undefined
+    afterEach(() => { mounted?.unmount(); mounted = undefined; document.body.innerHTML = ''; vi.clearAllMocks() })
+    const settle = async () => { for (let index = 0; index < 5; index++) { await nextTick(); await new Promise(resolve => setTimeout(resolve, 0)) } }
+    const buttonNamed = (name: string) => [...document.querySelectorAll('button')].find(button => (button.getAttribute('aria-label') ?? button.textContent!.trim()) === name)
+    const dayButton = (date: string) => document.querySelector(`time[datetime="${date}"].block`)!.closest('button')!
+
+    it('opens a goal through its own callback, outside the day button, and selects days with reads only', async () => {
+      const navigate = vi.fn(), create = vi.fn(), openGoal = vi.fn()
+      const root = document.body.appendChild(document.createElement('div'))
+      mounted = createApp(CalendarView, { calendar: calendarViewSchema.parse(wrap(responseWith(several))), disabled: false, navigate, create, openGoal })
+      mounted.use(createI18n({ legacy: false, locale: 'en', fallbackLocale: 'en', messages }))
+      mounted.mount(root)
+      const link = buttonNamed('Open goal in eFitware: Squat 140 kg for a single at the spring regional powerlifting meet')!
+      expect(link.parentElement!.closest('button')).toBeNull()
+      expect(dayButton('2026-09-09').querySelector('button')).toBeNull()
+      link.click()
+      expect(openGoal.mock.calls).toEqual([[squat.goalId]])
+      dayButton('2026-09-16').click()
+      expect(navigate.mock.calls).toEqual([[{ name: 'open_calendar', arguments: { from: fixture.from, to: fixture.to, date: '2026-09-16' } }, true]])
+      expect(openGoal).toHaveBeenCalledTimes(1)
+      expect(create).not.toHaveBeenCalled()
+    })
+
+    it('opens the goal page in eFitware through the host bridge without calling a tool', async () => {
+      const root = document.body.appendChild(document.createElement('div'))
+      mounted = createApp(WorkoutApp)
+      mounted.use(createI18n({ legacy: false, locale: 'en', fallbackLocale: 'en', messages }))
+      mounted.mount(root)
+      await settle()
+      bridge.ontoolresult?.({ structuredContent: wrap(responseWith(several)) })
+      await settle()
+      expect(document.body.textContent).toContain('Target date')
+      buttonNamed('Show more')!.click()
+      await settle()
+      buttonNamed('Open goal in eFitware: Run 5 km under 25 minutes')!.click()
+      expect(bridge.openLink.mock.calls).toEqual([[{ url: 'https://app.efitware.com/goals/6c0000000000000000000001' }]])
+      expect(bridge.callServerTool).not.toHaveBeenCalled()
+      bridge.callServerTool.mockResolvedValueOnce({ structuredContent: selecting('2026-09-16') })
+      dayButton('2026-09-16').click()
+      await settle()
+      expect(bridge.callServerTool.mock.calls.map(([call]) => call)).toEqual([{ name: 'open_calendar', arguments: { from: fixture.from, to: fixture.to, date: '2026-09-16' } }])
+      expect(goalRows(document.body.innerHTML).map(row => row.text)).toEqual(['Bench 100 kg Target date'])
+      expect(bridge.openLink).toHaveBeenCalledTimes(1)
+    })
   })
 })

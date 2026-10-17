@@ -352,6 +352,7 @@ onUnmounted(connection.close)
         :disabled="!canWrite"
         :navigate="connection.navigate"
         :create="connection.createOccurrence"
+        :open-goal="goalId => connection.open(appUrl(`/goals/${goalId}`))"
       />
       <template v-if="workout">
         <header class="mb-6">

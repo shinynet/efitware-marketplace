@@ -23,6 +23,17 @@ it('keeps the published skill inventory consistent with the required server surf
   expect(skill).toContain('A stored `volume` marker or ineligible estimate is not an award: never announce it.')
   // EF-1587: a day's program credit comes from the full list, not the scalar fields.
   expect(skill).toContain('credit a shared or manual-led day from `programs`')
+  // EF-1889: goal target dates are calendar markers, never sessions or counts.
+  expect(skill).toContain("`goalDays` lists the user's active goals whose target date falls in the range")
+  expect(skill).toContain('it is `[]` when there are none. Goal days are markers only: never count one as a session')
+  expect(skill).toContain("The card flags each active goal's target date and lists the selected day's goals above its workouts")
+  // Each calendar row carries the goalDays rules itself, not only the file as a whole.
+  const row = (tool: string) => skill.split('\n').find(line => line.startsWith(`| \`${tool}\` |`)) ?? ''
+  for (const tool of ['get_calendar', 'open_calendar']) {
+    expect(row(tool), tool).toContain('goalDays')
+    expect(row(tool), tool).toContain('`[]` when there are none')
+    expect(row(tool), tool).toMatch(/never count/)
+  }
 })
 
 it('preserves marketplace identity and sign-in policy', () => {

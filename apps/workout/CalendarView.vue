@@ -2,13 +2,16 @@
 /** Read-only calendar selection; creating an occurrence is a separately labelled, explicit mutation. */
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { dayMarks, dayProgramNames, formatDay, rangeDays, sessionMark, shiftDay, type CalendarView } from './planningModel'
+import { dayMarks, dayProgramNames, formatDay, goalsByDate, rangeDays, sessionMark, shiftDay, type CalendarView } from './planningModel'
 import CalendarMark from './CalendarMark.vue'
+import CalendarGoalFlag from './CalendarGoalFlag.vue'
 import type { createWorkoutConnection } from './workoutConnection'
-const { calendar, disabled, navigate, create } = defineProps<{
+const { calendar, disabled, navigate, create, openGoal } = defineProps<{
   calendar: CalendarView, disabled: boolean,
   navigate: ReturnType<typeof createWorkoutConnection>['navigate'],
-  create: ReturnType<typeof createWorkoutConnection>['createOccurrence']
+  create: ReturnType<typeof createWorkoutConnection>['createOccurrence'],
+  /** Opens the goal's page in the application; never a tool call. */
+  openGoal: (goalId: string) => void
 }>()
 const { t, locale } = useI18n()
 const days = computed(() => rangeDays(calendar.record.from, calendar.record.to))
@@ -16,6 +19,10 @@ const byDate = computed(() => new Map(calendar.record.days.map(day => [day.date,
 const select = (date: string) => navigate({ name: 'open_calendar', arguments: { from: calendar.record.from, to: calendar.record.to, date } }, true)
 const shift = (direction: number) => navigate({ name: 'open_calendar', arguments: { from: shiftDay(calendar.record.from, days.value.length * direction), to: shiftDay(calendar.record.to, days.value.length * direction), date: shiftDay(calendar.record.date, days.value.length * direction) } }, true)
 const n = (value: number) => new Intl.NumberFormat(locale.value).format(value)
+/** Goal target dates are markers only: they never change a day's marks, counts or agenda. */
+const goals = computed(() => goalsByDate(calendar.record.goalDays))
+const selectedGoals = computed(() => goals.value.get(calendar.record.date) ?? [])
+const goalNames = (date: string) => new Intl.ListFormat(locale.value, { type: 'conjunction' }).format((goals.value.get(date) ?? []).map(goal => goal.name))
 /** Every program the day draws on, compactly: "Program: A" or "Programs: A · B". */
 const programLine = (date: string) => {
   const names = dayProgramNames(byDate.value.get(date)?.summary)
@@ -73,10 +80,17 @@ const time = (instant: string) => new Intl.DateTimeFormat(locale.value, { hour: 
           :disabled="disabled"
           @click="select(date)"
         >
-          <time
-            :datetime="date"
-            class="block font-semibold"
-          >{{ formatDay(date, locale) }}</time>
+          <span class="flex items-start justify-between gap-2">
+            <time
+              :datetime="date"
+              class="block font-semibold"
+            >{{ formatDay(date, locale) }}</time>
+            <calendar-goal-flag
+              v-if="goals.get(date)?.length"
+              class="mt-1"
+              :label="t('calendarGoalFlag', { day: formatDay(date, locale), names: goalNames(date) })"
+            />
+          </span>
           <span
             v-if="dayMarks(byDate.get(date)).length"
             class="mt-2 flex flex-wrap gap-1.5"
@@ -112,11 +126,38 @@ const time = (instant: string) => new Intl.DateTimeFormat(locale.value, { hour: 
         <time :datetime="calendar.record.date">{{ formatDay(calendar.record.date, locale) }}</time>
       </h2>
       <p
-        v-if="!calendar.record.agenda?.items.length"
+        v-if="!selectedGoals.length && !calendar.record.agenda?.items.length"
         class="py-4 text-muted"
       >
         {{ t('emptyAgenda') }}
       </p>
+      <ul
+        v-if="selectedGoals.length"
+        class="mb-3 space-y-3"
+      >
+        <li
+          v-for="goal in selectedGoals"
+          :key="goal.goalId"
+          class="rounded border border-surface-dark bg-surface p-4"
+          data-goal-day
+        >
+          <h3 class="break-words text-lg font-semibold">
+            {{ goal.name }}
+          </h3>
+          <p class="mt-2 flex items-center gap-2 text-sm text-muted">
+            <calendar-goal-flag />
+            <span>{{ t('targetDate') }}</span>
+          </p>
+          <button
+            type="button"
+            class="secondary mt-3"
+            :aria-label="t('calendarOpenGoalLabel', { name: goal.name })"
+            @click="openGoal(goal.goalId)"
+          >
+            {{ t('calendarOpenGoal') }} <span aria-hidden="true">↗</span>
+          </button>
+        </li>
+      </ul>
       <ol class="space-y-3">
         <li
           v-for="item in calendar.record.agenda?.items ?? []"
