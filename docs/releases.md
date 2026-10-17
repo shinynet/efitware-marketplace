@@ -15,7 +15,7 @@ Skill-only change. No card, schema, fixture or tool-inventory change, so `contra
 - **The max heart rate (EF-1874).** The same rules describe `maxHeartRate` (`{ value, unit: "bpm" } | null`, whole bpm 120–230): a current setting that drives heart-rate zones, a vital sign that is redacted and refused without the connection's health-sharing grant.
 - **Custom cardio tracking (EF-1885).** The `create_custom_exercise` row says a cardio exercise tracks time, distance, heart rate, pace, cadence and power unless a flag is set false.
 
-The application already serves every behaviour described here, so this release has no producer requirement. The application pins it in EF-1897. This is a staged prerelease: `main`, the catalogs and `channels.json` stay on 0.1.38 until that application deployment is READY in production.
+The application already serves every behaviour described here, so this release has no producer requirement. The application pins it in EF-1897. Independently approved source `8775f76546390aaf16aa613a1d24932f89cc2da7` is preserved by annotated tag `v0.1.39`; immutable release `415867419` has 27 assets and manifest SHA-256 `0fbf6d354d893a6050ac167c7fdadc32a05d2163c64e631b8d530b92f6e67aa5`. App PR #1504 was approved at `71290f5776745561e29164e9208d9f4518da9d93`; merge `dd7cb5abb2d2f2e1c0dc16f1d810b1852346c6be` is serving exact production READY in `dpl_FtuPX2qTTnUezvibq3x29mbqYJTS`. All four application downloads match the immutable bytes. The reviewed promotion receipt advances the catalog; merge preserves the tagged source, then the metadata-only publication workflow verifies every asset identity. The website mirror follows its own approved deployment. No external Desktop activation is claimed.
 
 ## Calendar goal target dates (0.1.38, EF-1889)
 
