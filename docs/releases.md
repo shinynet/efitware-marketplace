@@ -6,6 +6,17 @@ The application owns its product DTOs, MCP tools, authentication, permissions an
 
 `pnpm build` bundles Vue, fonts, brand assets and theme tokens into `dist/card/workout.html`, then generates the open draft-07 input schema. The product validates its raw tool output against that schema using Ajv without stripping extra fields, applying defaults or coercing types. The product DTO remains authoritative.
 
+## Logging starts a session, the long day and the max heart rate (0.1.39, EF-1897)
+
+Skill-only change. No card, schema, fixture or tool-inventory change, so `contract/server-contract.json` and its `minimumAppCommit` are unchanged.
+
+- **Logging starts a session (EF-1895).** The session paragraph no longer says content edits start a planned session. Only logging starts one: the first logged set, completed set, logged activity or group score, or an explicit `start_workout`. Planning edits never do, so a future session stays planned however often it is edited.
+- **The long day (EF-1870).** The `update_user_profile` rules describe `longSession` (`{ weekday, maxMinutes } | null`): the 45–240 minute bound in steps of 15, the two rules checked against the resulting profile, the refusal when a long day doesn't fit, the clear reported by `meta.longSessionCleared`, and how to plan that weekday.
+- **The max heart rate (EF-1874).** The same rules describe `maxHeartRate` (`{ value, unit: "bpm" } | null`, whole bpm 120–230): a current setting that drives heart-rate zones, a vital sign that is redacted and refused without the connection's health-sharing grant.
+- **Custom cardio tracking (EF-1885).** The `create_custom_exercise` row says a cardio exercise tracks time, distance, heart rate, pace, cadence and power unless a flag is set false.
+
+The application already serves every behaviour described here, so this release has no producer requirement. The application pins it in EF-1897. This is a staged prerelease: `main`, the catalogs and `channels.json` stay on 0.1.38 until that application deployment is READY in production.
+
 ## Calendar goal target dates (0.1.38, EF-1889)
 
 Card, schema and skill change (EF-1889; the application's web calendar shows the same goal days since EF-1873).
