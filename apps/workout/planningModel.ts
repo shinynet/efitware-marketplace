@@ -35,18 +35,26 @@ const count = z.number().int().nonnegative()
  * session order. `programName` is omitted when the program no longer resolves.
  */
 export const calendarDayProgram = z.object({ programId: id, programName: z.string().optional(), sessionCount: z.number().int().min(1) })
+/**
+ * An active goal's target date inside the range (application EF-1889), ordered by date, then name, then goal id. Goal
+ * days are markers only: they add no sessions, agenda items, statuses or counts, and a date may carry several goals or
+ * none of the range's `days`. Optional, so this card ships before the application emits it; there is no cap.
+ */
+export const calendarGoalDay = z.object({ goalId: id, name: z.string(), date: day })
 export const calendarViewSchema = z.object({
   view: z.literal('calendar'),
   record: z.object({ from: day, to: day, date: day,
     days: z.array(z.object({ date: day, status: calendarDayStatus.nullable(),
       sessionCount: count, completedSessionCount: count, inProgressSessionCount: count, plannedSessionCount: count, missedSessionCount: count, endedSessionCount: count,
       summary: z.object({ title: z.string(), status, programName: z.string().optional(), programs: z.array(calendarDayProgram).min(1).optional() }).optional() })),
-    agenda: z.object({ date: day, items: z.array(z.object({ id: z.string(), name: z.string(), status, displayStatus: calendarSessionDisplayStatus, time: z.string(), scheduleId: id.optional() })) }).nullable()
+    agenda: z.object({ date: day, items: z.array(z.object({ id: z.string(), name: z.string(), status, displayStatus: calendarSessionDisplayStatus, time: z.string(), scheduleId: id.optional() })) }).nullable(),
+    goalDays: z.array(calendarGoalDay).optional()
   }), related: z.object({}), presentation
 })
 export type CalendarSessionDisplayStatus = z.infer<typeof calendarSessionDisplayStatus>
 export type ScheduledOccurrenceDisplayStatus = z.infer<typeof scheduledOccurrenceDisplayStatus>
 export type CalendarDayStatus = z.infer<typeof calendarDayStatus>
+export type CalendarGoalDay = z.infer<typeof calendarGoalDay>
 export type ProgramView = z.infer<typeof programViewSchema>
 export type ScheduleView = z.infer<typeof scheduleViewSchema>
 export type CalendarView = z.infer<typeof calendarViewSchema>
@@ -77,4 +85,10 @@ export const sessionMark = (displayStatus: CalendarSessionDisplayStatus): Calend
 export const dayProgramNames = (summary: CalendarDay['summary']): string[] => {
   const named = summary?.programs?.flatMap(program => program.programName ? [program.programName] : []) ?? []
   return named.length ? named : summary?.programName ? [summary.programName] : []
+}
+/** Goals by target date, independently of `days`, so a goal-only date still gets its flag. Keeps the application's order. */
+export const goalsByDate = (goalDays: CalendarGoalDay[] = []) => {
+  const byDate = new Map<string, CalendarGoalDay[]>()
+  for (const goal of goalDays) byDate.set(goal.date, [...byDate.get(goal.date) ?? [], goal])
+  return byDate
 }

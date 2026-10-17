@@ -129,10 +129,12 @@ export const compactSummary = (view: TrainingView, options: Options): CompactSum
       const completed = record.days.reduce((sum, day) => sum + day.completedSessionCount, 0)
       const trained = record.days.filter(day => day.completedSessionCount > 0).length
       const item = record.agenda?.items[0]
+      // A goal's target date leads the selected day; goal days are markers, never counted as sessions.
+      const goals = record.goalDays?.filter(goal => goal.date === record.date).map(goal => goal.name) ?? []
       return {
         eyebrow: dot(t('trainingCalendar'), `${monthDay(record.from, locale)} – ${monthDay(record.to, locale)}`), title: shortDay(record.date, locale),
         facts: [fact(t('compact.sessions'), count(sessions)), fact(t('completed'), count(completed)), fact(t('compact.daysTrained'), count(trained))],
-        ...(item ? { detail: fact(t('compact.agenda'), dot(item.name, t(item.displayStatus))) } : {}),
+        ...(goals.length ? { detail: fact(t('compact.targetDate'), new Intl.ListFormat(locale, { type: 'conjunction' }).format(goals)) } : item ? { detail: fact(t('compact.agenda'), dot(item.name, t(item.displayStatus))) } : {}),
         path: `/training/${record.date}`
       }
     }
